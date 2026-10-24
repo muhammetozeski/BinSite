@@ -1,0 +1,29 @@
+namespace BinSite.Social.Services;
+
+/// <summary>Original fictional editorial exhibitions, always labelled separately from actual user collections.</summary>
+public static class CommunityEditorial
+{
+ public static readonly EditorialExhibit[] Exhibits=[
+  new("Bir Çekmecenin İçindeki Şehir","Gündelik izler","Bu kurmaca editoryal sergi bir çekmeceden çıkan nesnelerle kentteki küçük alışkanlıkların izini sürer. Bunlar tarihsel nesne iddiaları veya kullanıcı katkıları değildir.",[
+   new("Yıpranmış durak kartı","Kurmaca gündelik hayat","Kartın köşesi, her sabah aynı cepte taşınmaktan beyazlamıştı. Sergideki yeri bir ulaşım aracından çok, bir rutinin ölçüsünü anlatıyor: aynı durakta birbirini tanımadan bekleyen insanların ortak zamanı."),
+   new("Tek düğme","Kurmaca onarım hikâyesi","Bu düğme artık hiçbir cekete uymuyor. Çekmeceye atılmasının nedeni gelecekte işe yarayacak olmasıydı; saklanmasının nedeni ise birinin onu diktiği akşamı hatırlatması. Nesnenin değeri kullanımından hatırasına kayıyor."),
+   new("Boş anahtarlık","Kurmaca taşınma hikâyesi","Eski evin anahtarı teslim edildiğinde anahtarlık kaldı. Üstündeki silinmiş yazı bir yerin adını taşımıyordu artık. Bu nesne sergide, bir mekândan ayrılırken hangi parçaların bizimle geldiği sorusunu açıyor."),
+   new("Katlanmış sokak krokisi","Kurmaca yön bulma notu","Kroki bir sokağı doğru çizmiyor; yalnızca anlatanın önemli bulduğu köşeleri büyütüyor. Ekmek kokan fırın, çatısı yeşil ev ve her zaman gölgede kalan bank. Harita, bir yerin ölçüsünden önce ona verilen anlamı gösteriyor."),
+   new("Adsız kafe fişi","Kurmaca buluşma izi","Fişte iki çay ve bir su yazıyor. Masada konuşulan hiçbir şey kayıtlı değil. Sergi, bu küçük kâğıdı büyük bir olayın kanıtı olarak değil, kayda geçenle hatırlanan arasındaki boşluğu göstermek için yerleştiriyor."),
+   new("Kırık kurşun kalem","Kurmaca ortak masa","Kalem bir toplantıda ortadan kırıldı; iki parçası da kullanılmaya devam etti. Nesne, paylaşmanın bazen bir şeyi bölmek, bazen de onun bitmemesine karar vermek olduğunu anlatan küçük bir ortak çalışma hikâyesi taşıyor.")]),
+  new("Geleceğin Eski Eşyaları","Hayalî arkeoloji","Bu kurmaca editoryal koleksiyon henüz var olmayan bir geleceğin sıradan nesnelerini düşünür. Anlatılar özgün hayal ürünüdür; bilimsel veya tarihsel bulgu olarak sunulmaz.",[
+   new("Yağmur sıraya alma bileti","Kurmaca gelecek","Biletin üzerinde saat yerine bulut çizimleri vardı. Bu hayalî şehirde insanlar yağmurun gelişini değil, yağmur altında geçirecekleri sessiz dakikaları sıraya alıyordu. Nesne, beklemeyi nasıl örgütlediğimiz sorusunu soruyor."),
+   new("Tamir edilebilir ekran etiketi","Kurmaca gelecek","Etiket yeni bir ürünün parlaklığını değil, on üçüncü kez onarılmasını kutluyordu. Hayalî müzede nesnenin yanında model numarası yerine onu onaran ellerin çizimleri yer alıyor. Sahiplik, bakımın geçmişine dönüşüyor."),
+   new("Sessizlik haritası","Kurmaca gelecek","Harita yolları göstermiyor, günün farklı saatlerinde konuşmadan oturulabilecek alanları gösteriyordu. Bazı yerler yalnızca birkaç dakika açılıyordu. Bu nesne, bir şehrin görünmeyen ihtiyaçlarını neyle ölçebileceğimizi düşündürüyor."),
+   new("Gölge paylaşım halkası","Kurmaca gelecek","İki ağacın arasına asılan küçük halka, güneşin yönüne göre bir kumaşı çeviriyordu. Kurmaca anlatıda hiçbir kişi gölgenin sahibi değildi; herkes onun bakımına bir düğüm ekliyordu. Nesne ortak alan kavramını somutlaştırıyor."),
+   new("Yarım bırakma defteri","Kurmaca gelecek","Defterin her sayfasında tamamlanmamış bir iş vardı ve hiçbir sayfa başarısızlık diye işaretlenmemişti. Bir işi bırakma nedenini kaydetmek, başkasının onu farklı bir yerden devralmasını sağlıyordu. Sergi bitmemişliği bir davet olarak ele alıyor."),
+   new("Anı ayıracı","Kurmaca gelecek","Ayraç kitap sayfası yerine bir konuşmanın belirli anına konuyordu. Üzerinde yalnızca 'burada yeniden dinle' yazıyordu. Bu hayalî nesne, hatırlamanın her ayrıntıyı saklamak mı yoksa bir şeye geri dönme isteği mi olduğunu soruyor.")]),
+  new("Görünmeyen Emek Masası","Bakım ve birlikte üretim","Bu kurmaca editoryal sergi ortaya çıkan sonuçtan çok onu mümkün kılan küçük işleri görünür kılar. İsimler ve gerçek kişi öyküleri kullanılmadan özgün nesne anlatıları sunulur.",[
+   new("Yedek sandalye","Kurmaca topluluk buluşması","Buluşmanın fotoğrafında bu sandalye boş görünüyor. Oysa en son gelen kişinin yer aramaması için kapıya yakın tutulmuştu. Sergide sandalye eksikliği değil, gelmesi henüz kesin olmayan birine ayrılmış düşünceyi temsil ediyor."),
+   new("Kurşunla yazılmış görev kartı","Kurmaca ekip çalışması","Kartın üstündeki görev üç kez değişmiş. Sonunda tek bir isim yerine 'birlikte bakılacak' yazılmış. Bu nesne, işin tamamlanması kadar sorumluluğun nasıl konuşulduğunu da ortak üretimin parçası olarak gösteriyor."),
+   new("Soğumuş çay bardağı","Kurmaca hazırlık akşamı","Bardak, etkinlik başlamadan önce masaları yerleştiren kişinin yanındaydı. Sergide sonuçların vitrinine girmeyen hazırlık anlarına yer açıyor. Buradaki hikâye fedakârlığı yüceltmekten çok, emeğin görülmesini istemek üzerine."),
+   new("İki dilli yön levhası","Kurmaca karşılaşma alanı","Levhanın ikinci dili bir süs olarak eklenmedi; bir katılımcı ilk kez yolunu tek başına bulabilsin diye yazıldı. Nesne, erişimi bir ek özellik yerine buluşmanın baştan düşünülmüş parçası olarak anlatıyor."),
+   new("Tamamlanmamış tutanak","Kurmaca karar süreci","Tutanağın sonunda karar değil, bir sonraki toplantıda kime söz verileceği yazıyordu. Bazı işler bir sonuca bağlanmadan önce doğru kişiyi dinlemeyi gerektirir. Sergi bu kâğıdı yavaşlığın değil, dikkatli bir sürecin izi olarak tutuyor."),
+   new("Paylaşılan kutunun kapağı","Kurmaca mahalle atölyesi","Kutunun içindeki araçlar yıllar içinde değişti, kapağındaki el yazıları kaldı. Her onarımda bir çizik, her yeni katılımcıda bir işaret eklendi. Nesne bir envanterden çok, birlikte bir şeye sahip çıkmanın biçimlerini saklıyor.")])
+ ];
+}
