@@ -14,7 +14,7 @@ async function inspect(directory) {
     if (name.endsWith('.html')) {
       htmlFiles++;
       const html = await readFile(file, 'utf8');
-      if (!/<html\b[^>]*lang\s*=\s*["']tr["']/i.test(html) && name !== '404.html') throw new Error(`Missing Turkish page language: ${file}`);
+      if (!/<html\b[^>]*lang\s*=\s*["'](?:en|tr)["']/i.test(html) && name !== '404.html') throw new Error(`Missing document language: ${file}`);
       for (const match of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
         if (/\bsrc\s*=|application\/(?:ld\+)?json/i.test(match[1])) continue;
         if (/type\s*=\s*["']module["']/i.test(match[1])) {
