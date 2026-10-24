@@ -81,7 +81,7 @@ public static class FieldWorkRules
             {
                 if (answer?.Photo is null || string.IsNullOrEmpty(answer.Photo.DataUrl))
                 {
-                    if (field.Required) issues.Add(new(field.Id, field.Label, answer?.Photo is null ? "Attach a local photo." : "The photo is not attached in this browser. Relink the actual image."));
+                    if (field.Required) issues.Add(new(field.Id, field.Label, answer?.Photo is null ? "Attach a photo." : "Choose the original photo on this device."));
                 }
                 else if (!HasRasterEvidence(answer.Photo)) issues.Add(new(field.Id, field.Label, "The attached image data is invalid. Replace the photo."));
             }
@@ -120,7 +120,7 @@ public static class FieldWorkRules
             Fields = template.Fields.Select(field => Clone(field)).ToList()
         };
         order.Answers = order.Fields.Select(field => new FieldWorkAnswer { FieldId = field.Id }).ToList();
-        Record(order, "Created", $"Checklist snapshot: {template.Title}, revision {template.Revision}.");
+        Record(order, "Created", $"Checklist: {template.Title}, version {template.Revision}.");
         return order;
     }
 
@@ -139,7 +139,7 @@ public static class FieldWorkRules
             _ => order.Status
         };
         order.CompletedAt = order.Status == FieldWorkStatus.Complete ? DateTimeOffset.UtcNow : null;
-        Record(order, StatusLabel(order.Status), order.Status == FieldWorkStatus.Complete ? "Local review accepted. This is a self-reported record, not a certified signature." : "Workflow advanced after validation.");
+        Record(order, StatusLabel(order.Status), order.Status == FieldWorkStatus.Complete ? "Review recorded. This is not a signed inspection." : "Required items checked.");
         return new(true, []);
     }
 

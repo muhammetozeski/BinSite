@@ -13,8 +13,8 @@ public static class FieldWorkReport
         var issues = FieldWorkRules.Issues(order);
         var complete = order.Status == FieldWorkStatus.Complete && issues.Count == 0;
         var html = new StringBuilder("<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>");
-        html.Append(E(order.Title)).Append(" — Field Work Pack</title><style>body{font:15px/1.5 system-ui,sans-serif;color:#111;background:#fff;max-width:1000px;margin:25px auto;padding:20px}h1{font-size:27px}h2{font-size:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #555;padding:9px;text-align:left;vertical-align:top}th{width:26%}.notice{border:2px solid #111;padding:12px}article{border-top:2px solid #111;margin:20px 0;padding-top:12px;break-inside:avoid}img{display:block;max-width:100%;max-height:600px;object-fit:contain;margin:10px 0}.note{white-space:pre-wrap}.muted{color:#444}li{margin:6px 0}@media print{body{margin:0;padding:8mm;max-width:none}a{color:#111}img{max-height:160mm}article{break-inside:avoid}h1,h2,h3{break-after:avoid}}</style><body><header><p>FIELD WORK PACK · LOCAL HANDOFF REPORT</p><h1>");
-        html.Append(E(order.Title)).Append("</h1><p class=\"notice\">").Append(complete ? "Complete — local review accepted" : "Draft — not a completed handoff").Append("</p></header><table>");
+        html.Append(E(order.Title)).Append(" — Field Work Pack</title><style>body{font:15px/1.5 system-ui,sans-serif;color:#111;background:#fff;max-width:1000px;margin:25px auto;padding:20px}h1{font-size:27px}h2{font-size:20px}table{width:100%;border-collapse:collapse}th,td{border:1px solid #555;padding:9px;text-align:left;vertical-align:top}th{width:26%}.notice{border:2px solid #111;padding:12px}article{border-top:2px solid #111;margin:20px 0;padding-top:12px;break-inside:avoid}img{display:block;max-width:100%;max-height:600px;object-fit:contain;margin:10px 0}.note{white-space:pre-wrap}.muted{color:#444}li{margin:6px 0}@media print{body{margin:0;padding:8mm;max-width:none}a{color:#111}img{max-height:160mm}article{break-inside:avoid}h1,h2,h3{break-after:avoid}}</style><body><header><p>FIELD WORK PACK · HANDOFF REPORT</p><h1>");
+        html.Append(E(order.Title)).Append("</h1><p class=\"notice\">").Append(complete ? "Complete — review recorded" : "Draft — not a completed handoff").Append("</p></header><table>");
         Row(html, "Status", FieldWorkRules.StatusLabel(order.Status));
         if (!string.IsNullOrWhiteSpace(order.Reference)) Row(html, "Work order reference", order.Reference);
         if (!string.IsNullOrWhiteSpace(order.CustomerLabel)) Row(html, "Customer / site label", order.CustomerLabel);
@@ -41,17 +41,17 @@ public static class FieldWorkReport
             }
             else if (answer?.Photo is { } photo && FieldWorkRules.HasRasterEvidence(photo))
             {
-                html.Append("<p>").Append(E(photo.FileName)).Append(" · ").Append(photo.Width).Append(" × ").Append(photo.Height).Append(" pixels</p><img src=\"").Append(photo.DataUrl).Append("\" alt=\"").Append(E(field.Label)).Append("\"><p class=\"muted\">Source file SHA-256: ").Append(E(photo.SourceSha256)).Append("</p>");
+                html.Append("<p>").Append(E(photo.FileName)).Append(" · ").Append(photo.Width).Append(" × ").Append(photo.Height).Append(" pixels</p><img src=\"").Append(photo.DataUrl).Append("\" alt=\"").Append(E(field.Label)).Append("\">");
             }
-            else html.Append("<p><strong>No local photo attached.</strong> A filename or fingerprint does not count as photo evidence.</p>");
+            else html.Append("<p><strong>No photo attached.</strong></p>");
             if (!string.IsNullOrWhiteSpace(answer?.Note)) html.Append("<p class=\"note\">").Append(E(answer.Note)).Append("</p>");
             foreach (var issue in issues.Where(value => value.FieldId == field.Id)) html.Append("<p><strong>Unresolved:</strong> ").Append(E(issue.Message)).Append("</p>");
             html.Append("</article>");
         }
         if (!string.IsNullOrWhiteSpace(order.Notes)) html.Append("<h2>Work-order notes</h2><p class=\"note\">").Append(E(order.Notes)).Append("</p>");
-        html.Append("<h2>Local workflow history</h2><ol>");
+        html.Append("<h2>Work history</h2><ol>");
         foreach (var entry in order.History) html.Append("<li>").Append(E(entry.At.ToString("u", CultureInfo.InvariantCulture))).Append(" · <strong>").Append(E(entry.Action)).Append("</strong> · ").Append(E(entry.Detail)).Append("</li>");
-        html.Append("</ol><footer><p>This is a self-reported work record. A local completion action is not an authenticated signature, technical certification, or independent inspection.</p><p>Created with Field Work Pack. This report is self-contained and includes the attached image data.</p></footer></body></html>");
+        html.Append("</ol><footer><p>This report records the author’s review. It is not a signed or independent inspection.</p><p>Attached photos are included in this file.</p></footer></body></html>");
         return html.ToString();
     }
 

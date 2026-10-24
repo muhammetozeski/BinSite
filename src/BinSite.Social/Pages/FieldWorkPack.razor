@@ -12,10 +12,10 @@
 <main class="field-work">
     <header><a href="/">Product directory</a><h1>Field Work Pack</h1><p>Record work, measurements and photos, then create a handoff report.</p></header>
     <nav aria-label="Workspace sections">
-        <button class="@(View == "orders" ? "selected" : "")" @onclick='() => View = "orders"' disabled="@Busy">Work orders (@Workspace.Orders.Count)</button>
-        <button class="@(View == "templates" ? "selected" : "")" @onclick='() => View = "templates"' disabled="@Busy">Checklist library (@Workspace.Templates.Count)</button>
-        <button class="@(View == "cloud" ? "selected" : "")" @onclick="OpenCloud" disabled="@Busy">Sharing</button>
-        <button class="@(View == "help" ? "selected" : "")" @onclick='() => View = "help"' disabled="@Busy">Help</button>
+        <button class="@(View == "orders" ? "selected" : "")" @onclick='() => View = "orders"' disabled="@(Busy || View == "orders")">Work orders (@Workspace.Orders.Count)</button>
+        <button class="@(View == "templates" ? "selected" : "")" @onclick='() => View = "templates"' disabled="@(Busy || View == "templates")">Checklist library (@Workspace.Templates.Count)</button>
+        <button class="@(View == "cloud" ? "selected" : "")" @onclick="OpenCloud" disabled="@(Busy || View == "cloud")">Sharing</button>
+        <button class="@(View == "help" ? "selected" : "")" @onclick='() => View = "help"' disabled="@(Busy || View == "help")">Help</button>
     </nav>
     <p class="notice" role="status" aria-live="polite">@Message</p>
     @if (!string.IsNullOrWhiteSpace(StorageMessage)) { <p class="storage">@StorageMessage</p> }
@@ -36,7 +36,7 @@
                 <fieldset disabled="@(Busy || Module is null)">
                     <label>Order title<input maxlength="160" @bind="NewTitle" placeholder="For example: Friday studio handoff" /></label>
                     <label>Checklist<select @bind="SelectedTemplateId">@foreach (var item in Workspace.Templates) { <option value="@item.Id">@item.Title · v@item.Revision</option> }</select></label>
-                    <button class="strong" @onclick="CreateOrder" disabled="@(Workspace.Templates.Count == 0)">Create work order</button>
+                    <button class="strong" @onclick="CreateOrder" disabled="@(Workspace.Templates.Count == 0 || string.IsNullOrWhiteSpace(NewTitle))">Create work order</button>
                 </fieldset>
                 @if (Workspace.Templates.Count == 0) { <p>Create a checklist in the library before making an order.</p> }
                 <h2>Your work orders</h2>
@@ -106,13 +106,13 @@
                             {
                                 @if (FieldWorkRules.HasRasterEvidence(photo)) { <img class="evidence-image" src="@photo.DataUrl" alt="@field.Label" /><p class="small">@photo.FileName</p> }
                                 else { <p class="field-error">Choose the original photo to reconnect it.</p> }
-                                <details><summary>Source image fingerprint</summary><code>@photo.SourceSha256</code></details>
+
                                 @if (editable) { <button @onclick="() => RemovePhoto(field.Id)">Remove attached photo</button> }
                             }
                             @foreach (var issue in fieldIssues) { <p class="field-error">@issue.Message</p> }
                         </article>
                     }
-                    <details class="history"><summary>Local workflow history (@order.History.Count)</summary><ol>@foreach (var entry in order.History) { <li>@entry.At.ToLocalTime().ToString("MMM d, HH:mm", System.Globalization.CultureInfo.InvariantCulture) · <strong>@entry.Action</strong> — @entry.Detail</li> }</ol></details>
+                    <details class="history"><summary>Work history (@order.History.Count)</summary><ol>@foreach (var entry in order.History) { <li>@entry.At.ToLocalTime().ToString("MMM d, HH:mm", System.Globalization.CultureInfo.InvariantCulture) · <strong>@entry.Action</strong> — @entry.Detail</li> }</ol></details>
                     <details class="history"><summary>Checklist version and report details</summary><p>@order.TemplateTitle · checklist @order.TemplateRevision · order @order.Revision</p><p>Library edits do not change this order. Reports include your answers and photos. Completion records your review; it is not a signed inspection.</p></details>
                 }
                 else if ((Workspace.Templates.FirstOrDefault(item => item.Id.ToString() == SelectedTemplateId) ?? Workspace.Templates.FirstOrDefault()) is { } preview) { <h2>@preview.Title</h2><p>@preview.Description</p><ul class="checklist-preview">@foreach (var field in preview.Fields) { <li>@field.Label <span class="small">· @(field.Kind == FieldWorkFieldKind.Photo ? "Photo" : field.Kind == FieldWorkFieldKind.Measurement ? field.Unit : "Check")</span></li> }</ul><p class="small">Checklist preview · add an order title to begin.</p> }
@@ -141,10 +141,10 @@
                                 {
                                     <div class="metadata"><label>Unit<input maxlength="30" @bind="field.Unit" /></label><label>Minimum (optional)<input type="number" step="any" @bind="field.Minimum" /></label><label>Maximum (optional)<input type="number" step="any" @bind="field.Maximum" /></label></div>
                                 }
-                                <div class="toolbar"><button @onclick="() => MoveField(field.Id, -1)">Move up</button><button @onclick="() => MoveField(field.Id, 1)">Move down</button><button @onclick="() => draft.Fields.Remove(field)">Remove field</button></div>
+                                <div class="toolbar"><button disabled="@(draft.Fields[0] == field)" @onclick="() => MoveField(field.Id, -1)">Move up</button><button disabled="@(draft.Fields[^1] == field)" @onclick="() => MoveField(field.Id, 1)">Move down</button><button @onclick="() => draft.Fields.Remove(field)">Remove field</button></div>
                             </article>
                         }
-                    <div class="toolbar"><button @onclick="() => AddField(FieldWorkFieldKind.Confirmation)">Add confirmation</button><button @onclick="() => AddField(FieldWorkFieldKind.Measurement)">Add measurement</button><button @onclick="() => AddField(FieldWorkFieldKind.Photo)">Add photo field</button><button class="strong" @onclick="SaveTemplate">Save checklist</button></div>
+                    <div class="toolbar"><button disabled="@(draft.Fields.Count >= FieldWorkRules.MaximumFields)" @onclick="() => AddField(FieldWorkFieldKind.Confirmation)">Add confirmation</button><button disabled="@(draft.Fields.Count >= FieldWorkRules.MaximumFields)" @onclick="() => AddField(FieldWorkFieldKind.Measurement)">Add measurement</button><button disabled="@(draft.Fields.Count >= FieldWorkRules.MaximumFields)" @onclick="() => AddField(FieldWorkFieldKind.Photo)">Add photo field</button><button class="strong" @onclick="SaveTemplate">Save checklist</button></div>
                     </fieldset>
                 }
                 else { <h2>Choose a checklist</h2><p>Edit its items, or start a new one.</p> }
@@ -177,7 +177,7 @@
                     @if (CloudRole == "owner")
                     {
                         <div class="metadata"><label>Invitation permission<select @bind="InviteRole"><option value="viewer">Viewer — read only</option><option value="editor">Editor — edit project</option></select></label><div><button disabled="@Busy" @onclick="CreateInvite">Create invite link</button></div></div>
-                        @if (!string.IsNullOrEmpty(InvitationLink)) { <label>Private invitation link<input readonly value="@InvitationLink" @onclick="CopyInvitation" /></label><button disabled="@Busy" @onclick="CopyInvitation">Copy private invitation</button><p>Expires @InvitationExpiry. Send it only to the intended recipient.</p> }
+                        @if (!string.IsNullOrEmpty(InvitationLink)) { <label>Private invitation link<input readonly value="@InvitationLink" /></label><button disabled="@Busy" @onclick="CopyInvitation">Copy private invitation</button><p>Expires @InvitationExpiry. Send it only to the intended recipient.</p> }
                     }
                     @if (CanEditCloud)
                     {
@@ -191,7 +191,7 @@
                 <h3>Your shared projects</h3>
                 @foreach (var item in CloudList.Where(value => value.Kind == "field"))
                 {
-                    <div class="cloud-row"><span><strong>@item.Title</strong> · revision @item.Revision · @item.Role</span><button disabled="@Busy" @onclick="() => ReadCloud(item.Id)">Open project</button></div>
+                    <div class="cloud-row"><span><strong>@item.Title</strong> · revision @item.Revision · @item.Role</span><button disabled="@(Busy || item.Id == CloudId)" @onclick="() => ReadCloud(item.Id)">Open project</button></div>
                 }
                 @if (!CloudList.Any(value => value.Kind == "field")) { <p>No shared projects yet.</p> }
             }
@@ -205,7 +205,7 @@
     {
         <section class="help">
             <h2>From plan to handoff</h2>
-            <ol><li>Choose one of eight checklists or define your own confirmations, measurements, and photo fields.</li><li>Create an order using only labels you choose. Customer and reviewer labels are optional.</li><li>Start work, enter measurements, and attach actual images. Outstanding items update after committed changes.</li><li>Request review. Missing confirmations, invalid numbers, out-of-range values, or missing photo bytes block the transition.</li><li>Complete the reviewed order or reopen it for changes. Export a filled HTML report or print it.</li></ol>
+            <ol><li>Choose one of eight checklists or define your own confirmations, measurements, and photo fields.</li><li>Create an order using only labels you choose. Customer and reviewer labels are optional.</li><li>Start work, enter measurements and attach photos. Outstanding items update when you finish editing a field.</li><li>Request review. Fill required confirmations, measurements and photos before requesting review.</li><li>Complete the reviewed order or reopen it for changes. Save a report or print it.</li></ol>
             <h2>Saving and offline use</h2><p>Changes save on this device when you finish editing a field. Save checklist drafts with Save checklist. Keep a project file as a backup. Projects can hold 30 orders, 50 checklists and 25 MB.</p>
             <p>Open Project files and offline use, then choose Make available offline before disconnecting. Wait for its confirmation.</p>
             <h2>Photos and reporting</h2><p>Project files and reports can contain photos. File matching does not prove when or where a photo was taken.</p>
@@ -263,7 +263,7 @@
             SelectedTemplateId = Workspace.Templates.FirstOrDefault()?.Id.ToString() ?? "";
             SelectedOrderId = Workspace.Orders.FirstOrDefault()?.Id;
             var invite = QueryValue(new Uri(Navigation.Uri).Query, "invite");
-            if (!string.IsNullOrEmpty(invite)) { InviteValue = invite; Message = "An invitation is available. Open Private workspace and sign in to claim it."; }
+            if (!string.IsNullOrEmpty(invite)) { InviteValue = invite; Message = "Open Sharing and sign in to join the invited project."; }
         }, "load");
         StateHasChanged();
     }
@@ -278,11 +278,11 @@
             if (IsLogEnabled) Logger.LogInformation("Field work action started; operation={Operation}", name);
             await operation();
         }
-        catch (ApiFailure error) { CloudMessage = error.Status == System.Net.HttpStatusCode.Conflict ? "The server could not accept this revision or allowance. Your local data is preserved. Refresh or reload before saving again. " + error.Message : error.Message; Message = CloudMessage; if (error.Status == System.Net.HttpStatusCode.Unauthorized) { CloudAccount = null; CloudRole = ""; } }
+        catch (ApiFailure error) { CloudMessage = error.Status == System.Net.HttpStatusCode.Conflict ? "This shared project changed or reached its limit. Your work is kept on this device. Refresh or reload before saving again. " + error.Message : error.Message; Message = CloudMessage; if (error.Status == System.Net.HttpStatusCode.Unauthorized) { CloudAccount = null; CloudRole = ""; } }
         catch (InvalidOperationException error) { Message = error.Message; if (IsLogEnabled) Logger.LogWarning("Field work validation failed; operation={Operation}; type={Type}", name, error.GetType().Name); }
         catch (JsonException) { Message = "This project file could not be opened. Your current work is unchanged."; }
-        catch (HttpRequestException) { CloudMessage = "The cloud service could not be reached. Your local workspace is unchanged; local editing and project exports remain available."; Message = CloudMessage; }
-        catch (JSException error) { Message = "Browser action failed: " + error.Message.Split('\n')[0]; if (IsLogEnabled) Logger.LogWarning("Field work browser action failed; operation={Operation}", name); }
+        catch (HttpRequestException) { CloudMessage = "Shared projects are unavailable. You can keep editing and save a project file."; Message = CloudMessage; }
+        catch (JSException error) { Message = "The action failed: " + error.Message.Split('\n')[0]; if (IsLogEnabled) Logger.LogWarning("Field work browser action failed; operation={Operation}", name); }
         catch (Exception error) { Message = "The action could not be completed. Your current data remains in memory; download a project backup before closing."; if (IsLogEnabled) Logger.LogError("Field work action failed; operation={Operation}; type={Type}", name, error.GetType().Name); }
         finally { Busy = false; }
     }
@@ -290,7 +290,7 @@
     /// <summary>Writes a validated complete project and acknowledges only an actual completed browser write.</summary>
     async Task Persist()
     {
-        if (Module is null) throw new InvalidOperationException("Browser storage is not ready. Refresh the page or download a project backup.");
+        if (Module is null) throw new InvalidOperationException("Saving is unavailable. Keep this page open and save a project file.");
         Workspace.UpdatedAt = DateTimeOffset.UtcNow;
         var json = FieldWorkRules.Serialize(Workspace);
         try { var mode = await Module.InvokeAsync<string>("saveProject", json); StorageMessage = $"Saved on this device at {DateTimeOffset.Now:HH:mm:ss}."; }
@@ -298,7 +298,7 @@
     }
 
     /// <summary>Persists all committed fields on explicit request.</summary>
-    Task SaveNow() => Execute(async () => { await Persist(); Message = "The local workspace was saved."; }, "save");
+    Task SaveNow() => Execute(async () => { await Persist(); Message = "Project saved on this device."; }, "save");
 
     /// <summary>Starts a separate local workspace only after an explicit replacement confirmation.</summary>
     Task NewWorkspace() => Execute(async () =>
@@ -355,7 +355,7 @@
         var prepared = await module.InvokeAsync<FieldWorkPhoto>("preparePhoto", Convert.ToBase64String(memory.ToArray()), args.File.ContentType, args.File.Name);
         if (!FieldWorkRules.HasRasterEvidence(prepared)) throw new InvalidOperationException("The image could not be prepared as valid photo evidence.");
         if (!ReferenceEquals(Workspace, workspace) || !workspace.Orders.Contains(order) || order.Status != FieldWorkStatus.InProgress || order.Revision != revision || !order.Fields.Contains(field) || !order.Answers.Contains(answer) || !ReferenceEquals(answer.Photo, previous)) throw new InvalidOperationException("The target work order changed while the image was being prepared. Its photo was not replaced; select the intended order and try again.");
-        if (previous is { DataUrl.Length: 0 } expected && !string.IsNullOrWhiteSpace(expected.SourceSha256) && expected.SourceSha256 != prepared.SourceSha256) throw new InvalidOperationException("This file does not match the expected source fingerprint. Use the original image or explicitly remove the old photo reference first.");
+        if (previous is { DataUrl.Length: 0 } expected && !string.IsNullOrWhiteSpace(expected.SourceSha256) && expected.SourceSha256 != prepared.SourceSha256) throw new InvalidOperationException("This is not the original photo. Choose the original file, or remove the old attachment before choosing a replacement.");
         answer.Photo = prepared;
         try { FieldWorkRules.Serialize(workspace); }
         catch { answer.Photo = previous; throw; }
@@ -406,7 +406,7 @@
         var copy = FieldWorkRules.Clone(TemplateDraft);
         if (existing >= 0) { copy.Revision = Workspace.Templates[existing].Revision + 1; Workspace.Templates[existing] = copy; }
         else { if (Workspace.Templates.Count >= 50) throw new InvalidOperationException("A workspace supports up to 50 checklists."); Workspace.Templates.Add(copy); }
-        TemplateDraft = FieldWorkRules.Clone(copy); SelectedTemplateId = copy.Id.ToString(); await Persist(); Message = "Checklist saved. Existing work orders keep their original checklist snapshot.";
+        TemplateDraft = FieldWorkRules.Clone(copy); SelectedTemplateId = copy.Id.ToString(); await Persist(); Message = "Checklist saved. Existing work orders keep their original checklist.";
     }, "save-checklist");
 
     /// <summary>Downloads the complete local workspace, including actual photo data, as a portable JSON project.</summary>
@@ -466,10 +466,10 @@
     /// <summary>Checks the exact metadata size and label before requesting server persistence.</summary>
     JsonElement CloudBody(bool create)
     {
-        if (string.IsNullOrWhiteSpace(CloudTitle) || CloudTitle.Length > 100) throw new InvalidOperationException("Use a cloud workspace label between 1 and 100 characters.");
+        if (string.IsNullOrWhiteSpace(CloudTitle) || CloudTitle.Length > 100) throw new InvalidOperationException("Use a shared project name between 1 and 100 characters.");
         var body = FieldWorkCloud.Metadata(Workspace); CloudPayloadSize = System.Text.Encoding.UTF8.GetByteCount(body.GetRawText());
         var limit = create || CloudRole == "owner" ? CloudAccount?.MaxBodyBytes ?? 65536 : 524288;
-        if (CloudPayloadSize > limit) throw new InvalidOperationException($"This metadata document is {CloudPayloadSize} bytes. The current limit is {limit} bytes; export the full local project or use a smaller workspace.");
+        if (CloudPayloadSize > limit) throw new InvalidOperationException($"This shared project is {CloudPayloadSize / 1024 + 1} KB; the limit is {limit / 1024} KB. Save a project file or reduce the number of orders.");
         return body;
     }
 
@@ -484,7 +484,7 @@
     /// <summary>Saves with the actual server revision; a conflict never triggers an automatic overwrite.</summary>
     Task SaveCloud() => Execute(async () =>
     {
-        if (!CanEditCloud || string.IsNullOrEmpty(CloudId)) throw new InvalidOperationException("Editor or owner access is required to save this server workspace.");
+        if (!CanEditCloud || string.IsNullOrEmpty(CloudId)) throw new InvalidOperationException("Only owners and editors can save changes to this shared project.");
         var response = await Api.PostAsync<FieldWorkCloudResponse>($"commerce/workspaces/{Uri.EscapeDataString(CloudId)}", new { revision = CloudRevision, title = CloudTitle.Trim(), body = CloudBody(false) });
         CloudRevision = response.Workspace.Revision; CloudRole = response.Workspace.Role; await LoadCloudList(); CloudMessage = $"Shared project saved · version {CloudRevision}.";
     }, "save-cloud");

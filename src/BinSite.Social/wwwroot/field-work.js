@@ -8,8 +8,8 @@ function database() {
         const request = indexedDB.open(databaseName, 1);
         request.onupgradeneeded = () => request.result.createObjectStore('projects');
         request.onsuccess = () => resolve(request.result);
-        request.onerror = () => { databasePromise = null; reject(new Error('IndexedDB could not be opened.')); };
-        request.onblocked = () => { databasePromise = null; reject(new Error('Another browser tab blocked the local database.')); };
+        request.onerror = () => { databasePromise = null; reject(new Error('Saved projects could not be opened.')); };
+        request.onblocked = () => { databasePromise = null; reject(new Error('Close other Field Work Pack tabs, then try again.')); };
     });
     return databasePromise;
 }
@@ -43,7 +43,7 @@ export async function saveProject(json) {
             const transaction = db.transaction('projects', 'readwrite');
             transaction.objectStore('projects').put(json, 'workspace');
             transaction.oncomplete = resolve;
-            transaction.onerror = transaction.onabort = () => reject(new Error('The project could not be committed to IndexedDB.'));
+            transaction.onerror = transaction.onabort = () => reject(new Error('The project could not be saved on this device.'));
         });
         try { localStorage.removeItem(fallbackKey); } catch { /* IndexedDB has already committed successfully. */ }
         return 'IndexedDB';
@@ -52,7 +52,7 @@ export async function saveProject(json) {
             localStorage.setItem(fallbackKey, json);
             if (localStorage.getItem(fallbackKey) !== json) throw new Error();
             return 'localStorage fallback';
-        } catch { throw new Error('Local storage is unavailable or full. Download project JSON before closing this page.'); }
+        } catch { throw new Error('Saving is unavailable or full. Save a project file before closing this page.'); }
     }
 }
 
@@ -123,20 +123,20 @@ export async function copyText(value) {
 
 export async function printReport(html) {
     const tab = window.open('', '_blank');
-    if (!tab) throw new Error('The browser blocked the report window. Download HTML and print that file instead.');
+    if (!tab) throw new Error('The report window was blocked. Save the report and open that file to print it.');
     tab.opener = null;
     tab.document.open(); tab.document.write(html); tab.document.close();
-    await Promise.all([...tab.document.images].map(image => image.decode().catch(() => { throw new Error('A report image could not be decoded. Download the HTML report to inspect it.'); })));
+    await Promise.all([...tab.document.images].map(image => image.decode().catch(() => { throw new Error('A report photo could not be opened. Save the report and inspect that file.'); })));
     tab.focus(); tab.print();
 }
 
 export async function prepareOffline() {
-    if (!('serviceWorker' in navigator) || !window.isSecureContext) throw new Error('Offline reopening requires HTTPS and service-worker support. The currently open local workflow still works without the network.');
+    if (!('serviceWorker' in navigator) || !window.isSecureContext) throw new Error('Offline reopening is unavailable in this browser. You can keep working while this page is open.');
     const registration = await navigator.serviceWorker.register('/field-work-sw.js', { scope: '/field-work-pack/' });
     const worker = registration.active || registration.waiting || registration.installing;
-    if (!worker) throw new Error('The offline worker was not created. Try again after the published app is available.');
+    if (!worker) throw new Error('Offline setup could not start. Reconnect, reload this page and try again.');
     if (worker.state !== 'activated') await new Promise((resolve, reject) => {
-        const changed = () => { if (worker.state === 'activated') resolve(); if (worker.state === 'redundant') reject(new Error('The offline worker could not activate.')); };
+        const changed = () => { if (worker.state === 'activated') resolve(); if (worker.state === 'redundant') reject(new Error('Offline setup failed. Reconnect, reload this page and try again.')); };
         worker.addEventListener('statechange', changed);
         changed();
     });
@@ -147,7 +147,7 @@ export async function prepareOffline() {
     }
     return new Promise((resolve, reject) => {
         const channel = new MessageChannel();
-        channel.port1.onmessage = event => event.data?.ok ? resolve(event.data.count) : reject(new Error(event.data?.error || 'Offline resources could not be cached.'));
+        channel.port1.onmessage = event => event.data?.ok ? resolve(event.data.count) : reject(new Error(event.data?.error || 'This page could not be saved for offline use.'));
         worker.postMessage({ type: 'prepare', urls: [...urls] }, [channel.port2]);
     });
 }

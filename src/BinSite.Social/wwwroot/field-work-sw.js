@@ -9,13 +9,13 @@ self.addEventListener('message', event => {
         try {
             const cache = await caches.open(cacheName);
             const urls = [...new Set(event.data.urls || [])].map(value => new URL(value, self.location.origin)).filter(allowed);
-            if (!requiredPaths.every(path => urls.some(url => url.pathname === path)) || !urls.some(url => url.pathname.startsWith('/_framework/') && url.pathname.endsWith('.wasm'))) throw new Error('Required app and runtime resources are not ready. Reload this app online before preparing offline reopening.');
+            if (!requiredPaths.every(path => urls.some(url => url.pathname === path)) || !urls.some(url => url.pathname.startsWith('/_framework/') && url.pathname.endsWith('.wasm'))) throw new Error('Reconnect and reload this page, then choose Make available offline.');
             for (const url of urls) {
                 const response = await fetch(new Request(url, { credentials: 'omit', cache: 'force-cache' }));
-                if (!response.ok || response.redirected) throw new Error('An application resource could not be cached. Prepare offline reopening after publication.');
+                if (!response.ok || response.redirected) throw new Error('This page could not be saved for offline use. Reconnect, reload it and try again.');
                 await cache.put(url, response);
             }
-            for (const url of urls) if (!await cache.match(url)) throw new Error('An application resource was not retained in the offline cache.');
+            for (const url of urls) if (!await cache.match(url)) throw new Error('Offline setup was incomplete. Reconnect, reload this page and try again.');
             event.ports[0].postMessage({ ok: true, count: urls.length });
         } catch (error) { event.ports[0].postMessage({ ok: false, error: error.message }); }
     })());
@@ -31,8 +31,8 @@ self.addEventListener('fetch', event => {
         } catch {
             const stored = await cache.match(event.request);
             if (stored) return stored;
-            if (new URL(event.request.url).pathname === '/field-work-pack/') return new Response('Offline app data is not cached. Reopen Field Work Pack online once and prepare offline reopening.', { status: 503, headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-            throw new Error('This application resource is not cached.');
+            if (new URL(event.request.url).pathname === '/field-work-pack/') return new Response('Reconnect and open Field Work Pack, then choose Make available offline.', { status: 503, headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
+            throw new Error('This page is not ready for offline use.');
         }
     })());
 });
