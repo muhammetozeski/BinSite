@@ -118,3 +118,19 @@ All paths below are under `src/BinSite.Social/`. Line ranges identify the source
 - Full-project files, all-seat/person CSV, calendars and print reports were retained as distinct outputs. Current conflict checks, valid locks, swaps, fixed-offset conversion, previous calendar-import behavior, fictional-example labels, snapshot limits and staff-acceptance limitations remain. No planner, assignment rule, server API or persistence algorithm was changed.
 
 The three edited browser scripts (`field-work.js`, `field-work-sw.js`, `shift-cover.js`) passed Node's module syntax check. This does not establish browser storage, image decoding, offline caching, printing, calendar import or account behavior. No shared C# build was started by this agent; the root agent coordinates the combined build. CSS and layout were preserved. No staging or publication was performed by this agent.
+
+## Signal Foundry page and board follow-up
+
+The current four assigned page/component files were read completely in tool output: `Pages/SignalFoundry.razor` (1–259), `Pages/SignalFoundry.razor.css` (its complete single line), `Pages/SignalFoundryBoard.razor` (1–26), and `Pages/SignalFoundryBoard.razor.css` (its complete single line), all under `src/BinSite.Social/`. Helpers, engine, exports and browser bridge were assigned to another agent and are not counted as this agent's reading. No automated keyword search was used.
+
+Only `Pages/SignalFoundry.razor` changed; the board component and both styles remain unchanged.
+
+- The empty-mission panel's "Build your own challenge" repeated the mode-navigation action. It was removed. Active mode, mission and example selectors no longer repeat the same selection; they could previously reset or hide the current play view unnecessarily.
+- Clear-board controls are disabled when already empty, copying the target is disabled when the boards already match, and spending an experiment is disabled for an empty stamp sequence. An empty final board remains a valid answer and can still be submitted.
+- Latest-attempt restore and mission-specific restore can target the same saved record. Their saved JSON is compared through the existing browser bridge. The mission-specific control is hidden only for the identical record; different older mission records and direct latest-attempt recovery remain available. Saving updates this equality state only after both existing writes complete.
+- "Supported alternatives are never falsely failed" was replaced with the actual puzzle consequence: several final boards fit, and experiments can narrow them down. Remaining "languages" are described as possible rule sets. Deduction versus an evidence-consistent alternative remains explained.
+- "Operation mapping is inherited and locked" now explains that a variation keeps the source's stamp rules. The source link, permission checks, rule-unlocking action, replacement undo and attribution remain. Opaque source IDs are no longer used as the visible link text.
+- "Author project opened after validation" and other making-of phrases were replaced with concise saved/opened/exported states. Preview is identified as not published. Project-file answer-key warnings, local notes persistence, attempt expiry, public-publishing consent, reuse permission and withdrawal consequences remain.
+- Report acknowledgment no longer promises a human review. The reuse checkbox resets publication confirmation when edited, matching other author-draft inputs.
+
+The board's row/column/color accessible labels, readable letter marks and dashed difference outlines were reviewed and preserved. These changes were reviewed from source; no browser interaction, network action or separate C# build was performed by this agent. The root agent coordinates compilation and publication.
