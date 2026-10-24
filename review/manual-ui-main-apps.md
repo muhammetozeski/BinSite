@@ -159,3 +159,13 @@ The remaining application pages and policy/guide sources were subsequently read 
 The coordinated tracked-source Release publication completed on 25 October 2026 with exit code 0. It included the reviewed application markup, services, browser bridges and the three independently checked Book Companion, Membership and Shared Canvas fixes. Unfinished untracked drafts were not part of the release source. Ten changed JavaScript modules/handlers also passed Node syntax checks, and the directory generator produced 75 entries.
 
 The independent follow-through for account-switch, drawing-save and comment-draft preservation is recorded in [manual-ui-integration-book-membership-canvas.md](manual-ui-integration-book-membership-canvas.md). These are source/build results; they are not evidence of paid checkout, live account mutations or native file-dialog interaction. Deployment evidence is appended only after the publication workflow succeeds.
+
+## Verified deployment
+
+Source commit `289fc7a30aee0907b43fd85c8707b9637bd3d42c` was published successfully by [workflow 40134036477](https://github.com/muhammetozeski/BinSite/actions/runs/40134036477). The workflow compiled the final tracked Razor source, built the directory, prepared advertising/appearance assets, checked product scripts and deployed the result.
+
+`Verify-Live.ps1 -Recheck -UpdateRegistry` reported: `Public catalog: 75; verified product paths: 75; newly checked: 75.` This proves HTTP delivery, document language, dark defaults and appearance dependencies, not every interaction.
+
+Read-only live browser observation after this deployment showed the shortened directory descriptions and single product-opening link in each card. Story Tree rendered its story-purpose heading, local example, two continuation choices and real published-story list. Interlock rendered its adventure choices; StageFold rendered its film editor and vector stage. The first observations of those applications showed their loading screens; subsequent observations showed the actual interfaces. No graphical input, account mutation or payment was performed.
+
+The four independent deployments and their individual evidence are recorded in [manual-ui-independent-projects.md](manual-ui-independent-projects.md). The page-by-page map is [manual-ui-index.md](manual-ui-index.md).
