@@ -1,17 +1,43 @@
 'use strict';
 (async function () {
   const adEligible = document.currentScript?.dataset.ads !== 'off';
-  let config;
-  try { const response = await fetch('/revenue-config.json'); if (!response.ok) return; config = await response.json(); }
-  catch { return; }
   const footer = document.createElement('aside');
   footer.setAttribute('aria-label', 'Site links');
   footer.style.cssText = 'clear:both;max-width:1100px;margin:32px auto 12px;padding:16px;border-top:1px solid #aaa6;font:14px/1.6 system-ui,sans-serif;position:static';
   const currentPath = location.pathname.replace(/\/+$/, '') || '/';
   const links = [['Account', '/uyelik/'], ['Privacy', '/privacy/'], ['Home', '/']].filter(([, href]) => (href.replace(/\/+$/, '') || '/') !== currentPath);
-  for (const [index, [title, href]] of links.entries()) { if (index) footer.append(document.createTextNode(' · ')); const link = document.createElement('a'); link.textContent = title; link.href = href; link.style.color = 'inherit'; footer.append(link); }
+  const navigation = document.createElement('nav');
+  navigation.setAttribute('aria-label', 'Site');
+  footer.append(navigation);
   document.body.append(footer);
+  let renderedLinks;
+  function updateLinks() {
+    const existing = new Set();
+    for (const anchor of document.querySelectorAll('header a[href], nav a[href], footer a[href]')) {
+      if (footer.contains(anchor) || anchor.closest('[hidden]') || !anchor.getClientRects().length) continue;
+      const target = new URL(anchor.href, location.href);
+      if (target.origin === location.origin) existing.add(target.pathname.replace(/\/+$/, '') || '/');
+    }
+    const needed = links.filter(([, href]) => !existing.has(href.replace(/\/+$/, '') || '/'));
+    const key = needed.map(([, href]) => href).join('|');
+    if (key === renderedLinks) return;
+    renderedLinks = key;
+    navigation.replaceChildren();
+    for (const [index, [title, href]] of needed.entries()) {
+      if (index) navigation.append(document.createTextNode(' · '));
+      const link = document.createElement('a'); link.textContent = title; link.href = href; link.style.color = 'inherit'; navigation.append(link);
+    }
+    navigation.hidden = !needed.length;
+  }
+  updateLinks();
+  // Application navigation can render after this shared script has loaded.
+  const observer = new MutationObserver(updateLinks);
+  observer.observe(document.body, { childList: true, subtree: true });
+  window.addEventListener('resize', updateLinks, { passive: true });
   if (!adEligible) return;
+  let config;
+  try { const response = await fetch('/revenue-config.json'); if (!response.ok) return; config = await response.json(); }
+  catch { return; }
   const ads = config.adSense;
   if (!ads?.enabled || !/^ca-pub-\d{16}$/.test(ads.client) || !/^\d{5,20}$/.test(ads.slot)) return;
   // Google Privacy & messaging must be configured before ADSENSE_CONSENT_READY is enabled.
