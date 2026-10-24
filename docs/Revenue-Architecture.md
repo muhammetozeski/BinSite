@@ -1,8 +1,8 @@
-# Membership revenue and private project vault
+# Membership revenue, private vault and collaborative workspaces
 
 ## Delivered value and boundaries
 
-The `creator-monthly` plan provides a private, server-side JSON project vault. A free member can create three projects; an active paid member can create one hundred. Each project can hold up to 65,536 UTF-8 bytes of JSON plus its title and kind. Existing projects remain readable, editable, and deletable after a downgrade; creating additional projects uses the member's current quota. Source code and public examples are not sold as private or exclusive content.
+The `creator-monthly` plan provides a private, server-side JSON project vault and collaborative workspaces. A free member can own three active items across both services; an active paid member can own one hundred. Vault files hold up to 65,536 UTF-8 bytes of JSON. Workspaces hold up to 65,536 bytes for free owners or 524,288 bytes for paid owners, with two or twenty invited collaborators and ten or one hundred stored revisions respectively. Existing items remain readable after a downgrade; new items, restores and workspace saves use the owner's current limits. Source code and public examples are not sold as private or exclusive content. See [Workspace contracts](Workspaces.md) before implementing a client.
 
 Stripe and Lemon Squeezy are alternative checkout adapters for the same entitlement. One valid provider subscription is sufficient. Refund or expiry in one provider does not remove another valid subscription. The default configured plan is USD 5 per month; `CREATOR_MONTHLY_CENTS` must match the actual provider price. No payment provider is available until all its required configuration is present. A success return URL never grants access.
 
@@ -35,7 +35,7 @@ Every response is JSON, uses `Cache-Control: no-store`, and has no cross-origin 
 | `POST webhooks/stripe` | Provider raw body and `Stripe-Signature` | `{received:true}`; duplicates add `duplicate:true` |
 | `POST webhooks/lemon` | Provider raw body and `X-Signature` | `{received:true}`; duplicates add `duplicate:true` |
 
-An anonymous status response includes `account:null`, the available-provider booleans, an empty project list, and the plan description. A signed-in account includes `id`, `premium`, `projectLimit`, `plan`, `expiresAt`, and a `subscriptions` array with provider, status, current entitlement, period end, and cancellation-at-period-end state. `providerModes` identifies test/live mode separately; `paymentMode` is a coarse compatibility field. A provider availability boolean indicates complete configuration, not a claimed successful checkout.
+An anonymous status response includes `account:null`, the available-provider booleans, an empty project list, and the plan description. A signed-in account includes `id`, `premium`, `projectLimit`, `usedProjects`, `plan`, `expiresAt`, and a `subscriptions` array with provider, status, current entitlement, period end, and cancellation-at-period-end state. `usedProjects` combines vault files and unarchived owned workspaces. `providerModes` identifies test/live mode separately; `paymentMode` is a coarse compatibility field. A provider availability boolean indicates complete configuration, not a claimed successful checkout.
 
 Example free-account status fields:
 
@@ -45,6 +45,7 @@ Example free-account status fields:
     "id": "d2306f87-7d9c-46c4-a82e-3abf4943e010",
     "premium": false,
     "projectLimit": 3,
+    "usedProjects": 0,
     "plan": "free",
     "expiresAt": null,
     "subscriptions": []
@@ -53,13 +54,13 @@ Example free-account status fields:
   "projects": [],
   "plans": [{
     "id": "creator-monthly",
-    "name": "Üretici Üyeliği",
-    "priceLabel": "5.00 USD / ay",
+    "name": "Creator Membership",
+    "priceLabel": "5.00 USD / month",
     "features": [
-      "100 özel bulut projesi",
-      "Her projede 64 KB JSON verisi",
-      "Cihazlar arasında kurtarma anahtarıyla erişim",
-      "Üyelik sona erse de mevcut projeleri okuma ve silme"
+      "100 private cloud projects and workspaces",
+      "64 KB vault files; up to 512 KB per collaborative workspace",
+      "Access across devices with your recovery key",
+      "Read and delete existing projects after membership ends"
     ]
   }],
   "configurationVersion": null,
@@ -68,7 +69,7 @@ Example free-account status fields:
 }
 ```
 
-Errors return `{error:"Turkish explanation",code:"stable_code"}` with HTTP 400, 401, 403, 404, 409, 413, 415, 429, 500, 502, or 503 as appropriate. Important interface codes are `authentication`, `project_limit`, `provider_unconfigured`, `already_subscribed`, `checkout_pending`, and `processing`. Recovery keys are returned once on account creation and are never returned by status or recovery.
+Errors return `{error:"English explanation",code:"stable_code"}` with HTTP 400, 401, 403, 404, 409, 413, 415, 429, 500, 502, or 503 as appropriate. Important interface codes are `authentication`, `project_limit`, `provider_unconfigured`, `already_subscribed`, `checkout_pending`, and `processing`. Recovery keys are returned once on account creation and are never returned by status or recovery.
 
 ## Authentication and storage
 
