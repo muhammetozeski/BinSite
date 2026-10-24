@@ -1,0 +1,24 @@
+[
+  {
+    "id": 97,
+    "name": "Client Review Room",
+    "slug": "review-room",
+    "category": "Workspace",
+    "stage": 7,
+    "runtime": "blazor",
+    "adEligible": false,
+    "description": "Review actual local image and video versions with precise comments, explicit decisions, side-by-side record comparison and portable delivery exports.",
+    "features": [
+      "Real local image/video selection and complete SHA-256 file identities",
+      "Normalized image markers and actual video-player timestamps",
+      "Per-version categorized open/resolved comments and blocking changes",
+      "Explicit ready, changes-requested, approved and delivered transitions",
+      "Two-version comment and decision comparison",
+      "Strict JSON save/restore and fingerprint-based media reconnection",
+      "Standalone HTML review report and formula-safe open-work CSV",
+      "Three original editorial two-version media packages generated locally",
+      "Optional real-account metadata-only workspace sync and viewer/editor invitations"
+    ],
+    "businessHypothesis": "A freelancer can use the local review and export workflow before inviting anyone. Repeated deliveries may create return use, while actual review reports or account-authorized invitations can introduce collaborators. Longer cloud history, larger metadata quotas and more collaborators can be tested as paid value; basic local review, data ownership and exports do not require a subscription. No audience or revenue outcome has been established."
+  }
+]
