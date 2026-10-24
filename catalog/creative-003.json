@@ -38,7 +38,7 @@
     "slug": "hareketli-yazi",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Animate layered text with transform and opacity keyframes.",
+    "description": "Animate text and download it as a playable page.",
     "features": [
       "Multiple text tracks",
       "Keyframe editing",
@@ -54,7 +54,7 @@
     "slug": "muzik-haritasi",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Turn a walk through spatial note nodes into a timed stereo composition.",
+    "description": "Arrange notes on a map and play a path through them.",
     "features": [
       "Editable note positions",
       "Live traversal recording",
@@ -70,7 +70,7 @@
     "slug": "golge-sahnesi",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Create a two-pose shadow play using light position and projected puppet depth.",
+    "description": "Move puppets and lights to create a shadow play.",
     "features": [
       "Four puppet types",
       "Ray-based shadow projection",
@@ -102,7 +102,7 @@
     "slug": "mikro-kitap",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Measure a manuscript into pages and produce a standalone illustrated mini book.",
+    "description": "Turn your writing into a small book to read or print.",
     "features": [
       "Text-metric pagination",
       "Cover and page editing",
@@ -135,7 +135,7 @@
     "slug": "sahne-akisi",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Rehearse sound, light, caption and blackout events on a cue timeline.",
+    "description": "Rehearse a sequence of lights, sounds and captions.",
     "features": [
       "Light transitions",
       "Synthesized sound events",

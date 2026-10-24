@@ -1,14 +1,15 @@
 'use strict';
 const search = document.querySelector('#search');
-const category = document.querySelector('#category');
 const products = [...document.querySelectorAll('.product')];
 function filter() {
-  const query = search.value.trim().toLocaleLowerCase('en-US');
-  for (const product of products) product.hidden = Boolean((query && !product.dataset.search.includes(query)) || (category.value && product.dataset.category !== category.value));
+  const terms = search.value.trim().toLocaleLowerCase('en-US').split(/\s+/).filter(Boolean);
+  for (const product of products) product.hidden = !terms.every(term => product.dataset.search.includes(term));
   const visible = products.filter(product => !product.hidden);
-  document.querySelector('#results').textContent = query || category.value ? `${visible.length} matches` : '';
+  document.querySelector('#results').textContent = terms.length && visible.length ? `${visible.length} ${visible.length === 1 ? 'match' : 'matches'}` : '';
   document.querySelector('#empty').hidden = visible.length > 0;
-  for (const section of document.querySelectorAll('[data-product-group]')) section.hidden = ![...section.querySelectorAll('.product')].some(product => !product.hidden);
+  for (const section of document.querySelectorAll('[data-product-group]')) {
+    section.hidden = ![...section.querySelectorAll('.product')].some(product => !product.hidden);
+    document.querySelector(`nav a[href="#${section.id}"]`).hidden = section.hidden;
+  }
 }
 search.addEventListener('input', filter);
-category.addEventListener('change', filter);

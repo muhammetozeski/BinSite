@@ -5,7 +5,7 @@
     "slug": "rota-ustasi",
     "category": "Games",
     "stage": 1,
-    "description": "Visit each city exactly once, then reach the final city using the shortest possible route.",
+    "description": "Find the shortest route through every city.",
     "features": [
       "Four sizes from 6 to 12 cities",
       "Solvable seeded and daily maps",
@@ -38,7 +38,7 @@
     "slug": "yanki-hafizasi",
     "category": "Games",
     "stage": 1,
-    "description": "Repeat a growing sequence of sounds, shapes, and colors, with an optional short-and-long rhythm challenge.",
+    "description": "Repeat the sounds and colors in the right order.",
     "features": [
       "Twenty increasingly long rounds",
       "Four locally synthesized notes",
@@ -56,7 +56,7 @@
     "slug": "fabrika-akisi",
     "category": "Games",
     "stage": 1,
-    "description": "Balance five production lines, real input consumption, timed jobs, sales, and expansion to manufacture twenty devices.",
+    "description": "Build and balance a factory to produce twenty devices.",
     "features": [
       "Five resources and five machine types",
       "Up to eight lines per type",
@@ -74,7 +74,7 @@
     "slug": "ikilem-tiyatrosu",
     "category": "Games",
     "stage": 1,
-    "description": "Decide the future of a neighborhood radio station through a storm, where earlier choices unlock later options and eight different endings.",
+    "description": "Keep a radio station alive through a storm. Your choices change the ending.",
     "features": [
       "Twelve authored decision scenes",
       "Six interacting state variables",

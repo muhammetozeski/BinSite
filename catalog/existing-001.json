@@ -5,7 +5,7 @@
     "slug": "gunluk-planlayici",
     "category": "Tools",
     "stage": 1,
-    "description": "Organize tasks by date and priority, keep notes in your browser, and make portable backups.",
+    "description": "Plan tasks by date and priority.",
     "features": [
       "Task creation, editing and filters",
       "Automatically saved notes",
@@ -19,7 +19,7 @@
     "slug": "tarif-defteri",
     "category": "Cooking",
     "stage": 1,
-    "description": "Build a menu from eight complete recipes, adjust the servings, and combine ingredients into one shopping list.",
+    "description": "Choose recipes, adjust servings and get one shopping list.",
     "features": [
       "Search by ingredient, meal and duration",
       "Serving-based ingredient calculations",

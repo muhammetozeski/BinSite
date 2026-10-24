@@ -5,7 +5,7 @@
     "slug": "rota-ustasi",
     "category": "Games",
     "stage": 1,
-    "description": "Visit each city exactly once, then reach the final city using the shortest possible route.",
+    "description": "Find the shortest route through every city.",
     "features": [
       "Four sizes from 6 to 12 cities",
       "Solvable seeded and daily maps",
@@ -38,7 +38,7 @@
     "slug": "yanki-hafizasi",
     "category": "Games",
     "stage": 1,
-    "description": "Repeat a growing sequence of sounds, shapes, and colors, with an optional short-and-long rhythm challenge.",
+    "description": "Repeat the sounds and colors in the right order.",
     "features": [
       "Twenty increasingly long rounds",
       "Four locally synthesized notes",
@@ -56,7 +56,7 @@
     "slug": "fabrika-akisi",
     "category": "Games",
     "stage": 1,
-    "description": "Balance five production lines, real input consumption, timed jobs, sales, and expansion to manufacture twenty devices.",
+    "description": "Build and balance a factory to produce twenty devices.",
     "features": [
       "Five resources and five machine types",
       "Up to eight lines per type",
@@ -74,7 +74,7 @@
     "slug": "ikilem-tiyatrosu",
     "category": "Games",
     "stage": 1,
-    "description": "Decide the future of a neighborhood radio station through a storm, where earlier choices unlock later options and eight different endings.",
+    "description": "Keep a radio station alive through a storm. Your choices change the ending.",
     "features": [
       "Twelve authored decision scenes",
       "Six interacting state variables",
@@ -92,7 +92,7 @@
     "slug": "cizgi-dongusu",
     "category": "Creative tools",
     "stage": 2,
-    "description": "A frame-by-frame pixel animation studio with editable frames, drawing tools and project files.",
+    "description": "Draw pixel art and animate it frame by frame.",
     "features": [
       "Up to 48 frames",
       "Pencil, eraser, fill and undo",
@@ -110,7 +110,7 @@
     "slug": "ritim-masasi",
     "category": "Creative tools",
     "stage": 2,
-    "description": "A six-instrument, sixteen-step synthesizer for creating and sharing rhythmic patterns.",
+    "description": "Make a beat by turning instrument steps on and off.",
     "features": [
       "Six synthesized instruments",
       "Live tempo and swing",
@@ -128,7 +128,7 @@
     "slug": "sonsuz-cizgi-roman",
     "category": "Creative tools",
     "stage": 2,
-    "description": "Create three to six vector comic panels with editable characters, scenes and dialogue.",
+    "description": "Create a comic with your own characters and dialogue.",
     "features": [
       "Four scenes",
       "Character colors and expressions",
@@ -146,7 +146,7 @@
     "slug": "kural-atolyesi",
     "category": "Creative tools",
     "stage": 2,
-    "description": "Explore cellular automata by changing birth, survival and boundary rules.",
+    "description": "Draw cells, change the rules and watch patterns grow.",
     "features": [
       "96 by 64 simulation field",
       "Custom neighbor rules",
@@ -165,7 +165,7 @@
     "slug": "gizli-harita",
     "category": "Creative tools",
     "stage": 2,
-    "description": "Build a sequence of escape rooms and send a playable adventure to a friend.",
+    "description": "Build escape-room puzzles for a friend to solve.",
     "features": [
       "One to six authored rooms",
       "Code, choice and ordering puzzles",
@@ -184,14 +184,12 @@
     "slug": "hikaye-agaci",
     "category": "Social",
     "stage": 3,
-    "description": "Write a story together. Add a different continuation, then let readers choose what happens next.",
+    "description": "Write a story together and choose what happens next.",
     "features": [
-      "C# Blazor interface",
-      "Persistent branching story graph",
-      "Shareable paragraph links",
-      "15 original editorial openings",
-      "English interface",
-      "Reporting and server limits"
+      "Write and branch stories",
+      "Links to individual paragraphs",
+      "Story starters",
+      "Report a story"
     ],
     "businessHypothesis": "A reader can publish a continuation and share a new entry point. Repeat writing and actual shared-link participation must be measured before assuming demand or revenue."
   },
@@ -203,11 +201,10 @@
     "stage": 3,
     "description": "Share two ideas and let people vote for their favorite.",
     "features": [
-      "Actual poll creation and voting",
-      "One vote per cookie identity",
-      "Server-computed results",
-      "15 original editorial suggestions",
-      "English interface and reporting"
+      "Publish two-choice questions",
+      "Vote and see results",
+      "Question ideas",
+      "Report a question"
     ],
     "businessHypothesis": "Creators may share duels to choose a future activity or idea. Repeat poll creation and incoming votes can indicate demand; advertising revenue remains unverified.",
     "directoryGroup": "games"
@@ -220,12 +217,10 @@
     "stage": 3,
     "description": "Write a letter that stays sealed until a date you choose, then share its link.",
     "features": [
-      "Server-clock content lock",
-      "Persistent capsule storage",
-      "Unlisted sharing links",
-      "Editorial writing prompts",
-      "English C# interface",
-      "Reporting controls"
+      "Letters that open on your chosen date",
+      "Letters shared by link",
+      "Writing ideas",
+      "Report a letter"
     ],
     "businessHypothesis": "Celebrations and group traditions could create return visits after opening. Link saving and actual return use must be observed; permanent storage and delivery services are not promised."
   },
@@ -235,7 +230,7 @@
     "slug": "gunluk-planlayici",
     "category": "Tools",
     "stage": 1,
-    "description": "Organize tasks by date and priority, keep notes in your browser, and make portable backups.",
+    "description": "Plan tasks by date and priority.",
     "features": [
       "Task creation, editing and filters",
       "Automatically saved notes",
@@ -249,7 +244,7 @@
     "slug": "tarif-defteri",
     "category": "Cooking",
     "stage": 1,
-    "description": "Build a menu from eight complete recipes, adjust the servings, and combine ingredients into one shopping list.",
+    "description": "Choose recipes, adjust servings and get one shopping list.",
     "features": [
       "Search by ingredient, meal and duration",
       "Serving-based ingredient calculations",
@@ -281,7 +276,7 @@
     "slug": "sesli-kartpostal",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Combine a personal message with a reproducible generated melody in a shareable card.",
+    "description": "Send a message with a melody you create.",
     "features": [
       "Seeded twelve-note melody",
       "Three musical moods",
@@ -297,7 +292,7 @@
     "slug": "isik-resmi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Accumulate moving light strokes into a long-exposure style drawing.",
+    "description": "Paint with glowing light trails.",
     "features": [
       "Additive light strokes",
       "Exposure and brush controls",
@@ -314,7 +309,7 @@
     "slug": "kaleydoskop",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Build editable radial patterns using rotations and mirrored source strokes.",
+    "description": "Turn your drawing into a mirrored pattern.",
     "features": [
       "Two to sixteen sectors",
       "Optional reflection",
@@ -331,7 +326,7 @@
     "slug": "zincir-fizik",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Draw ramps and release colliding balls to trigger a chain of new motion.",
+    "description": "Build ramps and set off a ball chain reaction.",
     "features": [
       "Editable ramp segments",
       "Gravity and ball collisions",
@@ -349,7 +344,7 @@
     "slug": "harf-afis",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Turn words into vector posters using stacked, curved and diagonal typography.",
+    "description": "Turn your words into a downloadable poster.",
     "features": [
       "Three text arrangements",
       "Font and letter-spacing controls",
@@ -364,7 +359,7 @@
     "slug": "doseme-ustasi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Paint and rotate motifs across square, triangular or hexagonal surface tiles.",
+    "description": "Create repeating tile patterns.",
     "features": [
       "Three tile geometries",
       "Individual tile colors",
@@ -381,7 +376,7 @@
     "slug": "yuruyen-avatar",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Animate a parameterized skeleton by interpolating between two editable poses.",
+    "description": "Pose a character and animate its movement.",
     "features": [
       "Four joint angles",
       "Bone-length controls",
@@ -398,7 +393,7 @@
     "slug": "dokuma-tezgahi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Design weaving patterns by choosing which threads pass over or under.",
+    "description": "Design a weave by changing how threads cross.",
     "features": [
       "Four weave algorithms",
       "Individual thread colors",
@@ -415,7 +410,7 @@
     "slug": "ritim-cemberi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Hear and compare independent subdivisions of one shared musical cycle.",
+    "description": "Combine different rhythms and hear them play together.",
     "features": [
       "Three independent pulse rings",
       "Audio-clock scheduling",
@@ -498,7 +493,7 @@
     "slug": "dugum-hikaye",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Author a branching story graph and let readers choose their path through it.",
+    "description": "Write a story where readers choose what happens next.",
     "features": [
       "Up to twenty story nodes",
       "Two choices per node",
@@ -515,7 +510,7 @@
     "slug": "sozcuk-bestesi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Write a three-line piece using twelve distinct words from a limited word bank.",
+    "description": "Build a three-line poem from a limited set of words.",
     "features": [
       "Three curated word banks",
       "Single-use word selection",
@@ -533,7 +528,7 @@
     "slug": "ruzgar-sanati",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Draw local vector fields that guide particles into evolving physical flow art.",
+    "description": "Draw wind paths and watch them shape moving trails.",
     "features": [
       "Editable wind arrows",
       "Movable particle source",
@@ -550,7 +545,7 @@
     "slug": "jest-fircasi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Record a gesture and reuse its shape as a brush stamped along a new path.",
+    "description": "Turn a small drawing into your own repeating brush.",
     "features": [
       "Custom gesture recording",
       "Direction-following stamps",
@@ -567,7 +562,7 @@
     "slug": "ses-manzarasi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Synthesize and mix wind, rain, wave and bell textures locally.",
+    "description": "Mix rain, wind, waves and bells into a soundscape.",
     "features": [
       "Four procedural sound layers",
       "Three starter mixes",
@@ -583,7 +578,7 @@
     "slug": "sifre-postasi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Turn a message into a playable letter-shift or dot/dash decoding puzzle.",
+    "description": "Turn a message into a code-breaking puzzle for a friend.",
     "features": [
       "Two encoding methods",
       "Interactive decoding wheel",
@@ -601,14 +596,12 @@
     "slug": "ortak-tuval",
     "category": "Social",
     "stage": 4,
-    "description": "Draw a pixel picture together. Add your changes without overwriting someone else's.",
+    "description": "Draw a pixel picture together.",
     "features": [
-      "Actual shared pixel canvas",
-      "Up to 32 changed cells per batch",
-      "Atomic revision conflict checks",
-      "12 colors and 8 group challenges",
-      "English C# Blazor interface",
-      "Reporting and request limits"
+      "Draw together",
+      "Choose colors and group challenges",
+      "Save your changes",
+      "Report a canvas"
     ],
     "businessHypothesis": "Groups may invite others to add to a picture. Repeat contributions and shared-link participation can test whether this becomes a recurring community activity."
   },
@@ -618,7 +611,7 @@
     "slug": "munazara-sahnesi",
     "category": "Social",
     "stage": 4,
-    "description": "Discuss propositions through reasoned arguments and linked counterarguments, reviewing clarity and evidence on separate axes.",
+    "description": "Discuss a question, reply to arguments and review the evidence.",
     "features": [
       "Persistent argument map",
       "Counterargument relationships",
@@ -652,7 +645,7 @@
     "slug": "ortak-muze",
     "category": "Social",
     "stage": 4,
-    "description": "Build themed exhibitions from short object stories, approve visitor submissions as curator and arrange a shared reading sequence.",
+    "description": "Create an exhibition of objects and the stories behind them.",
     "features": [
       "Actual themed collections",
       "Private pending submissions",
@@ -687,7 +680,7 @@
     "slug": "kutle-kacisi",
     "category": "Games",
     "stage": 5,
-    "description": "Rescue research capsules from a gravity well while managing momentum, rotation, speed, and limited thrust fuel.",
+    "description": "Pilot your ship, rescue capsules and escape the gravity well.",
     "features": [
       "Real-time inverse-square gravity",
       "Directional thrust and finite fuel",
@@ -704,7 +697,7 @@
     "slug": "sozcuk-adasi",
     "category": "Games",
     "stage": 5,
-    "description": "Trace English words through neighboring cells to claim territory and connect new areas to your existing island.",
+    "description": "Join neighboring letters into words to grow your island.",
     "features": [
       "Eight-by-eight adjacency board",
       "Eight distinct embedded English words per board",
@@ -721,7 +714,7 @@
     "slug": "sokak-orkestrasi",
     "category": "Games",
     "stage": 5,
-    "description": "Perform four instrument lanes on time while preserving band cohesion across three original sixteen-bar arrangements.",
+    "description": "Hit each note on time to keep your band playing.",
     "features": [
       "Drums, bass, guitar, and whistle lanes",
       "Three tempos and authored rhythmic patterns",
@@ -738,7 +731,7 @@
     "slug": "topoloji-bahcesi",
     "category": "Games",
     "stage": 5,
-    "description": "Untangle a graph by moving its nodes until no edges cross and no nodes overlap or lie on unrelated edges.",
+    "description": "Move the dots until the connecting lines no longer cross.",
     "features": [
       "Solvable 6-, 9-, and 12-node graphs",
       "Live intersection analysis",
@@ -756,7 +749,7 @@
     "slug": "paket-rotasi",
     "category": "Games",
     "stage": 5,
-    "description": "Manage two delivery vans, shared depot stock, cargo capacity, fuel, budgets, and customer time windows.",
+    "description": "Load your vans and plan deliveries before time runs out.",
     "features": [
       "Two independent vans and editable routes",
       "Two cargo types and three-package capacity",
@@ -774,7 +767,7 @@
     "slug": "isik-muhru",
     "category": "Games",
     "stage": 5,
-    "description": "Rotate mirrors to route red, green, and blue rays into the required combined target color.",
+    "description": "Turn mirrors to guide colored light into the target.",
     "features": [
       "Three authored verified optical layouts",
       "Two mirror orientations and blocking tiles",
@@ -790,7 +783,7 @@
     "slug": "zaman-cikmazi",
     "category": "Games",
     "stage": 5,
-    "description": "Record your actions as replaying ghosts that hold pressure plates and open gates for later versions of yourself.",
+    "description": "Record past versions of yourself to help open the way out.",
     "features": [
       "One-, two-, and three-ghost layouts",
       "Simultaneous replay of recorded paths",
@@ -807,7 +800,7 @@
     "slug": "davranis-dedektifi",
     "category": "Games",
     "stage": 5,
-    "description": "Choose experiments with colors, shapes, numbers, and patterns to identify a hidden rule within a limited test budget.",
+    "description": "Test examples and work out the hidden rule.",
     "features": [
       "Eight distinguishable hidden logic rules",
       "108 possible sample configurations",
@@ -824,7 +817,7 @@
     "slug": "ikiz-labirent",
     "category": "Games",
     "stage": 5,
-    "description": "Control two different mazes with mirrored horizontal movement and reach both exits on the same turn.",
+    "description": "Move two characters together and reach both exits at once.",
     "features": [
       "Two independently blocked maze boards",
       "One character may stop while the other moves",
@@ -840,7 +833,7 @@
     "slug": "deste-ekosistemi",
     "category": "Games",
     "stage": 5,
-    "description": "Choose policies over twelve seasons to balance interacting forest, water, wildlife, food, and pollution resources.",
+    "description": "Play policy cards to keep an ecosystem alive for twelve seasons.",
     "features": [
       "Twelve policy cards",
       "Six revealed weather events",
@@ -857,7 +850,7 @@
     "slug": "yanki-haritasi",
     "category": "Games",
     "stage": 5,
-    "description": "Explore a dark maze through temporary sonar pulses, recover three signal cores, and escape before oxygen runs out.",
+    "description": "Use sonar to explore a dark maze and find your way out.",
     "features": [
       "Connected seeded maze generation",
       "Temporary radius-based sonar visibility",
@@ -875,7 +868,7 @@
     "slug": "mini-turnuva",
     "category": "Social",
     "stage": 6,
-    "description": "Fill a real four- or eight-player elimination bracket. Only organizer-confirmed winners advance to the next match.",
+    "description": "Organize a knockout tournament and record match winners.",
     "features": [
       "Actual entry and capacity checks",
       "Server-shuffled initial pairings",
@@ -891,7 +884,7 @@
     "slug": "kitap-arkadasi",
     "category": "Social",
     "stage": 6,
-    "description": "Create a reading club around four original fictional stories, with chapter discussions and reader-reported progress.",
+    "description": "Read a short story with a group and discuss each chapter.",
     "features": [
       "4 original stories and 12 chapters",
       "Persistent reading clubs",
@@ -924,7 +917,7 @@
     "slug": "birlikte-bil",
     "category": "Social",
     "stage": 6,
-    "description": "Solve three generated questions asynchronously as a team, passing the flag to another member after each completed stage.",
+    "description": "Take turns solving questions with your team.",
     "features": [
       "Actual teams of 2–6 identities",
       "Three generated stages per room",
@@ -942,7 +935,7 @@
     "slug": "uretim-ortakligi",
     "category": "Social",
     "stage": 6,
-    "description": "Run a time-bounded creative jam through volunteer task claims, deliveries and owner approval or requests for revision.",
+    "description": "Create a group project, claim tasks and review finished work.",
     "features": [
       "Actual projects and volunteers",
       "Server-clock deadlines",
@@ -992,7 +985,7 @@
     "slug": "hareketli-yazi",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Animate layered text with transform and opacity keyframes.",
+    "description": "Animate text and download it as a playable page.",
     "features": [
       "Multiple text tracks",
       "Keyframe editing",
@@ -1008,7 +1001,7 @@
     "slug": "muzik-haritasi",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Turn a walk through spatial note nodes into a timed stereo composition.",
+    "description": "Arrange notes on a map and play a path through them.",
     "features": [
       "Editable note positions",
       "Live traversal recording",
@@ -1024,7 +1017,7 @@
     "slug": "golge-sahnesi",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Create a two-pose shadow play using light position and projected puppet depth.",
+    "description": "Move puppets and lights to create a shadow play.",
     "features": [
       "Four puppet types",
       "Ray-based shadow projection",
@@ -1056,7 +1049,7 @@
     "slug": "mikro-kitap",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Measure a manuscript into pages and produce a standalone illustrated mini book.",
+    "description": "Turn your writing into a small book to read or print.",
     "features": [
       "Text-metric pagination",
       "Cover and page editing",
@@ -1089,7 +1082,7 @@
     "slug": "sahne-akisi",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Rehearse sound, light, caption and blackout events on a cue timeline.",
+    "description": "Rehearse a sequence of lights, sounds and captions.",
     "features": [
       "Light transitions",
       "Synthesized sound events",
@@ -1180,7 +1173,7 @@
       "slug": "field-work-pack/guide",
       "title": "Evidence checklist and handoff walkthrough"
     },
-    "description": "Complete job checklists with measurements and photos, then download a handoff report.",
+    "description": "Finish job checklists with photos and measurements, then export a report.",
     "features": [
       "Eight editable administrative checklist examples",
       "Custom confirmation, measurement and photo fields",
@@ -1224,7 +1217,7 @@
     "stage": 8,
     "runtime": "blazor",
     "adEligible": false,
-    "description": "Build a staff schedule from availability and coverage needs, check shift swaps, and download individual calendars.",
+    "description": "Build a staff schedule, check swaps and download personal calendars.",
     "features": [
       "Editable roles, up to 60 people, 24 explicit availability windows per person, 120 shifts and 240 required seats",
       "One shared validator for skills, complete availability, project hours, single-shift duration, overlap and entered minimum rest",
@@ -1245,7 +1238,7 @@
     "stage": 8,
     "runtime": "blazor",
     "adEligible": true,
-    "description": "Infer an unfamiliar stamp language by choosing experiments, then reconstruct an unseen delivery. Play 24 original missions or publish a challenge that others can improve with attributed teaching forks.",
+    "description": "Experiment with mysterious symbols to decode a hidden language.",
     "features": [
       "24 original English missions with specific hints and post-finish explanations",
       "A deterministic eight-operation language with 1,680 possible stamp assignments",
@@ -1312,7 +1305,7 @@
     "stage": 8,
     "runtime": "blazor",
     "adEligible": false,
-    "description": "Check video links, get titles and thumbnails, and export a table or thumbnail sheet.",
+    "description": "Check video links and download their titles or thumbnail sheets.",
     "features": [
       "Public YouTube titles, channel names and thumbnails",
       "Checks up to twenty links with per-link results",

@@ -7,7 +7,7 @@
     "stage": 8,
     "runtime": "blazor",
     "adEligible": false,
-    "description": "Check video links, get titles and thumbnails, and export a table or thumbnail sheet.",
+    "description": "Check video links and download their titles or thumbnail sheets.",
     "features": [
       "Public YouTube titles, channel names and thumbnails",
       "Checks up to twenty links with per-link results",

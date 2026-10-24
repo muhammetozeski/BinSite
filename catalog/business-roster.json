@@ -7,7 +7,7 @@
     "stage": 8,
     "runtime": "blazor",
     "adEligible": false,
-    "description": "Build a staff schedule from availability and coverage needs, check shift swaps, and download individual calendars.",
+    "description": "Build a staff schedule, check swaps and download personal calendars.",
     "features": [
       "Editable roles, up to 60 people, 24 explicit availability windows per person, 120 shifts and 240 required seats",
       "One shared validator for skills, complete availability, project hours, single-shift duration, overlap and entered minimum rest",

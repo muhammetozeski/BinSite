@@ -37,18 +37,16 @@ const ordered = [...entries].sort((a, b) => {
 function cards(kind) {
   return ordered.filter(entry => group(entry) === kind).map(entry => {
     const href = escape(entry.url ? productUrl(entry) : `/${entry.slug}/`);
-    return `<article class="product" data-category="${escape(entry.category)}" data-search="${escape([entry.name, entry.description].join(' ').toLocaleLowerCase('en-US'))}"><h3><a href="${href}">${escape(entry.name)} <span aria-hidden="true">→</span></a></h3><p>${escape(entry.description)}</p>${entry.guide ? `<a class="guide" href="/${entry.guide.slug}/">Guide</a>` : ''}</article>`;
+    return `<article class="product" data-search="${escape([entry.name, entry.description].join(' ').toLocaleLowerCase('en-US'))}"><h3><a href="${href}">${escape(entry.name)} <span aria-hidden="true">→</span></a></h3><p>${escape(entry.description)}</p></article>`;
   }).join('\n');
 }
-const categories = [...new Set(entries.map(entry => entry.category))];
 await writeFile(path.join(root, 'public', 'index.html'), `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Edit media, create something, collaborate or play. Find a tool by what you want to do."><title>BinSite — Tools and games</title><link rel="stylesheet" href="/assets/catalog.css"></head><body>
-<header><span class="brand">BinSite</span><nav aria-label="Browse"><a href="#tools">Tools</a><a href="#games">Games</a></nav></header>
-<main><section class="intro"><h1>Tools &amp; games</h1></section>
-<section class="find" aria-label="Find a tool or game"><div><label for="search">Search</label><input id="search" type="search" placeholder="Video, audio, stories, puzzles"></div><div><label for="category">Category</label><select id="category"><option value="">All categories</option>${categories.map(category => `<option>${escape(category)}</option>`).join('')}</select></div></section>
+<header><h1 class="brand">BinSite</h1><nav aria-label="Browse"><a href="#tools">Tools</a><a href="#games">Games</a></nav></header>
+<main><div class="find"><label for="search">Find a tool or game</label><input id="search" type="search" placeholder="Search video, audio, stories, puzzles" autocomplete="off"></div>
 <p id="results" role="status" aria-live="polite"></p>
 <section id="tools" class="product-group" data-product-group><h2>Tools &amp; communities</h2><div class="projects">${cards('tools')}</div></section>
-<section id="games" class="product-group" data-product-group><h2>Games &amp; playful experiments</h2><div class="projects">${cards('games')}</div></section>
+<section id="games" class="product-group" data-product-group><h2>Games</h2><div class="projects">${cards('games')}</div></section>
 <p id="empty" hidden>No matches. Try another search.</p></main>
 <script src="/assets/catalog.js" defer></script></body></html>\n`);
 const sitemapPaths = entries.filter(entry => !entry.url).flatMap(entry => entry.guide ? [entry.slug, entry.guide.slug] : [entry.slug]);

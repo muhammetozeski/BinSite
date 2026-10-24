@@ -5,14 +5,12 @@
     "slug": "hikaye-agaci",
     "category": "Social",
     "stage": 3,
-    "description": "Write a story together. Add a different continuation, then let readers choose what happens next.",
+    "description": "Write a story together and choose what happens next.",
     "features": [
-      "C# Blazor interface",
-      "Persistent branching story graph",
-      "Shareable paragraph links",
-      "15 original editorial openings",
-      "English interface",
-      "Reporting and server limits"
+      "Write and branch stories",
+      "Links to individual paragraphs",
+      "Story starters",
+      "Report a story"
     ],
     "businessHypothesis": "A reader can publish a continuation and share a new entry point. Repeat writing and actual shared-link participation must be measured before assuming demand or revenue."
   },
@@ -24,11 +22,10 @@
     "stage": 3,
     "description": "Share two ideas and let people vote for their favorite.",
     "features": [
-      "Actual poll creation and voting",
-      "One vote per cookie identity",
-      "Server-computed results",
-      "15 original editorial suggestions",
-      "English interface and reporting"
+      "Publish two-choice questions",
+      "Vote and see results",
+      "Question ideas",
+      "Report a question"
     ],
     "businessHypothesis": "Creators may share duels to choose a future activity or idea. Repeat poll creation and incoming votes can indicate demand; advertising revenue remains unverified.",
     "directoryGroup": "games"
@@ -41,12 +38,10 @@
     "stage": 3,
     "description": "Write a letter that stays sealed until a date you choose, then share its link.",
     "features": [
-      "Server-clock content lock",
-      "Persistent capsule storage",
-      "Unlisted sharing links",
-      "Editorial writing prompts",
-      "English C# interface",
-      "Reporting controls"
+      "Letters that open on your chosen date",
+      "Letters shared by link",
+      "Writing ideas",
+      "Report a letter"
     ],
     "businessHypothesis": "Celebrations and group traditions could create return visits after opening. Link saving and actual return use must be observed; permanent storage and delivery services are not promised."
   }

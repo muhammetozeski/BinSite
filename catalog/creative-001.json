@@ -5,7 +5,7 @@
     "slug": "cizgi-dongusu",
     "category": "Creative tools",
     "stage": 2,
-    "description": "A frame-by-frame pixel animation studio with editable frames, drawing tools and project files.",
+    "description": "Draw pixel art and animate it frame by frame.",
     "features": [
       "Up to 48 frames",
       "Pencil, eraser, fill and undo",
@@ -23,7 +23,7 @@
     "slug": "ritim-masasi",
     "category": "Creative tools",
     "stage": 2,
-    "description": "A six-instrument, sixteen-step synthesizer for creating and sharing rhythmic patterns.",
+    "description": "Make a beat by turning instrument steps on and off.",
     "features": [
       "Six synthesized instruments",
       "Live tempo and swing",
@@ -41,7 +41,7 @@
     "slug": "sonsuz-cizgi-roman",
     "category": "Creative tools",
     "stage": 2,
-    "description": "Create three to six vector comic panels with editable characters, scenes and dialogue.",
+    "description": "Create a comic with your own characters and dialogue.",
     "features": [
       "Four scenes",
       "Character colors and expressions",
@@ -59,7 +59,7 @@
     "slug": "kural-atolyesi",
     "category": "Creative tools",
     "stage": 2,
-    "description": "Explore cellular automata by changing birth, survival and boundary rules.",
+    "description": "Draw cells, change the rules and watch patterns grow.",
     "features": [
       "96 by 64 simulation field",
       "Custom neighbor rules",
@@ -78,7 +78,7 @@
     "slug": "gizli-harita",
     "category": "Creative tools",
     "stage": 2,
-    "description": "Build a sequence of escape rooms and send a playable adventure to a friend.",
+    "description": "Build escape-room puzzles for a friend to solve.",
     "features": [
       "One to six authored rooms",
       "Code, choice and ordering puzzles",

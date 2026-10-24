@@ -5,14 +5,12 @@
     "slug": "ortak-tuval",
     "category": "Social",
     "stage": 4,
-    "description": "Draw a pixel picture together. Add your changes without overwriting someone else's.",
+    "description": "Draw a pixel picture together.",
     "features": [
-      "Actual shared pixel canvas",
-      "Up to 32 changed cells per batch",
-      "Atomic revision conflict checks",
-      "12 colors and 8 group challenges",
-      "English C# Blazor interface",
-      "Reporting and request limits"
+      "Draw together",
+      "Choose colors and group challenges",
+      "Save your changes",
+      "Report a canvas"
     ],
     "businessHypothesis": "Groups may invite others to add to a picture. Repeat contributions and shared-link participation can test whether this becomes a recurring community activity."
   },
@@ -22,7 +20,7 @@
     "slug": "munazara-sahnesi",
     "category": "Social",
     "stage": 4,
-    "description": "Discuss propositions through reasoned arguments and linked counterarguments, reviewing clarity and evidence on separate axes.",
+    "description": "Discuss a question, reply to arguments and review the evidence.",
     "features": [
       "Persistent argument map",
       "Counterargument relationships",
@@ -56,7 +54,7 @@
     "slug": "ortak-muze",
     "category": "Social",
     "stage": 4,
-    "description": "Build themed exhibitions from short object stories, approve visitor submissions as curator and arrange a shared reading sequence.",
+    "description": "Create an exhibition of objects and the stories behind them.",
     "features": [
       "Actual themed collections",
       "Private pending submissions",

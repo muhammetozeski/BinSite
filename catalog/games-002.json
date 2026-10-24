@@ -5,7 +5,7 @@
     "slug": "kutle-kacisi",
     "category": "Games",
     "stage": 5,
-    "description": "Rescue research capsules from a gravity well while managing momentum, rotation, speed, and limited thrust fuel.",
+    "description": "Pilot your ship, rescue capsules and escape the gravity well.",
     "features": [
       "Real-time inverse-square gravity",
       "Directional thrust and finite fuel",
@@ -22,7 +22,7 @@
     "slug": "sozcuk-adasi",
     "category": "Games",
     "stage": 5,
-    "description": "Trace English words through neighboring cells to claim territory and connect new areas to your existing island.",
+    "description": "Join neighboring letters into words to grow your island.",
     "features": [
       "Eight-by-eight adjacency board",
       "Eight distinct embedded English words per board",
@@ -39,7 +39,7 @@
     "slug": "sokak-orkestrasi",
     "category": "Games",
     "stage": 5,
-    "description": "Perform four instrument lanes on time while preserving band cohesion across three original sixteen-bar arrangements.",
+    "description": "Hit each note on time to keep your band playing.",
     "features": [
       "Drums, bass, guitar, and whistle lanes",
       "Three tempos and authored rhythmic patterns",
@@ -56,7 +56,7 @@
     "slug": "topoloji-bahcesi",
     "category": "Games",
     "stage": 5,
-    "description": "Untangle a graph by moving its nodes until no edges cross and no nodes overlap or lie on unrelated edges.",
+    "description": "Move the dots until the connecting lines no longer cross.",
     "features": [
       "Solvable 6-, 9-, and 12-node graphs",
       "Live intersection analysis",
@@ -74,7 +74,7 @@
     "slug": "paket-rotasi",
     "category": "Games",
     "stage": 5,
-    "description": "Manage two delivery vans, shared depot stock, cargo capacity, fuel, budgets, and customer time windows.",
+    "description": "Load your vans and plan deliveries before time runs out.",
     "features": [
       "Two independent vans and editable routes",
       "Two cargo types and three-package capacity",
@@ -92,7 +92,7 @@
     "slug": "isik-muhru",
     "category": "Games",
     "stage": 5,
-    "description": "Rotate mirrors to route red, green, and blue rays into the required combined target color.",
+    "description": "Turn mirrors to guide colored light into the target.",
     "features": [
       "Three authored verified optical layouts",
       "Two mirror orientations and blocking tiles",
@@ -108,7 +108,7 @@
     "slug": "zaman-cikmazi",
     "category": "Games",
     "stage": 5,
-    "description": "Record your actions as replaying ghosts that hold pressure plates and open gates for later versions of yourself.",
+    "description": "Record past versions of yourself to help open the way out.",
     "features": [
       "One-, two-, and three-ghost layouts",
       "Simultaneous replay of recorded paths",
@@ -125,7 +125,7 @@
     "slug": "davranis-dedektifi",
     "category": "Games",
     "stage": 5,
-    "description": "Choose experiments with colors, shapes, numbers, and patterns to identify a hidden rule within a limited test budget.",
+    "description": "Test examples and work out the hidden rule.",
     "features": [
       "Eight distinguishable hidden logic rules",
       "108 possible sample configurations",
@@ -142,7 +142,7 @@
     "slug": "ikiz-labirent",
     "category": "Games",
     "stage": 5,
-    "description": "Control two different mazes with mirrored horizontal movement and reach both exits on the same turn.",
+    "description": "Move two characters together and reach both exits at once.",
     "features": [
       "Two independently blocked maze boards",
       "One character may stop while the other moves",
@@ -158,7 +158,7 @@
     "slug": "deste-ekosistemi",
     "category": "Games",
     "stage": 5,
-    "description": "Choose policies over twelve seasons to balance interacting forest, water, wildlife, food, and pollution resources.",
+    "description": "Play policy cards to keep an ecosystem alive for twelve seasons.",
     "features": [
       "Twelve policy cards",
       "Six revealed weather events",
@@ -175,7 +175,7 @@
     "slug": "yanki-haritasi",
     "category": "Games",
     "stage": 5,
-    "description": "Explore a dark maze through temporary sonar pulses, recover three signal cores, and escape before oxygen runs out.",
+    "description": "Use sonar to explore a dark maze and find your way out.",
     "features": [
       "Connected seeded maze generation",
       "Temporary radius-based sonar visibility",

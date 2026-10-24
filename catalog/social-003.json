@@ -5,7 +5,7 @@
     "slug": "mini-turnuva",
     "category": "Social",
     "stage": 6,
-    "description": "Fill a real four- or eight-player elimination bracket. Only organizer-confirmed winners advance to the next match.",
+    "description": "Organize a knockout tournament and record match winners.",
     "features": [
       "Actual entry and capacity checks",
       "Server-shuffled initial pairings",
@@ -21,7 +21,7 @@
     "slug": "kitap-arkadasi",
     "category": "Social",
     "stage": 6,
-    "description": "Create a reading club around four original fictional stories, with chapter discussions and reader-reported progress.",
+    "description": "Read a short story with a group and discuss each chapter.",
     "features": [
       "4 original stories and 12 chapters",
       "Persistent reading clubs",
@@ -54,7 +54,7 @@
     "slug": "birlikte-bil",
     "category": "Social",
     "stage": 6,
-    "description": "Solve three generated questions asynchronously as a team, passing the flag to another member after each completed stage.",
+    "description": "Take turns solving questions with your team.",
     "features": [
       "Actual teams of 2–6 identities",
       "Three generated stages per room",
@@ -72,7 +72,7 @@
     "slug": "uretim-ortakligi",
     "category": "Social",
     "stage": 6,
-    "description": "Run a time-bounded creative jam through volunteer task claims, deliveries and owner approval or requests for revision.",
+    "description": "Create a group project, claim tasks and review finished work.",
     "features": [
       "Actual projects and volunteers",
       "Server-clock deadlines",
