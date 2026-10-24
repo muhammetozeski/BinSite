@@ -101,7 +101,7 @@
   function installControl() {
     if(!document.body)return;
     if(!control){control=document.createElement('span');control.setAttribute('data-bs-appearance-controls','');const button=document.createElement('button');button.type='button';button.addEventListener('click',()=>setTheme(theme==='dark'?'light':'dark'));control.append(button);}
-    const destination=document.querySelector('aside[aria-label="Account, advertising and privacy"]')||document.body;
+    const destination=document.querySelector('aside[aria-label="Site links"],aside[aria-label="Account, advertising and privacy"]')||document.body;
     if(control.parentElement!==destination)destination.append(control);
     const button=control.firstElementChild;button.textContent=theme==='dark'?'Light theme':'Dark theme';button.setAttribute('aria-label',theme==='dark'?'Switch to light theme':'Switch to dark theme');
   }
@@ -111,7 +111,7 @@
     if(!scheduled){scheduled=true;requestAnimationFrame(flush);}
   }
   const observer=new MutationObserver(mutations=>{for(const mutation of mutations){if(mutation.type==='childList'){for(const node of mutation.addedNodes)queue(node);if(mutation.removedNodes.length)queue(mutation.target);}else queue(mutation.target);}});
-  function observe(){observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','style','hidden','open','data-bs-theme']});}
+  function observe(){observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['class','style','hidden','open','disabled','aria-disabled','data-bs-theme']});}
   function flush() {
     scheduled=false;if(processing)return;processing=true;observer.disconnect();
     try{
