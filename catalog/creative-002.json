@@ -243,5 +243,90 @@
       "Dosya indirme ve yerel kayıt"
     ],
     "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 31,
+    "name": "Sözcük Bestesi",
+    "slug": "sozcuk-bestesi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Yalnız eldeki sözcükleri kullanarak 12 farklı sözcük ve üç satırlık bir metin kurma oyunu.",
+    "features": [
+      "Üç editoryal kelime dünyası",
+      "Tek kullanımlık sözcük havuzu",
+      "Satır ve sözcük kısıtı doğrulama",
+      "Örnek beste",
+      "Tam içerikli bağlantı",
+      "Metin indirme"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+  },
+  {
+    "id": 32,
+    "name": "Rüzgâr Sanatı",
+    "slug": "ruzgar-sanati",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Çizilen yerel kuvvet alanlarının parçacıkları etkileyerek oluşturduğu fiziksel akış sanatı.",
+    "features": [
+      "Rüzgâr oku çizme",
+      "Parçacık kaynağını taşıma",
+      "Yerçekimi ve sürüklenme",
+      "İz kalıcılığı ve renk",
+      "PNG indirme",
+      "Kuvvet alanı bağlantısı"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+  },
+  {
+    "id": 33,
+    "name": "Jest Fırçası",
+    "slug": "jest-fircasi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Kaydedilen bir el hareketini yol boyunca tekrarlanan özel fırçaya dönüştürür.",
+    "features": [
+      "Yeni jest kaydetme",
+      "Yön boyunca damga döndürme",
+      "Boyut ve mesafe ayarı",
+      "Eski jestleri koruma",
+      "PNG indirme",
+      "Doğrulanan proje dosyaları",
+      "Yaprak yolu örneği"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+  },
+  {
+    "id": 34,
+    "name": "Ses Manzarası",
+    "slug": "ses-manzarasi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Rüzgâr, yağmur, dalga ve uzak çan dokularını tarayıcıda sentezleyip canlı karıştırır.",
+    "features": [
+      "Dört prosedürel ses katmanı",
+      "Üç başlangıç manzarası",
+      "Katman başına düzey",
+      "Süreli yumuşak kapanma",
+      "Karışım bağlantısı"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+  },
+  {
+    "id": 35,
+    "name": "Şifre Postası",
+    "slug": "sifre-postasi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Bir cümleyi harf kaydırmalı veya nokta/çizgi kodlu oynanabilir bulmacaya çevirir.",
+    "features": [
+      "İki gerçek kod dönüşümü",
+      "Çözme çemberi ve kod alfabesi",
+      "Özgün örnek görevler",
+      "Çözüm denetimi ve gerçek deneme/süre",
+      "Asıl metni eklemeyen oyuncu URL’si",
+      "Şifreli metin indirme"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
   }
 ]
