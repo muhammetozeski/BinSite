@@ -1,0 +1,35 @@
+@page "/mini-turnuva/"
+@inherits CollaborationComponent
+<PageTitle>@T("Mini Turnuva — Sonuçları gerçek eleme ağacında yönet", "Mini Tournament — Manage a real elimination bracket")</PageTitle>
+<div class="tournament-page"><header><div class="topline"><span>@T("KATIL · EŞLEŞ · ONAYLA", "JOIN · MATCH · CONFIRM")</span><LanguageSwitch /></div><h1>@T("Mini Turnuva", "Mini Tournament")</h1><p>@T("4 veya 8 kişilik bir eleme ağacı kur. Katılımcılar kendi takma adlarıyla katılır; organizatör sonuçları onaylar, kazananlar bir sonraki tura sunucuda taşınır.","Create a four- or eight-player bracket. Participants join with their own handles; the organizer confirms results and the server advances winners.")</p></header>
+@if(Status.Length>0){<p class="status" role="status">@Status</p>}
+<main><aside><h2>@T("Turnuvalar", "Tournaments")</h2><form @onsubmit="CreateAsync" @onsubmit:preventDefault><label>@T("Turnuva adı", "Tournament title")<input @bind="Title" required minlength="4" maxlength="140"></label><label>@T("Katılımcı sayısı", "Capacity")<select @bind="Capacity"><option value="4">4</option><option value="8">8</option></select></label><button disabled="@Busy" type="submit">@T("Turnuvayı oluştur", "Create tournament")</button></form><button class="quiet" disabled="@Busy" @onclick="ListAsync">@T("Listeyi yenile", "Refresh list")</button>@foreach(var item in Items){<button class="listing" disabled="@Busy" @onclick="()=>OpenAsync(item.Id)">@item.Title</button>}<details><summary>@T("Turnuva düzenleme rehberi", "Organizer guide")</summary><p>@T("Oyun veya etkinlik kurallarını katılımcılarla önceden kararlaştır. Bu site oyunun kendisini veya hakemliği yapmaz; eşleşmeleri ve organizatörün onayladığı sonuçları saklar. Katılım dolmadan eleme başlatılmaz.","Agree on game rules with participants first. This product stores pairings and organizer-confirmed results; it does not play or referee the activity. Elimination begins only when the roster is full.")</p></details></aside><section>
+@if(Current is null){<div class="empty"><h2>@T("İlk eşleşme için bir turnuva seç.","Choose a tournament for the first matchup.")</h2><p>@T("Sahte oyuncu yok; bağlantıyı paylaşarak gerçek katılımcıları davet et.","No fabricated players: share the link to invite actual participants.")</p></div>}
+else{<h2>@Current.Title</h2><p>@Current.State.Members.Count / @Current.State.Capacity @T("katılımcı", "participants") · @StateLabel()</p><div class="toolbar"><button class="quiet" disabled="@Busy" @onclick="ReloadAsync">@T("Yenile", "Refresh")</button><button class="quiet" @onclick="()=>CopyAsync(SpaceLink(Kind,Current.Id))">@T("Davet bağlantısı", "Invite link")</button></div>@if(CopyFallback is not null){<input readonly value="@CopyFallback">}@if(Current.State.Status=="open"&&Current.MemberId is null){<form @onsubmit="JoinAsync" @onsubmit:preventDefault><label>@T("Takma adın", "Your handle")<input @bind="Name" required minlength="2" maxlength="24"></label><button disabled="@Busy" type="submit">@T("Turnuvaya katıl", "Join tournament")</button></form>}<div class="roster">@foreach(var participant in Current.State.Members){<span>@participant.Name</span>}</div>@if(Current.Mine==1&&Current.State.Status=="open"){<button disabled="@(Busy||Current.State.Members.Count!=Current.State.Capacity)" @onclick="StartAsync">@T("Katılımı kapat ve eleme ağacını oluştur", "Close entry and build bracket")</button>}
+<div class="bracket">@foreach(var round in Current.State.Matches.GroupBy(item=>item.Round)){<section class="round"><h3>@T("Tur", "Round") @(round.Key+1)</h3>@foreach(var match in round){<article class="match"><p class="@(match.Winner==match.A&&match.A is not null?"winner":"")">@Handle(Current.State.Members,match.A)</p><span>vs</span><p class="@(match.Winner==match.B&&match.B is not null?"winner":"")">@Handle(Current.State.Members,match.B)</p>@if(Current.Mine==1&&match.A is not null&&match.B is not null&&match.Winner is null){<div class="result-actions"><button disabled="@Busy" @onclick="()=>ConfirmAsync(match.Id,match.A)">@T("Üstteki kazandı", "Top participant won")</button><button disabled="@Busy" @onclick="()=>ConfirmAsync(match.Id,match.B)">@T("Alttaki kazandı", "Bottom participant won")</button></div>}</article>}</section>}</div>@if(Current.State.Champion is not null){<h2 class="champion">@T("Şampiyon:", "Champion:") @Handle(Current.State.Members,Current.State.Champion)</h2>}<ReportBox Kind="@Kind" TargetId="@Current.Id" Endpoint="collaboration/reports" />}
+</section></main><footer><CollaborationRules /></footer></div>
+@code{
+ const string Kind="mini-turnuva";[SupplyParameterFromQuery(Name="alan")]public string? Area{get;set;}Space<TournamentState>? Current;List<SpaceItem> Items=[];string Title="",Name="";int Capacity=4;
+ /// <summary>Reads actual tournaments and an optional shared bracket.</summary>
+ protected override Task OnParametersSetAsync()=>ExecuteAsync(async()=>{await LoadListAsync();if(Area is not null)await LoadAsync(Area);});
+ /// <summary>Retrieves tournament headers.</summary>
+ async Task LoadListAsync()=>Items=(await DirectoryAsync(Kind)).Items;
+ /// <summary>Refreshes directory state.</summary>
+ Task ListAsync()=>ExecuteAsync(LoadListAsync);
+ /// <summary>Reads an authorized public bracket and updates its share address.</summary>
+ async Task LoadAsync(string id){Current=await ReadSpaceAsync<TournamentState>(Kind,id);await RememberAsync(Kind,id);}
+ /// <summary>Opens a selected tournament.</summary>
+ Task OpenAsync(string id)=>ExecuteAsync(()=>LoadAsync(id));
+ /// <summary>Refreshes current pairing and confirmation state.</summary>
+ Task ReloadAsync()=>Current is null?Task.CompletedTask:OpenAsync(Current.Id);
+ /// <summary>Creates an empty four- or eight-person tournament.</summary>
+ Task CreateAsync()=>ExecuteAsync(async()=>{Current=await CreateSpaceAsync<TournamentState>(Kind,new{title=Title,capacity=Capacity});await RememberAsync(Kind,Current.Id);Title="";await LoadListAsync();});
+ /// <summary>Registers this browser identity exactly once while entry is open.</summary>
+ Task JoinAsync()=>ExecuteAsync(async()=>{if(Current is not null)Current=await ActionAsync(Kind,Current,"join",new{name=Name});});
+ /// <summary>Starts an organizer-authorized bracket only after the roster is full.</summary>
+ Task StartAsync()=>ExecuteAsync(async()=>{if(Current is not null)Current=await ActionAsync(Kind,Current,"start",new{});});
+ /// <summary>Confirms one pending match and lets the server advance only its actual winner.</summary>
+ Task ConfirmAsync(string matchId,string winner)=>ExecuteAsync(async()=>{if(Current is not null)Current=await ActionAsync(Kind,Current,"confirm",new{matchId,winner});});
+ /// <summary>Translates tournament lifecycle state.</summary>
+ string StateLabel()=>Current?.State.Status switch{"open"=>T("Katılım açık", "Entry open"),"live"=>T("Eleme başladı", "Bracket live"),_=>T("Tamamlandı", "Finished")};
+}
