@@ -55,7 +55,7 @@ async function bodyJson(request) {
 function providers(env) { return { stripe: !!(env.STRIPE_SECRET_KEY && env.STRIPE_PRICE_ID && env.STRIPE_WEBHOOK_SECRET && env.STRIPE_PORTAL_CONFIGURATION_ID), lemon: !!(env.LEMON_API_KEY && env.LEMON_STORE_ID && env.LEMON_VARIANT_ID && env.LEMON_WEBHOOK_SECRET) }; }
 function planInfo(env) {
   const amount = Number(env.CREATOR_MONTHLY_CENTS || 500);
-  return { id: PLAN, name: 'Creator Membership', priceLabel: `${(amount / 100).toFixed(2)} USD / month`, features: ['100 private cloud projects', '64 KB of JSON data per project', 'Access across devices with your recovery key', 'Read and delete existing projects after membership ends'] };
+  return { id: PLAN, name: 'Creator Membership', priceLabel: `${(amount / 100).toFixed(2)} USD / month`, features: ['100 private cloud projects and workspaces', '64 KB vault files; up to 512 KB per collaborative workspace', 'Access across devices with your recovery key', 'Read and delete existing projects after membership ends'] };
 }
 async function limit(db, ip, action, maximum, seconds = 60) {
   const now = Date.now(), bucket = Math.floor(now / (seconds * 1000));
@@ -73,7 +73,8 @@ async function accountStatus(db, member) {
   if (!member) return null;
   const subscriptions = await db.prepare('SELECT provider, status, premium, expires_at AS expiresAt, cancel_at_period_end AS cancelAtPeriodEnd FROM commerce_subscriptions WHERE member_id = ? ORDER BY expires_at DESC').bind(member.id).all();
   const active = subscriptions.results.filter(row => row.premium === 1 && row.expiresAt > Date.now());
-  return { id: member.id, premium: active.length > 0, projectLimit: active.length ? 100 : 3, plan: active.length ? PLAN : 'free', expiresAt: active.length ? Math.max(...active.map(row => row.expiresAt)) : null, subscriptions: subscriptions.results.map(row => ({ ...row, premium: row.premium === 1 && row.expiresAt > Date.now(), cancelAtPeriodEnd: row.cancelAtPeriodEnd === 1 })) };
+  const usage = await db.prepare('SELECT (SELECT COUNT(*) FROM commerce_projects WHERE member_id=?) + (SELECT COUNT(*) FROM commerce_workspaces WHERE owner_id=? AND archived_at IS NULL) AS usedProjects').bind(member.id,member.id).first();
+  return { id: member.id, premium: active.length > 0, projectLimit: active.length ? 100 : 3, usedProjects: usage.usedProjects, plan: active.length ? PLAN : 'free', expiresAt: active.length ? Math.max(...active.map(row => row.expiresAt)) : null, subscriptions: subscriptions.results.map(row => ({ ...row, premium: row.premium === 1 && row.expiresAt > Date.now(), cancelAtPeriodEnd: row.cancelAtPeriodEnd === 1 })) };
 }
 async function startSession(db, memberId, recovery = false) {
   const token = randomToken(), now = Date.now(), statement = db.prepare('INSERT INTO commerce_sessions (session_hash, member_id, created_at, expires_at) VALUES (?, ?, ?, ?)').bind(await hash(token), memberId, now, now + SESSION_MS);
@@ -336,7 +337,7 @@ export async function onRequest(context) {
       if (parts.length === 3 && parts[2] === 'delete') { const result = await env.DB.prepare('DELETE FROM commerce_projects WHERE id = ? AND member_id = ?').bind(requireId(parts[1]), member.id).run(); if (!result.meta.changes) throw new CommerceError(404, 'The project was not found.', 'not_found'); return json({ ok: true }); }
       if (parts.length === 1) {
         const fields = projectFields(body), id = crypto.randomUUID(), now = Date.now();
-        const result = await env.DB.prepare('INSERT INTO commerce_projects (id, member_id, title, kind, body, created_at, updated_at) SELECT ?, ?, ?, ?, ?, ?, ? WHERE (SELECT COUNT(*) FROM commerce_projects WHERE member_id = ?) < CASE WHEN EXISTS(SELECT 1 FROM commerce_subscriptions WHERE member_id = ? AND premium = 1 AND expires_at > ?) THEN 100 ELSE 3 END').bind(id, member.id, fields.title, fields.kind, fields.value, now, now, member.id, member.id, now).run();
+        const result = await env.DB.prepare('INSERT INTO commerce_projects (id, member_id, title, kind, body, created_at, updated_at) SELECT ?, ?, ?, ?, ?, ?, ? WHERE (SELECT COUNT(*) FROM commerce_projects WHERE member_id = ?) + (SELECT COUNT(*) FROM commerce_workspaces WHERE owner_id=? AND archived_at IS NULL) < CASE WHEN EXISTS(SELECT 1 FROM commerce_subscriptions WHERE member_id = ? AND premium = 1 AND expires_at > ?) THEN 100 ELSE 3 END').bind(id, member.id, fields.title, fields.kind, fields.value, now, now, member.id, member.id, member.id, now).run();
         if (!result.meta.changes) throw new CommerceError(409, 'The project limit has been reached. Free accounts can store 3 projects; active memberships can store 100.', 'project_limit'); return json({ id }, 201);
       }
       if (parts.length === 2) { const fields = projectFields(body), id = requireId(parts[1]); const result = await env.DB.prepare('UPDATE commerce_projects SET title = ?, kind = ?, body = ?, updated_at = ? WHERE id = ? AND member_id = ?').bind(fields.title, fields.kind, fields.value, Date.now(), id, member.id).run(); if (!result.meta.changes) throw new CommerceError(404, 'The project was not found.', 'not_found'); return json({ id }); }
@@ -348,3 +349,5 @@ export async function onRequest(context) {
     return json({ error: 'The action could not be completed. Please try again later.', code: 'internal_error' }, 500);
   }
 }
+
+export { accountFromRequest, accountStatus, hash, limit };

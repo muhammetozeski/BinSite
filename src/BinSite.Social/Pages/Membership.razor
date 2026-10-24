@@ -24,6 +24,7 @@
             {
                 <p><strong>@(Status.Account.Premium ? Texts.Text("Yaratıcı Plus", "Creator Plus") : Texts.Text("Ücretsiz hesap", "Free account"))</strong></p>
                 <p>@Texts.Text("Proje kotan:", "Project allowance:") @Status.Account.ProjectLimit</p>
+                <p>Stored files and workspaces: @Status.Account.UsedProjects / @Status.Account.ProjectLimit</p>
                 <p class="small">@Texts.Text("Tarayıcı oturum çerezi hesabını açık tutar. Başka bir cihazda erişim için kurtarma anahtarını sakla.", "A browser session cookie keeps you signed in. Save your recovery key to access the account on another device.")</p>
                 <button class="secondary" disabled="@Busy" @onclick="Logout">@Texts.Text("Bu tarayıcıdan çıkış yap", "Sign out of this browser")</button>
             }
@@ -136,7 +137,7 @@
     /// <summary>Detaches the language event when this page is left.</summary>
     public void Dispose() => Texts.Changed -= RefreshLanguage;
     sealed record CommerceStatus(AccountInfo? Account, ProviderInfo? Providers, List<ProjectInfo>? Projects, List<PlanInfo>? Plans);
-    sealed record AccountInfo(string Id, bool Premium, int ProjectLimit);
+    sealed record AccountInfo(string Id, bool Premium, int ProjectLimit, int UsedProjects = 0);
     sealed record ProviderInfo(bool Stripe, bool Lemon);
     sealed record ProjectInfo(string Id, string Title, string Kind, long UpdatedAt);
     sealed record PlanInfo(string Id, string Name, string PriceLabel, List<string>? Features);
