@@ -13,7 +13,7 @@ public sealed class ProcedureExchangeClient(SocialApi api)
     /// <summary>Explicitly publishes only reusable method fields and source pins, never local execution data.</summary>
     public async Task<ProcedurePublished> PublishAsync(ProcedureWorkspace workspace,string authorAlias,bool allowReuse)
     {
-        if(!allowReuse)throw new ProcedureValidationException("Confirm permission to copy, export and fork the method with source attribution before publishing.");var alias=authorAlias.Trim();if(alias.Length is <1 or >40)throw new ProcedureValidationException("Use a publisher alias of 1–40 characters. It is not a verified identity.");
+        if(!allowReuse)throw new ProcedureValidationException("Confirm permission to copy, export and fork the method with source attribution before publishing.");var alias=authorAlias.Trim();if(alias.Length is <1 or >40)throw new ProcedureValidationException("Use a published name of 1–40 characters.");
         var document=ProcedureExchangeRules.PublicDocument(workspace);ProcedurePublishedEnvelope result;
         if(workspace.PublicationTarget is {} target)result=await api.PostAsync<ProcedurePublishedEnvelope>(Prefix+"/"+Uri.EscapeDataString(target.Id),new{revision=target.Revision,document,authorAlias=alias,allowReuse=true});
         else {object? parent=workspace.Source.Kind=="published"?new{id=workspace.Source.Id,revision=workspace.Source.Revision}:null;result=await api.PostAsync<ProcedurePublishedEnvelope>(Prefix,new{document,authorAlias=alias,allowReuse=true,parent});}
@@ -38,6 +38,6 @@ public sealed class ProcedureExchangeVaultClient(SocialApi api)
     /// <summary>Saves one explicit owner copy under a separate 100-character label, preserving the full method title.</summary>
     public async Task<string> SaveAsync(ProcedureWorkspace workspace,string label,string? id)
     {
-        label=label.Trim();if(label.Length is <1 or >100)throw new ProcedureValidationException("Use a private vault label of 1–100 characters. The method title inside the project is preserved.");using var parsed=JsonDocument.Parse(ProcedureExchangeRules.Serialize(workspace));var body=parsed.RootElement.Clone();if(Encoding.UTF8.GetByteCount(JsonSerializer.Serialize(body))>ProcedureExchangeRules.MaximumVaultBytes)throw new ProcedureValidationException("The private copy exceeds the 64 KiB vault limit. Download the complete local JSON file instead.");var response=await api.PostAsync<ProcedureVaultSaved>(Prefix+(id is null?"":"/"+Uri.EscapeDataString(id)),new{title=label,kind="procedure",body});return response.Id;
+        label=label.Trim();if(label.Length is <1 or >100)throw new ProcedureValidationException("Use 1–100 characters for the saved copy name.");using var parsed=JsonDocument.Parse(ProcedureExchangeRules.Serialize(workspace));var body=parsed.RootElement.Clone();if(Encoding.UTF8.GetByteCount(JsonSerializer.Serialize(body))>ProcedureExchangeRules.MaximumVaultBytes)throw new ProcedureValidationException("The private copy exceeds the 64 KiB vault limit. Download the complete local JSON file instead.");var response=await api.PostAsync<ProcedureVaultSaved>(Prefix+(id is null?"":"/"+Uri.EscapeDataString(id)),new{title=label,kind="procedure",body});return response.Id;
     }
 }

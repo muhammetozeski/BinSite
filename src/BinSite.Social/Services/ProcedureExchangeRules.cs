@@ -125,7 +125,7 @@ public static class ProcedureExchangeRules
     /// <summary>Copies only source attribution metadata.</summary>
     public static ProcedureSource CopySource(ProcedureSource source)=>new(){Kind=source.Kind,Id=source.Id,Revision=source.Revision,AuthorAlias=source.AuthorAlias,Title=source.Title};
     /// <summary>Formats provenance without inventing a publisher identity or published status for local work.</summary>
-    public static string SourceLabel(ProcedureSource source)=>source.Kind switch{"published"=>$"Published method {source.Id}, revision {source.Revision}, publisher alias: {source.AuthorAlias}","editorial"=>$"Original editorial starter: {source.Title}",_=>"Local draft; not a published revision"};
+    public static string SourceLabel(ProcedureSource source)=>source.Kind switch{"published"=>$"{(source.Title.Length>0?source.Title:"Published method")} · version {source.Revision}"+(source.AuthorAlias.Length>0?$" · by {source.AuthorAlias}":""),"editorial"=>$"Example: {source.Title}",_=>"Local draft"};
     /// <summary>Compares authored instructions by stable step ID, including reordering and observable checks.</summary>
     public static List<string> Differences(ProcedureDocument before,ProcedureDocument after)
     {
