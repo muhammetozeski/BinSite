@@ -1,0 +1,162 @@
+[
+  {
+    "id": 76,
+    "name": "Video Kurgu",
+    "slug": "video-kurgu",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Yerel video kesitlerini hız ve üst yazıyla sıralayıp gerçek WebM montajı üretir.",
+    "features": [
+      "Yerel video çözümleme",
+      "Kesme, hız ve zaman çizelgesi",
+      "Sesin Web Audio üzerinden kayda eklenmesi",
+      "Canvas ve MediaRecorder ile gerçek WebM",
+      "Dosyasız özgün hareket örneği"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 77,
+    "name": "Düğüm Gölgelendirici",
+    "slug": "dugum-golgelendirici",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Matematik düğümlerini bağlayarak gerçek WebGL fragment programı üretir.",
+    "features": [
+      "Yönlü düğüm grafiği",
+      "Çevrim denetimi",
+      "Gerçek shader compile/link kontrolleri",
+      "Zaman ve renk fazı",
+      "PNG, GLSL ve proje çıktısı"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 78,
+    "name": "Hareketli Yazı",
+    "slug": "hareketli-yazi",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Yazı katmanlarının konum, ölçek, dönüş ve saydamlığını anahtar karelerle canlandırır.",
+    "features": [
+      "Çok katmanlı tipografi",
+      "Anahtar kare ekleme ve silme",
+      "Üç interpolasyon davranışı",
+      "Bağımsız oynayan HTML çıktısı",
+      "Proje dosyası açma ve indirme"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 79,
+    "name": "Müzik Haritası",
+    "slug": "muzik-haritasi",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Mekâna yerleştirilen notalar arasında dolaşılan rotayı zamanlı stereo besteye dönüştürür.",
+    "features": [
+      "Nota düğümü yerleştirme ve taşıma",
+      "Canlı dolaşma ve ziyaret kaydı",
+      "X konumundan stereo denge",
+      "Gerçek PCM WAV üretimi",
+      "Harita projesi içe/dışa aktarımı"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 80,
+    "name": "Gölge Sahnesi",
+    "slug": "golge-sahnesi",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Işık konumu ve kukla derinliğiyle hesaplanan gölgelerden iki pozlu tiyatro kurar.",
+    "features": [
+      "Dört kukla türü",
+      "Işın izdüşümüyle gölge boyutu",
+      "İki poz arasında animasyon",
+      "Işık genişliğinden yumuşak kenar",
+      "PNG ve paylaşılabilir sahne"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 81,
+    "name": "Dünya Dokumacı",
+    "slug": "dunya-dokumaci",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Aynı tohumdan coğrafya ve yerleşim üretip yükseltiyi düzenleyen kurmaca harita stüdyosu.",
+    "features": [
+      "Çok ölçekli deterministik yükselti ve nem",
+      "Yükselti fırçası",
+      "Yerleşim adlandırma",
+      "A* kara yolu arama",
+      "PNG ve dünya dosyası"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 82,
+    "name": "Mikro Kitap",
+    "slug": "mikro-kitap",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Metni gerçek yazı genişliğiyle sayfalara bölüp kapaklı bağımsız mini kitap üretir.",
+    "features": [
+      "Ölçülen satırlarla sayfalama",
+      "Kapak ve sayfa düzenleme",
+      "Bağımsız okunabilir/yazdırılabilir HTML",
+      "Proje içe/dışa aktarımı",
+      "Özgün atlas metni"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 83,
+    "name": "Sergi Kurucu",
+    "slug": "sergi-kurucu",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Kullanıcının eser metni, rengi ve yerleşiminden yürüyerek keşfedilen 2D sergi üretir.",
+    "features": [
+      "Eser yerleştirme ve açıklamalar",
+      "Klavye veya tıklamayla gezme",
+      "Yakın eser okuma",
+      "Bağımsız sergi HTML çıktısı",
+      "Proje dosyası"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 84,
+    "name": "Sahne Akışı",
+    "slug": "sahne-akisi",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Ses, ışık, yazı ve karartma olaylarını bir prova zaman çizelgesinde birleştirir.",
+    "features": [
+      "Işık geçişleri ve sentez sesler",
+      "Otomatik zamanlı prova",
+      "Manuel GO ilerletme",
+      "CSV işaret listesi",
+      "Proje dosyası"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 85,
+    "name": "Kat İzleri",
+    "slug": "kat-izleri",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Üç menteşe açısıyla gerçek 3B köşe ve üçgen koordinatlarından katlanmış kâğıt oluşturur.",
+    "features": [
+      "Dört bağlı panel",
+      "Gerçek 10 köşe / 8 üçgen mesh",
+      "Katlanma ilerlemesi",
+      "Kamera dönüşleri",
+      "OBJ, PNG ve paylaşılabilir geometri"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  }
+]
