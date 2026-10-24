@@ -67,7 +67,7 @@ public sealed class SignalFoundryClient(SocialApi api, HttpClient http, ILogger<
                 var error = await response.Content.ReadFromJsonAsync<ErrorEnvelope>();
                 throw new ApiFailure(response.StatusCode, error?.Error ?? "The attempt action could not be completed.");
             }
-            return await response.Content.ReadFromJsonAsync<T>() ?? throw new InvalidOperationException("The attempt service returned an empty result.");
+            return await response.Content.ReadFromJsonAsync<T>() ?? throw new InvalidOperationException("No attempt result was returned.");
         }
         catch (Exception error) { logger.LogWarning("Signal attempt request failed; type={Type}; status={Status}", error.GetType().Name, error is ApiFailure failure ? (int)failure.Status : 0); throw; }
     }
