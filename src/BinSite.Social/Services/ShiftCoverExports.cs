@@ -12,9 +12,10 @@ public static class ShiftCoverExports
         var candidates = ShiftCoverRules.Candidates(project, shiftId, seat);
         if (candidates.Count == 0) return "No people have been entered. Add people, skills and availability.";
         var eligible = candidates.Count(value => value.Issues.Count == 0);
-        if (eligible > 0) return $"{eligible} currently eligible person(s). This seat was left open by the current bounded search or manual plan; assigning someone can affect other seats.";
-        var counts = candidates.SelectMany(value => value.Issues.Select(issue => issue.Code).Distinct()).GroupBy(code => code).OrderBy(group => group.Key, StringComparer.Ordinal).Select(group => $"{group.Key}: {group.Count()}");
-        return "No currently eligible person in this partial schedule. People blocked by " + string.Join("; ", counts) + ". A person may have multiple blockers. Different earlier assignments or changed inputs may help; this is not an infeasibility proof.";
+        if (eligible > 0) return $"{eligible} person(s) can cover this seat. Choose a person in the roster.";
+        var labels = new Dictionary<string, string> { ["skill"] = "missing role", ["availability"] = "availability", ["shift-hours"] = "single-shift hours", ["total-hours"] = "total hours", ["overlap"] = "overlapping shifts", ["rest"] = "rest time" };
+        var counts = candidates.SelectMany(value => value.Issues.Select(issue => issue.Code).Distinct()).GroupBy(code => code).OrderBy(group => group.Key, StringComparer.Ordinal).Select(group => $"{labels.GetValueOrDefault(group.Key, group.Key)}: {group.Count()}");
+        return "No one can cover this seat with the current assignments. Blocked by " + string.Join("; ", counts) + ". One person can have several conflicts. Try reassigning another shift or changing availability or limits.";
     }
 
     /// <summary>Exports every required seat, including open seats and actual constraint conflicts, with spreadsheet formula protection.</summary>
@@ -36,7 +37,7 @@ public static class ShiftCoverExports
                     shift.Start, shift.End, Stamp(ShiftCoverRules.Utc(shift.Start, project.UtcOffsetMinutes)), Stamp(ShiftCoverRules.Utc(shift.End, project.UtcOffsetMinutes)), (seat + 1).ToString(CultureInfo.InvariantCulture),
                     assignment is null ? "" : project.People.First(value => value.Id == assignment.PersonId).Label, ShiftCoverRules.Hours(ShiftCoverRules.Minutes(shift) / 60m),
                     assignment is null ? "UNFILLED" : errors.Length > 0 ? "CONFLICT" : "LOCAL PLAN", assignment?.Locked == true ? "Yes" : "No",
-                    assignment is null ? UnfilledReason(project, shift.Id, seat) : errors.Length > 0 ? string.Join(" ", errors.Select(value => value.Message)) : "Organizer-entered plan; no employee acceptance or legal compliance is implied.");
+                    assignment is null ? UnfilledReason(project, shift.Id, seat) : errors.Length > 0 ? string.Join(" ", errors.Select(value => value.Message)) : "Planned assignment; staff acceptance and legal compliance are not verified.");
             }
         }
         return output.ToString();
@@ -49,7 +50,7 @@ public static class ShiftCoverExports
         if (personId.HasValue && !project.People.Any(value => value.Id == personId)) throw new InvalidOperationException("Choose an existing person.");
         if (ShiftCoverRules.AssignmentIssues(project).Count > 0) throw new InvalidOperationException("Resolve the current assignment conflicts before exporting calendars. JSON and the conflict-labelled CSV remain available.");
         var selected = project.Assignments.Where(value => !personId.HasValue || value.PersonId == personId).OrderBy(value => project.Shifts.First(shift => shift.Id == value.ShiftId).Start, StringComparer.Ordinal).ThenBy(value => value.ShiftId).ThenBy(value => value.Seat).ToArray();
-        if (selected.Length == 0) throw new InvalidOperationException("There are no actual assignments to include in this calendar.");
+        if (selected.Length == 0) throw new InvalidOperationException("Assign someone to a shift before downloading a calendar.");
         var output = new StringBuilder();
         Line(output, "BEGIN:VCALENDAR"); Line(output, "VERSION:2.0"); Line(output, "PRODID:-//BinSite//Shift and Cover Desk//EN"); Line(output, "CALSCALE:GREGORIAN");
         var unfilled = project.Shifts.Sum(value => value.RequiredPeople) - project.Assignments.Count;
@@ -65,7 +66,7 @@ public static class ShiftCoverExports
             Line(output, "DTSTART:" + Stamp(ShiftCoverRules.Utc(shift.Start, project.UtcOffsetMinutes)));
             Line(output, "DTEND:" + Stamp(ShiftCoverRules.Utc(shift.End, project.UtcOffsetMinutes)));
             Line(output, "SUMMARY:" + CalendarText(shift.Title + " — " + person.Label));
-            Line(output, "DESCRIPTION:" + CalendarText($"{project.Title}\nRole: {role.Name}\nPerson label: {person.Label}\nPlanning clock: {ShiftCoverRules.OffsetLabel(project.UtcOffsetMinutes)} (fixed offset; no daylight-saving conversion).\nSeat {assignment.Seat + 1}. {unfilled} seat(s) remain open across this roster.\nOrganizer-entered local plan, not an employee acceptance. These imported files do not automatically update or delete previously imported events."));
+            Line(output, "DESCRIPTION:" + CalendarText($"{project.Title}\nRole: {role.Name}\nPerson label: {person.Label}\nPlanning clock: {ShiftCoverRules.OffsetLabel(project.UtcOffsetMinutes)} (fixed offset; no daylight-saving conversion).\nSeat {assignment.Seat + 1}. {unfilled} seat(s) remain open across this roster.\nStaff acceptance is not recorded. Imported files do not automatically update or delete earlier calendar entries."));
             Line(output, "STATUS:TENTATIVE"); Line(output, "TRANSP:OPAQUE"); Line(output, "END:VEVENT");
         }
         Line(output, "END:VCALENDAR");
@@ -79,13 +80,13 @@ public static class ShiftCoverExports
         var issues = ShiftCoverRules.AssignmentIssues(project);
         var needed = project.Shifts.Sum(value => value.RequiredPeople);
         var output = new StringBuilder("<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none';style-src 'unsafe-inline'\"><title>Shift &amp; Cover schedule</title><style>body{font:15px Arial,sans-serif;color:#111;background:#fff;max-width:1100px;margin:24px auto;padding:0 16px}h1,h2,h3{margin:20px 0 10px}table{border-collapse:collapse;width:100%;margin:12px 0 24px}th,td{padding:8px;border:1px solid #555;text-align:left;vertical-align:top}.warning{padding:12px;border:3px solid #a23b00}pre{white-space:pre-wrap}article{break-inside:avoid}@media print{body{margin:0}h2{break-after:avoid}}</style><body>");
-        output.Append("<h1>").Append(E(project.Title)).Append("</h1><p>Fixed planning clock: ").Append(E(ShiftCoverRules.OffsetLabel(project.UtcOffsetMinutes))).Append(". Revision ").Append(project.Revision).Append(".</p><p class=\"warning\">").Append(project.Assignments.Count).Append(" / ").Append(needed).Append(" seats assigned; ").Append(issues.Count).Append(" constraint issue(s). Organizer-entered local plan; no worker consent or legal compliance is implied.</p>");
+        output.Append("<h1>").Append(E(project.Title)).Append("</h1><p>Fixed planning clock: ").Append(E(ShiftCoverRules.OffsetLabel(project.UtcOffsetMinutes))).Append(". Revision ").Append(project.Revision).Append(".</p><p class=\"warning\">").Append(project.Assignments.Count).Append(" / ").Append(needed).Append(" seats assigned; ").Append(issues.Count).Append(" conflict(s). Staff acceptance and legal compliance are not verified.</p>");
         if (!string.IsNullOrEmpty(project.ExampleOrigin)) output.Append("<p>Started from the fictional editable example: ").Append(E(project.ExampleOrigin)).Append(".</p>");
         output.Append("<pre>").Append(E(project.Notes)).Append("</pre>");
         foreach (var person in project.People.OrderBy(value => value.Label, StringComparer.Ordinal))
         {
             var assignments = project.Assignments.Where(value => value.PersonId == person.Id).OrderBy(value => project.Shifts.First(shift => shift.Id == value.ShiftId).Start, StringComparer.Ordinal).ToArray();
-            output.Append("<article><h2>").Append(E(person.Label)).Append("</h2><p>").Append(ShiftCoverRules.Hours(assignments.Sum(value => ShiftCoverRules.Minutes(project.Shifts.First(shift => shift.Id == value.ShiftId))) / 60m)).Append(" / ").Append(ShiftCoverRules.Hours(person.MaximumTotalHours)).Append(" entered project hours; minimum rest ").Append(person.MinimumRestMinutes).Append(" minutes.</p><table><thead><tr><th>Shift / role</th><th>Start</th><th>End</th><th>Seat</th><th>Validation</th></tr></thead><tbody>");
+            output.Append("<article><h2>").Append(E(person.Label)).Append("</h2><p>").Append(ShiftCoverRules.Hours(assignments.Sum(value => ShiftCoverRules.Minutes(project.Shifts.First(shift => shift.Id == value.ShiftId))) / 60m)).Append(" / ").Append(ShiftCoverRules.Hours(person.MaximumTotalHours)).Append(" project hours; minimum rest ").Append(person.MinimumRestMinutes).Append(" minutes.</p><table><thead><tr><th>Shift / role</th><th>Start</th><th>End</th><th>Seat</th><th>Validation</th></tr></thead><tbody>");
             foreach (var assignment in assignments)
             {
                 var shift = project.Shifts.First(value => value.Id == assignment.ShiftId);

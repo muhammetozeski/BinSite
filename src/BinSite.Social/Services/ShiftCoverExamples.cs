@@ -10,7 +10,7 @@ public static class ShiftCoverExamples
         new("conference", "Community conference", "Check-in and room support need different capabilities during overlapping sessions."),
         new("makers", "Maker space opening", "A deliberately tight project-hour budget leaves some coverage unresolved."),
         new("film", "Overnight film desk", "Dated overnight slots test overlap and entered rest across midnight."),
-        new("library", "Library pop-up", "Adjacent availability windows can jointly cover a shift; real gaps cannot."),
+        new("library", "Library pop-up", "Adjacent availability windows can jointly cover a shift; gaps cannot."),
         new("market", "Weekend market", "Two people per seat group, mixed skills, and a reserved manual assignment."),
         new("festival", "Small arts festival", "A three-day timetable balances short daily blocks across a larger fictional team.")
     };
@@ -19,7 +19,7 @@ public static class ShiftCoverExamples
     public static ShiftCoverProject Create(string id)
     {
         var example = All.FirstOrDefault(value => value.Id == id) ?? throw new InvalidOperationException("Choose an existing fictional example.");
-        var project = new ShiftCoverProject { Title = example.Title, ExampleOrigin = example.Title, Notes = "FICTIONAL EDITABLE EXAMPLE. Names, capabilities, availability and hour/rest limits were written for this planning exercise. Replace them with your own agreed inputs; this is not a staffing or legal standard.", UtcOffsetMinutes = id switch { "film" => -300, "library" => 330, "festival" => 60, _ => 0 } };
+        var project = new ShiftCoverProject { Title = example.Title, ExampleOrigin = example.Title, Notes = "Fictional practice roster. Replace the names, availability and limits with your team's agreed plan.", UtcOffsetMinutes = id switch { "film" => -300, "library" => 330, "festival" => 60, _ => 0 } };
         var roles = id switch
         {
             "gallery" => new[] { "Welcome desk", "Floor host" }, "studio" => ["Session desk", "Sound support"],
