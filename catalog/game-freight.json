@@ -1,0 +1,26 @@
+[
+  {
+    "id": 104,
+    "name": "Three Beat Freight",
+    "slug": "three-beat-freight",
+    "url": "https://three-beat-freight.pages.dev/",
+    "category": "Games",
+    "stage": 9,
+    "adEligible": false,
+    "appearance": {
+      "themeAttribute": "data-bs-theme",
+      "assetAttribute": "data-freight-appearance"
+    },
+    "description": "Program three commands, intercept cargo and return to your dock. Play solo dispatches or resolve hidden plans together in real private rooms.",
+    "features": [
+      "Twelve original freight yards and 24 playable solo contracts",
+      "Shared deterministic rules for simultaneous movement, shoves, belts and delivery",
+      "Real two-to-four-player rooms with private locked plans and server-owned results",
+      "Explicitly labeled local automated rival and a date-selected daily dispatch",
+      "Beat-by-beat replays, reconnect, fresh rematches and portable replay files",
+      "Visual arena editor with validation, local files and three free private cloud slots",
+      "Optional larger cloud locker through Polar; advertising requires publisher and real consent setup"
+    ],
+    "businessHypothesis": "Repeat play, human interception and shared custom yards may encourage return visits and friend invitations. An optional Polar subscription expands private cloud arena capacity without selling a gameplay advantage. AdSense is prepared behind real publisher and consent-management configuration. Live payment, advertising fill, enjoyment, audience growth and revenue have not been established."
+  }
+]
