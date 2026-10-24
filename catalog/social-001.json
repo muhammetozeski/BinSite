@@ -1,0 +1,32 @@
+[
+  {
+    "id": 11,
+    "name": "Hikâye Ağacı",
+    "slug": "hikaye-agaci",
+    "category": "Sosyal",
+    "stage": 3,
+    "description": "Bir hikâyenin her paragrafından yeni ihtimaller açılan, katkıları ortak sunucuda saklanan kolektif yazı alanı.",
+    "features": ["C# Blazor arayüzü", "Kalıcı paylaşılan hikâye ağacı", "Paragraf ve dal bağlantıları", "15 özgün editoryal başlangıç önerisi", "Türkçe ve İngilizce arayüz", "Raporlama ve sunucu hız sınırları"],
+    "businessHypothesis": "Bir dalı okuyan kişinin kendi devamını yazıp paylaşması yeni okurları yazara dönüştürebilir. Topluluk oluşursa isteğe bağlı özel yazı odaları ve editoryal etkinlikler gelir modeli olarak ölçülebilir; gelir ve büyüme henüz doğrulanmış değildir."
+  },
+  {
+    "id": 12,
+    "name": "Fikir Düellosu",
+    "slug": "fikir-duellosu",
+    "category": "Sosyal",
+    "stage": 3,
+    "description": "İki yaratıcı öneriyi herkese açık bir düelloda karşılaştır, bağlantıyı paylaş ve sunucuda kayıtlı gerçek oyları izle.",
+    "features": ["C# Blazor arayüzü", "Gerçek anket oluşturma ve oy kaydı", "Çerez kimliği başına oy tekilliği", "Sunucuda hesaplanan sonuçlar", "15 özgün editoryal düello önerisi", "Raporlama ve Türkçe/İngilizce arayüz"],
+    "businessHypothesis": "İçerik üreticileri ve topluluklar bir sonraki etkinlik veya ürün fikrini karşılaştırmak için düelloları paylaşabilir. İleride özel panolar ve açıkça etiketlenmiş sponsorlu yaratıcı yarışmalar test edilebilir; mevcut sayımlar gerçek kayıtları gösterir ve kişi doğrulaması sağlamaz."
+  },
+  {
+    "id": 13,
+    "name": "Zaman Kapsülü",
+    "slug": "zaman-kapsulu",
+    "category": "Sosyal",
+    "stage": 3,
+    "description": "Bir mektubu gelecekteki tarihe kilitle; sunucu tarih gelmeden içeriği tarayıcıya göndermez ve rastgele bağlantı dışında gezilebilir liste sunmaz.",
+    "features": ["C# Blazor arayüzü", "Sunucu saatine göre içerik kilidi", "Kalıcı kapsül kaydı", "Listelenmeyen paylaşım bağlantısı", "Editoryal mektup soruları", "Türkçe/İngilizce arayüz ve raporlama"],
+    "businessHypothesis": "Mezuniyet, yıl dönümü ve arkadaş grubu gelenekleri kapsül paylaşımı ve zamanında geri dönüş yaratabilir. İleride doğrulanmış saklama süresi, hesap kurtarma ve teslim hizmetleri için ödeme isteği araştırılabilir; ilk sürüm bu hizmetleri veya gelir güvencesini sunmaz."
+  }
+]

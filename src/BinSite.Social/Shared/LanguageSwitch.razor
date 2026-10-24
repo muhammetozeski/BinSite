@@ -1,0 +1,6 @@
+@inject UiText Ui
+<button type="button" class="language-switch" @onclick="Ui.ToggleAsync" aria-label="@(Ui.English ? "Türkçeye geç" : "Switch to English")">@(Ui.English ? "Türkçe" : "English")</button>
+@code {
+    /// <summary>Initializes browser language storage after JavaScript interop is available.</summary>
+    protected override async Task OnAfterRenderAsync(bool firstRender) { if (firstRender) { await Ui.InitializeAsync(); StateHasChanged(); } }
+}
