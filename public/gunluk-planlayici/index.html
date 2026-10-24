@@ -62,10 +62,32 @@
 
 <link rel="stylesheet" href="../assets/appearance.css" data-binsite-appearance="style">
 <script src="../assets/appearance.js" defer data-binsite-appearance="script"></script>
+
+<style data-static-readability="calm">
+html[data-bs-theme="dark"]{color-scheme:dark;background:#15191f;color:#edf2f7}
+html[data-bs-theme="dark"] body,html[data-bs-theme="dark"] header{background:#15191f;color:#edf2f7}
+body{font-size:16px;line-height:1.5}h1{font-size:clamp(25px,3vw,32px);line-height:1.15;margin-bottom:8px}h2{line-height:1.3}p{line-height:1.55}
+html[data-bs-theme="dark"] a{color:#acc9df}
+html[data-bs-theme="dark"] :is(.panel,.paper,.stage,.resource,.metric,.aside,aside,.filters,.recipe,.settings,.canvas-wrap){background:#1d252e;color:#edf2f7;border-color:#465564}
+html[data-bs-theme="dark"] :is(.notice,.message,.status,.delta){background:#25323d;color:#edf2f7;border-color:#7f9fac}
+html[data-bs-theme="dark"] :is(.fine,.hint,.muted,small,footer,header p){color:#c3cdd7}
+html[data-bs-theme="dark"] :is(input:not([type="color"]),select,textarea){background:#202a34;color:#edf2f7;border-color:#657585}
+html[data-bs-theme="dark"] button:not(.pad):not(.tile):not(.swatch):not(.cell){background:#28343f;color:#edf2f7;border-color:#607181;border-radius:5px}
+html[data-bs-theme="dark"] button:not(.pad):not(.tile):not(.swatch):not(.cell):hover{background:#354653}
+html[data-bs-theme="dark"] button:not(.pad):not(.tile):not(.swatch):not(.cell):disabled{opacity:1;color:#bac5d0;background:#242d36;border-color:#465564}
+html[data-bs-theme="dark"] :is(.accent,.primary),html[data-bs-theme="dark"] button[aria-pressed="true"]:not(.swatch):not(.pad):not(.tile):not(.cell){background:#405e6d;color:#f4f8fa;border-color:#8baab9}
+html[data-bs-theme="dark"] :is(.stat,.recipe,.filters){background:#1d252e;color:#edf2f7;border-color:#465564}
+input[type="range"],input[type="checkbox"],progress{accent-color:#8baebd}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid #b1d0df;outline-offset:3px}
+details.readability-help{border-top:1px solid #50606e;padding-top:10px;margin:18px 0;font-size:14px;line-height:1.6}
+details.readability-help summary{cursor:pointer;font-weight:650;min-height:34px;display:list-item}
+details.readability-help p{max-width:75ch;margin:10px 0}
+html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:1px solid #91b0be;font-weight:700}
+</style>
 </head>
 <body>
   <header>
-    <div><h1>Daily Planner</h1><p class="muted">Organize your tasks and capture your thoughts.</p><small id="today"></small></div>
+    <div><h1>Daily Planner</h1><p class="muted">Add a task. Keep today’s work and notes in one place.</p><small id="today"></small></div>
     <nav class="toolbar" aria-label="Data tools">
       <button id="export" type="button">Download backup</button>
       <button id="import" type="button">Restore backup</button>
@@ -123,9 +145,11 @@
         </section>
         <section class="panel" aria-labelledby="storage-heading">
           <h2 id="storage-heading">Where is your data?</h2>
-          <p>Tasks and notes are stored in this browser. No account or internet connection is required.</p>
-          <p>Clearing browser data can erase your records. Before switching browsers or moving this file, use the <strong>Download backup</strong> button above to save a copy.</p>
-          <p>Restoring a backup replaces current tasks and notes with the records in that file. You will be asked to confirm.</p>
+          
+          
+          <details class="readability-help"><summary>Help</summary><p>Tasks and notes are stored in this browser. No account or internet connection is required.</p>
+<p>Clearing browser data can erase your records. Before switching browsers or moving this file, use the <strong>Download backup</strong> button above to save a copy.</p>
+<p>Restoring a backup replaces current tasks and notes with the records in that file. You will be asked to confirm.</p></details>
         </section>
       </aside>
     </div>

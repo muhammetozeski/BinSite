@@ -5,10 +5,34 @@ body{background:#fff;color:#111}header{background:#fff;color:#111}a{color:#0645a
 </style>
 <link rel="stylesheet" href="../assets/appearance.css" data-binsite-appearance="style">
 <script src="../assets/appearance.js" defer data-binsite-appearance="script"></script>
-</head><body><header><div><h1>Echo Memory</h1><p>Repeat a growing sequence of four sounds and shapes.</p></div><a href="../">Other products</a></header><main><div class="settings"><label>Mode <select id="mode"><option value="order">Remember the order</option><option value="rhythm">Order + long / short rhythm</option></select></label><label>Tempo <select id="speed"><option value="1">Normal</option><option value="1.45">Slow</option></select></label><label><input type="checkbox" id="mute"> Mute audio</label></div>
+
+<style data-static-readability="calm">
+html[data-bs-theme="dark"]{color-scheme:dark;background:#15191f;color:#edf2f7}
+html[data-bs-theme="dark"] body,html[data-bs-theme="dark"] header{background:#15191f;color:#edf2f7}
+body{font-size:16px;line-height:1.5}h1{font-size:clamp(25px,3vw,32px);line-height:1.15;margin-bottom:8px}h2{line-height:1.3}p{line-height:1.55}
+html[data-bs-theme="dark"] a{color:#acc9df}
+html[data-bs-theme="dark"] :is(.panel,.paper,.stage,.resource,.metric,.aside,aside,.filters,.recipe,.settings,.canvas-wrap){background:#1d252e;color:#edf2f7;border-color:#465564}
+html[data-bs-theme="dark"] :is(.notice,.message,.status,.delta){background:#25323d;color:#edf2f7;border-color:#7f9fac}
+html[data-bs-theme="dark"] :is(.fine,.hint,.muted,small,footer,header p){color:#c3cdd7}
+html[data-bs-theme="dark"] :is(input:not([type="color"]),select,textarea){background:#202a34;color:#edf2f7;border-color:#657585}
+html[data-bs-theme="dark"] button:not(.pad):not(.tile):not(.swatch):not(.cell){background:#28343f;color:#edf2f7;border-color:#607181;border-radius:5px}
+html[data-bs-theme="dark"] button:not(.pad):not(.tile):not(.swatch):not(.cell):hover{background:#354653}
+html[data-bs-theme="dark"] button:not(.pad):not(.tile):not(.swatch):not(.cell):disabled{opacity:1;color:#bac5d0;background:#242d36;border-color:#465564}
+html[data-bs-theme="dark"] :is(.accent,.primary),html[data-bs-theme="dark"] button[aria-pressed="true"]:not(.swatch):not(.pad):not(.tile):not(.cell){background:#405e6d;color:#f4f8fa;border-color:#8baab9}
+html[data-bs-theme="dark"] :is(.stat,.recipe,.filters){background:#1d252e;color:#edf2f7;border-color:#465564}
+input[type="range"],input[type="checkbox"],progress{accent-color:#8baebd}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid #b1d0df;outline-offset:3px}
+details.readability-help{border-top:1px solid #50606e;padding-top:10px;margin:18px 0;font-size:14px;line-height:1.6}
+details.readability-help summary{cursor:pointer;font-weight:650;min-height:34px;display:list-item}
+details.readability-help p{max-width:75ch;margin:10px 0}
+html[data-bs-theme="dark"] #start{background:#405e6d;color:#f4f8fa;border:1px solid #91b0be;font-weight:700}
+</style>
+</head><body><header><div><h1>Echo Memory</h1><p>Watch the sequence, then repeat it with the four pads.</p></div><a href="../">Other products</a></header><main><div class="settings"><label>Mode <select id="mode"><option value="order">Remember the order</option><option value="rhythm">Order + long / short rhythm</option></select></label><label>Tempo <select id="speed"><option value="1">Normal</option><option value="1.45">Slow</option></select></label><label><input type="checkbox" id="mute"> Mute audio</label></div>
 <div class="scoreboard"><div><small>Round</small><strong id="round">—</strong></div><div><small>Lives</small><strong id="lives">3</strong></div><div><small>Score</small><strong id="score">0</strong></div><div><small>Best in this mode</small><strong id="best">0</strong></div></div>
 <section class="stage"><div id="status" class="status" role="status" aria-live="polite">Start, watch the sequence, then repeat it.</div><div class="pads"><button class="pad" id="pad0" style="--color:#a0e5d1" aria-label="One, circle, C note">1 · ●<small>C</small></button><button class="pad" id="pad1" style="--color:#eac788" aria-label="Two, triangle, E note">2 · ▲<small>E</small></button><button class="pad" id="pad2" style="--color:#b2c4fa" aria-label="Three, square, G note">3 · ■<small>G</small></button><button class="pad" id="pad3" style="--color:#efa6ca" aria-label="Four, diamond, B note">4 · ◆<small>B</small></button></div><div id="trace" class="trace"></div><progress id="progress" value="0" max="3" aria-label="Number of repeated steps"></progress><div class="actions"><button id="start" class="primary">Start game</button><button id="replay" disabled>Replay sequence (1 life)</button></div></section>
-<div class="instructions"><div><h2>How to play</h2><p>Wait while the sequence plays. When the display says “Your turn”, repeat the same buttons in order. Each successful round adds one step.</p><p>Use the mouse, touch controls, or the <b>1, 2, 3, 4</b> keys. Each sound is also represented by a color, shape, and number.</p></div><div><h2>Try rhythm mode</h2><p>In rhythm mode, tap briefly for a short note and hold a long note for at least <b>450 milliseconds</b> before releasing. Long notes are labeled “long” during playback.</p><p class="fine">Mute mode preserves every visual cue. Hold duration does not matter in order-only mode. Complete twenty rounds to finish. Records stay in this browser.</p></div></div></main><script>
+<div class="instructions"><div><details class="readability-help"><summary>Help</summary><p>Wait while the sequence plays. When the display says “Your turn”, repeat the same buttons in order. Each successful round adds one step.</p>
+<p>Use the mouse, touch controls, or the <b>1, 2, 3, 4</b> keys. Each sound is also represented by a color, shape, and number.</p></details></div><div><h2>Try rhythm mode</h2><details class="readability-help"><summary>Help</summary><p>In rhythm mode, tap briefly for a short note and hold a long note for at least <b>450 milliseconds</b> before releasing. Long notes are labeled “long” during playback.</p>
+<p class="fine">Mute mode preserves every visual cue. Hold duration does not matter in order-only mode. Complete twenty rounds to finish. Records stay in this browser.</p></details></div></div></main><script>
 'use strict';const $=id=>document.getElementById(id),pads=[0,1,2,3].map(i=>$('pad'+i)),frequency=[261.63,329.63,392,493.88];let context=null,game=null,token=0,flashTokens=[0,0,0,0],holds=new Map();
 function getBest(){try{return Number(localStorage.getItem('yanki-best-'+$('mode').value))||0}catch{return 0}}function updateBest(){if(game&&game.score>getBest())try{localStorage.setItem('yanki-best-'+game.mode,String(game.score))}catch{}$('best').textContent=getBest()}
 function audioReady(){if($('mute').checked)return;try{context??=new (window.AudioContext||window.webkitAudioContext)();if(context.state==='suspended')context.resume().catch(()=>{})}catch{$('mute').checked=true}}
