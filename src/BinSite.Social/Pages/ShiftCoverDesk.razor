@@ -8,8 +8,9 @@
 @implements IAsyncDisposable
 
 <PageTitle>Shift &amp; Cover Desk — Local roster planning</PageTitle>
+<PageSurface>
 <main class="shift-cover">
-    <header><a href="/">Product directory</a><h1>Shift &amp; Cover Desk</h1><p>Enter coverage, skills and real availability. Build a checked roster and export each person's schedule.</p></header>
+    <header><a href="/">Product directory</a><h1>Shift &amp; Cover Desk</h1><p>Plan shifts around availability, skills and rest.</p></header>
     <nav aria-label="Planning sections">
         @foreach (var tab in Tabs) { <button class="@(View == tab.Key ? "selected" : "")" disabled="@Busy" @onclick="() => SelectView(tab.Key)">@tab.Value</button> }
     </nav>
@@ -110,14 +111,15 @@
     }
     else if (View == "vault")
     {
-        <section><h2>Optional owner-only cloud snapshots</h2><p>The whole planner works locally without an account or API key. A real Creator account can store roster JSON in its private project vault. These snapshots do not share staff access, invitations, collaborative editing or revision history.</p><p><a href="/uyelik/" target="_blank" rel="noopener">Open or recover a real Creator account</a>. The actual account service enforces the combined free / membership project allowance. Membership adds saved-project capacity; every vault file remains limited to 64 KiB.</p>
+        <section><h2>Optional owner-only cloud snapshots</h2><p>Save a private copy with your account. Saved copies do not invite staff or share access.</p><p><a href="/uyelik/" target="_blank" rel="noopener">Open or recover your account</a>. Saved projects share your account allowance. Membership adds saved-project capacity; every vault file remains limited to 64 KiB.</p>
             <fieldset disabled="@(Busy || Module is null)"><label>Outer vault label (separate from the roster title)<input maxlength="100" @bind="VaultLabel" /></label><p>Current JSON body: @ProjectBytes bytes / @ShiftCoverVault.MaximumBodyBytes bytes. Local full JSON supports up to 2 MB.</p><button disabled="@(ProjectBytes > ShiftCoverVault.MaximumBodyBytes)" @onclick="SaveVault">Save a new private snapshot</button><button @onclick="RefreshVault">List my real saved snapshots</button></fieldset>
             <p>@VaultMessage</p><table><thead><tr><th>Saved label</th><th>Saved UTC</th><th>Actions</th></tr></thead><tbody>@foreach (var item in VaultItems.Where(value => value.Kind == "roster")) { <tr><td>@item.Title</td><td>@DateTimeOffset.FromUnixTimeMilliseconds(item.UpdatedAt).ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</td><td><button disabled="@Busy" @onclick="() => LoadVault(item.Id)">Open validated JSON</button><button disabled="@Busy" @onclick="() => DeleteVault(item.Id)">Delete saved snapshot</button></td></tr> }</tbody></table>
         </section>
     }
-    <footer><p>All availability, skills and limits are entered by the organizer. “Passes constraints” refers to those inputs. Files and local changes do not constitute employee consent, a staffing certification or legal advice. Once loaded, local planning and file exports need no server connection; reopening the app offline has not been installed or promised.</p></footer>
+    <footer><details class="page-help"><summary>Privacy and safety</summary><p>All availability, skills and limits are entered by the organizer. “Passes constraints” refers to those inputs. Files and local changes do not constitute employee consent, a staffing certification or legal advice. You can work without a connection after this page loads. Download your project before closing.</p></details></footer>
 </main>
 
+</PageSurface>
 @code {
     const bool IsLogEnabled = true;
     static readonly IReadOnlyDictionary<string, string> Tabs = new Dictionary<string, string> { ["setup"] = "Setup", ["people"] = "People & availability", ["shifts"] = "Shift requirements", ["schedule"] = "Roster & exports", ["examples"] = "Fictional examples", ["vault"] = "Private vault (optional)" };

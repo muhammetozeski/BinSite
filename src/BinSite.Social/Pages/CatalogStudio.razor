@@ -5,21 +5,22 @@
 @inject ILogger<CatalogStudio> Logger
 @inject SocialApi Api
 <PageTitle>Catalog Studio — Import, repair and publish a product catalog</PageTitle>
+<PageSurface>
 
 <div class="catalog-studio">
     <header>
-        <h1>Catalog Studio</h1>
-        <p>Turn a CSV and local product photos into a checked, searchable catalog. The complete local workflow needs no account or API key.</p>
-        <p class="privacy">Photos stay in this browser. Downloading a project or catalog explicitly copies attached photos into that file.</p>
+        <h1>Catalog Studio</h1><p>Turn product data and photos into a searchable catalog.</p><p class="privacy">Photos stay on this device unless you export them.</p>
+
+
     </header>
     <p class="status @(HasError ? "error" : "")" role="status" aria-live="polite">@Status</p>
     <fieldset disabled="@Busy">
-        <section class="workspace-settings" aria-label="Catalog settings">
+        <details><summary>Catalog settings</summary><section class="workspace-settings" aria-label="Catalog settings">
             <label>Catalog title<input @bind="Project.Title" @bind:after="RefreshIssues" maxlength="120" /></label>
             <label>Currency code<input @bind="Project.Currency" @bind:after="NormalizeCurrency" maxlength="3" placeholder="USD" /></label>
             <label>Price decimal separator<select @bind="Project.DecimalSeparator" @bind:after="RefreshIssues"><option value=".">Dot: 1234.50</option><option value=",">Comma: 1234,50</option></select></label>
             <label class="wide">Catalog introduction<textarea @bind="Project.Description" maxlength="4000" rows="2"></textarea></label>
-        </section>
+        </section></details>
 
         <details class="panel" open>
             <summary>1. Import CSV and map its columns</summary>
@@ -157,9 +158,9 @@
         </section>
         <details class="panel cloud">
             <summary>Optional private cloud workspace · product metadata only</summary>
-            <p>The local workflow above remains account-free. Cloud workspaces require your real <a href="/uyelik/">Membership account</a>. Shared members can read product data, filenames and image fingerprints; photo bytes are never uploaded here.</p>
+            <p>Save online with your <a href="/uyelik/">Membership account</a>. Shared members can read product data, filenames and image fingerprints; photo bytes are never uploaded here.</p>
             <label>Private workspace label · 1–100 characters<input @bind="CloudLabel" maxlength="100" /></label>
-            <p class="small">This server label is separate from the full catalog title stored in the document.</p>
+            <p class="small">Use a short name for this saved copy. Your catalog title stays unchanged.</p>
             <div class="toolbar"><button @onclick="LoadCloudListAsync">Load my private workspaces and limits</button><button @onclick="CreateCloudAsync">Create a private catalog workspace</button></div>
             @if (CloudNeedsAccount) { <p><a href="/uyelik/">Sign in, create an account or recover your account in Membership</a>, then return and load your workspaces.</p> }
             @if (CloudDirectory is not null)
@@ -171,7 +172,7 @@
             {
                 <p><strong>@CloudWorkspace.Title</strong> · @CloudWorkspace.Role · revision @CloudWorkspace.Revision</p>
                 <button @onclick="SaveCloudAsync" disabled="@(CloudWorkspace.Role is not ("owner" or "editor"))">Save metadata as the next revision</button>
-                @if (CloudWorkspace.Role == "viewer") { <p class="small">This server workspace is read-only. You can edit and export a local copy or create your own workspace.</p> }
+                @if (CloudWorkspace.Role == "viewer") { <p class="small">This shared project is read-only. Make your own copy to edit it.</p> }
                 @if (CloudWorkspace.Role == "owner")
                 {
                     <div class="toolbar"><label>Invite role<select @bind="InviteRole"><option value="viewer">Viewer</option><option value="editor">Editor</option></select></label><button @onclick="CreateInviteAsync">Create private invitation token</button></div>
@@ -179,11 +180,12 @@
                 }
             }
             <div class="toolbar"><label>Accept an invitation token<input @bind="JoinToken" maxlength="300" autocomplete="off" /></label><button @onclick="JoinCloudAsync">Join and open shared catalog</button></div>
-            <p class="small">Opening cloud metadata replaces local rows and keeps one Undo snapshot. Only matching photos already present on this device are reattached. Save a JSON project to transfer the actual photos yourself. A stale server revision cannot overwrite a newer one; your local edits are retained on conflict.</p>
+            <p class="small">Opening an online copy replaces your rows; Undo keeps the previous rows. Reattach matching photos on this device or transfer them in a project file. Conflicting edits stay available for comparison.</p>
         </details>
     </fieldset>
 </div>
 
+</PageSurface>
 @code {
     const bool IsLogEnabled = true;
     const int PageSize = 25;

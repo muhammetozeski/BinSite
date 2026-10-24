@@ -8,8 +8,9 @@
 @implements IAsyncDisposable
 
 <PageTitle>Field Work Pack — Work orders and evidence</PageTitle>
+<PageSurface>
 <main class="field-work">
-    <header><a href="/">Product directory</a><h1>Field Work Pack</h1><p>Turn a checklist into a work order, record measurements and actual photos, then produce a handoff report.</p></header>
+    <header><a href="/">Product directory</a><h1>Field Work Pack</h1><p>Record work, measurements and photos, then create a handoff report.</p></header>
     <nav aria-label="Workspace sections">
         <button class="@(View == "orders" ? "selected" : "")" @onclick='() => View = "orders"' disabled="@Busy">Work orders (@Workspace.Orders.Count)</button>
         <button class="@(View == "templates" ? "selected" : "")" @onclick='() => View = "templates"' disabled="@Busy">Checklist library (@Workspace.Templates.Count)</button>
@@ -114,7 +115,7 @@
                     <details class="history"><summary>Local workflow history (@order.History.Count)</summary><ol>@foreach (var entry in order.History) { <li>@entry.At.ToLocalTime().ToString("MMM d, HH:mm", System.Globalization.CultureInfo.InvariantCulture) · <strong>@entry.Action</strong> — @entry.Detail</li> }</ol></details>
                     <p class="small">Reports contain exactly the supplied answers and photos. Completion is a local review action, not a certificate or independent inspection.</p>
                 }
-                else { <h2>Start with your actual work</h2><p>Create a planned order from an example checklist or build your own checklist first. No account, API key, customer email, or personal address is required.</p> }
+                else { <h2>Start with your actual work</h2><p>Choose a checklist to create a work order.</p> }
             </section>
         </div>
     }
@@ -153,7 +154,7 @@
     {
         <section class="cloud">
             <h2>Private workspace</h2>
-            <p>The local workflow stays independent of an account. This optional panel stores checklist definitions, answers, workflow history, and photo fingerprints on the server. <strong>Photo pixels are excluded.</strong> Every invited member can see the entire shared metadata document, including its labels and notes.</p>
+            <p>Online saves include checklists, answers, history and photo references. Photos stay on your device. Invited members can read all shared labels and notes.</p>
             <p class="notice" role="status">@CloudMessage</p>
             <div class="toolbar"><a href="/uyelik/" target="_blank" rel="noopener">Open or recover a real account</a><button disabled="@Busy" @onclick="RefreshCloud">Refresh account and list</button></div>
             @if (CloudAccount is { } account)
@@ -165,13 +166,13 @@
                     <button disabled="@Busy" @onclick="CreateCloud">Save local workspace as a new cloud workspace</button>
                     @if (!string.IsNullOrEmpty(CloudId))
                     {
-                        <button disabled="@(Busy || !CanEditCloud)" @onclick="SaveCloud">Save changes to server revision @CloudRevision</button>
-                        <button disabled="@Busy" @onclick="ReloadCloud">Reload current server workspace</button>
+                        <button disabled="@(Busy || !CanEditCloud)" @onclick="SaveCloud">Save changes to version @CloudRevision</button>
+                        <button disabled="@Busy" @onclick="ReloadCloud">Refresh saved project</button>
                     }
                 </div>
                 @if (!string.IsNullOrEmpty(CloudId))
                 {
-                    <p><strong>Server access: @CloudRole</strong> · revision @CloudRevision. Local edits are not uploaded until you press Save changes. Viewer access permits a local copy but does not permit updating the shared server workspace.</p>
+                    <p><strong>Your access: @CloudRole</strong> · revision @CloudRevision. Local edits are not uploaded until you press Save changes. Viewer access permits a local copy but does not permit updating the shared project.</p>
                     @if (CloudRole == "owner")
                     {
                         <div class="metadata"><label>Invitation permission<select @bind="InviteRole"><option value="viewer">Viewer — read only</option><option value="editor">Editor — save revised metadata</option></select></label><div><button disabled="@Busy" @onclick="CreateInvite">Create a single-use invitation</button></div></div>
@@ -194,9 +195,9 @@
                 @if (!CloudList.Any(value => value.Kind == "field")) { <p>No field workspaces are stored for this account yet.</p> }
             }
             <h3>Claim an invitation</h3>
-            <p>Sign in through the actual account page, then paste an invitation token or link. Joining grants only the permission chosen by its owner.</p>
+            <p>Sign in, then paste the invitation. Its owner chooses your access.</p>
             <label>Invitation token or link<input type="password" autocomplete="off" @bind="InviteValue" /></label><button disabled="@(Busy || CloudAccount is null)" @onclick="JoinCloud">Join the invited workspace</button>
-            <p class="instruction">After opening metadata in a different browser, attach the original photos again. Their source fingerprints must match. Required image evidence remains incomplete until actual local pixels are bound; a remote completion label cannot bypass that check.</p>
+            <p class="instruction">Attach the original photos after opening on another device. Required photos remain missing until the matching files are attached.</p>
         </section>
     }
     else
@@ -204,15 +205,16 @@
         <section class="help">
             <h2>From plan to handoff</h2>
             <ol><li>Choose one of eight checklists or define your own confirmations, measurements, and photo fields.</li><li>Create an order using only labels you choose. Customer and reviewer labels are optional.</li><li>Start work, enter measurements, and attach actual images. Outstanding items update after committed changes.</li><li>Request review. Missing confirmations, invalid numbers, out-of-range values, or missing photo bytes block the transition.</li><li>Complete the reviewed order or reopen it for changes. Export a filled HTML report or print it.</li></ol>
-            <h2>Local data and offline use</h2><p>The project is stored in browser IndexedDB, with a small-project localStorage fallback if necessary. Changes save when a field is committed. Use Save now before leaving and keep JSON exports as portable backups. A full project may contain up to 30 orders, 50 checklists, and 25 MB of data.</p>
-            <p>Once the app is loaded, the local workflow does not need the network. Prepare offline reopening caches this product and its browser runtime after the published entry point is available. The status message reports whether that cache was actually prepared.</p>
-            <h2>Photos and reporting</h2><p>Local JSON and HTML reports embed selected image data. Source-file SHA-256 fingerprints support checking a future reattachment; they do not establish when or where a photo was taken. Browser decoding validates selected and imported images. Metadata without image data does not satisfy photo evidence.</p>
+            <h2>Local data and offline use</h2><p>Changes save on this device when you finish editing a field. Use Save now before leaving and export a backup. Project limits: 30 orders, 50 checklists and 25 MB.</p>
+            <p>Prepare offline reopening before disconnecting. Check its result message to confirm that the page was saved for offline use.</p>
+            <h2>Photos and reporting</h2><p>Project files and reports can contain photos. File matching does not prove when or where a photo was taken.</p>
             <p>Downloading a report with outstanding items produces a clearly marked draft and an unresolved-items list. Local review is self-reported; this tool does not issue professional certifications or authenticated signatures.</p>
-            <h2>Opening a project</h2><p>Open project JSON validates the entire file and decodes all embedded images before replacing your current workspace. Export your current project first. No account or API key is needed for these local actions.</p>
+            <h2>Opening a project</h2><p>Open project JSON validates the entire file and decodes all embedded images before replacing your current workspace. Export your current project first.</p>
         </section>
     }
 </main>
 
+</PageSurface>
 @code {
     const bool IsLogEnabled = true;
     FieldWorkWorkspace Workspace = FieldWorkExamples.CreateWorkspace();

@@ -1,0 +1,23 @@
+.page-surface{--surface-bg:light-dark(#f5f7fa,#161d27);--surface-panel:light-dark(#ffffff,#202b39);--surface-ink:light-dark(#233247,#e8eef7);--surface-muted:light-dark(#526276,#bccadb);--surface-line:light-dark(#b3c0d0,#5f728b);--surface-field:light-dark(#ffffff,#111a26);--surface-button:light-dark(#36567e,#3b5679);--surface-link:light-dark(#244e85,#bbd5f7);background:var(--surface-bg);color:var(--surface-ink);color-scheme:inherit;min-height:100vh}
+.page-surface ::deep :is(.reading-page,.jam-page,.debate-page,.duel-page,.relay-page,.academy-page,.tournament-page,.team-page,.canvas-page,.museum-page,.capsule-page,.market-page,.membership,.catalog-studio,.field-work,.procedure-exchange,.review-room,.shift-cover,.signal-foundry){background:var(--surface-bg);color:var(--surface-ink);color-scheme:inherit;font-family:system-ui,sans-serif;line-height:1.6}
+.page-surface ::deep header{background:transparent;color:var(--surface-ink);border-bottom:1px solid var(--surface-line);padding-top:1.25rem;padding-bottom:1.25rem}
+.page-surface ::deep header h1{font-size:1.8rem;line-height:1.25;letter-spacing:normal;font-family:inherit;font-weight:650;margin:.35rem 0 .5rem}
+.page-surface ::deep header p{max-width:65ch;font-size:1rem;margin:.4rem 0}
+.page-surface ::deep :is(h1,h2,h3,h4,h5,h6,label){color:var(--surface-ink)}
+.page-surface ::deep :is(section,aside,article,.panel,.reader,.author-panel,.arena,.placeholder,.project-tools,.control-panel,.setup,.guide,.question-card,.handoff,.finish,.enroll,.asset-panel,.media-panel,.review-panel,.writing-panel,.run-panel,.discovery-panel,.mission-list,.examples,.explanation,.privacy-bar,.example-notice){background-color:var(--surface-panel);color:var(--surface-ink);border-color:var(--surface-line)}
+.page-surface ::deep :is(input,select,textarea){background-color:var(--surface-field);color:var(--surface-ink);border-color:var(--surface-line);border-radius:5px;line-height:1.5}
+.page-surface ::deep button:not(.pixel):not(.cell):not(.palette button):not(.pixels button){background-color:var(--surface-button);color:#fff;border-color:var(--surface-line);border-radius:5px}
+.page-surface ::deep button:disabled:not(.pixel):not(.cell):not(.palette button):not(.pixels button){background-color:var(--surface-panel);color:var(--surface-muted);opacity:1}
+.page-surface ::deep :is(button.quiet,button.secondary,.course-link,.session,.public-choice,.task-draft,.poll-link,.example-button){background-color:var(--surface-panel);color:var(--surface-ink)}
+.page-surface ::deep :is(button.selected,button.active,button[aria-pressed="true"]){outline:2px solid var(--surface-link);outline-offset:2px}
+.page-surface ::deep a{color:var(--surface-link)}
+.page-surface ::deep :is(.small,small,.help,.eyebrow,.kicker){color:var(--surface-muted);opacity:1;font-size:.875rem}
+.page-surface ::deep :is(.status,.notice,.warning,.read-only){background-color:var(--surface-panel);color:var(--surface-ink);border-color:var(--surface-line)}
+.page-surface ::deep :is(.error,.danger){color:light-dark(#872d3b,#ffbdc8)}
+.page-surface ::deep button.danger{background-color:light-dark(#f8e9eb,#492b36);color:light-dark(#872d3b,#ffbdc8)}
+.page-surface ::deep footer{background:transparent;color:var(--surface-muted);border-color:var(--surface-line)}
+.page-surface ::deep details{margin:1rem 0}
+.page-surface ::deep summary{color:var(--surface-ink);cursor:pointer;font-weight:550;line-height:1.5}
+.page-surface ::deep .page-help>p{max-width:75ch;font-size:.9rem}
+.page-surface ::deep :is(input,textarea)::placeholder{color:var(--surface-muted);opacity:1}
+@media(max-width:600px){.page-surface ::deep header h1{font-size:1.6rem}}

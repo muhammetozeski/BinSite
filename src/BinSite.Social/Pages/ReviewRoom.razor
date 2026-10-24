@@ -5,17 +5,18 @@
 @inject NavigationManager Navigation
 @inject ILogger<ReviewRoom> Logger
 <PageTitle>Client Review Room — Versions, precise notes and delivery</PageTitle>
+<PageSurface>
 <div class="review-room">
-<header><div><span class="eyebrow">LOCAL MEDIA · PRECISE REVIEW · PORTABLE RECORDS</span><h1>Client Review Room</h1><p>Bring an image or video, connect feedback to its exact version, and leave with a clear editing list and delivery record.</p></div><a href="/">All products</a></header>
-<div class="privacy-bar"><strong>Your media stays in this browser.</strong> No media is uploaded. Local project JSON contains filenames, fingerprints, notes and decisions. Export it before closing, or explicitly save that JSON to an optional cloud workspace.</div>
+<header><div><h1>Client Review Room</h1><p>Review images and videos with notes tied to the right version.</p></div><a href="/">All products</a></header>
+<div class="privacy-bar">Files stay on this device. Save a project before closing.</div>
 @if (Status.Length > 0) { <div class="status" role="status" data-error="@HasError.ToString().ToLowerInvariant()">@Status</div> }
-@if (Busy) { <p class="working" role="status">Working with the selected files or project. Large files need time to fingerprint.</p> }
+@if (Busy) { <p class="working" role="status">Opening your files. Large files may take longer.</p> }
 <main>
 <section class="project-tools" aria-label="Project and exports">
     <div class="heading-fields"><label>Project title<input @bind="TitleDraft" maxlength="140" disabled="@(!CanEdit || Busy)"></label><label>Delivery brief<textarea @bind="BriefDraft" maxlength="3000" rows="2" disabled="@(!CanEdit || Busy)"></textarea></label><button disabled="@(!CanEdit || Busy)" @onclick="SaveHeadingAsync">Save heading</button></div>
-    <div class="tool-row"><button @onclick="NewProjectAsync" disabled="@Busy">New project</button><button @onclick="SaveJsonAsync" disabled="@Busy">Download project JSON</button><label class="file-control">Restore project JSON<input type="file" accept=".json,application/json" @ref="RestoreInput" @onchange="RestoreAsync" disabled="@Busy"></label><button @onclick="ExportReportAsync" disabled="@(Busy || Project.Assets.Count == 0)">Export HTML report</button><button @onclick="ExportWorklistAsync" disabled="@(Busy || Project.Assets.Count == 0)">Export open editing list CSV</button></div>
-    <p class="small">A downloaded JSON project does not include media files. Reports contain review records, not embedded media. Decisions are records entered in the project, not authenticated customer signatures. Anyone holding a local project copy can edit that copy.</p>
-    @if (Project.IsEditorialExample) { <p class="example-notice"><strong>Editorial demonstration.</strong> The two images and all example comments were authored for this product. No customer activity is represented.</p> }
+    <details><summary>Save, restore and export</summary><div class="tool-row"><button @onclick="NewProjectAsync" disabled="@Busy">New project</button><button @onclick="SaveJsonAsync" disabled="@Busy">Download project JSON</button><label class="file-control">Restore project JSON<input type="file" accept=".json,application/json" @ref="RestoreInput" @onchange="RestoreAsync" disabled="@Busy"></label><button @onclick="ExportReportAsync" disabled="@(Busy || Project.Assets.Count == 0)">Export HTML report</button><button @onclick="ExportWorklistAsync" disabled="@(Busy || Project.Assets.Count == 0)">Export open editing list CSV</button></div>
+    <p class="small">A downloaded JSON project does not include media files. Reports contain review records, not embedded media. Decisions are records entered in the project, not authenticated customer signatures. Anyone holding a local project copy can edit that copy.</p></details>
+    @if (Project.IsEditorialExample) { <p class="example-notice"><strong>Example project.</strong> These images and comments are examples, not customer activity.</p> }
 </section>
 <div class="workspace-grid">
 <aside class="asset-panel">
@@ -24,7 +25,7 @@
     <label class="file-control">Reconnect saved media<input type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif,video/mp4,video/webm,video/ogg" @ref="ReconnectInput" @onchange="ReconnectAsync" disabled="@Busy"></label>
     <p class="small">Up to eight files per selection; 128 MB per file. Reconnection requires the same full SHA-256 fingerprint and byte count. A renamed file can match; a changed file cannot.</p>
     @if (ReconnectMessages.Count > 0) { <ul class="reconnect-results">@foreach (var message in ReconnectMessages) { <li>@message</li> }</ul> }
-    @if (Project.Assets.Count == 0) { <p class="empty">No delivery files yet. Select your own media or open an editorial example below.</p> }
+    @if (Project.Assets.Count == 0) { <p class="empty">No delivery files yet. Select media or open an example below.</p> }
     @foreach (var asset in Project.Assets)
     {
         <section class="asset-group"><h3>@asset.Title <small>@asset.Kind</small></h3>
@@ -34,7 +35,7 @@
         }
         </section>
     }
-    <details class="examples"><summary>Three original editorial review packages</summary><p class="small">Each creates two actual PNG images locally, with clearly labelled editorial comments and a revision comparison. Nothing is fetched from an image service.</p>@foreach (var example in ReviewRoomExamples.All) { <button class="example-button" @onclick="() => LoadExampleAsync(example.Id)" disabled="@Busy"><strong>@example.Title</strong><span>@example.Brief</span></button> }</details>
+    <details class="examples"><summary>Example projects</summary><p class="small">Each example includes two images and sample review notes.</p>@foreach (var example in ReviewRoomExamples.All) { <button class="example-button" @onclick="() => LoadExampleAsync(example.Id)" disabled="@Busy"><strong>@example.Title</strong><span>@example.Brief</span></button> }</details>
 </aside>
 <section class="review-panel">
     @if (SelectedAsset is not null && SelectedVersion is not null)
@@ -64,7 +65,7 @@
         @if (!VisibleComments().Any()) { <p class="empty">No comments match this version and filter.</p> }
         @foreach (var comment in VisibleComments())
         {
-            <article class="comment @(comment.Resolved ? "resolved" : "open") @(FocusedCommentId == comment.Id ? "focused" : "")" @key="comment.Id"><div class="comment-meta"><strong>#@CommentNumber(comment.Id) · @comment.Category</strong><span>@(comment.Priority == ReviewCommentPriority.Blocking ? "Blocking change" : "Note") · @(comment.Resolved ? "Resolved" : "Open")</span></div><p>@comment.Body</p><p class="small">@ReviewRoomRules.AnchorLabel(comment) · @comment.CreatedAt.ToLocalTime().ToString("g") · @(comment.Source == ReviewEntrySource.EditorialExample ? "Editorial example" : "Project entry")</p><div class="tool-row"><button class="secondary" @onclick="() => FocusCommentAsync(comment)" disabled="@Busy">Show location / frame</button>@if (CanEdit) { <button class="secondary" @onclick="() => ToggleResolvedAsync(comment)" disabled="@Busy">@(comment.Resolved ? "Reopen comment" : "Resolve comment")</button> }</div></article>
+            <article class="comment @(comment.Resolved ? "resolved" : "open") @(FocusedCommentId == comment.Id ? "focused" : "")" @key="comment.Id"><div class="comment-meta"><strong>#@CommentNumber(comment.Id) · @comment.Category</strong><span>@(comment.Priority == ReviewCommentPriority.Blocking ? "Blocking change" : "Note") · @(comment.Resolved ? "Resolved" : "Open")</span></div><p>@comment.Body</p><p class="small">@ReviewRoomRules.AnchorLabel(comment) · @comment.CreatedAt.ToLocalTime().ToString("g") · @(comment.Source == ReviewEntrySource.EditorialExample ? "Example" : "Project entry")</p><div class="tool-row"><button class="secondary" @onclick="() => FocusCommentAsync(comment)" disabled="@Busy">Show location / frame</button>@if (CanEdit) { <button class="secondary" @onclick="() => ToggleResolvedAsync(comment)" disabled="@Busy">@(comment.Resolved ? "Reopen comment" : "Resolve comment")</button> }</div></article>
         }
         </section>
         <section class="decision-panel"><h3>Explicit review and delivery state</h3><p>@OpenBlockingCount open blocking comment(s). Approval is available only from ready-for-review after all blocking comments are resolved. Delivery is available only after approval.</p>
@@ -86,21 +87,22 @@
             </section>
         }
     }
-    else { <section class="empty"><h2>Select real media to begin.</h2><p>The preview will show your own local image or video. No placeholder upload or invented customer activity is used.</p></section> }
+    else { <section class="empty"><h2>Select real media to begin.</h2><p>Add an image or video to start reviewing.</p></section> }
 </section>
 </div>
-<details class="cloud-panel"><summary>Optional real-account workspace sync and invitations</summary><p>Local work needs no account or API key. Cloud actions use a real <a href="/uyelik/">Creator account</a>. Only metadata, fingerprints, comments and decisions are saved. <strong>Every invited viewer or editor can read all shared JSON notes.</strong> Media files stay local; recipients must reconnect matching originals. There are no per-comment private notes.</p>
-    <label>Cloud workspace label (1–100 characters)<input @bind="CloudLabel" maxlength="100" disabled="@(Busy || !CanEdit)"></label><p class="small">This short server label is separate from the full project title inside your JSON. The full local title is never silently shortened.</p>
-    @if (!string.IsNullOrWhiteSpace(InviteToken)) { <section class="invite"><p>This link contains a workspace invitation. Sign in to your actual Creator account, then accept it.</p><button @onclick="AcceptInviteAsync" disabled="@Busy">Accept invitation</button></section> }
+<details class="cloud-panel"><summary>Online saves and invitations</summary><p>Save online with your <a href="/uyelik/">Creator account</a>. Only metadata, fingerprints, comments and decisions are saved. <strong>Every invited viewer or editor can read all shared JSON notes.</strong> Media files stay local; recipients must reconnect matching originals. There are no per-comment private notes.</p>
+    <label>Cloud workspace label (1–100 characters)<input @bind="CloudLabel" maxlength="100" disabled="@(Busy || !CanEdit)"></label><p class="small">Use a short name for this saved copy. Your project title stays unchanged.</p>
+    @if (!string.IsNullOrWhiteSpace(InviteToken)) { <section class="invite"><p>This link contains a workspace invitation. Sign in to your account, then accept it.</p><button @onclick="AcceptInviteAsync" disabled="@Busy">Accept invitation</button></section> }
     <div class="tool-row"><button @onclick="LoadCloudListAsync" disabled="@Busy">List my real workspaces</button><button @onclick="SaveCloudAsync" disabled="@(Busy || (!CanEdit && CloudWorkspace is not null))">@(CloudWorkspace is null ? "Create cloud copy of this JSON" : "Save expected cloud revision")</button>@if (CloudWorkspace is not null) { <button class="secondary" @onclick="() => LoadCloudAsync(CloudWorkspace.Id)" disabled="@Busy">Reload cloud record</button><button class="secondary" @onclick="MakeLocalCopy" disabled="@Busy">Work on a local copy</button> }</div>
-    @if (CloudAccount is not null) { <p class="small">Server quota: @CloudAccount.UsedProjects / @CloudAccount.ProjectLimit shared project slots · @(CloudAccount.Premium ? "Active membership" : "Free account"). Workspace payload limits are enforced by the server.</p> }
-    @if (CloudWorkspace is not null) { <p><strong>Connected role: @CloudWorkspace.Role</strong> · server revision @CloudWorkspace.Revision</p>@if (CloudWorkspace.Role == "owner") { <div class="tool-row"><label>Invitation role<select @bind="InviteRole"><option value="viewer">Viewer — read shared JSON</option><option value="editor">Editor — update shared JSON</option></select></label><button @onclick="CreateInviteAsync" disabled="@Busy">Create real invitation</button></div> } }
-    @if (InviteLink is not null) { <label>Invitation link<input readonly value="@InviteLink"></label><p class="small">Generated by the server; expires @InviteExpiry. Share it only with the intended person.</p> }
+    @if (CloudAccount is not null) { <p class="small">Saved projects: @CloudAccount.UsedProjects / @CloudAccount.ProjectLimit shared project slots · @(CloudAccount.Premium ? "Active membership" : "Free account"). File-size limits apply.</p> }
+    @if (CloudWorkspace is not null) { <p><strong>Connected role: @CloudWorkspace.Role</strong> · version @CloudWorkspace.Revision</p>@if (CloudWorkspace.Role == "owner") { <div class="tool-row"><label>Invitation role<select @bind="InviteRole"><option value="viewer">Viewer — read shared JSON</option><option value="editor">Editor — update shared JSON</option></select></label><button @onclick="CreateInviteAsync" disabled="@Busy">Create real invitation</button></div> } }
+    @if (InviteLink is not null) { <label>Invitation link<input readonly value="@InviteLink"></label><p class="small">Expires @InviteExpiry. Share it only with the intended person.</p> }
     @foreach (var workspace in CloudItems.Where(item => item.Kind == "review")) { <button class="cloud-workspace" @onclick="() => LoadCloudAsync(workspace.Id)" disabled="@Busy"><strong>@workspace.Title</strong><span>@workspace.Role · revision @workspace.Revision</span></button> }
 </details>
 </main>
-<footer><p>Supported local workflow: select media → add versions → anchor comments → resolve and compare → record a decision → export JSON, HTML report or editing CSV. Keep your original media and your project file. Browser-session file handles are not permanent storage.</p></footer>
+<footer><details class="page-help"><summary>Privacy and safety</summary><p>Keep your original media and download a project backup before closing.</p></details></footer>
 </div>
+</PageSurface>
 @code {
     [SupplyParameterFromQuery(Name = "invite")] public string? InviteToken { get; set; }
     ReviewProject Project = ReviewRoomRules.Create();
@@ -264,7 +266,7 @@
     /// <summary>Downloads formula-safe CSV rows for actual open editing work.</summary>
     Task ExportWorklistAsync() => RunAsync(async () => await (await ModuleAsync()).InvokeVoidAsync("download", $"editing-work-{Project.Id}.csv", ReviewRoomExports.Worklist(Project), "text/csv;charset=utf-8"), "Open editing list CSV download started.");
     /// <summary>Generates real example media locally before adding clearly labelled editorial review records.</summary>
-    Task LoadExampleAsync(string id) => RunAsync(async () => { if (!await ConfirmReplaceAsync()) return; var result = await (await ModuleAsync()).InvokeAsync<ReviewPickResult>("createExample", id); CheckPick(result); var example = ReviewRoomExamples.Create(id, result.Files); await ReplaceProjectAsync(example, true); CloudWorkspace = null; for (var index = 0; index < result.Files.Count; index++) Bind(example.Assets[0].Versions[index].Id, result.Files[index]); Status = "Editorial package opened with two real locally generated images. These comments are authored examples, not customer activity."; });
+    Task LoadExampleAsync(string id) => RunAsync(async () => { if (!await ConfirmReplaceAsync()) return; var result = await (await ModuleAsync()).InvokeAsync<ReviewPickResult>("createExample", id); CheckPick(result); var example = ReviewRoomExamples.Create(id, result.Files); await ReplaceProjectAsync(example, true); CloudWorkspace = null; for (var index = 0; index < result.Files.Count; index++) Bind(example.Assets[0].Versions[index].Id, result.Files[index]); Status = "Example opened with two images and sample comments."; });
 
     /// <summary>Lists actual account-authorized cloud records only after an explicit user action.</summary>
     Task LoadCloudListAsync() => RunAsync(async () => { var list = await Cloud.ListAsync(); CloudItems = list.Workspaces; CloudAccount = list.Account; }, "Real workspace list loaded from the server.");

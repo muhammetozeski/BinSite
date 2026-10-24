@@ -8,23 +8,24 @@
 @inject NavigationManager Navigation
 @inject ILogger<SignalFoundry> Logger
 <PageTitle>Signal Foundry — Experiments before guesses</PageTitle>
+<PageSurface>
 
 <div class="signal-foundry">
-    <header><h1>Signal Foundry</h1><p>Learn an unfamiliar stamp language. Choose experiments, reconstruct a new message, then teach a better version to someone else.</p></header>
+    <header><h1>Signal Foundry</h1><p>Work out what the stamps do, then rebuild the hidden board.</p></header>
     <p class="status @(IsError ? "error" : "")" role="status" aria-live="polite">@Status</p>
     @if (StorageWarning.Length > 0) { <p class="warning">@StorageWarning</p> }
-    <nav aria-label="Product mode"><button class="@(!ShowBuilder ? "selected" : "")" @onclick="() => ShowBuilder = false" disabled="@Busy">Play and investigate</button><button class="@(ShowBuilder ? "selected" : "")" @onclick="() => ShowBuilder = true" disabled="@Busy">Build a challenge</button><button @onclick="ResumeLatestAsync" disabled="@(Busy || !LatestResumeAvailable)">Resume latest browser attempt</button></nav>
+    <nav aria-label="Product mode"><button class="@(!ShowBuilder ? "selected" : "")" @onclick="() => ShowBuilder = false" disabled="@Busy">Play and investigate</button><button class="@(ShowBuilder ? "selected" : "")" @onclick="() => ShowBuilder = true" disabled="@Busy">Build a challenge</button><button @onclick="ResumeLatestAsync" disabled="@(Busy || !LatestResumeAvailable)">Resume latest attempt</button></nav>
     <details class="rules"><summary>How to play · the eight possible rules</summary><p>Each board has nine cells: dot = empty, R = red, B = blue and Y = yellow. Paint with the four brush buttons; each cell also carries its letter. Every stamp A–D has a different rule, chosen from this menu. Apply programs left to right. Geometry wraps only when the operation says so.</p><ol>@foreach (var name in SignalFoundryEngine.OperationNames) { <li>@name</li> }</ol><p>Worked examples are free. Each requested experiment spends one query, even when its answer teaches nothing new. A successful deduction needs one possible final board; it does not need one fully identified language. If the evidence allows different final boards, any supported reconstruction is labelled consistent rather than uniquely deduced.</p></details>
     @if (!ShowBuilder)
     {
         <div class="game-layout">
-            <aside class="mission-list"><h2>24 editorial missions</h2><p>Original scenarios progress from single stamps to missing evidence and composed rules. No account is needed to play.</p><button @onclick="RefreshAsync" disabled="@Busy">Refresh missions</button>@foreach (var mission in Missions) { <button class="@(Current?.Id == mission.Id ? "selected" : "")" @onclick="() => OpenAsync(mission.Id)" disabled="@Busy"><span>@mission.Id.Replace("sf-", "")</span> @mission.Title</button> }</aside>
+            <aside class="mission-list"><h2>Missions</h2><p>Choose a mission to begin.</p><button @onclick="RefreshAsync" disabled="@Busy">Refresh missions</button>@foreach (var mission in Missions) { <button class="@(Current?.Id == mission.Id ? "selected" : "")" @onclick="() => OpenAsync(mission.Id)" disabled="@Busy"><span>@mission.Id.Replace("sf-", "")</span> @mission.Title</button> }</aside>
             <main>
-                @if (Current is null) { <section><h2>Choose a mission</h2><p>Editorial missions and shared attempts load from the game service. The local challenge builder works without an account and can be used while that service is unavailable.</p><button @onclick="() => ShowBuilder = true">Open local builder</button></section> }
+                @if (Current is null) { <section><h2>Choose a mission</h2><p>Choose a mission, or make your own in Build a challenge.</p><button @onclick="() => ShowBuilder = true">Open local builder</button></section> }
                 else
                 {
                     <section class="brief"><h2>@Current.Title</h2><p>@Current.Description</p><p class="small">@Current.AuthorAlias · @Current.EngineVersion @if (Current.ParentId is not null) { <span> · source <a href="@ChallengeUrl(Current.ParentId)">@Current.ParentId</a></span> }</p>
-                        @if (LocalPreview) { <p class="warning">Local author preview. The answer key is in this tab; this is not a server-verified attempt.</p> }
+                        @if (LocalPreview) { <p class="warning">Practice preview. No mission attempt is recorded.</p> }
                         <div class="toolbar"><button @onclick="StartAsync" disabled="@(Busy || Current.Withdrawn)">@(Attempt is null ? "Start this mission" : "Start a fresh attempt")</button><button @onclick="ResumeAsync" disabled="@(Busy || !CanResume || LocalPreview)">Resume this browser's saved attempt</button><button @onclick="ShareAsync" disabled="@(Busy || LocalPreview || !ModuleReady)">Copy challenge link</button></div>
                         @if (Current.Withdrawn) { <p class="warning">The author has withdrawn this challenge. New attempts are unavailable.</p> }
                         @if (ShareLink.Length > 0) { <label>Share link · the answer key is not in this address<input readonly value="@ShareLink" /></label> }
@@ -34,7 +35,7 @@
                     @if (Attempt is not null)
                     {
                         <div class="counts"><strong>@Attempt.QueriesRemaining experiments remaining</strong><span>@(Analysis?.CandidateCount ?? 0) consistent languages</span><span>@(Analysis?.TargetOutcomeCount ?? 0) possible final boards</span></div>
-                        @if (Attempt.ExpiresAt > 0) { <p class="small">Server attempt expires @DateTimeOffset.FromUnixTimeMilliseconds(Attempt.ExpiresAt).ToString("yyyy-MM-dd HH:mm 'UTC'"). Download your record before then. Guest attempts are tied to this browser's cookie.</p> }
+                        @if (Attempt.ExpiresAt > 0) { <p class="small">Attempt expires @DateTimeOffset.FromUnixTimeMilliseconds(Attempt.ExpiresAt).ToString("yyyy-MM-dd HH:mm 'UTC'"). Download your record before then. Keep a downloaded record.</p> }
                         <fieldset disabled="@(Busy || Attempt.Finished)">
                             <section class="experiment"><h2>1. Choose a calibration experiment</h2><p>Use an asymmetric, multicolor board to test a suspected rule. Empty or symmetric inputs can conceal differences.</p>@BrushControls()
                                 <div class="board-controls"><SignalFoundryBoard Cells="ProbeBoard" CellClicked="PaintProbe" Label="Editable experiment input" /><div><label>Stamps · A–D, at most eight<input @bind="ProbeProgram" @bind:after="SaveSessionAsync" maxlength="8" spellcheck="false" /></label><div class="toolbar"><button @onclick="UseTargetForProbe">Copy final input</button><button @onclick="ClearProbe">Clear cells</button></div><button @onclick="QueryAsync" disabled="@(Attempt.QueriesRemaining == 0)">Spend one experiment</button></div></div>
@@ -55,7 +56,7 @@
                     }
                     @if (!LocalPreview)
                     {
-                        <details class="moderation"><summary>Report a problem</summary><p>Reports require a real account. <a href="/uyelik/">Sign in or recover an account</a>.</p><label>Reason<select @bind="ReportReason"><option value="unsafe">Unsafe or abusive content</option><option value="spam">Spam</option><option value="rights">Rights or attribution concern</option><option value="privacy">Privacy concern</option></select></label><label>Details<textarea @bind="ReportNote" maxlength="900" rows="2"></textarea></label><button @onclick="ReportAsync" disabled="@Busy">Send report</button></details>
+                        <details class="moderation"><summary>Report a problem</summary><p>Sign in to report a problem. <a href="/uyelik/">Sign in or recover an account</a>.</p><label>Reason<select @bind="ReportReason"><option value="unsafe">Unsafe or abusive content</option><option value="spam">Spam</option><option value="rights">Rights or attribution concern</option><option value="privacy">Privacy concern</option></select></label><label>Details<textarea @bind="ReportNote" maxlength="900" rows="2"></textarea></label><button @onclick="ReportAsync" disabled="@Busy">Send report</button></details>
                         @if (Current.Owned && !Current.Withdrawn) { <details class="moderation"><summary>Author controls</summary><p>Withdrawal stops new attempts. It does not rewrite previously published source versions.</p><label class="inline"><input type="checkbox" @bind="ConfirmWithdraw" /> Withdraw my challenge</label><button @onclick="WithdrawAsync" disabled="@(Busy || !ConfirmWithdraw)">Withdraw publication</button></details> }
                     }
                 }
@@ -75,13 +76,14 @@
                 @if (BuilderIssue.Length > 0) { <p class="error" role="alert">@BuilderIssue</p> }
                 else { <p class="analysis">These teaching examples leave <strong>@BuilderAnalysis?.CandidateCount languages</strong> and <strong>@BuilderAnalysis?.TargetOutcomeCount distinct final boards</strong>. @if (BuilderAnalysis?.TargetOutcomeCount == 1) { <span>The final is already identifiable without extra experiments.</span> } else { <span>It is still ambiguous; players can use your query allowance, and supported alternatives are never falsely failed.</span> }</p> }
                 <div class="toolbar"><button @onclick="PreviewBuilder" disabled="@(BuilderIssue.Length > 0)">Play a local preview</button><button @onclick="SaveBuilderAsync" disabled="@(!ModuleReady || BuilderIssue.Length > 0)">Save draft in this browser</button><button @onclick="RestoreBuilderAsync" disabled="@(!ModuleReady || !SavedDraftAvailable)">Restore saved browser draft</button><button @onclick="ExportBuilderAsync" disabled="@(!ModuleReady || BuilderIssue.Length > 0)">Download author JSON</button><label>Open author JSON<input type="file" accept=".json,application/json" @ref="ProjectInput" @onchange="ImportBuilderAsync" disabled="@(!ModuleReady)" /></label><button @onclick="UndoBuilder" disabled="@(PreviousBuilder is null)">Undo last draft replacement</button></div>
-                <section class="publish"><h3>Explicit public publication</h3><p>Publishing sends your title, alias, scenario, rules and boards to the service. Public versions must allow attributed teaching forks; enable reuse above. The normal player API hides the key until finish; this is a reasoning game, not an anti-cheat contest. The source repository is public. A real account is needed only to publish; guests can solve. <a href="/uyelik/">Create or recover an account</a>.</p><label class="inline"><input type="checkbox" @bind="ConfirmPublish" /> Publish this immutable version publicly</label><button @onclick="PublishAsync" disabled="@(!ConfirmPublish || !Builder.AllowReuse || BuilderIssue.Length > 0)">Publish challenge and get link</button></section>
+                <section class="publish"><h3>Explicit public publication</h3><p>Publishing sends your title, alias, scenario, rules and boards to the service. Public versions must allow attributed teaching forks; enable reuse above. Players see the key after finishing. A real account is needed only to publish; guests can solve. <a href="/uyelik/">Create or recover an account</a>.</p><label class="inline"><input type="checkbox" @bind="ConfirmPublish" /> Publish this immutable version publicly</label><button @onclick="PublishAsync" disabled="@(!ConfirmPublish || !Builder.AllowReuse || BuilderIssue.Length > 0)">Publish challenge and get link</button></section>
             </fieldset>
         </main>
     }
-    <footer><p>Local author previews are separate from server attempts. Guest attempts expire after seven days and depend on this browser's cookie; keep downloaded records. No fabricated players, automatic language guesses or contest prizes are used.</p></footer>
+    <footer><details class="page-help"><summary>Privacy and safety</summary><p>Guest attempts expire after seven days. Keep a downloaded record; clearing saved site data may lose access.</p></details></footer>
 </div>
 
+</PageSurface>
 @code {
     [SupplyParameterFromQuery(Name = "challenge")] public string? ChallengeId { get; set; }
     SignalFoundryClient Client = default!;
@@ -142,7 +144,7 @@
         }
         finally { Busy = false; }
     }
-    Task RefreshAsync() => RunAsync(async () => { Missions = await Client.ListAsync(); Status = $"Loaded {Missions.Count} editorial missions."; });
+    Task RefreshAsync() => RunAsync(async () => { Missions = await Client.ListAsync(); Status = $"Loaded {Missions.Count} missions."; });
     Task OpenAsync(string id) => RunAsync(async () => { var challenge = await Client.ReadAsync(id); await LoadAsync(challenge); });
     async Task LoadAsync(SignalChallenge challenge)
     {
