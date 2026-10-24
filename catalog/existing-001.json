@@ -1,0 +1,4 @@
+[
+  {"id":14,"name":"Günlük Planlayıcı","slug":"gunluk-planlayici","category":"Araç","stage":1,"description":"Görevlerini tarih ve önceliğe göre düzenle; notlarını tarayıcıda sakla ve yedekle.","features":["Görev ekleme, düzenleme ve filtreleme","Otomatik kaydedilen notlar","JSON yedek alma ve geri yükleme"],"businessHypothesis":"Ekip çalışma alanları ve gelişmiş raporlar için ayrı ücretli sürüm değerlendirilebilir; mevcut sürüm ücretsizdir."},
+  {"id":15,"name":"Tarif Defteri","slug":"tarif-defteri","category":"Yaşam","stage":1,"description":"Sekiz ayrıntılı tariften menü oluştur; porsiyonları ayarla ve tek alışveriş listesi hazırla.","features":["Malzeme, öğün ve süreyle arama","Porsiyonlara göre malzeme hesabı","Birleşen alışveriş listesi ve favoriler"],"businessHypothesis":"Açıkça belirtilen sponsorlu tarif koleksiyonları ve uygun satış ortaklığı bağlantıları değerlendirilebilir; mevcut tarifler editoryaldir."}
+]
