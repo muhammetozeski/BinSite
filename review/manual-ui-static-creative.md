@@ -221,3 +221,7 @@ This is a fresh page-by-page reading of complete authored HTML, CSS and JavaScri
 ## Verification boundary
 
 All 27 complete authored source files were read manually. No text-search or keyword-report step was used to discover findings. The later source edits were explicit replacements chosen from that reading. JavaScript from the known line ranges above was compiled with Node's `vm.Script`: 27 of 27 passed. This confirms syntax; it is not a claim that browser actions, audio, downloads or printing were exercised during this review. No graphical control was clicked.
+
+## Palette and Help follow-up
+
+A later shared-appearance source review identified that neutral white HTML swatches could be recolored. Pixel Loop's actual ink palette alone now has `data-appearance-preserve`; its normal controls/text remain within the contrast correction. Canvas/SVG artwork already has a separate boundary. Audio Postcard's existing paper marker remains. Audio Workshop's remaining sample-bit-depth/sample-rate explanation was replaced with the useful output instruction: “Save audio combines the clips in the order shown.” These are scoped follow-ups, not a new automated phrase scan.
