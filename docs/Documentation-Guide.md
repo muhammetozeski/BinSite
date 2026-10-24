@@ -1,6 +1,6 @@
 # Writing and maintaining project knowledge
 
-Read the index before researching a topic. Update the existing source of truth when its behavior changes; avoid parallel descriptions. Use English for project documentation and complete Turkish for product copy.
+Read the index before researching a topic. Update the existing source of truth when its behavior changes; avoid parallel descriptions. Use English for project documentation, product interfaces and bundled content. Conversation with the user remains Turkish.
 
 Document learned implementation contracts, relationships, verified deployment methods, and diagnosed failures. State whether the support is source inspection, official provider documentation, a local check, or a production observation. Do not turn an unexecuted proposal into a working method. Include the conditions that affect the conclusion and the real file/function or source URL supporting it.
 

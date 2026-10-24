@@ -55,7 +55,7 @@ The social agent proposed Story Tree as the strongest current social candidate: 
 
 Useful future measurements are shared-link visit → paragraph read → continuation published → branch link copied. For Idea Duel they are shared-link visit → valid vote → new poll created. For Time Capsule they are creation → link saved → revisit after unlock. These are proposed measurement definitions, not collected metrics, revenue evidence or user counts.
 
-Any future payment entitlement must be granted server-side only after a verified payment-provider webhook, with an idempotent event ledger and a durable order-to-customer binding. A browser success redirect must never grant access. Paid sponsorship must be clearly labelled and must not alter public poll results. Commerce implementation and account recovery are owned by the root integration, outside these anonymous content identities.
+Payment entitlement is granted server-side only after a verified payment-provider webhook, with an idempotent event ledger and a durable order-to-customer binding. A browser success redirect never grants access. Display advertisements are labelled and kept separate from poll controls and results. Commerce implementation and account recovery use separate identities from anonymous social contributions; see Revenue-Architecture.md.
 
 ## English-only package update
 

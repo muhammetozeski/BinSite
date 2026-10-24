@@ -24,7 +24,7 @@ Decorative shadows, rounded containers, and glows were removed. The surrounding 
 
 ## Local records and revenue
 
-All records are browser-local. Losing browser storage can lose progress. No game claims actual revenue, concurrent players, social voting, or health benefits. `catalog/games-001.json` records distinct revenue hypotheses: digital expansions, sponsored themes/events, optional ad-free memberships, and supporter models. These are unverified proposals.
+All records are browser-local. Losing browser storage can lose progress. No game claims actual revenue, concurrent players, social voting, or health benefits. Catalog revenue hypotheses are unverified proposals. Display advertising uses an approved publisher network such as AdSense; optional private project storage is a separate paid service. Direct-sponsor offers were removed after the user's correction.
 
 ## Validation
 

@@ -1,0 +1,9 @@
+# English-only product copy without losing stored progress
+
+All product documents, bundled editorial content, catalog entries and server-facing user errors are English. `UiText.Text` preserves the earlier two-string component call contract but always returns the English value; the visible language switch was removed. User-submitted database content is not rewritten as part of translating the product.
+
+Recipe shopping checks were previously keyed by ingredient name and unit, for example `Soğan|adet`. Translating the labels to `Onion|pcs` would otherwise discard those checks when the list is filtered against active ingredients. `migrateShoppingKey` maps the known legacy ingredient and unit identifiers before deduplication. Local checks passed onion, garlic and water migration, unchanged English-key idempotency, and a recipe search example that actually returns one result. The storage key remains unchanged.
+
+The planner and word-game storage namespaces also remain unchanged. The games agent exercised existing story-decision migration and the English word inventory rather than deleting progress. Compiler and script checks are distinct from browser evidence: the live membership page was observed rendering its English headings, account controls, plan name and monthly price, and the public directory returned 66 entries with an English document and English categories.
+
+The membership page once declared both `/uyelik` and `/uyelik/`. A real browser log showed Blazor treating them as the same ambiguous route, preventing the Router from opening any product. Removing the duplicate fixed the startup; a subsequent real browser observation showed the account page rendered. `scripts/check-routes.mjs` now checks normalized case and trailing slashes before compilation in the publication workflow. Its duplicate fixture failed and unique/bin-obj-excluded fixtures passed.
