@@ -3,7 +3,7 @@
     <summary>@T("Uygunsuz içeriği raporla", "Report inappropriate content")</summary>
     <form @onsubmit="SubmitAsync" @onsubmit:preventDefault>
         <label>@T("Sorun nedir?", "What is the issue?")<textarea @bind="Reason" required minlength="8" maxlength="300"></textarea></label>
-        <p>@T("Gerekçe sunucuda saklanır. Kişisel bilgi yazma. Aynı ağ adresinden gelen raporlar tek sayılır.", "The reason is stored on the server. Do not include personal information. Reports from the same network address count once.")</p>
+        <p>Describe the problem without including personal information.</p>
         <button type="submit" disabled="@Busy">@T("Raporu gönder", "Send report")</button>
     </form>
     @if (!string.IsNullOrEmpty(Status)) { <p role="status">@Status</p> }
