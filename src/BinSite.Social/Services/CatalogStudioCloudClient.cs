@@ -12,9 +12,9 @@ public sealed class CatalogStudioCloudClient(SocialApi api)
     public Task<CatalogStudioCloudDirectory> ListAsync() => api.GetAsync<CatalogStudioCloudDirectory>(Prefix);
 
     /// <summary>Creates one metadata-only catalog under the account's server-enforced shared quota.</summary>
-    public async Task<CatalogStudioCloudWorkspace> CreateAsync(CatalogStudioProject project)
+    public async Task<CatalogStudioCloudWorkspace> CreateAsync(CatalogStudioProject project, string? workspaceTitle = null)
     {
-        var response = await api.PostAsync<CatalogStudioCloudEnvelope>(Prefix, new { kind = "catalog", title = project.Title, body = Metadata(project) });
+        var response = await api.PostAsync<CatalogStudioCloudEnvelope>(Prefix, new { kind = "catalog", title = Label(workspaceTitle ?? project.Title), body = Metadata(project) });
         return RequireCatalog(response.Workspace);
     }
 
@@ -26,10 +26,10 @@ public sealed class CatalogStudioCloudClient(SocialApi api)
     }
 
     /// <summary>Sends the known revision without retries; a stale revision preserves the caller's local changes.</summary>
-    public async Task<CatalogStudioCloudWorkspace> SaveAsync(CatalogStudioCloudWorkspace workspace, CatalogStudioProject project)
+    public async Task<CatalogStudioCloudWorkspace> SaveAsync(CatalogStudioCloudWorkspace workspace, CatalogStudioProject project, string? workspaceTitle = null)
     {
         if (workspace.Role is not ("owner" or "editor")) throw new InvalidOperationException("This workspace is read-only. Save a local project or create your own workspace.");
-        var response = await api.PostAsync<CatalogStudioCloudEnvelope>(Path(workspace.Id), new { revision = workspace.Revision, title = project.Title, body = Metadata(project) });
+        var response = await api.PostAsync<CatalogStudioCloudEnvelope>(Path(workspace.Id), new { revision = workspace.Revision, title = Label(workspaceTitle ?? workspace.Title), body = Metadata(project) });
         return RequireCatalog(response.Workspace);
     }
 
@@ -92,5 +92,13 @@ public sealed class CatalogStudioCloudClient(SocialApi api)
     {
         if (string.IsNullOrWhiteSpace(id) || id.Length > 100) throw new FormatException("The workspace identifier is invalid.");
         return Prefix + "/" + Uri.EscapeDataString(id);
+    }
+
+    /// <summary>Keeps the server's 100-character workspace label independent of the full document title.</summary>
+    static string Label(string title)
+    {
+        var label = title.Trim();
+        if (label.Length is < 1 or > 100) throw new FormatException("Use a private workspace label between 1 and 100 characters. The full catalog title remains inside the document.");
+        return label;
     }
 }

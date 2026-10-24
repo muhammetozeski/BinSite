@@ -39,6 +39,8 @@ The existing SocialApi communicates with /api/commerce/workspaces. Create and sa
 
 Real Membership accounts and server authorization are required for cloud actions. The server controls project/body/member limits and owner/editor/viewer roles. Viewers can edit a local copy but cannot save over the shared server workspace. Saves submit the known revision with no automatic mutation retry. A conflict preserves local edits.
 
+The private server workspace label is an explicit 1–100-character field separate from the full catalog document title. Create and update validate that label before sending; the full document title stays unchanged inside the metadata body.
+
 Invitations are owner-created viewer/editor tokens with expiry in Unix milliseconds. They are displayed for the user to copy; nothing is automatically sent to another person. Opening a remote catalog retains one Undo snapshot. Restoring JSON, loading the demo or undoing a workspace detaches the previous cloud binding to avoid silently targeting a different server project.
 
 ## Verification evidence and limits
@@ -48,5 +50,9 @@ The C# browser project built without warnings or errors after the local workflow
 Twenty-three checks exercised quoted/multiline CSV and source lines, separator/decimal rules, malformed structure and mapping, row errors, excluded duplicates, atomic bulk and image overflow, local project round trips, ambiguous image matching, arbitrary SVG rejection, encoded HTML, metadata stripping/rebinding, the real API path/payload, stale-revision propagation without duplicate retries and client viewer-write rejection. Adapter account/API transport is captured in memory, not a browser-to-production account session. The root owner separately verified the real workspace service.
 
 The final Release build also completed with zero warnings and zero errors. JavaScript file-bridge checks covered text size bounds, unsupported/oversized image rejection, input resets, filename sanitization and popup fallback. The script extracted from the actual generated HTML was executed against a mocked document: multi-term search, category/no-result states, decoding visible images before printing and refusing to print after a failed decode all passed. This does not establish native file-picker or printer behavior.
+
+Independent source review found that deduplicated category options used case-insensitive C# comparison while exported filtering originally compared case-sensitively. The export now case-folds both category values with the same English locale. A focused script check with Tools, tools and TOOLS preserved both matching products; a distinct Garden option still selected only its own product.
+
+A captured production adapter request reproduced the local-title/server-label length mismatch: a valid 120-character catalog title was originally sent to the API's 100-character label field. The separate label now preserves the entire document title. Three additional checks verified create separation, oversized-label rejection before transport, and save separation, bringing the isolated C# total to twenty-six. These final fixes do not change the shared API's limits; the root owner performs the next combined UI build.
 
 Native file-picker interaction, perceptual image fidelity, popup permission behavior and actual printer output are not established merely by a successful C# build.

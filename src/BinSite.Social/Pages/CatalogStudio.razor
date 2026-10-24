@@ -158,6 +158,8 @@
         <details class="panel cloud">
             <summary>Optional private cloud workspace · product metadata only</summary>
             <p>The local workflow above remains account-free. Cloud workspaces require your real <a href="/uyelik/">Membership account</a>. Shared members can read product data, filenames and image fingerprints; photo bytes are never uploaded here.</p>
+            <label>Private workspace label · 1–100 characters<input @bind="CloudLabel" maxlength="100" /></label>
+            <p class="small">This server label is separate from the full catalog title stored in the document.</p>
             <div class="toolbar"><button @onclick="LoadCloudListAsync">Load my private workspaces and limits</button><button @onclick="CreateCloudAsync">Create a private catalog workspace</button></div>
             @if (CloudNeedsAccount) { <p><a href="/uyelik/">Sign in, create an account or recover your account in Membership</a>, then return and load your workspaces.</p> }
             @if (CloudDirectory is not null)
@@ -203,6 +205,7 @@
     CatalogStudioCloudDirectory? CloudDirectory;
     CatalogStudioCloudWorkspace? CloudWorkspace;
     string CloudSelection = "", InviteRole = "viewer", InviteToken = "", JoinToken = "";
+    string CloudLabel = "My catalog workspace";
     bool CloudNeedsAccount;
     long InviteExpires;
 
@@ -404,7 +407,7 @@
     /// <summary>Creates a real metadata-only server project without transferring local image bytes.</summary>
     Task CreateCloudAsync() => ExecuteAsync(async () =>
     {
-        CloudWorkspace = await CloudBridge().CreateAsync(Project); CloudSelection = CloudWorkspace.Id; CloudDirectory = null; CloudNeedsAccount = false; InviteToken = "";
+        CloudWorkspace = await CloudBridge().CreateAsync(Project, CloudLabel); CloudSelection = CloudWorkspace.Id; CloudLabel = CloudWorkspace.Title; CloudDirectory = null; CloudNeedsAccount = false; InviteToken = "";
         Status = "Private catalog metadata created. Photos were not uploaded. Refresh the workspace list to read updated quota usage.";
     });
 
@@ -415,7 +418,7 @@
     async Task OpenCloudCoreAsync(string id)
     {
         var workspace = await CloudBridge().OpenAsync(id); var restored = CatalogStudioCloudClient.Rebind(workspace.Body, Project);
-        UndoJson = CatalogStudioWorkspace.Serialize(Project); Project = restored; CloudWorkspace = workspace; CloudSelection = workspace.Id;
+        UndoJson = CatalogStudioWorkspace.Serialize(Project); Project = restored; CloudWorkspace = workspace; CloudSelection = workspace.Id; CloudLabel = workspace.Title;
         Selected.Clear(); Search = Category = ""; Page = 0; DetailId = null; InviteToken = ""; CloudNeedsAccount = false; RefreshIssues();
         Status = $"Opened revision {workspace.Revision}. {Project.Images.Count(image => image.Attached)} image references matched local or bundled images.";
     }
@@ -424,7 +427,7 @@
     Task SaveCloudAsync() => ExecuteAsync(async () =>
     {
         if (CloudWorkspace is null) throw new FormatException("Open or create a private workspace first.");
-        CloudWorkspace = await CloudBridge().SaveAsync(CloudWorkspace, Project); CloudNeedsAccount = false;
+        CloudWorkspace = await CloudBridge().SaveAsync(CloudWorkspace, Project, CloudLabel); CloudLabel = CloudWorkspace.Title; CloudNeedsAccount = false;
         Status = $"Metadata saved as revision {CloudWorkspace.Revision}. Photo bytes remain local.";
     });
 
@@ -446,7 +449,7 @@
     CatalogStudioCloudClient CloudBridge() => CloudClient ?? throw new InvalidOperationException("Cloud tools are still initializing.");
 
     /// <summary>Stops a restored or demo local project from silently remaining bound to a previous server workspace.</summary>
-    void DetachCloud() { CloudWorkspace = null; CloudSelection = ""; InviteToken = ""; }
+    void DetachCloud() { CloudWorkspace = null; CloudSelection = ""; InviteToken = ""; CloudLabel = "My catalog workspace"; }
 
     /// <summary>Requires the loaded file bridge and returns a useful browser-action failure instead of a null reference.</summary>
     IJSObjectReference Bridge() => Module ?? throw new InvalidOperationException("File tools are still loading. Reload the page if they remain unavailable.");
