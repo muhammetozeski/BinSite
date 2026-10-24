@@ -2,8 +2,8 @@
     <ChildContent>
         <Router AppAssembly="@typeof(App).Assembly">
             <Found Context="routeData"><RouteView RouteData="routeData" /></Found>
-            <NotFound><main class="route-message"><h1>Sayfa bulunamadı / Page not found</h1><a href="/">Site listesi / Product directory</a></main></NotFound>
+            <NotFound><main class="route-message"><h1>Page not found</h1><a href="/">Product directory</a></main></NotFound>
         </Router>
     </ChildContent>
-    <ErrorContent><main class="route-message"><h1>Sayfa yüklenemedi / Page could not load</h1><p>Sayfayı yenileyerek yeniden deneyebilirsin. / Refresh the page to try again.</p><a href="/">Site listesi / Product directory</a></main></ErrorContent>
+    <ErrorContent><main class="route-message"><h1>Page could not load</h1><p>Refresh the page to try again.</p><a href="/">Product directory</a></main></ErrorContent>
 </ErrorBoundary>
