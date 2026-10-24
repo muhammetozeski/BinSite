@@ -7,8 +7,11 @@
     "stage": 7,
     "runtime": "blazor",
     "adEligible": false,
-    "guide": { "slug": "catalog-studio/guide", "title": "CSV catalog walkthrough and practice files" },
-    "description": "Import a product CSV, repair concrete row issues, match local photos and produce a self-contained searchable catalog or printable snapshot.",
+    "guide": {
+      "slug": "catalog-studio/guide",
+      "title": "CSV catalog walkthrough and practice files"
+    },
+    "description": "Turn a product spreadsheet and photos into a searchable catalog you can share or print.",
     "features": [
       "Quoted comma, semicolon and tab import with revisable header mapping",
       "Physical CSV row evidence for missing, duplicate and invalid fields",
