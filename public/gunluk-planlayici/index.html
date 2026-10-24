@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#183e36">
-  <title>Günlük Planlayıcı — Görevler ve Notlar</title>
+  <meta name="theme-color" content="#001fff">
+  <title>Daily Planner — Tasks and Notes</title>
   <style>
-    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #1c302a; background: #f4f6f3; }
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #111111; background: #ffffff; }
     * { box-sizing: border-box; }
     body { margin: 0; }
     header, main, footer { max-width: 1120px; margin: auto; padding: 24px; }
@@ -16,11 +16,11 @@
     h3 { margin: 0 0 8px; font-size: 1rem; }
     p { line-height: 1.6; margin: 8px 0; }
     button, input, select, textarea { font: inherit; }
-    button, input, select, textarea, .button { border: 1px solid #aabbb2; border-radius: 6px; padding: 10px 12px; }
-    input, select, textarea { background: white; color: #1c302a; width: 100%; }
-    button, .button { background: #fff; color: #183e36; cursor: pointer; display: inline-block; text-decoration: none; }
+    button, input, select, textarea, .button { border: 1px solid #aabbb2; border-radius: 0; padding: 10px 12px; }
+    input, select, textarea { background: white; color: #111111; width: 100%; }
+    button, .button { background: #fff; color: #001fff; cursor: pointer; display: inline-block; text-decoration: none; }
     button:hover, .button:hover { background: #e8efea; }
-    button.primary { background: #183e36; color: white; border-color: #183e36; }
+    button.primary { background: #001fff; color: white; border-color: #001fff; }
     button.danger { color: #9a2924; }
     button:disabled { opacity: .5; cursor: default; }
     :focus-visible { outline: 3px solid #bd6c16; outline-offset: 3px; }
@@ -28,29 +28,29 @@
     .muted, small, footer { color: #50635b; }
     .toolbar { display: flex; gap: 8px; flex-wrap: wrap; }
     .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
-    .stat, .panel { background: #fff; border: 1px solid #d3dfd7; border-radius: 8px; padding: 20px; }
+    .stat, .panel { background: #fff; border: 1px solid #111111; border-radius: 0; padding: 20px; }
     .stat strong { display: block; font-size: 1.8rem; margin-bottom: 4px; }
     .layout { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr); gap: 20px; align-items: start; }
     .stack { display: grid; gap: 20px; }
     .fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 12px 0; }
     .full { grid-column: 1 / -1; }
     textarea { min-height: 130px; resize: vertical; line-height: 1.5; }
-    .filters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; border-top: 1px solid #d3dfd7; padding-top: 20px; }
-    .task { padding: 16px 0; border-top: 1px solid #d3dfd7; }
+    .filters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; border-top: 1px solid #111111; padding-top: 20px; }
+    .task { padding: 16px 0; border-top: 1px solid #111111; }
     .task-main { display: flex; gap: 10px; align-items: start; }
-    .task-check { width: 20px; height: 20px; flex-shrink: 0; margin: 3px 0 0; accent-color: #183e36; }
+    .task-check { width: 20px; height: 20px; flex-shrink: 0; margin: 3px 0 0; accent-color: #001fff; }
     .task-body { min-width: 0; flex: 1; }
     .task-title { overflow-wrap: anywhere; font-weight: 650; }
     .done .task-title { text-decoration: line-through; color: #60736a; }
     .details { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .92rem; }
     .meta { display: flex; gap: 8px; flex-wrap: wrap; font-size: .82rem; margin: 8px 0; }
-    .badge { background: #eef3ef; border-radius: 4px; padding: 3px 6px; }
+    .badge { background: #eef3ef; border-radius: 0; padding: 3px 6px; }
     .overdue { color: #9a2924; background: #fff0ee; }
     .task .toolbar button { padding: 5px 9px; font-size: .85rem; }
-    #message { padding: 12px 16px; margin: 0 0 20px; border: 1px solid #c1d8c9; border-radius: 6px; background: #eaf4ec; }
+    #message { padding: 12px 16px; margin: 0 0 20px; border: 1px solid #c1d8c9; border-radius: 0; background: #ffe600; }
     #message.error { background: #fff0ee; border-color: #e3b3ab; color: #82251d; }
     #message:empty { display: none; }
-    .empty { border: 1px dashed #aabbb2; padding: 24px; border-radius: 6px; }
+    .empty { border: 1px dashed #aabbb2; padding: 24px; border-radius: 0; }
     .guide { padding-left: 22px; line-height: 1.65; }
     .guide li { margin: 8px 0; }
     #note-count { display: block; margin: 8px 0 14px; }
@@ -62,77 +62,77 @@
 </head>
 <body>
   <header>
-    <div><h1>Günlük Planlayıcı</h1><p class="muted">Yapacaklarını sıraya koy, düşüncelerini kaydet.</p><small id="today"></small></div>
-    <nav class="toolbar" aria-label="Veri işlemleri">
-      <button id="export" type="button">Yedeği indir</button>
-      <button id="import" type="button">Yedek yükle</button>
+    <div><h1>Daily Planner</h1><p class="muted">Organize your tasks and capture your thoughts.</p><small id="today"></small></div>
+    <nav class="toolbar" aria-label="Data tools">
+      <button id="export" type="button">Download backup</button>
+      <button id="import" type="button">Restore backup</button>
       <input type="file" id="import-file" accept="application/json,.json" hidden>
     </nav>
   </header>
   <main>
-    <noscript><p>Görevleri ve notları kullanmak için tarayıcında JavaScript açık olmalıdır.</p></noscript>
+    <noscript><p>Enable JavaScript in your browser to use tasks and notes.</p></noscript>
     <div id="message" role="status" aria-live="polite"></div>
-    <section class="stats" aria-label="Görev özeti">
-      <div class="stat"><strong id="count-open">0</strong>Açık görev</div>
-      <div class="stat"><strong id="count-today">0</strong>Bugün yapılacak</div>
-      <div class="stat"><strong id="count-overdue">0</strong>Tarihi geçen</div>
-      <div class="stat"><strong id="count-done">0</strong>Tamamlanan</div>
+    <section class="stats" aria-label="Task overview">
+      <div class="stat"><strong id="count-open">0</strong>Open tasks</div>
+      <div class="stat"><strong id="count-today">0</strong>Due today</div>
+      <div class="stat"><strong id="count-overdue">0</strong>Overdue</div>
+      <div class="stat"><strong id="count-done">0</strong>Completed</div>
     </section>
     <div class="layout">
       <section class="panel" aria-labelledby="tasks-heading">
-        <h2 id="tasks-heading">Görevler</h2>
+        <h2 id="tasks-heading">Tasks</h2>
         <form id="task-form">
-          <label for="title">Ne yapacaksın?</label>
-          <input id="title" placeholder="Örneğin: Haftalık alışveriş listesini hazırla" required maxlength="200">
+          <label for="title">What will you do?</label>
+          <input id="title" placeholder="For example: Prepare the weekly shopping list" required maxlength="200">
           <div class="fields">
-            <div><label for="due">Son tarih</label><input id="due" type="date" min="0001-01-01" max="9999-12-31"></div>
-            <div><label for="priority">Öncelik</label><select id="priority"><option value="normal">Normal</option><option value="high">Yüksek</option><option value="low">Düşük</option></select></div>
-            <div><label for="category">Kategori</label><input id="category" placeholder="İş, ev, kişisel" maxlength="40" list="categories"><datalist id="categories"></datalist></div>
-            <div class="full"><label for="details">Ayrıntılar <span class="muted">(isteğe bağlı)</span></label><textarea id="details" maxlength="5000" style="min-height:80px" placeholder="Adımlar, ihtiyaçlar veya hatırlamak istediğin bilgiler"></textarea></div>
+            <div><label for="due">Due date</label><input id="due" type="date" min="0001-01-01" max="9999-12-31"></div>
+            <div><label for="priority">Priority</label><select id="priority"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select></div>
+            <div><label for="category">Category</label><input id="category" placeholder="Work, home, personal" maxlength="40" list="categories"><datalist id="categories"></datalist></div>
+            <div class="full"><label for="details">Details <span class="muted">(optional)</span></label><textarea id="details" maxlength="5000" style="min-height:80px" placeholder="Steps, requirements, or anything you need to remember"></textarea></div>
           </div>
-          <div class="toolbar"><button class="primary" id="submit-task" type="submit">Görev ekle</button><button type="button" id="cancel-edit" hidden>Düzenlemeyi iptal et</button></div>
+          <div class="toolbar"><button class="primary" id="submit-task" type="submit">Add task</button><button type="button" id="cancel-edit" hidden>Cancel editing</button></div>
         </form>
         <div class="filters">
-          <div class="full"><label for="search">Görevlerde ara</label><input id="search" type="search" placeholder="Başlık, ayrıntı veya kategori"></div>
-          <div><label for="filter">Göster</label><select id="filter"><option value="open">Açık görevler</option><option value="today">Bugün yapılacaklar</option><option value="overdue">Tarihi geçenler</option><option value="done">Tamamlananlar</option><option value="all">Tüm görevler</option></select></div>
-          <div><label for="sort">Sırala</label><select id="sort"><option value="due">Son tarihe göre</option><option value="priority">Önceliğe göre</option><option value="newest">En yeni önce</option></select></div>
+          <div class="full"><label for="search">Search tasks</label><input id="search" type="search" placeholder="Title, details, or category"></div>
+          <div><label for="filter">Show</label><select id="filter"><option value="open">Open tasks</option><option value="today">Due today</option><option value="overdue">Overdue tasks</option><option value="done">Completed tasks</option><option value="all">All tasks</option></select></div>
+          <div><label for="sort">Sort</label><select id="sort"><option value="due">Due date</option><option value="priority">Priority</option><option value="newest">Newest first</option></select></div>
         </div>
         <p class="muted" id="results" aria-live="polite"></p>
         <div id="task-list"></div>
-        <button id="clear-done" type="button" class="danger" hidden>Tamamlananları temizle</button>
+        <button id="clear-done" type="button" class="danger" hidden>Clear completed tasks</button>
       </section>
       <aside class="stack">
         <section class="panel" aria-labelledby="notes-heading">
-          <h2 id="notes-heading">Not defteri</h2>
-          <label for="notes">Fikirler ve hatırlatmalar</label>
-          <textarea id="notes" rows="10" maxlength="50000" placeholder="Aklındakileri buraya yaz."></textarea>
-          <small id="note-count">0 karakter</small>
-          <button id="save-notes" type="button">Notları kaydet</button>
-          <p><small id="note-status">Yazdıkların otomatik kaydedilir.</small></p>
+          <h2 id="notes-heading">Notebook</h2>
+          <label for="notes">Ideas and reminders</label>
+          <textarea id="notes" rows="10" maxlength="50000" placeholder="Write down what is on your mind."></textarea>
+          <small id="note-count">0 characters</small>
+          <button id="save-notes" type="button">Save notes</button>
+          <p><small id="note-status">Your notes are saved automatically.</small></p>
         </section>
         <section class="panel" aria-labelledby="guide-heading">
-          <h2 id="guide-heading">Gününü planla</h2>
+          <h2 id="guide-heading">Plan your day</h2>
           <ol class="guide">
-            <li>Bugün bitirmek istediğin üç işi belirle. Büyük işleri tek oturuşta tamamlanabilecek adımlara böl.</li>
-            <li>Zamanı belli olan işlere son tarih ekle. Önce tarihi geçenleri ve yüksek öncelikli işleri gözden geçir.</li>
-            <li>Bir işi bitirdiğinde yanındaki kutuyu işaretle. Gün sonunda kalan işleri yeniden değerlendir.</li>
+            <li>Choose three things you want to finish today. Break large tasks into steps you can complete in one sitting.</li>
+            <li>Add due dates to time-sensitive tasks. Review overdue and high-priority tasks first.</li>
+            <li>Check off each finished task. At the end of the day, review what remains.</li>
           </ol>
         </section>
         <section class="panel" aria-labelledby="storage-heading">
-          <h2 id="storage-heading">Verilerin nerede?</h2>
-          <p>Görevler ve notlar bu tarayıcıda saklanır. Bir hesaba veya internet bağlantısına ihtiyaç yoktur.</p>
-          <p>Tarayıcı verilerini temizlemek kayıtlarını silebilir. Başka bir tarayıcıya geçerken veya dosyayı taşırken üstteki <strong>Yedeği indir</strong> düğmesiyle bir kopya al.</p>
-          <p>Yedek yüklemek mevcut görev ve notlarının yerine dosyadaki kayıtları getirir; yüklemeden önce onayın istenir.</p>
+          <h2 id="storage-heading">Where is your data?</h2>
+          <p>Tasks and notes are stored in this browser. No account or internet connection is required.</p>
+          <p>Clearing browser data can erase your records. Before switching browsers or moving this file, use the <strong>Download backup</strong> button above to save a copy.</p>
+          <p>Restoring a backup replaces current tasks and notes with the records in that file. You will be asked to confirm.</p>
         </section>
       </aside>
     </div>
   </main>
-  <footer>Günlük Planlayıcı · Kayıtların bu tarayıcıya aittir.</footer>
+  <footer>Daily Planner · Your records belong to this browser.</footer>
   <script>
     'use strict';
     const STORAGE_KEY = 'gunluk-planlayici-v1';
     const $ = id => document.getElementById(id);
-    const priorities = { high: 'Yüksek', normal: 'Normal', low: 'Düşük' };
+    const priorities = { high: 'High', normal: 'Normal', low: 'Low' };
     const ranks = { high: 0, normal: 1, low: 2 };
     let state = { version: 1, tasks: [], notes: '' };
     let editingId = null;
@@ -155,7 +155,7 @@
     }
     function validate(data) {
       if (!data || data.version !== 1 || !Array.isArray(data.tasks) || data.tasks.length > 10000 ||
-          typeof data.notes !== 'string' || data.notes.length > 50000) throw new Error('Dosya, bu planlayıcıya ait geçerli bir yedek değil.');
+          typeof data.notes !== 'string' || data.notes.length > 50000) throw new Error('This file is not a valid backup for this planner.');
       const ids = new Set();
       const tasks = data.tasks.map(task => {
         if (!task || typeof task.id !== 'string' || !task.id || task.id.length > 100 || ids.has(task.id) ||
@@ -164,7 +164,7 @@
             typeof task.category !== 'string' || task.category.length > 40 ||
             !Object.hasOwn(priorities, task.priority) || typeof task.done !== 'boolean' ||
             typeof task.due !== 'string' || !validDate(task.due) ||
-            !Number.isSafeInteger(task.createdAt) || task.createdAt < 0) throw new Error('Yedekteki görev kayıtları geçersiz.');
+            !Number.isSafeInteger(task.createdAt) || task.createdAt < 0) throw new Error('The backup contains invalid task records.');
         ids.add(task.id);
         return { id: task.id, title: task.title.trim(), details: task.details, category: task.category.trim(), priority: task.priority, done: task.done, due: task.due, createdAt: task.createdAt };
       });
@@ -175,12 +175,12 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         return true;
       } catch {
-        message('Tarayıcı kaydı yapılamadı. Bu oturumdaki verilerini kaybetmemek için yedeği indir.', true);
+        message('Browser storage is unavailable. Download a backup to preserve this session.', true);
         return false;
       }
     }
     function formatDate(value) {
-      return new Intl.DateTimeFormat('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${value}T12:00:00`));
+      return new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(`${value}T12:00:00`));
     }
     function node(tag, className, content) {
       const element = document.createElement(tag);
@@ -192,12 +192,12 @@
       editingId = null;
       $('task-form').reset();
       $('title').setCustomValidity('');
-      $('submit-task').textContent = 'Görev ekle';
+      $('submit-task').textContent = 'Add task';
       $('cancel-edit').hidden = true;
     }
     function render() {
       currentDay = localDay();
-      $('today').textContent = new Intl.DateTimeFormat('tr-TR', { dateStyle: 'full' }).format(new Date());
+      $('today').textContent = new Intl.DateTimeFormat('en-US', { dateStyle: 'full' }).format(new Date());
       const open = state.tasks.filter(task => !task.done);
       $('count-open').textContent = open.length;
       $('count-today').textContent = open.filter(task => task.due === currentDay).length;
@@ -206,10 +206,10 @@
       $('clear-done').hidden = state.tasks.every(task => !task.done);
       const options = [...new Set(state.tasks.map(task => task.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'tr'));
       $('categories').replaceChildren(...options.map(category => { const option = node('option'); option.value = category; return option; }));
-      const query = $('search').value.trim().toLocaleLowerCase('tr-TR');
+      const query = $('search').value.trim().toLocaleLowerCase('en-US');
       const filter = $('filter').value;
       const visible = state.tasks.filter(task => {
-        const matches = `${task.title} ${task.details} ${task.category}`.toLocaleLowerCase('tr-TR').includes(query);
+        const matches = `${task.title} ${task.details} ${task.category}`.toLocaleLowerCase('en-US').includes(query);
         if (!matches) return false;
         if (filter === 'open') return !task.done;
         if (filter === 'done') return task.done;
@@ -223,45 +223,45 @@
         if (sort === 'priority') return ranks[a.priority] - ranks[b.priority] || b.createdAt - a.createdAt;
         return (a.due || '9999-99-99').localeCompare(b.due || '9999-99-99') || ranks[a.priority] - ranks[b.priority] || b.createdAt - a.createdAt;
       });
-      $('results').textContent = `${state.tasks.length} görevden ${visible.length} tanesi gösteriliyor.`;
+      $('results').textContent = `Showing ${visible.length} of ${state.tasks.length} tasks.`;
       const list = $('task-list');
       list.replaceChildren();
-      if (!visible.length) list.append(node('p', 'empty', state.tasks.length ? 'Bu arama veya filtreyle eşleşen görev yok.' : 'Henüz görev eklemedin. İlk işini yukarıya yazarak başla.'));
+      if (!visible.length) list.append(node('p', 'empty', state.tasks.length ? 'No tasks match this search or filter.' : 'No tasks yet. Add your first task above.'));
       visible.forEach(task => {
         const article = node('article', `task${task.done ? ' done' : ''}`);
         const row = node('div', 'task-main');
         const check = node('input', 'task-check');
         check.type = 'checkbox'; check.checked = task.done;
-        check.setAttribute('aria-label', `${task.title}: ${task.done ? 'yeniden aç' : 'tamamla'}`);
-        check.addEventListener('change', () => { task.done = check.checked; const saved = persist(); render(); if (saved) message(task.done ? 'Görev tamamlandı.' : 'Görev yeniden açıldı.'); });
+        check.setAttribute('aria-label', `${task.title}: ${task.done ? 'reopen' : 'complete'}`);
+        check.addEventListener('change', () => { task.done = check.checked; const saved = persist(); render(); if (saved) message(task.done ? 'Task completed.' : 'Task reopened.'); });
         const body = node('div', 'task-body');
         body.append(node('div', 'task-title', task.title));
         if (task.details) body.append(node('p', 'details', task.details));
         const meta = node('div', 'meta');
-        meta.append(node('span', 'badge', `${priorities[task.priority]} öncelik`));
+        meta.append(node('span', 'badge', `${priorities[task.priority]} priority`));
         if (task.category) meta.append(node('span', 'badge', task.category));
         if (task.due) {
           const late = !task.done && task.due < currentDay;
-          meta.append(node('span', `badge${late ? ' overdue' : ''}`, `${formatDate(task.due)}${late ? ' · Tarihi geçti' : task.due === currentDay ? ' · Bugün' : ''}`));
+          meta.append(node('span', `badge${late ? ' overdue' : ''}`, `${formatDate(task.due)}${late ? ' · Overdue' : task.due === currentDay ? ' · Today' : ''}`));
         }
         body.append(meta);
         const actions = node('div', 'toolbar');
-        const edit = node('button', '', 'Düzenle'); edit.type = 'button';
-        edit.setAttribute('aria-label', `${task.title}: düzenle`);
+        const edit = node('button', '', 'Edit'); edit.type = 'button';
+        edit.setAttribute('aria-label', `${task.title}: edit`);
         edit.addEventListener('click', () => {
           editingId = task.id;
           $('title').setCustomValidity('');
           for (const field of ['title', 'due', 'priority', 'category', 'details']) $(field).value = task[field];
-          $('submit-task').textContent = 'Değişiklikleri kaydet'; $('cancel-edit').hidden = false;
+          $('submit-task').textContent = 'Save changes'; $('cancel-edit').hidden = false;
           $('task-form').scrollIntoView({ block: 'start' }); $('title').focus();
         });
-        const remove = node('button', 'danger', 'Sil'); remove.type = 'button';
-        remove.setAttribute('aria-label', `${task.title}: sil`);
+        const remove = node('button', 'danger', 'Delete'); remove.type = 'button';
+        remove.setAttribute('aria-label', `${task.title}: delete`);
         remove.addEventListener('click', () => {
-          if (!confirm(`“${task.title}” görevi silinsin mi?`)) return;
+          if (!confirm(`“${task.title}” task be deleted?`)) return;
           state.tasks = state.tasks.filter(item => item.id !== task.id);
           if (editingId === task.id) resetForm();
-          const saved = persist(); render(); if (saved) message('Görev silindi.');
+          const saved = persist(); render(); if (saved) message('Task deleted.');
         });
         actions.append(edit, remove); body.append(actions); row.append(check, body); article.append(row); list.append(article);
       });
@@ -270,37 +270,37 @@
     $('task-form').addEventListener('submit', event => {
       event.preventDefault();
       const title = $('title').value.trim();
-      if (!title) { $('title').setCustomValidity('Lütfen bir görev başlığı yaz.'); $('title').reportValidity(); return; }
-      if (!validDate($('due').value)) { message('Geçerli bir tarih gir.', true); return; }
-      if (!editingId && state.tasks.length >= 10000) { message('En fazla 10.000 görev saklanabilir. Yer açmak için tamamlananları temizleyebilirsin.', true); return; }
+      if (!title) { $('title').setCustomValidity('Enter a task title.'); $('title').reportValidity(); return; }
+      if (!validDate($('due').value)) { message('Enter a valid date.', true); return; }
+      if (!editingId && state.tasks.length >= 10000) { message('You can store up to 10,000 tasks. Clear completed tasks to make space.', true); return; }
       const values = { title, due: $('due').value, priority: $('priority').value, category: $('category').value.trim(), details: $('details').value.trim() };
       const wasEditing = Boolean(editingId);
       if (wasEditing) Object.assign(state.tasks.find(task => task.id === editingId), values);
       else state.tasks.push({ ...values, id: crypto.randomUUID(), done: false, createdAt: Date.now() });
       const saved = persist(); resetForm(); render(); $('title').focus();
-      if (saved) message(wasEditing ? 'Görev güncellendi.' : 'Görev eklendi. Listede görünmüyorsa seçili filtreyi kontrol et.');
+      if (saved) message(wasEditing ? 'Task updated.' : 'Task added. Check the selected filter if it is not visible.');
     });
     $('title').addEventListener('input', () => $('title').setCustomValidity(''));
     $('cancel-edit').addEventListener('click', resetForm);
     $('search').addEventListener('input', render);
     for (const id of ['filter', 'sort']) $(id).addEventListener('change', render);
     $('clear-done').addEventListener('click', () => {
-      if (!confirm('Tamamlanan bütün görevler silinsin mi?')) return;
+      if (!confirm('Delete all completed tasks?')) return;
       state.tasks = state.tasks.filter(task => !task.done);
       if (editingId && !state.tasks.some(task => task.id === editingId)) resetForm();
-      const saved = persist(); render(); if (saved) message('Tamamlanan görevler temizlendi.');
+      const saved = persist(); render(); if (saved) message('Completed tasks cleared.');
     });
     function saveNotes(announce = false) {
       clearTimeout(noteTimer);
       state.notes = $('notes').value;
       const saved = persist();
-      $('note-status').textContent = saved ? 'Notların kaydedildi.' : 'Kayıt yapılamadı. Yedeğini indir.';
-      if (saved && announce) message('Notların kaydedildi.');
+      $('note-status').textContent = saved ? 'Notes saved.' : 'Could not save. Download a backup.';
+      if (saved && announce) message('Notes saved.');
     }
     $('notes').addEventListener('input', () => {
       state.notes = $('notes').value;
-      $('note-count').textContent = `${state.notes.length.toLocaleString('tr-TR')} karakter`;
-      $('note-status').textContent = 'Kaydediliyor…';
+      $('note-count').textContent = `${state.notes.length.toLocaleString('en-US')} characters`;
+      $('note-status').textContent = 'Saving…';
       clearTimeout(noteTimer); noteTimer = setTimeout(saveNotes, 400);
     });
     $('notes').addEventListener('blur', () => saveNotes());
@@ -317,33 +317,33 @@
       const url = URL.createObjectURL(blob);
       const link = node('a'); link.href = url; link.download = `gunluk-planlayici-${localDay()}.json`;
       document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
-      message('Yedek dosyası tarayıcının indirme işlemlerine gönderildi.');
+      message('The backup was sent to your browser downloads.');
     });
     $('import').addEventListener('click', () => $('import-file').click());
     $('import-file').addEventListener('change', async event => {
       const file = event.target.files[0];
       if (!file) return;
       try {
-        if (file.size > 10 * 1024 * 1024) throw new Error('Yedek dosyası 10 MB boyutunu aşamaz.');
+        if (file.size > 10 * 1024 * 1024) throw new Error('A backup file cannot exceed 10 MB.');
         const imported = validate(JSON.parse(await file.text()));
-        if (!confirm(`${imported.tasks.length} görev ve not defteri yüklenecek. Mevcut kayıtların değiştirilsin mi?`)) return;
+        if (!confirm(`${imported.tasks.length} tasks and the notebook will be restored. Replace current records?`)) return;
         clearTimeout(noteTimer); state = imported; resetForm();
-        $('notes').value = state.notes; $('note-count').textContent = `${state.notes.length.toLocaleString('tr-TR')} karakter`;
+        $('notes').value = state.notes; $('note-count').textContent = `${state.notes.length.toLocaleString('en-US')} characters`;
         const saved = persist();
-        $('note-status').textContent = saved ? 'Notların kaydedildi.' : 'Kayıt yapılamadı. Yedeğini indir.';
-        render(); if (saved) message('Yedek yüklendi.');
+        $('note-status').textContent = saved ? 'Notes saved.' : 'Could not save. Download a backup.';
+        render(); if (saved) message('Backup restored.');
       } catch (error) {
-        message(error instanceof SyntaxError ? 'Dosya okunamadı. Geçerli bir JSON yedeği seç.' : error.message || 'Yedek okunamadı.', true);
+        message(error instanceof SyntaxError ? 'Could not read the file. Choose a valid JSON backup.' : error.message || 'Could not read the backup.', true);
       } finally { event.target.value = ''; }
     });
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored !== null) state = validate(JSON.parse(stored));
     } catch {
-      message('Önceki kayıt okunamadı veya tarayıcı depolamaya izin vermiyor. Yeni veri girmeden önce varsa yedeğini yükle.', true);
+      message('Previous records could not be read or browser storage is unavailable. Restore a backup before entering new data if you have one.', true);
     }
     $('notes').value = state.notes;
-    $('note-count').textContent = `${state.notes.length.toLocaleString('tr-TR')} karakter`;
+    $('note-count').textContent = `${state.notes.length.toLocaleString('en-US')} characters`;
     render();
   </script>
 <script src="/assets/revenue.js" data-binsite-revenue defer></script></body>

@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tarif Defteri — Bugün ne pişirsem?</title>
+  <title>Recipe Book — What should I cook?</title>
   <style>
-    :root { font-family: system-ui, sans-serif; color: #342c25; background: #faf8f4; color-scheme: light; }
+    :root { font-family: system-ui, sans-serif; color: #111111; background: #ffffff; color-scheme: light; }
     * { box-sizing: border-box; }
     body { margin: 0; }
     header, main, footer { max-width: 1200px; margin: auto; padding: 24px; }
@@ -15,18 +15,18 @@
     p, li { line-height: 1.6; }
     p { margin: 8px 0; }
     button, input, select, textarea { font: inherit; }
-    button, input, select, textarea { border: 1px solid #bfb2a1; border-radius: 6px; padding: 9px 11px; }
+    button, input, select, textarea { border: 1px solid #bfb2a1; border-radius: 0; padding: 9px 11px; }
     button { cursor: pointer; background: #fff; color: #563a25; }
     button:hover { background: #f4e9d9; }
-    button.primary { background: #73492a; color: #fff; border-color: #73492a; }
+    button.primary { background: #002fff; color: #fff; border-color: #002fff; }
     input, select, textarea { background: white; color: inherit; width: 100%; }
     :focus-visible { outline: 3px solid #a35a1b; outline-offset: 3px; }
     label { font-size: .9rem; display: block; margin-bottom: 6px; font-weight: 600; }
     .muted, small, footer { color: #6d6054; }
-    .filters, .recipe, aside { border: 1px solid #dfd5c8; background: white; border-radius: 8px; padding: 20px; }
+    .filters, .recipe, aside { border: 1px solid #111111; background: white; border-radius: 0; padding: 20px; }
     .filters { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 16px; margin-bottom: 24px; align-items: end; }
     .check-label { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; }
-    input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: #73492a; }
+    input[type=checkbox] { width: 18px; height: 18px; flex-shrink: 0; accent-color: #002fff; }
     .layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr); gap: 24px; align-items: start; }
     #recipes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: start; }
     .recipe h2 { font-size: 1.15rem; margin-bottom: 8px; }
@@ -47,10 +47,10 @@
     #shopping label { display: flex; align-items: start; gap: 9px; font-weight: 400; }
     #shopping input { margin: 3px 0 0; }
     #shopping .checked span { text-decoration: line-through; color: #776e63; }
-    #message { background: #f1e7d8; padding: 12px; border-radius: 6px; margin-bottom: 20px; }
+    #message { background: #ffe600; padding: 12px; border-radius: 0; margin-bottom: 20px; }
     #message:empty { display: none; }
     #message.error { color: #8a2420; background: #fff0ed; }
-    .empty { padding: 20px; border: 1px dashed #bfb2a1; border-radius: 6px; }
+    .empty { padding: 20px; border: 1px dashed #bfb2a1; border-radius: 0; }
     #copy-text { margin-top: 12px; min-height: 150px; }
     footer { font-size: .85rem; }
     [hidden] { display: none !important; }
@@ -67,49 +67,435 @@
   </style>
 </head>
 <body>
-  <header><h1>Tarif Defteri</h1><p>Bugün ne pişirsem? Tarif bul, porsiyonu ayarla, alışverişini hazırla.</p></header>
+  <header><h1>Recipe Book</h1><p>Find a recipe, adjust the portions, and build your shopping list.</p></header>
   <main>
-    <noscript><p>Arama, porsiyon hesabı ve alışveriş listesi için JavaScript'i açmalısın.</p></noscript>
+    <noscript><p>Enable JavaScript to use search, portion calculations, and the shopping list.</p></noscript>
     <div id="message" role="status" aria-live="polite"></div>
-    <section class="filters" aria-label="Tarif filtreleri">
-      <div><label for="search">Tarif veya malzeme ara</label><input type="search" id="search" placeholder="Örneğin: mercimek veya domates, makarna"><small>Virgülle ayırdığın tüm kelimeleri içeren tarifler gösterilir.</small></div>
-      <div><label for="category">Öğün</label><select id="category"><option value="all">Tüm tarifler</option><option>Kahvaltı</option><option>Çorba</option><option>Ana yemek</option><option>Salata</option></select></div>
-      <div><label for="duration">Hazırlama ve pişirme</label><select id="duration"><option value="999">Süre sınırı yok</option><option value="15">En fazla 15 dakika</option><option value="30">En fazla 30 dakika</option></select><label class="check-label"><input type="checkbox" id="favorites">Yalnızca favorilerim</label></div>
+    <section class="filters" aria-label="Recipe filters">
+      <div><label for="search">Search recipes or ingredients</label><input type="search" id="search" placeholder="For example: tomatoes, pasta"><small>Recipes must match every comma-separated term.</small></div>
+      <div><label for="category">Meal</label><select id="category"><option value="all">All recipes</option><option>Breakfast</option><option>Soup</option><option>Main course</option><option>Salad</option></select></div>
+      <div><label for="duration">Preparation and cooking</label><select id="duration"><option value="999">Any duration</option><option value="15">Up to 15 minutes</option><option value="30">Up to 30 minutes</option></select><label class="check-label"><input type="checkbox" id="favorites">Favorites only</label></div>
     </section>
     <div class="layout">
-      <section id="catalog" aria-labelledby="catalog-title"><h2 id="catalog-title">Tarifler</h2><p id="results" class="muted" aria-live="polite"></p><div id="recipes"></div></section>
+      <section id="catalog" aria-labelledby="catalog-title"><h2 id="catalog-title">Recipes</h2><p id="results" class="muted" aria-live="polite"></p><div id="recipes"></div></section>
       <aside aria-labelledby="shopping-title">
-        <div id="menu"><h2>Menüm</h2><p class="muted">Bir tarifte porsiyonu seçip menüne ekle. Malzemeler tek listede birleştirilir.</p><div id="menu-items"></div></div>
-        <h2 id="shopping-title" style="margin-top:24px">Alışveriş listesi</h2>
+        <div id="menu"><h2>My menu</h2><p class="muted">Choose the portions and add a recipe to your menu. Ingredients are combined into one list.</p><div id="menu-items"></div></div>
+        <h2 id="shopping-title" style="margin-top:24px">Shopping list</h2>
         <p id="shopping-summary" class="muted" aria-live="polite"></p><ul id="shopping"></ul>
-        <div id="list-actions" class="actions"><button id="copy" type="button">Listeyi kopyala</button><button id="print" type="button">Eksikleri yazdır</button><button id="clear" type="button">Menüyü temizle</button></div>
-        <textarea id="copy-text" readonly hidden aria-label="Kopyalanacak alışveriş listesi"></textarea>
-        <p class="storage"><small>Favorilerin, menün ve işaretlediklerin bu tarayıcıda saklanır. Bu sayfa internet bağlantısı olmadan çalışır. Tarayıcı verilerini temizlemek kayıtlarını silebilir.</small></p>
+        <div id="list-actions" class="actions"><button id="copy" type="button">Copy list</button><button id="print" type="button">Print missing items</button><button id="clear" type="button">Clear menu</button></div>
+        <textarea id="copy-text" readonly hidden aria-label="Shopping list to copy"></textarea>
+        <p class="storage"><small>Your favorites, menu, and checked items are stored in this browser. The page works offline. Clearing browser data may erase your records.</small></p>
       </aside>
     </div>
   </main>
-  <footer>Ölçüler: 1 yemek kaşığı sıvı yaklaşık 15 ml, 1 su bardağı 200 ml. Tuz ve baharat miktarlarını damak tadına göre ayarlayabilirsin.</footer>
+  <footer>Measures: 1 tablespoon of liquid is about 15 ml; the cup used in these recipes is 200 ml. Adjust salt and spices to taste.</footer>
   <script>
     'use strict';
     const recipes = [
-      { id: 'lentil', title: 'Kırmızı mercimek çorbası', category: 'Çorba', minutes: 35, servings: 4, description: 'Az malzemeli, pürüzsüz bir tencere çorbası.', ingredients: [['Kırmızı mercimek',200,'g'],['Soğan',1,'adet'],['Havuç',1,'adet'],['Zeytinyağı',15,'ml'],['Su',1200,'ml'],['Tuz',5,'g'],['Kimyon',2,'g']], steps: ['Mercimeği yıka. Soğanı ve havucu küçük doğra.', 'Zeytinyağını tencerede ısıt. Soğanı 3 dakika çevir, havucu ekleyip 2 dakika daha pişir.', 'Mercimeği ve suyu ekle. Kaynayınca altını kıs, kapağı aralık bırakarak yaklaşık 25 dakika pişir.', 'Mercimek ve havuç yumuşadığında ocağı kapat. El blenderiyle pürüzsüzleştir, tuz ve kimyonu ekle. Koyu gelirse sıcak suyla aç.'], tip: 'Limonla servis edebilirsin. Blender kullanırken sıcak çorbanın sıçramamasına dikkat et.' },
-      { id: 'menemen', title: 'Menemen', category: 'Kahvaltı', minutes: 20, servings: 2, description: 'Domates, biber ve yumurtayla hızlı bir öğün.', ingredients: [['Yumurta',3,'adet'],['Domates',3,'adet'],['Yeşil biber',2,'adet'],['Zeytinyağı',15,'ml'],['Tuz',2,'g']], steps: ['Biberleri ince doğra. Domatesleri küçük küpler halinde kes.', 'Zeytinyağında biberleri orta ateşte 4 dakika pişir.', 'Domates ve tuzu ekle. Domatesler yumuşayıp suyu biraz azalıncaya kadar 8–10 dakika pişir.', 'Yumurtaları bir kapta çırpıp tavaya dök. Kısık ateşte karıştırarak yumurta tamamen pişene kadar 3–4 dakika daha pişir.'], tip: 'Domates az suluysa pişirme sırasında bir miktar su ekleyebilirsin.' },
-      { id: 'pasta', title: 'Domates soslu makarna', category: 'Ana yemek', minutes: 25, servings: 2, description: 'Sarımsaklı domates sosuyla temel bir makarna tarifi.', ingredients: [['Makarna',200,'g'],['Domates',3,'adet'],['Sarımsak',2,'diş'],['Zeytinyağı',30,'ml'],['Tuz',4,'g'],['Kuru kekik',1,'g']], steps: ['Geniş bir tencerede su kaynat. Tuzun yarısını ekle ve makarnayı paketindeki süreye göre haşla.', 'Domatesleri rendele. Sarımsağı ince doğra.', 'Zeytinyağında sarımsağı kısık ateşte yaklaşık 30 saniye çevir. Domatesi, kalan tuzu ve kekiği ekle; 12–15 dakika pişir.', 'Makarnanın suyundan bir fincan ayır, ardından makarnayı süz. Sosla karıştır; gerekirse ayırdığın sudan ekleyerek kıvamını ayarla.'], tip: 'Makarnanın haşlama suyu alışveriş listesine eklenmez.' },
-      { id: 'chickpea', title: 'Nohut salatası', category: 'Salata', minutes: 15, servings: 2, description: 'Haşlanmış nohutla hazırlanan doyurucu, soğuk bir salata.', ingredients: [['Haşlanmış nohut',300,'g'],['Domates',2,'adet'],['Salatalık',1,'adet'],['Maydanoz',10,'g'],['Limon suyu',30,'ml'],['Zeytinyağı',30,'ml'],['Tuz',2,'g']], steps: ['Haşlanmış nohudu süz. Konserve kullanıyorsan durulayıp tekrar süz.', 'Domatesi ve salatalığı küçük doğra. Maydanozu ince kıy.', 'Nohut ve sebzeleri bir kapta karıştır.', 'Limon suyu, zeytinyağı ve tuzu ayrı bir kapta çırp. Salataya döküp karıştır.'], tip: 'Tarifte pişmiş nohut kullanılır; kuru nohudu doğrudan salataya ekleme.' },
-      { id: 'oats', title: 'Muzlu yulaf lapası', category: 'Kahvaltı', minutes: 10, servings: 2, description: 'Sıcak ve pratik, meyveli bir kahvaltı.', ingredients: [['Yulaf ezmesi',100,'g'],['Süt',400,'ml'],['Muz',1,'adet'],['Bal',10,'g'],['Tarçın',1,'g']], steps: ['Yulaf ezmesi ve sütü küçük bir tencereye al.', 'Orta ateşte karıştırarak ısıt. Kaynamaya başlayınca kısık ateşte 5 dakika pişir.', 'Muzu dilimle. Yarısını lapaya karıştır, kalanı için ayır.', 'Kaselere paylaştır. Üzerine kalan muzu, balı ve tarçını ekle.'], tip: 'Kıvam bekledikçe koyulaşır. Daha akışkan istersen biraz süt ekle.' },
-      { id: 'bulgur', title: 'Sebzeli bulgur pilavı', category: 'Ana yemek', minutes: 40, servings: 4, description: 'Domates ve biberle tek tencerede hazırlanan pilav.', ingredients: [['Pilavlık bulgur',300,'g'],['Soğan',1,'adet'],['Domates',2,'adet'],['Yeşil biber',2,'adet'],['Domates salçası',20,'g'],['Zeytinyağı',30,'ml'],['Su',600,'ml'],['Tuz',4,'g']], steps: ['Soğanı ve biberleri küçük doğra. Domatesleri rendele.', 'Zeytinyağında soğan ve biberi 5 dakika çevir. Salçayı ekleyip 1 dakika daha pişir.', 'Domatesleri ekle, 3 dakika pişir. Bulguru katıp karıştır.', 'Sıcak suyu ve tuzu ekle. Kaynadığında kapağını kapatıp kısık ateşte 15 dakika pişir. Suyunu çekince ocağı kapat ve 10 dakika dinlendir.'], tip: 'Bulgurun cinsine göre su ihtiyacı değişebilir. Gerekirse az miktarda sıcak su ekle.' },
-      { id: 'potato', title: 'Fırında baharatlı patates', category: 'Ana yemek', minutes: 45, servings: 3, description: 'Dışı kızaran, içi yumuşak patates dilimleri.', ingredients: [['Patates',750,'g'],['Zeytinyağı',30,'ml'],['Tuz',4,'g'],['Kuru kekik',2,'g'],['Toz kırmızı biber',2,'g']], steps: ['Fırını 200 °C alt-üst ayarda ısıt. Patatesleri yıka, istersen soy ve benzer kalınlıkta dilimle.', 'Patatesleri kurula. Zeytinyağı, tuz, kekik ve kırmızı biberle harmanla.', 'Yağlı kâğıt serilmiş tepsiye üst üste gelmeyecek şekilde yay.', 'Yaklaşık 35–40 dakika pişir; sürenin yarısında çevir. İçi çatalla kolayca delinip dışı kızardığında fırından al.'], tip: 'Porsiyon artınca malzemeler aynı oranda artar; pişirme süresi aynı oranda artmaz. Gerekirse ikinci tepsi kullan.' },
-      { id: 'cacik', title: 'Cacık', category: 'Salata', minutes: 10, servings: 2, description: 'Yoğurt, salatalık ve nane ile serin bir eşlikçi.', ingredients: [['Yoğurt',300,'g'],['Salatalık',2,'adet'],['Sarımsak',1,'diş'],['Su',100,'ml'],['Zeytinyağı',10,'ml'],['Kuru nane',1,'g'],['Tuz',2,'g']], steps: ['Salatalıkları yıka ve küçük doğra ya da iri rendele.', 'Sarımsağı ez. Yoğurdu su ve sarımsakla pürüzsüz olana kadar karıştır.', 'Salatalıkları ve tuzu ekleyip karıştır.', 'Kaselere al. Üzerine kuru nane ve zeytinyağı gezdir.'], tip: 'Koyu kıvam için suyu azaltabilirsin. Servise kadar buzdolabında tut.' }
-    ];
+  {
+    "id": "lentil",
+    "title": "Red lentil soup",
+    "category": "Soup",
+    "minutes": 35,
+    "servings": 4,
+    "description": "A smooth one-pot soup made with everyday ingredients.",
+    "ingredients": [
+      [
+        "Red lentils",
+        200,
+        "g"
+      ],
+      [
+        "Onion",
+        1,
+        "pcs"
+      ],
+      [
+        "Carrot",
+        1,
+        "pcs"
+      ],
+      [
+        "Olive oil",
+        15,
+        "ml"
+      ],
+      [
+        "Water",
+        1200,
+        "ml"
+      ],
+      [
+        "Salt",
+        5,
+        "g"
+      ],
+      [
+        "Cumin",
+        2,
+        "g"
+      ]
+    ],
+    "steps": [
+      "Rinse the lentils. Finely chop the onion and carrot.",
+      "Warm the olive oil in a pot. Cook the onion for 3 minutes, then add the carrot and cook for 2 more minutes.",
+      "Add the lentils and water. Bring to a boil, reduce the heat, and simmer with the lid slightly open for about 25 minutes.",
+      "When the lentils and carrot are soft, turn off the heat. Blend until smooth, then add salt and cumin. Add hot water if the soup is too thick."
+    ],
+    "tip": "Serve with lemon if you like. Take care when blending hot soup to avoid splashes."
+  },
+  {
+    "id": "menemen",
+    "title": "Tomato and pepper eggs",
+    "category": "Breakfast",
+    "minutes": 20,
+    "servings": 2,
+    "description": "A quick skillet meal with tomatoes, peppers, and eggs.",
+    "ingredients": [
+      [
+        "Eggs",
+        3,
+        "pcs"
+      ],
+      [
+        "Tomatoes",
+        3,
+        "pcs"
+      ],
+      [
+        "Green peppers",
+        2,
+        "pcs"
+      ],
+      [
+        "Olive oil",
+        15,
+        "ml"
+      ],
+      [
+        "Salt",
+        2,
+        "g"
+      ]
+    ],
+    "steps": [
+      "Slice the peppers. Cut the tomatoes into small cubes.",
+      "Heat the olive oil in a skillet and cook the peppers over medium heat for 4 minutes.",
+      "Add the tomatoes and salt. Cook for 8–10 minutes, until soft and some liquid has evaporated.",
+      "Beat the eggs in a bowl and pour into the skillet. Stir over low heat for another 3–4 minutes, until the eggs are fully cooked."
+    ],
+    "tip": "If the tomatoes are dry, add a little water while cooking."
+  },
+  {
+    "id": "pasta",
+    "title": "Tomato and garlic pasta",
+    "category": "Main course",
+    "minutes": 25,
+    "servings": 2,
+    "description": "A reliable pasta dish with a simple garlic and tomato sauce.",
+    "ingredients": [
+      [
+        "Pasta",
+        200,
+        "g"
+      ],
+      [
+        "Tomatoes",
+        3,
+        "pcs"
+      ],
+      [
+        "Garlic",
+        2,
+        "cloves"
+      ],
+      [
+        "Olive oil",
+        30,
+        "ml"
+      ],
+      [
+        "Salt",
+        4,
+        "g"
+      ],
+      [
+        "Dried oregano",
+        1,
+        "g"
+      ]
+    ],
+    "steps": [
+      "Bring a large pot of water to a boil. Add half the salt and cook the pasta for the time shown on the package.",
+      "Grate the tomatoes and finely chop the garlic.",
+      "Gently cook the garlic in olive oil for about 30 seconds. Add the tomatoes, remaining salt, and oregano, then simmer for 12–15 minutes.",
+      "Reserve a cup of pasta water, then drain. Toss the pasta with the sauce, adding a little reserved water to loosen it if needed."
+    ],
+    "tip": "Water used to boil the pasta is not included in the shopping list."
+  },
+  {
+    "id": "chickpea",
+    "title": "Chickpea salad",
+    "category": "Salad",
+    "minutes": 15,
+    "servings": 2,
+    "description": "A satisfying cold salad made with cooked chickpeas and fresh vegetables.",
+    "ingredients": [
+      [
+        "Cooked chickpeas",
+        300,
+        "g"
+      ],
+      [
+        "Tomatoes",
+        2,
+        "pcs"
+      ],
+      [
+        "Cucumber",
+        1,
+        "pcs"
+      ],
+      [
+        "Parsley",
+        10,
+        "g"
+      ],
+      [
+        "Lemon juice",
+        30,
+        "ml"
+      ],
+      [
+        "Olive oil",
+        30,
+        "ml"
+      ],
+      [
+        "Salt",
+        2,
+        "g"
+      ]
+    ],
+    "steps": [
+      "Drain the cooked chickpeas. If using canned chickpeas, rinse and drain again.",
+      "Chop the tomatoes and cucumber into small pieces. Finely chop the parsley.",
+      "Combine the chickpeas and vegetables in a bowl.",
+      "Whisk the lemon juice, olive oil, and salt in a separate bowl. Pour over the salad and toss."
+    ],
+    "tip": "This recipe uses cooked chickpeas. Do not add uncooked dried chickpeas directly to the salad."
+  },
+  {
+    "id": "oats",
+    "title": "Banana oatmeal",
+    "category": "Breakfast",
+    "minutes": 10,
+    "servings": 2,
+    "description": "A warm, quick breakfast with oats and fruit.",
+    "ingredients": [
+      [
+        "Rolled oats",
+        100,
+        "g"
+      ],
+      [
+        "Milk",
+        400,
+        "ml"
+      ],
+      [
+        "Banana",
+        1,
+        "pcs"
+      ],
+      [
+        "Honey",
+        10,
+        "g"
+      ],
+      [
+        "Cinnamon",
+        1,
+        "g"
+      ]
+    ],
+    "steps": [
+      "Put the oats and milk in a small saucepan.",
+      "Heat over medium heat, stirring. Once it starts to bubble, reduce the heat and cook for 5 minutes.",
+      "Slice the banana. Stir half into the oats and reserve the rest.",
+      "Divide between bowls. Top with the remaining banana, honey, and cinnamon."
+    ],
+    "tip": "Oatmeal thickens as it stands. Add a little milk for a looser texture."
+  },
+  {
+    "id": "bulgur",
+    "title": "Vegetable bulgur pilaf",
+    "category": "Main course",
+    "minutes": 40,
+    "servings": 4,
+    "description": "A one-pot bulgur pilaf with tomatoes and green peppers.",
+    "ingredients": [
+      [
+        "Coarse bulgur",
+        300,
+        "g"
+      ],
+      [
+        "Onion",
+        1,
+        "pcs"
+      ],
+      [
+        "Tomatoes",
+        2,
+        "pcs"
+      ],
+      [
+        "Green peppers",
+        2,
+        "pcs"
+      ],
+      [
+        "Tomato paste",
+        20,
+        "g"
+      ],
+      [
+        "Olive oil",
+        30,
+        "ml"
+      ],
+      [
+        "Water",
+        600,
+        "ml"
+      ],
+      [
+        "Salt",
+        4,
+        "g"
+      ]
+    ],
+    "steps": [
+      "Finely chop the onion and peppers. Grate the tomatoes.",
+      "Cook the onion and peppers in olive oil for 5 minutes. Add the tomato paste and cook for 1 more minute.",
+      "Add the tomatoes and cook for 3 minutes. Stir in the bulgur.",
+      "Add the hot water and salt. Bring to a boil, cover, and cook over low heat for 15 minutes. Once the water is absorbed, turn off the heat and rest for 10 minutes."
+    ],
+    "tip": "Water requirements vary with the bulgur. Add a little hot water if needed."
+  },
+  {
+    "id": "potato",
+    "title": "Herb-roasted potato wedges",
+    "category": "Main course",
+    "minutes": 45,
+    "servings": 3,
+    "description": "Potato wedges with crisp edges and soft centers.",
+    "ingredients": [
+      [
+        "Potatoes",
+        750,
+        "g"
+      ],
+      [
+        "Olive oil",
+        30,
+        "ml"
+      ],
+      [
+        "Salt",
+        4,
+        "g"
+      ],
+      [
+        "Dried oregano",
+        2,
+        "g"
+      ],
+      [
+        "Paprika",
+        2,
+        "g"
+      ]
+    ],
+    "steps": [
+      "Heat the oven to 200 °C. Wash the potatoes, peel if desired, and cut into evenly sized wedges.",
+      "Dry the wedges, then toss with olive oil, salt, oregano, and paprika.",
+      "Spread in a single layer on a lined baking tray.",
+      "Bake for about 35–40 minutes, turning halfway through. Remove when browned outside and easily pierced with a fork."
+    ],
+    "tip": "Increasing portions does not increase cooking time proportionally. Use a second tray if necessary."
+  },
+  {
+    "id": "cacik",
+    "title": "Cucumber yogurt bowl",
+    "category": "Salad",
+    "minutes": 10,
+    "servings": 2,
+    "description": "A cool yogurt and cucumber side with garlic and mint.",
+    "ingredients": [
+      [
+        "Yogurt",
+        300,
+        "g"
+      ],
+      [
+        "Cucumber",
+        2,
+        "pcs"
+      ],
+      [
+        "Garlic",
+        1,
+        "cloves"
+      ],
+      [
+        "Water",
+        100,
+        "ml"
+      ],
+      [
+        "Olive oil",
+        10,
+        "ml"
+      ],
+      [
+        "Dried mint",
+        1,
+        "g"
+      ],
+      [
+        "Salt",
+        2,
+        "g"
+      ]
+    ],
+    "steps": [
+      "Wash the cucumbers and finely chop or coarsely grate them.",
+      "Crush the garlic. Whisk the yogurt, water, and garlic until smooth.",
+      "Stir in the cucumber and salt.",
+      "Divide between bowls and finish with dried mint and olive oil."
+    ],
+    "tip": "Use less water for a thicker result. Keep refrigerated until serving."
+  }
+];
     const $ = id => document.getElementById(id);
     const STORAGE_KEY = 'tarif-defteri-v1';
+    // Preserve checked shopping items created before the English content migration.
+    const legacyIngredientNames = {"Kırmızı mercimek":"Red lentils","Soğan":"Onion","Havuç":"Carrot","Zeytinyağı":"Olive oil","Su":"Water","Tuz":"Salt","Kimyon":"Cumin","Yumurta":"Eggs","Domates":"Tomatoes","Yeşil biber":"Green peppers","Makarna":"Pasta","Sarımsak":"Garlic","Kuru kekik":"Dried oregano","Haşlanmış nohut":"Cooked chickpeas","Salatalık":"Cucumber","Maydanoz":"Parsley","Limon suyu":"Lemon juice","Yulaf ezmesi":"Rolled oats","Süt":"Milk","Muz":"Banana","Bal":"Honey","Tarçın":"Cinnamon","Pilavlık bulgur":"Coarse bulgur","Domates salçası":"Tomato paste","Patates":"Potatoes","Toz kırmızı biber":"Paprika","Yoğurt":"Yogurt","Kuru nane":"Dried mint"};
+    function migrateShoppingKey(key) {
+      const [name, unit] = key.split('|');
+      const translatedUnit = unit === 'adet' ? 'pcs' : unit === 'diş' ? 'cloves' : unit;
+      return (legacyIngredientNames[name] || name) + '|' + translatedUnit;
+    }
+
     const recipeMap = new Map(recipes.map(recipe => [recipe.id, recipe]));
     let state = { favorites: [], menu: [], checked: [] };
-    const number = value => new Intl.NumberFormat('tr-TR', { maximumFractionDigits: 2 }).format(value);
-    const normalize = value => value.toLocaleLowerCase('tr-TR');
+    const number = value => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(value);
+    const normalize = value => value.toLocaleLowerCase('en-US');
     function element(tag, text, className) { const item = document.createElement(tag); if (text !== undefined) item.textContent = text; if (className) item.className = className; return item; }
     function notify(text, error = false) { $('message').textContent = text; $('message').classList.toggle('error', error); }
-    function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); return true; } catch { notify('Tarayıcı kaydı yapılamadı. Sayfayı kapatmadan önce alışveriş listeni kopyala.', true); return false; } }
+    function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); return true; } catch { notify('Browser storage is unavailable. Copy your shopping list before closing the page.', true); return false; } }
     function shoppingItems() {
       const combined = new Map();
       state.menu.forEach(entry => {
@@ -120,16 +506,16 @@
           combined.get(key).amount += amount * entry.servings / recipe.servings;
         });
       });
-      return [...combined.values()].sort((a, b) => a.name.localeCompare(b.name, 'tr'));
+      return [...combined.values()].sort((a, b) => a.name.localeCompare(b.name, 'en'));
     }
     function drawMenu() {
       $('menu-items').replaceChildren();
-      if (!state.menu.length) $('menu-items').append(element('p', 'Menüne henüz tarif eklemedin.', 'muted'));
+      if (!state.menu.length) $('menu-items').append(element('p', 'No recipes in your menu yet.', 'muted'));
       state.menu.forEach(entry => {
         const recipe = recipeMap.get(entry.id);
         const row = element('div', undefined, 'menu-item');
-        row.append(element('span', `${recipe.title} · ${entry.servings} porsiyon`));
-        const remove = element('button', 'Çıkar'); remove.type = 'button'; remove.setAttribute('aria-label', `${recipe.title}: menüden çıkar`);
+        row.append(element('span', `${recipe.title} · ${entry.servings} servings`));
+        const remove = element('button', 'Remove'); remove.type = 'button'; remove.setAttribute('aria-label', `${recipe.title}: remove from menu`);
         remove.addEventListener('click', () => { state.menu = state.menu.filter(item => item.id !== entry.id); drawMenu(); save(); });
         row.append(remove); $('menu-items').append(row);
       });
@@ -148,7 +534,7 @@
     }
     function updateSummary() {
       const total = shoppingItems().length;
-      $('shopping-summary').textContent = total ? `${total} çeşit malzeme · ${total - state.checked.length} eksik. Evde olanları işaretle.` : 'Tarif eklediğinde gereken malzemeler burada görünecek.';
+      $('shopping-summary').textContent = total ? `${total} ingredients · ${total - state.checked.length} missing. Check off items you already have.` : 'Add a recipe to see the ingredients here.';
     }
     function renderRecipes() {
       const queries = normalize($('search').value).split(',').map(value => value.trim()).filter(Boolean);
@@ -157,44 +543,44 @@
         const haystack = normalize([recipe.title, recipe.description, ...recipe.ingredients.map(item => item[0])].join(' '));
         return queries.every(query => haystack.includes(query)) && (category === 'all' || recipe.category === category) && recipe.minutes <= Number($('duration').value) && (!$('favorites').checked || state.favorites.includes(recipe.id));
       });
-      $('results').textContent = `${recipes.length} tariften ${visible.length} tanesi gösteriliyor.`;
+      $('results').textContent = `Showing ${visible.length} of ${recipes.length} recipes.`;
       $('recipes').replaceChildren();
-      if (!visible.length) $('recipes').append(element('p', 'Eşleşen tarif yok. Aramayı veya filtreleri değiştir.', 'empty'));
+      if (!visible.length) $('recipes').append(element('p', 'No matching recipes. Change the search or filters.', 'empty'));
       visible.forEach(recipe => {
         const card = element('article', undefined, 'recipe');
-        card.append(element('h2', recipe.title), element('p', recipe.description), element('p', `${recipe.category} · Yaklaşık ${recipe.minutes} dakika · Temel tarif ${recipe.servings} porsiyon`, 'meta'));
-        const portion = element('div', undefined, 'portion'); const label = element('label', 'Porsiyon'); const input = element('input');
+        card.append(element('h2', recipe.title), element('p', recipe.description), element('p', `${recipe.category} · About ${recipe.minutes} minutes · Base recipe ${recipe.servings} servings`, 'meta'));
+        const portion = element('div', undefined, 'portion'); const label = element('label', 'Servings'); const input = element('input');
         input.type = 'number'; input.required = true; input.min = '1'; input.max = '24'; input.step = '1'; input.value = recipe.servings; input.id = `servings-${recipe.id}`; label.htmlFor = input.id; portion.append(label, input); card.append(portion);
-        const details = element('details'); details.append(element('summary', 'Malzemeler ve yapılışı'), element('h3', 'Malzemeler'));
+        const details = element('details'); details.append(element('summary', 'Ingredients and method'), element('h3', 'Ingredients'));
         const list = element('ul', undefined, 'ingredients'); details.append(list);
         function drawIngredients() { list.replaceChildren(); recipe.ingredients.forEach(([name, amount, unit]) => { const li = element('li'); li.append(element('span', name), element('strong', `${number(amount * Number(input.value) / recipe.servings)} ${unit}`)); list.append(li); }); }
         function validPortions() { return input.value !== '' && Number.isInteger(Number(input.value)) && Number(input.value) >= 1 && Number(input.value) <= 24; }
         input.addEventListener('input', () => { if (validPortions()) drawIngredients(); }); drawIngredients();
-        details.append(element('h3', 'Yapılışı')); const steps = element('ol'); recipe.steps.forEach(step => steps.append(element('li', step))); details.append(steps, element('p', recipe.tip, 'muted')); card.append(details);
-        const actions = element('div', undefined, 'actions'); const add = element('button', 'Menüye ekle', 'primary'); add.type = 'button';
+        details.append(element('h3', 'Method')); const steps = element('ol'); recipe.steps.forEach(step => steps.append(element('li', step))); details.append(steps, element('p', recipe.tip, 'muted')); card.append(details);
+        const actions = element('div', undefined, 'actions'); const add = element('button', 'Add to menu', 'primary'); add.type = 'button';
         add.addEventListener('click', () => {
           if (!validPortions()) { input.reportValidity(); input.focus(); return; }
           const servings = Number(input.value); const existing = state.menu.find(item => item.id === recipe.id);
-          if (existing && existing.servings + servings > 96) { notify('Bir tariften en fazla 96 porsiyon menüye ekleyebilirsin.', true); return; }
+          if (existing && existing.servings + servings > 96) { notify('You can add up to 96 servings of one recipe to the menu.', true); return; }
           if (existing) existing.servings += servings; else state.menu.push({ id: recipe.id, servings });
           state.checked = state.checked.filter(key => !recipe.ingredients.some(([name, , unit]) => `${name}|${unit}` === key));
-          drawMenu(); if (save()) notify(`${recipe.title}, ${servings} porsiyon olarak menüne eklendi. Bu tarifin malzemeleri yeniden eksik olarak işaretlendi.`);
+          drawMenu(); if (save()) notify(`${recipe.title}, ${servings} servings added to your menu. Its ingredients have been marked as missing again.`);
         });
-        const favorite = element('button', state.favorites.includes(recipe.id) ? 'Favorilerden çıkar' : 'Favorilere ekle'); favorite.type = 'button'; favorite.setAttribute('aria-pressed', String(state.favorites.includes(recipe.id)));
+        const favorite = element('button', state.favorites.includes(recipe.id) ? 'Remove favorite' : 'Add favorite'); favorite.type = 'button'; favorite.setAttribute('aria-pressed', String(state.favorites.includes(recipe.id)));
         favorite.addEventListener('click', () => { if (state.favorites.includes(recipe.id)) state.favorites = state.favorites.filter(id => id !== recipe.id); else state.favorites.push(recipe.id); renderRecipes(); save(); });
         actions.append(add, favorite); card.append(actions); $('recipes').append(card);
       });
     }
     $('search').addEventListener('input', renderRecipes);
     for (const id of ['category', 'duration', 'favorites']) $(id).addEventListener('change', renderRecipes);
-    $('clear').addEventListener('click', () => { if (!confirm('Menü ve alışveriş listesi temizlensin mi?')) return; state.menu = []; state.checked = []; drawMenu(); if (save()) notify('Menü ve alışveriş listesi temizlendi.'); });
+    $('clear').addEventListener('click', () => { if (!confirm('Clear the menu and shopping list?')) return; state.menu = []; state.checked = []; drawMenu(); if (save()) notify('Menu and shopping list cleared.'); });
     $('print').addEventListener('click', () => window.print());
     $('copy').addEventListener('click', async () => {
       const items = shoppingItems().filter(item => !state.checked.includes(item.key));
-      if (!items.length) { notify('Bütün malzemeler işaretli. Alınacak eksik malzeme yok.'); return; }
-      const text = 'Alışveriş listesi\n' + items.map(item => `- ${item.name}: ${number(item.amount)} ${item.unit}`).join('\n');
-      try { await navigator.clipboard.writeText(text); notify('Eksik malzemeler panoya kopyalandı.'); }
-      catch { $('copy-text').hidden = false; $('copy-text').value = text; $('copy-text').focus(); $('copy-text').select(); notify('Liste seçildi. Ctrl+C ile kopyalayabilirsin.'); }
+      if (!items.length) { notify('All ingredients are checked. There are no missing items to buy.'); return; }
+      const text = 'Shopping list\n' + items.map(item => `- ${item.name}: ${number(item.amount)} ${item.unit}`).join('\n');
+      try { await navigator.clipboard.writeText(text); notify('Missing ingredients copied to the clipboard.'); }
+      catch { $('copy-text').hidden = false; $('copy-text').value = text; $('copy-text').focus(); $('copy-text').select(); notify('List selected. Press Ctrl+C to copy.'); }
     });
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -203,9 +589,9 @@
         if (!data || !Array.isArray(data.favorites) || !Array.isArray(data.menu) || !Array.isArray(data.checked)) throw new Error('Invalid record');
         state.favorites = [...new Set(data.favorites.filter(id => recipeMap.has(id)))];
         state.menu = data.menu.filter(entry => entry && recipeMap.has(entry.id) && Number.isInteger(entry.servings) && entry.servings > 0 && entry.servings <= 96).filter((entry, index, all) => all.findIndex(item => item.id === entry.id) === index).map(entry => ({ id: entry.id, servings: entry.servings }));
-        state.checked = [...new Set(data.checked.filter(key => typeof key === 'string'))];
+        state.checked = [...new Set(data.checked.filter(key => typeof key === 'string').map(migrateShoppingKey))];
       }
-    } catch { notify('Önceki kayıtlar okunamadı veya tarayıcı depolamaya izin vermiyor. Bu oturumda menü oluşturup listeyi kopyalayabilirsin.', true); }
+    } catch { notify('Previous records could not be read or browser storage is unavailable. You can still build and copy a menu in this session.', true); }
     renderRecipes(); drawMenu();
   </script>
 <script src="/assets/revenue.js" data-binsite-revenue defer></script></body>
