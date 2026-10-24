@@ -40,7 +40,7 @@ public static class CatalogStudioSamples
         var project = new CatalogStudioProject
         {
             Title = "Studio Supply — Example Catalog",
-            Description = "Twenty original fictional sample products. All prices, specifications and stock counts are demonstration data, not a real offer or live inventory.",
+            Description = "An example collection of 20 fictional products. Prices and stock are examples.",
             Currency = "USD"
         };
         for (var index = 0; index < Items.Length; index++)

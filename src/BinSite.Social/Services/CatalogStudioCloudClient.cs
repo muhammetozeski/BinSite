@@ -98,7 +98,7 @@ public sealed class CatalogStudioCloudClient(SocialApi api)
     static string Label(string title)
     {
         var label = title.Trim();
-        if (label.Length is < 1 or > 100) throw new FormatException("Use a private workspace label between 1 and 100 characters. The full catalog title remains inside the document.");
+        if (label.Length is < 1 or > 100) throw new FormatException("Use 1–100 characters for the shared project name.");
         return label;
     }
 }

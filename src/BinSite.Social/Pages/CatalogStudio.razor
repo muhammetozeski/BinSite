@@ -9,7 +9,7 @@
 
 <div class="catalog-studio">
     <header>
-        <h1>Catalog Studio</h1><p>Turn product data and photos into a searchable catalog.</p><p class="privacy">Photos stay on this device unless you export them.</p>
+        <h1>Catalog Studio</h1><p>Turn product data and photos into a searchable catalog.</p><p class="privacy">Save a project file before closing this tab.</p>
 
 
     </header>
@@ -17,27 +17,26 @@
     <fieldset disabled="@Busy">
         <details><summary>Catalog settings</summary><section class="workspace-settings" aria-label="Catalog settings">
             <label>Catalog title<input @bind="Project.Title" @bind:after="RefreshIssues" maxlength="120" /></label>
-            <label>Currency code<input @bind="Project.Currency" @bind:after="NormalizeCurrency" maxlength="3" placeholder="USD" /></label>
+            <label>Currency<input @bind="Project.Currency" @bind:after="NormalizeCurrency" maxlength="3" placeholder="USD" /></label>
             <label>Price decimal separator<select @bind="Project.DecimalSeparator" @bind:after="RefreshIssues"><option value=".">Dot: 1234.50</option><option value=",">Comma: 1234,50</option></select></label>
             <label class="wide">Catalog introduction<textarea @bind="Project.Description" maxlength="4000" rows="2"></textarea></label>
         </section></details>
 
         <details class="panel" open>
             <summary>1. Import CSV and map its columns</summary>
-            <p>Comma, semicolon and tab are supported, including quoted separators, escaped quotes and multiline fields. Prices must use the selected decimal separator without thousands separators.</p>
+
             <div class="toolbar">
                 <label>Open CSV · up to 5 MB<input type="file" accept=".csv,.tsv,text/csv,text/plain" @ref="CsvInput" @onchange="ReadCsvAsync" disabled="@(!ModuleReady)" /></label>
-                <label>Delimiter<select @bind="Delimiter"><option value="auto">Detect from header</option><option value=",">Comma</option><option value=";">Semicolon</option><option value="tab">Tab</option></select></label>
-                <button @onclick="AnalyzeCsv" disabled="@(CsvText.Length == 0)">Analyze CSV</button>
-                <button @onclick="StageExampleCsv">Load example CSV into importer</button>
-                <button @onclick="DownloadSampleCsvAsync" disabled="@(!ModuleReady)">Download example CSV</button>
+
+                <button @onclick="StageExampleCsv">Try an example</button>
+
             </div>
-            <label>Or paste CSV<textarea class="csv-source" @bind="CsvText" rows="5" maxlength="5000000" spellcheck="false" placeholder="SKU,Name,Price,Category,Description,Stock,Image Filename"></textarea></label>
+            <details><summary>Paste a list or change import options</summary><label>Column separator<select @bind="Delimiter"><option value="auto">Detect automatically</option><option value=",">Comma</option><option value=";">Semicolon</option><option value="tab">Tab</option></select></label><label>Paste CSV<textarea class="csv-source" @bind="CsvText" rows="5" maxlength="5000000" spellcheck="false" placeholder="SKU,Name,Price,Category,Description,Stock,Image Filename"></textarea></label><button @onclick="AnalyzeCsv" disabled="@(CsvText.Length == 0)">Read this list</button></details>
             @if (CsvTable is not null)
             {
                 <p>@CsvTable.Rows.Count data rows · @CsvTable.Headers.Count columns · detected @(CsvTable.Delimiter == '\t' ? "tab" : CsvTable.Delimiter.ToString()) · source: @CsvSourceName</p>
                 <div class="column-map">
-                    <label>SKU · required<select @bind="Mapping.Sku">@ColumnOptions()</select></label>
+                    <label>Product code · required<select @bind="Mapping.Sku">@ColumnOptions()</select></label>
                     <label>Product name · required<select @bind="Mapping.Name">@ColumnOptions()</select></label>
                     <label>Price · required<select @bind="Mapping.Price">@ColumnOptions()</select></label>
                     <label>Description<select @bind="Mapping.Description">@ColumnOptions()</select></label>
@@ -50,23 +49,23 @@
                     <ul class="import-errors">@foreach (var issue in CsvTable.Issues.Take(100)) { <li>Line @issue.Row: @issue.Message</li> }</ul>
                 }
                 <div class="table-scroll">
-                    <table class="source-preview"><caption>First six source records; row numbers refer to physical CSV lines</caption><thead><tr><th>Line</th>@foreach (var header in CsvTable.Headers) { <th>@header</th> }</tr></thead>
+                    <table class="source-preview"><caption>Preview of your file</caption><thead><tr><th>Line</th>@foreach (var header in CsvTable.Headers) { <th>@header</th> }</tr></thead>
                     <tbody>@foreach (var row in CsvTable.Rows.Take(6)) { <tr><th>@row.Line</th>@foreach (var cell in row.Cells) { <td>@cell</td> }</tr> }</tbody></table>
                 </div>
-                <button @onclick="ImportCsv" disabled="@(CsvTable.Issues.Any(issue => issue.IsError) || ParsedCsv != CsvText)">Replace product rows with this import</button>
-                <p class="small">Import replaces product rows and keeps the image bank. Existing work can be restored with Undo last operation or a saved project.</p>
+                <button @onclick="ImportCsv" disabled="@(CsvTable.Issues.Any(issue => issue.IsError) || ParsedCsv != CsvText || ParsedDelimiter != Delimiter)">Use these products</button>
+                <p class="small">This replaces the current product list. You can undo the import.</p>
             }
         </details>
 
-        <section class="panel" aria-label="Local image bank">
-            <h2>2. Attach local images</h2>
+        <details class="panel" aria-label="Product photos"><summary>2. Add photos (optional)</summary>
+
             <div class="toolbar">
                 <label>PNG, JPEG or WebP · up to 8 MB each<input type="file" accept="image/png,image/jpeg,image/webp" multiple @ref="ImageInput" @onchange="ReadImagesAsync" disabled="@(!ModuleReady)" /></label>
-                <button @onclick="MatchImages">@($"Match filenames / SKU again ({Project.Images.Count} images)")</button>
+                <button @onclick="MatchImages" disabled="@(Project.Images.Count==0 || Project.Products.Count==0)">Match photos again</button>
             </div>
-            <p class="small">Photos are resized to at most 1200 pixels and stored as local JPEG copies. An exact image filename wins; otherwise a filename such as <code>ST-001.jpg</code> matches SKU <code>ST-001</code>. Ambiguous matches need a manual choice. Existing fingerprint references are rebound when the original file is reattached.</p>
+            <p class="small">Name photos after product codes, such as <code>ST-001.jpg</code>. Choose any unmatched photo in the product details.</p>
             @if (ImageErrors.Count > 0) { <ul class="import-errors">@foreach (var error in ImageErrors) { <li>@error</li> }</ul> }
-        </section>
+        </details>
 
         @{
             var filtered = FilteredProducts();
@@ -78,13 +77,13 @@
         }
         <section class="panel">
             <h2>3. Check and edit products</h2>
-            <div class="counts"><strong>@Project.Products.Count rows</strong><span>@Project.Products.Count(product => product.Included) included</span><span>@Issues.Count(issue => issue.IsError) row/workspace errors</span><span>@Issues.Count(issue => !issue.IsError) image warnings</span><span>@Selected.Count selected</span></div>
+            <div class="counts"><strong>@Project.Products.Count rows</strong><span>@Project.Products.Count(product => product.Included) included</span><span>@Issues.Count(issue => issue.IsError) errors</span><span>@Issues.Count(issue => !issue.IsError) image warnings</span><span>@Selected.Count selected</span></div>
             <div class="toolbar filters">
-                <label>Search<input @bind="Search" @bind:event="oninput" @bind:after="ResetPage" placeholder="SKU, product, description or category" /></label>
+                <label>Search<input @bind="Search" @bind:event="oninput" @bind:after="ResetPage" placeholder="Product code, name or category" /></label>
                 <label>Category<select @bind="Category" @bind:after="ResetPage"><option value="">All categories</option>@foreach (var category in Project.Products.Select(product => product.Category).Where(value => value.Length > 0).Distinct().Order()) { <option value="@category">@category</option> }</select></label>
                 <label class="inline"><input type="checkbox" @bind="OnlyErrors" @bind:after="ResetPage" /> Rows with errors only</label>
                 <label class="inline"><input type="checkbox" @bind="OnlyMissingImages" @bind:after="ResetPage" /> Missing photos only</label>
-                <button @onclick="SelectFiltered">Select all matching rows</button><button @onclick="() => Selected.Clear()">Clear selection</button>
+                <button @onclick="SelectFiltered" disabled="@(filtered.Count==0)">Select all matching rows</button><button @onclick="() => Selected.Clear()" disabled="@(Selected.Count==0)">Clear selection</button>
             </div>
             <details class="bulk">
                 <summary>Bulk edit the selected rows</summary>
@@ -93,15 +92,15 @@
                     <label class="inline"><input type="checkbox" @bind="UseStock" /> Set stock<input @bind="BulkStock" maxlength="12" placeholder="Blank means not specified" /></label>
                     <label class="inline"><input type="checkbox" @bind="UsePercent" /> Adjust prices by %<input @bind="BulkPercent" placeholder="-10 or 5.5" /></label>
                 </div>
-                <div class="toolbar"><button @onclick="ApplyBulk">Apply selected changes</button><button @onclick="() => SetIncluded(true)">Include selected</button><button @onclick="() => SetIncluded(false)">Exclude selected</button></div>
+                <div class="toolbar"><button @onclick="ApplyBulk" disabled="@(Selected.Count==0 || !UseCategory && !UseStock && !UsePercent)">Apply selected changes</button><button @onclick="() => SetIncluded(true)" disabled="@(Selected.Count==0)">Include selected</button><button @onclick="() => SetIncluded(false)" disabled="@(Selected.Count==0)">Exclude selected</button></div>
                 <p class="small">Price adjustment uses a dot decimal and rounds to two places. All selected prices must be valid before any are changed. Excluded rows are kept in the project but do not appear in exports.</p>
             </details>
             <div class="table-scroll">
                 <table class="products"><caption>@filtered.Count matching products · edit cells, then leave the field to validate</caption>
-                    <thead><tr><th>Select</th><th>Export</th><th>Row</th><th>SKU</th><th>Name</th><th>Price</th><th>Category</th><th>Stock</th><th>Photo</th><th>Details</th></tr></thead>
+                    <thead><tr><th>Select</th><th>Export</th><th>Row</th><th>Product code</th><th>Name</th><th>Price</th><th>Category</th><th>Stock</th><th>Photo</th><th>Details</th></tr></thead>
                     <tbody>@foreach (var product in rows)
                     {
-                        <tr @key="product.Id" class="@(Issues.Any(issue => issue.ProductId == product.Id && issue.IsError) ? "invalid-row" : "")">
+                        <tr id="@("catalog-row-"+product.Id)" tabindex="-1" @key="product.Id" class="@(Issues.Any(issue => issue.ProductId == product.Id && issue.IsError) ? "invalid-row" : "")">
                             <td><input type="checkbox" checked="@Selected.Contains(product.Id)" @onchange="eventArgs => ToggleSelection(product.Id, eventArgs)" aria-label="@($"Select row {product.SourceRow}")" /></td>
                             <td><input type="checkbox" @bind="product.Included" @bind:after="RefreshIssues" aria-label="@($"Include row {product.SourceRow} in export")" /></td>
                             <th>@product.SourceRow</th>
@@ -111,7 +110,7 @@
                             <td><input @bind="product.Category" @bind:after="RefreshIssues" maxlength="100" aria-label="@($"Category on row {product.SourceRow}")" /></td>
                             <td><input @bind="product.Stock" @bind:after="RefreshIssues" maxlength="12" aria-label="@($"Stock on row {product.SourceRow}")" /></td>
                             <td class="photo-cell">@if (ImageFor(product) is { Attached: true } image) { <img src="@image.DataUrl" alt="@product.Name" loading="lazy" /> } else { <span>No photo</span> }</td>
-                            <td><button @onclick="() => DetailId = product.Id">Edit details</button></td>
+                            <td><button @onclick="() => OpenDetails(product.Id)">Edit details</button></td>
                         </tr>
                     }</tbody>
                 </table>
@@ -121,15 +120,15 @@
             {
                 <section class="detail-editor">
                     <h3>Details · @detail.Sku · row @detail.SourceRow</h3>
-                    <label>Description<textarea @bind="detail.Description" @bind:after="RefreshIssues" maxlength="4000" rows="4"></textarea></label>
-                    <label>Source image filename<input @bind="detail.ImageHint" maxlength="200" /></label>
+                    <label>Description<textarea id="catalog-detail-description" @bind="detail.Description" @bind:after="RefreshIssues" maxlength="4000" rows="4"></textarea></label>
+                    <label>Source image filename<input @bind="detail.ImageHint" @bind:after="RefreshIssues" maxlength="200" /></label>
                     <label>Manually matched image<select value="@detail.ImageId" @onchange="args => SetImage(detail, args.Value?.ToString())"><option value="">No image</option>@foreach (var image in Project.Images) { <option value="@image.Id">@image.Name · @(image.Attached ? "attached" : "reference only")</option> }</select></label>
                     <button @onclick="() => DetailId = null">Close details</button>
                 </section>
             }
         </section>
 
-        <section class="panel issues">
+        @if(Issues.Count>0){<section class="panel issues">
             <h2>Data issues with source rows</h2>
             @if (Issues.Count == 0) { <p>No validation issues.</p> }
             else
@@ -138,49 +137,49 @@
                 <table><thead><tr><th>Row</th><th>Field</th><th>Level</th><th>Issue</th><th>Repair</th></tr></thead><tbody>@foreach (var issue in Issues.Take(100)) { <tr><td>@(issue.Row == 0 ? "Workspace" : issue.Row)</td><td>@issue.Field</td><td>@(issue.IsError ? "Error" : "Warning")</td><td>@issue.Message</td><td>@if (issue.ProductId is not null) { <button @onclick="() => OpenIssue(issue.ProductId)">Find row</button> }</td></tr> }</tbody></table>
                 <button @onclick="DownloadIssuesAsync" disabled="@(!ModuleReady)">Download complete issue report</button>
             }
-        </section>
+        </section>}
 
         <section class="panel">
             <h2>4. Save or export</h2>
             <p><strong>@exportErrors blocking issues in the export selection.</strong> Missing photos produce visible placeholders. Duplicate included SKUs, missing names and invalid prices must be repaired or excluded.</p>
-            <label class="inline"><input type="checkbox" @bind="ExportMatchingOnly" /> Export only current search/category results</label>
+            <label class="inline"><input type="checkbox" @bind="ExportMatchingOnly" /> Export only matching rows</label>
             <div class="toolbar">
-                <button @onclick="DownloadHtmlAsync" disabled="@(!ModuleReady || exportErrors > 0 || exportIds.Count == 0)">Download searchable standalone HTML</button>
+                <button @onclick="DownloadHtmlAsync" disabled="@(!ModuleReady || exportErrors > 0 || exportIds.Count == 0)">Download catalog page (.html)</button>
                 <button @onclick="PrintAsync" disabled="@(!ModuleReady || exportErrors > 0 || exportIds.Count == 0)">Open printable catalog</button>
-                <button @onclick="SaveProjectAsync" disabled="@(!ModuleReady)">Save JSON project with photos</button>
-                <label>Restore JSON project · up to 45 MB<input type="file" accept=".json,application/json" @ref="ProjectInput" @onchange="RestoreProjectAsync" disabled="@(!ModuleReady)" /></label>
-                <button @onclick="Undo" disabled="@(UndoJson is null)">Undo last operation</button>
-                <button @onclick="LoadDemo">Reset to 20 original demo products</button>
+                <button @onclick="SaveProjectAsync" disabled="@(!ModuleReady)">Save project file</button>
+                <label>Open project file · up to 45 MB<input type="file" accept=".json,application/json" @ref="ProjectInput" @onchange="RestoreProjectAsync" disabled="@(!ModuleReady)" /></label>
+                @if(UndoJson is not null){<button @onclick="Undo" title="Restores the whole catalog to before that action.">@UndoLabel</button>}
+                <button @onclick="LoadDemo">Load example catalog</button>
             </div>
-            <p class="small">The HTML contains its images and real search/category filters. Printing uses the visible results in that file. Currency is an author-selected label; this tool does not take payments, calculate taxes or synchronize live stock.</p>
-            <p class="small">Unsaved local work exists only in this tab. Save a JSON project before closing or reloading. Cloud saves metadata only; transfer actual photos yourself in a JSON project or original files.</p>
+            <p class="small">Your catalog includes its photos, search and category filters.</p>
+            <p class="small">Save a project file to keep the list and photos for later editing.</p>
             <div class="catalog-preview">@foreach (var product in exportProject.Products.Where(product => product.Included).Take(4)) { <article>@if (ImageFor(product) is { Attached: true } image) { <img src="@image.DataUrl" alt="@product.Name" /> }<p class="small">@product.Sku</p><h3>@product.Name</h3><p>@CatalogStudioWorkspace.PriceLabel(product, Project)</p></article> }</div>
         </section>
         <details class="panel cloud">
-            <summary>Optional private cloud workspace · product metadata only</summary>
-            <p>Save online with your <a href="/uyelik/">Membership account</a>. Shared members can read product data, filenames and image fingerprints; photo bytes are never uploaded here.</p>
-            <label>Private workspace label · 1–100 characters<input @bind="CloudLabel" maxlength="100" /></label>
-            <p class="small">Use a short name for this saved copy. Your catalog title stays unchanged.</p>
-            <div class="toolbar"><button @onclick="LoadCloudListAsync">Load my private workspaces and limits</button><button @onclick="CreateCloudAsync">Create a private catalog workspace</button></div>
-            @if (CloudNeedsAccount) { <p><a href="/uyelik/">Sign in, create an account or recover your account in Membership</a>, then return and load your workspaces.</p> }
+            <summary>Save online or work with others</summary>
+            <p>Saves product details and photo filenames, not the image files. Use your <a href="/uyelik/">account</a> to open the saved copy on another device. Everyone invited can read all product text and filenames.</p>
+            <label>Saved copy name<input @bind="CloudLabel" maxlength="100" /></label>
+
+            <div class="toolbar"><button @onclick="LoadCloudListAsync">Show saved catalogs</button><button @onclick="CreateCloudAsync">Save a new online copy</button></div>
+            @if (CloudNeedsAccount) { <p><a href="/uyelik/">Sign in or create an account</a>, then return to your saved catalogs.</p> }
             @if (CloudDirectory is not null)
             {
-                <p>Account usage: @CloudDirectory.Account.UsedProjects / @CloudDirectory.Account.ProjectLimit shared project slots · metadata limit: @CloudDirectory.Account.MaxBodyBytes bytes per workspace. Images remain device-local.</p>
-                <div class="toolbar"><label>Accessible catalog workspace<select @bind="CloudSelection"><option value="">Select a workspace</option>@foreach (var item in CloudDirectory.Workspaces.Where(item => item.Kind == "catalog")) { <option value="@item.Id">@item.Title · @item.Role · revision @item.Revision</option> }</select></label><button @onclick="OpenCloudAsync" disabled="@(CloudSelection.Length == 0)">Open selected metadata</button></div>
+                <p>Saved projects: @CloudDirectory.Account.UsedProjects / @CloudDirectory.Account.ProjectLimit</p>
+                <div class="toolbar"><label>Saved catalog<select @bind="CloudSelection"><option value="">Select a workspace</option>@foreach (var item in CloudDirectory.Workspaces.Where(item => item.Kind == "catalog")) { <option value="@item.Id">@item.Title · @item.Role</option> }</select></label><button @onclick="OpenCloudAsync" disabled="@(CloudSelection.Length == 0)">Open catalog</button></div>
             }
             @if (CloudWorkspace is not null)
             {
-                <p><strong>@CloudWorkspace.Title</strong> · @CloudWorkspace.Role · revision @CloudWorkspace.Revision</p>
-                <button @onclick="SaveCloudAsync" disabled="@(CloudWorkspace.Role is not ("owner" or "editor"))">Save metadata as the next revision</button>
-                @if (CloudWorkspace.Role == "viewer") { <p class="small">This shared project is read-only. Make your own copy to edit it.</p> }
+                <p><strong>@CloudWorkspace.Title</strong> · @CloudWorkspace.Role</p>
+                <button @onclick="SaveCloudAsync" disabled="@(CloudWorkspace.Role is not ("owner" or "editor"))">Save changes online</button>
+                @if (CloudWorkspace.Role == "viewer") { <p class="small">You can edit this local copy. Save a new online copy to keep your changes.</p> }
                 @if (CloudWorkspace.Role == "owner")
                 {
-                    <div class="toolbar"><label>Invite role<select @bind="InviteRole"><option value="viewer">Viewer</option><option value="editor">Editor</option></select></label><button @onclick="CreateInviteAsync">Create private invitation token</button></div>
-                    @if (InviteToken.Length > 0) { <label>Select and copy this invitation token<input readonly value="@InviteToken" /></label><p class="small">Expires @(DateTimeOffset.FromUnixTimeMilliseconds(InviteExpires).ToString("u", CultureInfo.InvariantCulture)). Send the token yourself to the intended recipient. The invitation is not sent automatically.</p> }
+                    <div class="toolbar"><label>Invite role<select @bind="InviteRole"><option value="viewer">Viewer</option><option value="editor">Editor</option></select></label><button @onclick="CreateInviteAsync">Create invitation code</button></div>
+                    @if (InviteToken.Length > 0) { <label>Invitation code<input readonly value="@InviteToken" /></label><p class="small">Expires @(DateTimeOffset.FromUnixTimeMilliseconds(InviteExpires).ToString("u", CultureInfo.InvariantCulture)). Send this code to the person you want to invite.</p> }
                 }
             }
-            <div class="toolbar"><label>Accept an invitation token<input @bind="JoinToken" maxlength="300" autocomplete="off" /></label><button @onclick="JoinCloudAsync">Join and open shared catalog</button></div>
-            <p class="small">Opening an online copy replaces your rows; Undo keeps the previous rows. Reattach matching photos on this device or transfer them in a project file. Conflicting edits stay available for comparison.</p>
+            <div class="toolbar"><label>Invitation code<input @bind="JoinToken" maxlength="300" autocomplete="off" /></label><button @onclick="JoinCloudAsync" disabled="@(JoinToken.Trim().Length==0)">Join catalog</button></div>
+            <p class="small">Opening a saved copy replaces the list. Keep a project file if you want to preserve your current list and photos.</p>
         </details>
     </fieldset>
 </div>
@@ -197,17 +196,18 @@
     ElementReference CsvInput, ImageInput, ProjectInput;
     CatalogStudioCsvTable? CsvTable;
     CatalogStudioColumnMap Mapping = new();
-    string CsvText = "", ParsedCsv = "", CsvSourceName = "pasted text", Delimiter = "auto";
+    string CsvText = "", ParsedCsv = "", ParsedDelimiter = "", CsvSourceName = "pasted text", Delimiter = "auto";
     string Search = "", Category = "", BulkCategory = "", BulkStock = "", BulkPercent = "";
-    string Status = "Twenty original fictional products and local SVG illustrations are ready. Load your CSV to replace them.";
-    string? DetailId, UndoJson;
+    string Status = "Example catalog. Import your product list to replace it.";
+    string? DetailId, UndoJson, FocusTarget;
+    string UndoLabel = "Undo change";
     bool Busy, HasError, ModuleReady, OnlyErrors, OnlyMissingImages, UseCategory, UseStock, UsePercent, ExportMatchingOnly;
     int Page;
     CatalogStudioCloudClient? CloudClient;
     CatalogStudioCloudDirectory? CloudDirectory;
     CatalogStudioCloudWorkspace? CloudWorkspace;
     string CloudSelection = "", InviteRole = "viewer", InviteToken = "", JoinToken = "";
-    string CloudLabel = "My catalog workspace";
+    string CloudLabel = "My catalog";
     bool CloudNeedsAccount;
     long InviteExpires;
 
@@ -217,6 +217,7 @@
     /// <summary>Loads the product's own file bridge; no account or network data API is contacted.</summary>
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
+        if(FocusTarget is not null){var target=FocusTarget;FocusTarget=null;await Javascript.InvokeVoidAsync("binSiteSocial.focusField",target);}
         if (!firstRender) return;
         await ExecuteAsync(async () => { Module = await Javascript.InvokeAsync<IJSObjectReference>("import", "/catalog-studio.js"); ModuleReady = true; });
         StateHasChanged();
@@ -275,10 +276,11 @@
     void SetImage(CatalogStudioProduct product, string? id) { product.ImageId = string.IsNullOrEmpty(id) ? null : id; RefreshIssues(); }
 
     /// <summary>Brings an issue's product into view and opens its extended fields.</summary>
+    void OpenDetails(string id){DetailId=id;FocusTarget="catalog-detail-description";}
     void OpenIssue(string id)
     {
         Search = Category = ""; OnlyErrors = OnlyMissingImages = false;
-        var index = Project.Products.FindIndex(product => product.Id == id); Page = Math.Max(0, index / PageSize); DetailId = id;
+        var index = Project.Products.FindIndex(product => product.Id == id); Page = Math.Max(0, index / PageSize); DetailId = id; FocusTarget="catalog-row-"+id;
     }
 
     /// <summary>Stages a locally selected CSV without replacing any active product rows.</summary>
@@ -295,21 +297,21 @@
     void AnalyzeCsvCore()
     {
         char? delimiter = Delimiter == "auto" ? null : Delimiter == "tab" ? '\t' : Delimiter[0];
-        CsvTable = CatalogStudioCsv.Parse(CsvText, delimiter); Mapping = CatalogStudioCsv.SuggestMapping(CsvTable.Headers); ParsedCsv = CsvText;
-        Status = $"Analyzed {CsvTable.Rows.Count} product rows; {CsvTable.Issues.Count} structural issues.";
+        CsvTable = CatalogStudioCsv.Parse(CsvText, delimiter); Mapping = CatalogStudioCsv.SuggestMapping(CsvTable.Headers); ParsedCsv = CsvText; ParsedDelimiter = Delimiter;
+        Status = $"Read {CsvTable.Rows.Count} products from the file.";
     }
 
     /// <summary>Stages the editorial sheet so the user can inspect its real header mapping and quoting.</summary>
-    void StageExampleCsv() { CsvText = CatalogStudioSamples.Csv(); CsvSourceName = "original-demo-products.csv"; AnalyzeCsvCore(); }
+    void StageExampleCsv() { CsvText = CatalogStudioSamples.Csv(); CsvSourceName = "original-demo-products.csv"; Delimiter = "auto"; AnalyzeCsvCore(); }
 
     /// <summary>Imports mapped rows atomically while retaining the current local image bank.</summary>
     Task ImportCsv() => ExecuteAsync(() =>
     {
-        if (CsvTable is null || ParsedCsv != CsvText) throw new FormatException("Analyze the current CSV before importing.");
+        if (CsvTable is null || ParsedCsv != CsvText || ParsedDelimiter != Delimiter) throw new FormatException("Select Read this list after changing the text or column separator.");
         var products = CatalogStudioCsv.Import(CsvTable, Mapping);
         var snapshot = CatalogStudioWorkspace.Serialize(Project);
-        Project.Products = products; CatalogStudioWorkspace.MatchImages(Project); UndoJson = snapshot; Selected.Clear(); DetailId = null; Page = 0; RefreshIssues();
-        Status = $"Imported {products.Count} rows. Repair the listed data issues before exporting.";
+        Project.Products = products; CatalogStudioWorkspace.MatchImages(Project); UndoJson = snapshot; UndoLabel="Undo import"; Selected.Clear(); DetailId = null; Page = 0; RefreshIssues();
+        Status = $"Imported {products.Count} products.";
         return Task.CompletedTask;
     });
 
@@ -318,7 +320,7 @@
     {
         var batch = await Bridge().InvokeAsync<CatalogStudioImageBatch>("readImages", ImageInput);
         var snapshot = CatalogStudioWorkspace.Serialize(Project);
-        var matched = CatalogStudioWorkspace.AttachImages(Project, batch.Images); UndoJson = snapshot; ImageErrors = batch.Errors; RefreshIssues();
+        var matched = CatalogStudioWorkspace.AttachImages(Project, batch.Images); UndoJson = snapshot; UndoLabel="Undo photo changes"; ImageErrors = batch.Errors; RefreshIssues();
         Status = $"{batch.Images.Count} local images processed; {matched} additional rows matched; {batch.Errors.Count} files need attention.";
     });
 
@@ -338,14 +340,14 @@
         }
         var snapshot = CatalogStudioWorkspace.Serialize(Project);
         var count = CatalogStudioWorkspace.BulkEdit(Project, Selected, UseCategory ? BulkCategory : null, UseStock ? BulkStock : null, percent);
-        UndoJson = snapshot; RefreshIssues(); Status = $"Updated {count} selected products."; return Task.CompletedTask;
+        UndoJson = snapshot; UndoLabel="Undo bulk edit"; RefreshIssues(); Status = $"Updated {count} selected products."; return Task.CompletedTask;
     });
 
     /// <summary>Includes or excludes selected rows without discarding their source data.</summary>
     void SetIncluded(bool included)
     {
         if (Selected.Count == 0) { Status = "Select at least one row."; return; }
-        UndoJson = CatalogStudioWorkspace.Serialize(Project);
+        UndoJson = CatalogStudioWorkspace.Serialize(Project); UndoLabel="Undo export selection";
         foreach (var product in Project.Products.Where(product => Selected.Contains(product.Id))) product.Included = included;
         RefreshIssues(); Status = included ? "Selected rows are included." : "Selected rows are excluded from exports.";
     }
@@ -361,7 +363,7 @@
     Task PrintAsync() => ExecuteAsync(async () =>
     {
         var html = CatalogStudioExporter.Html(ExportProject()); var opened = await Bridge().InvokeAsync<bool>("printPreview", html);
-        Status = opened ? "Print preview opened. Use Print current results in that window." : "The popup was blocked. A printable catalog HTML file was downloaded instead.";
+        Status = opened ? "Print preview opened. Select Print results in that window." : "The popup was blocked. A printable catalog file was downloaded instead.";
     });
 
     /// <summary>Saves all rows, settings and attached local image copies into an explicit portable download.</summary>
@@ -376,7 +378,7 @@
     {
         var file = await Bridge().InvokeAsync<CatalogStudioTextFile?>("readText", ProjectInput, 45_000_000);
         if (file is null) return;
-        var restored = CatalogStudioWorkspace.Deserialize(file.Text); UndoJson = CatalogStudioWorkspace.Serialize(Project); Project = restored;
+        var restored = CatalogStudioWorkspace.Deserialize(file.Text); UndoJson = CatalogStudioWorkspace.Serialize(Project); UndoLabel="Undo opening project"; Project = restored;
         Selected.Clear(); Search = Category = ""; OnlyErrors = OnlyMissingImages = false; DetailId = null; Page = 0; DetachCloud(); RefreshIssues(); Status = "Project restored. Attached photos remain local.";
     });
 
@@ -389,28 +391,28 @@
     void Undo()
     {
         if (UndoJson is null) return;
-        Project = CatalogStudioWorkspace.Deserialize(UndoJson); UndoJson = null; Selected.Clear(); DetailId = null; Search = Category = ""; Page = 0; DetachCloud(); RefreshIssues(); Status = "The previous workspace was restored as a local project.";
+        Project = CatalogStudioWorkspace.Deserialize(UndoJson); UndoJson = null; Selected.Clear(); DetailId = null; Search = Category = ""; Page = 0; DetachCloud(); RefreshIssues(); Status = "Previous catalog restored.";
     }
 
     /// <summary>Loads the authored demonstration while retaining one reversible snapshot.</summary>
     void LoadDemo()
     {
-        UndoJson = CatalogStudioWorkspace.Serialize(Project); Project = CatalogStudioSamples.Create(); Selected.Clear(); Search = Category = ""; Page = 0; DetailId = null; DetachCloud(); RefreshIssues();
-        Status = "Twenty fictional sample products and original local SVG illustrations loaded.";
+        UndoJson = CatalogStudioWorkspace.Serialize(Project); UndoLabel="Undo example reset"; Project = CatalogStudioSamples.Create(); Selected.Clear(); Search = Category = ""; Page = 0; DetailId = null; DetachCloud(); RefreshIssues();
+        Status = "Example catalog loaded.";
     }
 
     /// <summary>Loads real account workspace headers only after the user requests optional cloud access.</summary>
     Task LoadCloudListAsync() => ExecuteAsync(async () =>
     {
         CloudDirectory = await CloudBridge().ListAsync(); CloudNeedsAccount = false;
-        Status = "Private workspace list and current server limits loaded.";
+        Status = "Saved catalogs loaded.";
     });
 
     /// <summary>Creates a real metadata-only server project without transferring local image bytes.</summary>
     Task CreateCloudAsync() => ExecuteAsync(async () =>
     {
         CloudWorkspace = await CloudBridge().CreateAsync(Project, CloudLabel); CloudSelection = CloudWorkspace.Id; CloudLabel = CloudWorkspace.Title; CloudDirectory = null; CloudNeedsAccount = false; InviteToken = "";
-        Status = "Private catalog metadata created. Photos were not uploaded. Refresh the workspace list to read updated quota usage.";
+        Status = "Catalog saved online. Keep a project file to transfer the photos.";
     });
 
     /// <summary>Opens selected authorized metadata and rebinds device-local photos by fingerprint.</summary>
@@ -420,9 +422,9 @@
     async Task OpenCloudCoreAsync(string id)
     {
         var workspace = await CloudBridge().OpenAsync(id); var restored = CatalogStudioCloudClient.Rebind(workspace.Body, Project);
-        UndoJson = CatalogStudioWorkspace.Serialize(Project); Project = restored; CloudWorkspace = workspace; CloudSelection = workspace.Id; CloudLabel = workspace.Title;
+        UndoJson = CatalogStudioWorkspace.Serialize(Project); UndoLabel="Undo opening project"; Project = restored; CloudWorkspace = workspace; CloudSelection = workspace.Id; CloudLabel = workspace.Title;
         Selected.Clear(); Search = Category = ""; Page = 0; DetailId = null; InviteToken = ""; CloudNeedsAccount = false; RefreshIssues();
-        Status = $"Opened revision {workspace.Revision}. {Project.Images.Count(image => image.Attached)} image references matched local or bundled images.";
+        Status = "Catalog opened. Reattach any missing photos or open a project file that includes them.";
     }
 
     /// <summary>Saves one known revision without retrying a mutation or overwriting a conflict.</summary>
@@ -430,7 +432,7 @@
     {
         if (CloudWorkspace is null) throw new FormatException("Open or create a private workspace first.");
         CloudWorkspace = await CloudBridge().SaveAsync(CloudWorkspace, Project, CloudLabel); CloudLabel = CloudWorkspace.Title; CloudNeedsAccount = false;
-        Status = $"Metadata saved as revision {CloudWorkspace.Revision}. Photo bytes remain local.";
+        Status = "Product details saved online.";
     });
 
     /// <summary>Creates an owner-authorized token and leaves all actual sharing to the user.</summary>
@@ -438,7 +440,7 @@
     {
         if (CloudWorkspace is null) throw new FormatException("Open an owner workspace first.");
         var invitation = await CloudBridge().InviteAsync(CloudWorkspace, InviteRole); InviteToken = invitation.Token; InviteExpires = invitation.ExpiresAt;
-        Status = "Private invitation created. Copy the token to share it with your intended viewer or editor.";
+        Status = "Invitation code ready. Send it to your viewer or editor.";
     });
 
     /// <summary>Accepts a real invitation, then opens the resulting metadata using current server permissions.</summary>
@@ -451,7 +453,7 @@
     CatalogStudioCloudClient CloudBridge() => CloudClient ?? throw new InvalidOperationException("Cloud tools are still initializing.");
 
     /// <summary>Stops a restored or demo local project from silently remaining bound to a previous server workspace.</summary>
-    void DetachCloud() { CloudWorkspace = null; CloudSelection = ""; InviteToken = ""; CloudLabel = "My catalog workspace"; }
+    void DetachCloud() { CloudWorkspace = null; CloudSelection = ""; InviteToken = ""; CloudLabel = "My catalog"; }
 
     /// <summary>Requires the loaded file bridge and returns a useful browser-action failure instead of a null reference.</summary>
     IJSObjectReference Bridge() => Module ?? throw new InvalidOperationException("File tools are still loading. Reload the page if they remain unavailable.");
@@ -468,9 +470,7 @@
         catch (ApiFailure error)
         {
             HasError = true; CloudNeedsAccount = error.Status == System.Net.HttpStatusCode.Unauthorized;
-            Status = error.Status == System.Net.HttpStatusCode.Conflict
-                ? "The cloud revision changed. Your local edits are retained. Save a local project or open the newer server revision before saving again."
-                : CloudNeedsAccount ? "Sign in through Membership to use optional private workspaces. The local catalog workflow remains available." : error.Message;
+            Status = CloudNeedsAccount ? "Sign in to save a catalog online. Your current catalog is still here." : error.Message;
         }
         catch (Exception error)
         {

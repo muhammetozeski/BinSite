@@ -3,7 +3,7 @@ export async function readText(input, maximumBytes) {
     const file = input.files && input.files[0];
     if (!file) return null;
     try {
-        if (file.size > maximumBytes) throw new Error("The selected file exceeds the stated size limit.");
+        if (file.size > maximumBytes) throw new Error("This file is too large to open.");
         return { name: file.name, text: await file.text() };
     } finally {
         input.value = "";
@@ -14,7 +14,7 @@ function decodeImage(url) {
     return new Promise((resolve, reject) => {
         const image = new Image();
         image.onload = () => resolve(image);
-        image.onerror = () => reject(new Error("The image could not be decoded."));
+        image.onerror = () => reject(new Error("This image could not be opened."));
         image.src = url;
     });
 }
