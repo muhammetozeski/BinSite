@@ -36,6 +36,9 @@ jobs:
       - name: Build directory from implemented products
         run: node scripts/build.mjs
       - name: Prepare optional advertising and membership links
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: node scripts/Prepare-Revenue.mjs
       - name: Validate product scripts and paths
         run: node scripts/check.mjs

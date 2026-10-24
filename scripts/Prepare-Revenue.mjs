@@ -4,6 +4,18 @@ import path from 'node:path';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const catalog = JSON.parse(await readFile(path.join(root, 'public/catalog.json'), 'utf8'));
+let variables = {};
+if (process.env.CLOUDFLARE_API_TOKEN && process.env.CLOUDFLARE_ACCOUNT_ID) {
+  const hosting = JSON.parse(await readFile(path.join(root, 'docs/hosting.json'), 'utf8'));
+  const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/pages/projects/${hosting.projectName}`, { headers: { Authorization: `Bearer ${process.env.CLOUDFLARE_API_TOKEN}` } });
+  const data = await response.json();
+  if (!response.ok || !data.success) throw new Error('Could not read public revenue configuration from hosting.');
+  variables = data.result.deployment_configs.production.env_vars || {};
+}
+const publisher = /^ca-pub-\d{16}$/.test(variables.ADSENSE_CLIENT?.value || '') ? variables.ADSENSE_CLIENT.value : null;
+const slot = /^\d{5,20}$/.test(variables.ADSENSE_SLOT?.value || '') ? variables.ADSENSE_SLOT.value : null;
+const enabled = Boolean(publisher && slot && variables.ADSENSE_CONSENT_READY?.value === 'true');
+await writeFile(path.join(root, 'public/revenue-config.json'), JSON.stringify({ adSense: { enabled, client: enabled ? publisher : null, slot: enabled ? slot : null }, membership: '/uyelik/', sponsorship: '/reklam/', privacy: '/gizlilik/' }, null, 2) + '\n');
 const paths = ['index.html', ...catalog.map(product => `${product.slug}/index.html`)];
 for (const relative of paths) {
   const filename = path.join(root, 'public', relative);

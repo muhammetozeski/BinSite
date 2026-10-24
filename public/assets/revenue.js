@@ -1,7 +1,7 @@
 'use strict';
 (async function () {
   let config;
-  try { const response = await fetch('/revenue-config'); if (!response.ok) return; config = await response.json(); }
+  try { const response = await fetch('/revenue-config.json'); if (!response.ok) return; config = await response.json(); }
   catch { return; }
   const footer = document.createElement('aside');
   footer.setAttribute('aria-label', 'Bu projenin devamını destekle');

@@ -1,0 +1,10 @@
+{
+  "adSense": {
+    "enabled": false,
+    "client": null,
+    "slot": null
+  },
+  "membership": "/uyelik/",
+  "sponsorship": "/reklam/",
+  "privacy": "/gizlilik/"
+}
