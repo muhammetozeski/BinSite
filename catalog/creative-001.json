@@ -1,0 +1,52 @@
+[
+  {
+    "id": 6,
+    "name": "Çizgi Döngüsü",
+    "slug": "cizgi-dongusu",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "32 × 32 pikselde kare kare animasyon üreten, önceki kare rehberli küçük bir çizim stüdyosu.",
+    "features": ["48 kareye kadar animasyon", "Kalem, silgi, doldurma ve geri alma", "Önceki kareyi soluk gösterme", "1–24 kare/saniye oynatma", "JSON proje içe ve dışa aktarımı", "PNG kare indirme", "Tarayıcıda otomatik saklama", "Düzenlenebilir zıplayan top örneği"],
+    "businessHypothesis": "Ücretsiz çizim ve paylaşılan çalışma dosyaları üretici kitlesini büyütebilir; sprite sayfası ve animasyon dışa aktarımları ile ekip atölyeleri ücretli özellik adayıdır. Kullanıcı ve gelir sonucu henüz ölçülmedi."
+  },
+  {
+    "id": 7,
+    "name": "Ritim Masası",
+    "slug": "ritim-masasi",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "Altı sentezlenmiş ses, on altı adım ve salınım ayarıyla ritim üreten bağımsız bir müzik masası.",
+    "features": ["Web Audio ile kick, trampet, hi-hat, alkış, bas ve melodi", "Canlı tempo ve salınım ayarı", "Enstrüman susturma", "Bas notası ve melodi dizisi", "Üç editoryal ritim ve rastgele üretim", "Ritmin tamamını taşıyan paylaşım URL'si", "Yerel ritim kaydı"],
+    "businessHypothesis": "Düzenlenebilir ritim bağlantılarından doğan ortak üretim müzik topluluğu oluşturabilir; daha sonra ses paketleri, çalışma alanları ve ses dışa aktarımı denenebilir. Bunlar gelir varsayımlarıdır."
+  },
+  {
+    "id": 8,
+    "name": "Sonsuz Çizgi Roman",
+    "slug": "sonsuz-cizgi-roman",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "Sahne, yüz ifadeleri ve diyalogları düzenleyerek 3–6 panelli vektör çizgi roman oluşturan hikâye atölyesi.",
+    "features": ["Dört farklı sahne", "İki karakter ve dört yüz ifadesi", "Panel sıralama ve çoğaltma", "SVG ve yüksek çözünürlüklü PNG dışa aktarımı", "Düzenlenebilir paylaşım bağlantısı", "Proje dosyası içe ve dışa aktarımı", "Otomatik yerel kayıt", "Üç panelli özgün örnek hikâye"],
+    "businessHypothesis": "Okurun gelen hikâyeye alternatif son yazıp paylaşması üretici dönüşümünü artırabilir. Ek karakter ve sahne paketleri ile eğitim atölyeleri ücretli ürün adayıdır; talep henüz doğrulanmadı."
+  },
+  {
+    "id": 9,
+    "name": "Kural Atölyesi",
+    "slug": "kural-atolyesi",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "Doğum ve yaşam kurallarını değiştirip hücresel otomatların gelişimini gözlemleten deney alanı.",
+    "features": ["96 × 64 hücreli simülasyon", "0–8 komşu sayısına göre doğum ve yaşam seçimi", "Kenarları bağlama", "Dört kural ve üç desen örneği", "Kuşak, nüfus ve değişim ölçümleri", "Tuvalde hücre çizme ve silme", "Hücreleri ve kuralı taşıyan paylaşım bağlantısı", "Görüntü indirme"],
+    "businessHypothesis": "Paylaşılabilir deneyler merak ve eğitim çevresinde tekrar ziyaret yaratabilir. Ders koleksiyonları ve ortak araştırma çalışma alanları sonradan sınanabilecek gelir yollarıdır."
+  },
+  {
+    "id": 10,
+    "name": "Gizli Harita",
+    "slug": "gizli-harita",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "Kendi oda metinlerini ve bulmacalarını yazıp oynanabilir bir bağlantıyla arkadaşına gönderebildiğin kaçış macerası kurucusu.",
+    "features": ["1–6 odalı macera editörü ve oyuncusu", "Kod, çoktan seçmeli ve sıralama bulmacaları", "Oda başına isteğe bağlı ipucu", "Cevap denemesi, ipucu ve süre sonuçları", "Macerayı taşıyan URL paylaşımı", "Yerel taslak ve JSON proje dosyası", "Oyun sonunda kendi alternatif maceranı üretme", "Üç bulmacalı özgün fener macerası"],
+    "businessHypothesis": "Arkadaş davetiyle gelen oyuncunun macerayı tamamladıktan sonra kendi haritasını üretmesi yeni davetler yaratabilir. Ölçülecek akış: davet ziyareti, ilk bulmaca, tamamlama, yeni harita ve paylaşım. Etkinlik ve ekip maceraları gelir adayıdır; büyüme veya kazanç sonucu henüz yok."
+  }
+]
