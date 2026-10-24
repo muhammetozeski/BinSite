@@ -426,6 +426,88 @@
     "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
   },
   {
+    "id": 26,
+    "name": "Ses Görseli",
+    "slug": "ses-gorseli",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Gerçek ses dosyasını veya osilatörü frekans spektrumu ve zaman dalgası olarak gösterir.",
+    "features": [
+      "Gerçek Audio Analyser verileri",
+      "Dosya açma ve dört osilatör dalgası",
+      "En güçlü frekans ve etkin seviye",
+      "Spektral ağırlık merkezi",
+      "PNG indirme"
+    ],
+    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 27,
+    "name": "Mantık Tahtası",
+    "slug": "mantik-tahtasi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Mantık kapılarını bağlayıp girişleri değiştirerek gerçek boolean devreleri kurar.",
+    "features": [
+      "Yedi kapı türü",
+      "Sürüklenen kapılar ve kablolar",
+      "Çevrimleri bilinmeyen olarak gösterme",
+      "Doğruluk tablosu",
+      "Paylaşılan devre",
+      "Yarım toplayıcı örneği"
+    ],
+    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 28,
+    "name": "Perspektif Oda",
+    "slug": "perspektif-oda",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Parametrik eşyalarla gerçek perspektif projeksiyonlu bir oda eskizi oluşturur.",
+    "features": [
+      "Beş hacim türü",
+      "Konum, dönüş ve renk",
+      "Kamera yönü ve yüksekliği",
+      "PNG görüntü",
+      "Düzenlenebilir bağlantı"
+    ],
+    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 29,
+    "name": "Kâğıt Katla",
+    "slug": "kagit-katla",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Girilen ölçülerden katlama çizgileri ve yapıştırma kulakları içeren A4 kutu açınımı üretir.",
+    "features": [
+      "Gerçek milimetre ölçüsü",
+      "A4 sığdırma ve ölçek bildirimi",
+      "Kesme ve katlama çizgileri",
+      "SVG indirme ve yazdırma",
+      "Kontrol ölçü çizgisi"
+    ],
+    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 30,
+    "name": "Düğüm Hikâye",
+    "slug": "dugum-hikaye",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Düğümlü hikâyeler yazıp seçimlerle bağlayarak oynanabilir alternatif yollar üretir.",
+    "features": [
+      "20 düğüme kadar hikâye haritası",
+      "İkişer seçenek ve hedef bağlantıları",
+      "Erişilebilir düğüm hesabı",
+      "Okur modu",
+      "Paylaşılabilir tam hikâye",
+      "Dosya indirme ve yerel kayıt"
+    ],
+    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
     "id": 36,
     "name": "Ortak Tuval",
     "slug": "ortak-tuval",
