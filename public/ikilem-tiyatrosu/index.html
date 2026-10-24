@@ -25,6 +25,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 details.readability-help{border-top:1px solid #50606e;padding-top:10px;margin:18px 0;font-size:14px;line-height:1.6}
 details.readability-help summary{cursor:pointer;font-weight:650;min-height:34px;display:list-item}
 details.readability-help p{max-width:75ch;margin:10px 0}
+html[data-bs-theme="dark"] .save{color:#c3cdd7}
+html[data-bs-theme="dark"] .collection .found{color:#e7becb}
 
 </style>
 </head><body><header><div><h1>Dilemma Theatre</h1><p>Keep Pier Radio on air through the blackout.</p></div><a href="../">Tools</a></header><main><article class="paper"><div class="eyebrow">Last Frequency</div><h2 id="title"></h2><div id="story" class="story"></div><div id="delta" class="delta" aria-live="polite" hidden></div><div id="choices" class="choices"></div><div id="ending" class="ending" hidden></div><textarea id="shareText" readonly hidden aria-label="Ending and game link"></textarea><div class="actions"><button id="undo">Undo</button><button id="restart">Restart story</button><button id="share" hidden>Copy ending and game link</button></div><div id="save" class="save"></div></article><aside class="aside"><h2>City balance</h2><div id="stats" class="stats"></div><div id="flags" class="flags"></div><details open><summary>Decisions</summary><ol id="log" class="log"></ol></details><div class="collection"><h2>Discovered endings</h2><div id="collection"></div></div></aside></main><script>
