@@ -1,5 +1,6 @@
 'use strict';
 (async function () {
+  const adEligible = document.currentScript?.dataset.ads !== 'off';
   let config;
   try { const response = await fetch('/revenue-config.json'); if (!response.ok) return; config = await response.json(); }
   catch { return; }
@@ -9,6 +10,7 @@
   const links = [['Creator account', '/uyelik/'], ['Advertising', '/advertising/'], ['Privacy', '/privacy/'], ['All products', '/']];
   for (const [index, [title, href]] of links.entries()) { if (index) footer.append(document.createTextNode(' · ')); const link = document.createElement('a'); link.textContent = title; link.href = href; link.style.color = 'inherit'; footer.append(link); }
   document.body.append(footer);
+  if (!adEligible) return;
   const ads = config.adSense;
   if (!ads?.enabled || !/^ca-pub-\d{16}$/.test(ads.client) || !/^\d{5,20}$/.test(ads.slot)) return;
   // Google Privacy & messaging must be configured before ADSENSE_CONSENT_READY is enabled.

@@ -16,7 +16,7 @@ foreach ($item in Get-ChildItem -LiteralPath $webRoot) {
 }
 $bootstrap = [System.IO.File]::ReadAllText((Join-Path $webRoot 'index.html'))
 $blazorProducts = @(Get-ChildItem -LiteralPath (Join-Path $projectRoot 'catalog') -Filter '*.json' | ForEach-Object {
-    Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json | Where-Object { $_.category -eq 'Social' -and $_.stage -ge 3 }
+    Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json | Where-Object { $_.runtime -eq 'blazor' -or ($_.category -eq 'Social' -and $_.stage -ge 3) }
 })
 $blazorProducts += [pscustomobject]@{ slug = 'uyelik'; name = 'Creator account' }
 foreach ($product in $blazorProducts) {
