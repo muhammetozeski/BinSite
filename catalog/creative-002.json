@@ -81,5 +81,85 @@
       "Üç katlı örnek"
     ],
     "businessHypothesis": "Üretilen çalışmayı paylaşan kişilerin alıcıları yeni üretime davet etmesi büyümeyi destekleyebilir. Üretici paketleri veya eğitim atölyeleri gelir adayıdır; kullanım ve gelir henüz ölçülmedi."
+  },
+  {
+    "id": 21,
+    "name": "Harf Afiş",
+    "slug": "harf-afis",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Yazıyı yığın, yay ve çapraz yerleşimlerle vektör afişe dönüştürür.",
+    "features": [
+      "Üç tipografik yerleşim",
+      "Yazı ailesi ve harf aralığı",
+      "SVG ve PNG dışa aktarımı",
+      "Düzenlenebilir bağlantı"
+    ],
+    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
+  },
+  {
+    "id": 22,
+    "name": "Döşeme Ustası",
+    "slug": "doseme-ustasi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Kare, üçgen ve altıgen taşlarla renk ve motif içeren geometrik yüzeyler üretir.",
+    "features": [
+      "Üç taş geometrisi",
+      "Taş boyama ve motif döndürme",
+      "Desen örnekleri",
+      "Yerel kayıt",
+      "PNG indirme"
+    ],
+    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
+  },
+  {
+    "id": 23,
+    "name": "Yürüyen Avatar",
+    "slug": "yuruyen-avatar",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "İskeletin iki pozunu düzenleyip eklem açıları arasında hareket döngüsü oluşturur.",
+    "features": [
+      "Dört eklem açısı",
+      "Kemik uzunluğu ayarları",
+      "A ve B pozu",
+      "Yürüyüş ve dans örnekleri",
+      "SVG poz ve paylaşım bağlantısı"
+    ],
+    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
+  },
+  {
+    "id": 24,
+    "name": "Dokuma Tezgâhı",
+    "slug": "dokuma-tezgahi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Çözgü ve atkı ipliklerinin hangi kesişimde üstte kalacağını tasarlayan sanal örgü tezgâhı.",
+    "features": [
+      "Dört örgü algoritması",
+      "İplik başına renk",
+      "Üst/alt kesişim düzenleme",
+      "Kaldırma kartı görünümü",
+      "PNG ve CSV dışa aktarımı",
+      "Yerel kayıt"
+    ],
+    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
+  },
+  {
+    "id": 25,
+    "name": "Ritim Çemberi",
+    "slug": "ritim-cemberi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Aynı turu farklı sayıda vuruşa bölen üç ses halkasıyla poliritimleri duyurur.",
+    "features": [
+      "Bağımsız halka vuruş sayıları",
+      "Ses saatine bağlı zamanlama",
+      "Halka başına ses seçimi",
+      "Tur süresi ayarı",
+      "Oran paylaşımı"
+    ],
+    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
   }
 ]
