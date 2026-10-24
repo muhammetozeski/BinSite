@@ -1,0 +1,23 @@
+[
+  {
+    "id": 96,
+    "name": "Catalog Studio",
+    "slug": "catalog-studio",
+    "category": "Workspace",
+    "stage": 7,
+    "runtime": "blazor",
+    "adEligible": false,
+    "description": "Import a product CSV, repair concrete row issues, match local photos and produce a self-contained searchable catalog or printable snapshot.",
+    "features": [
+      "Quoted comma, semicolon and tab import with revisable header mapping",
+      "Physical CSV row evidence for missing, duplicate and invalid fields",
+      "SKU, filename and local fingerprint photo matching",
+      "Search, category filters, exclusion and atomic bulk changes",
+      "Twenty original fictional sample products with local SVG illustrations",
+      "Portable JSON projects including resized local photos",
+      "Actual standalone HTML search and image-aware print output",
+      "Optional private metadata workspaces, revisions and viewer/editor invitations"
+    ],
+    "businessHypothesis": "A small shop or maker may return to update real product sheets and photo sets. Optional private team workspace capacity and revision history provide a possible paid connection while the complete local import, repair and export workflow remains account-free. No customer, audience or revenue result has been measured."
+  }
+]
