@@ -41,6 +41,12 @@ The fixed transport binds method, mounted path/query, unchanged browser Origin, 
 
 `deployment/ensure-interlock-gateway.mjs` and its manually invoked workflow inserted only the two new secret keys. Successful setup is recorded as workflow `40135698206`; it did not read or replace the original private salt. The API patch method preserves redacted keys as described in [Cloudflare secrets](Cloudflare-Secrets.md). Never store those values in source or execution records.
 
-## Evidence boundaries
+## Live acceptance and evidence boundaries
+
+Main source `3389080523234122ce1d39bf466e70c985336dc1` was published successfully by [workflow 40137439534](https://github.com/muhammetozeski/BinSite/actions/runs/40137439534). All 77 catalog targets passed the delivery, document-language, dark-default and appearance-dependency check. These include the two previously uncatalogued existing applications, not two newly created products.
+
+The main-origin Retry, StageFold and authenticated Interlock health endpoints returned JSON with HTTP 200. Freight's public endpoint is `/three-beat-freight/api/status`, not `/api/health`; it returned HTTP 200 with anonymous multiplayer availability. The example-client ZIP returned HTTP 200 as `application/zip`. Product deep links loaded the correct base document. Live frame headers contained one `SAMEORIGIN` value and the intended scoped CSP.
+
+Read-only browser observation showed all four actual interfaces loaded at their new main-origin paths, with each product's layout and appearance. No graphical input, user signup, gameplay mutation or paid transaction was performed in this acceptance pass.
 
 The coordinated local publication compiled all four pinned applications and emitted their real mounted assets, routes and backend copies. Their build metadata matched the pinned source revisions. The environment consumer check covered database/provider isolation, separate stable rate derivation, explicit overrides and missing configuration. Upstream mount records describe their narrower SQL, runner, gateway and artifact checks. Publication and live main-origin observations belong in the dated Walkthrough/release record; local success alone does not establish deployed operation, revenue or audience size.
