@@ -37,14 +37,14 @@ const ordered = [...entries].sort((a, b) => {
 function cards(kind) {
   return ordered.filter(entry => group(entry) === kind).map(entry => {
     const href = escape(entry.url ? productUrl(entry) : `/${entry.slug}/`);
-    return `<article class="product" data-category="${escape(entry.category)}" data-search="${escape([entry.name, entry.description, ...entry.features].join(' ').toLocaleLowerCase('en-US'))}"><h3><a href="${href}">${escape(entry.name)}</a></h3><p>${escape(entry.description)}</p><a class="open" href="${href}" aria-label="Open ${escape(entry.name)}">Open <span aria-hidden="true">→</span></a>${entry.guide ? `<a class="guide" href="/${entry.guide.slug}/">Guide</a>` : ''}</article>`;
+    return `<article class="product" data-category="${escape(entry.category)}" data-search="${escape([entry.name, entry.description].join(' ').toLocaleLowerCase('en-US'))}"><h3><a href="${href}">${escape(entry.name)} <span aria-hidden="true">→</span></a></h3><p>${escape(entry.description)}</p>${entry.guide ? `<a class="guide" href="/${entry.guide.slug}/">Guide</a>` : ''}</article>`;
   }).join('\n');
 }
 const categories = [...new Set(entries.map(entry => entry.category))];
 await writeFile(path.join(root, 'public', 'index.html'), `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Edit media, create something, collaborate or play. Find a tool by what you want to do."><title>BinSite — Tools and games</title><link rel="stylesheet" href="/assets/catalog.css"></head><body>
 <header><a class="brand" href="/">BinSite</a><nav aria-label="Browse"><a href="#tools">Tools</a><a href="#games">Games</a></nav></header>
-<main><section class="intro"><h1>What do you want to do?</h1><p>Edit a video, make something together, or take a break with a game.</p></section>
+<main><section class="intro"><h1>Tools &amp; games</h1></section>
 <section class="find" aria-label="Find a tool or game"><div><label for="search">Search</label><input id="search" type="search" placeholder="Video, audio, stories, puzzles"></div><div><label for="category">Category</label><select id="category"><option value="">All categories</option>${categories.map(category => `<option>${escape(category)}</option>`).join('')}</select></div></section>
 <p id="results" role="status" aria-live="polite"></p>
 <section id="tools" class="product-group" data-product-group><h2>Tools &amp; communities</h2><div class="projects">${cards('tools')}</div></section>
