@@ -42,6 +42,7 @@ public static class ProcedureExchangeRules
         if(document is null||document.FormatVersion!=1||!Categories.Contains(document.Category)||document.Tags is null||document.Inputs is null||document.Steps is null||document.Tags.Count>6||document.Inputs.Count>20||document.Steps.Count>40||(complete&&document.Steps.Count==0))throw new ProcedureValidationException("Use a supported method with up to 6 tags, 20 inputs and 1–40 steps.");
         Text(document.Title,"Method title",complete?1:0,120);Text(document.Summary,"Method summary",complete?1:0,600);Text(document.Artifact,"Expected artifact",complete?1:0,1200);
         foreach(var tag in document.Tags)Text(tag,"Tag",1,24);
+        if(complete&&document.Tags.Select(tag=>tag.Trim()).Distinct(StringComparer.OrdinalIgnoreCase).Count()!=document.Tags.Count)throw new ProcedureValidationException("Use distinct tags; capitalization does not make a second tag.");
         foreach(var input in document.Inputs)Text(input,"Required input",complete?1:0,300);
         HashSet<string> ids=[];
         foreach(var step in document.Steps){if(step is null||step.Id is null||!Regex.IsMatch(step.Id,"^[A-Za-z0-9_-]{1,64}$")||!ids.Add(step.Id)||step.Minutes is <0 or >1440)throw new ProcedureValidationException("Each step needs a distinct simple ID and an estimate between 0 and 1,440 minutes.");Text(step.Title,"Step title",complete?1:0,120);Text(step.Action,"Step action",complete?1:0,2000);Text(step.DoneWhen,"Observable done check",complete?1:0,500);}

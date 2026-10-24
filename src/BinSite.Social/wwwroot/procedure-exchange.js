@@ -2,10 +2,10 @@
 export async function readText(input, maximumBytes) {
     const file = input.files?.[0];
     if (!file) return null;
-    if (file.size > maximumBytes) throw new Error("Choose a JSON file no larger than 4 MB.");
-    const text = await file.text();
-    input.value = "";
-    return text;
+    try {
+        if (file.size > maximumBytes) throw new Error("Choose a JSON file no larger than 4 MB.");
+        return await file.text();
+    } finally { input.value = ""; }
 }
 export function download(name, text, type) {
     const url = URL.createObjectURL(new Blob([text], { type }));

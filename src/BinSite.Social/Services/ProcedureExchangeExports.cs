@@ -9,7 +9,7 @@ public static class ProcedureExchangeExports
     public static string MethodHtml(ProcedureWorkspace workspace)
     {
         var document=ProcedureExchangeRules.PublicDocument(workspace);var body=new StringBuilder();
-        body.Append("<p class='badge'>Reusable procedure · not an execution result</p>");Header(body,document,workspace.Source);Instructions(body,document);
+        body.Append("<p class='badge'>Reusable method</p>");Header(body,document,workspace.Source);Instructions(body,document);
         return Page(document.Title,body.ToString());
     }
     /// <summary>Exports a run snapshot, optionally including explicitly selected private inputs, notes and evidence.</summary>
@@ -18,12 +18,12 @@ public static class ProcedureExchangeExports
         ProcedureExchangeRules.Validate(workspace);var run=workspace.Runs.FirstOrDefault(item=>item.Id==runId)??throw new ProcedureValidationException("Select a local run before exporting its report.");var body=new StringBuilder();
         body.Append("<p class='badge'>Local run report · user-declared checks and result</p>");Header(body,run.Snapshot,run.Source);
         if(run.DerivedFrom is not null)body.Append($"<p>Draft derived from: {E(ProcedureExchangeRules.SourceLabel(run.DerivedFrom))}</p>");
-        body.Append($"<dl><dt>Run</dt><dd>{run.Id}</dd><dt>State declared locally</dt><dd>{E(run.State.ToString())}</dd><dt>Started</dt><dd>{E(run.StartedAt.ToString("u"))}</dd><dt>Last saved</dt><dd>{E(run.UpdatedAt.ToString("u"))}</dd><dt>Snapshot hash</dt><dd>{E(run.SnapshotHash)}</dd></dl><p>The snapshot hash detects document changes. It is not a signature or proof that a step was performed.</p>");
+        body.Append($"<dl><dt>Run</dt><dd>{run.Id}</dd><dt>State declared locally</dt><dd>{E(run.State.ToString())}</dd><dt>Started</dt><dd>{E(run.StartedAt.ToString("u"))}</dd><dt>Last saved</dt><dd>{E(run.UpdatedAt.ToString("u"))}</dd><dt>Snapshot hash</dt><dd>{E(run.SnapshotHash)}</dd></dl>");
         if(includePrivate){body.Append("<h2>Private execution records included by the exporter</h2><h3>Actual inputs</h3><dl>");for(var index=0;index<run.Snapshot.Inputs.Count;index++)body.Append($"<dt>{E(run.Snapshot.Inputs[index])}</dt><dd>{Block(run.InputValues[index])}</dd>");body.Append("</dl>");}
         else body.Append("<p><strong>Private inputs, notes, evidence, artifact text and result note were omitted.</strong></p>");
         body.Append("<h2>Recorded step checks</h2><ol>");foreach(var step in run.Snapshot.Steps){var record=run.Steps.Single(item=>item.StepId==step.Id);body.Append($"<li><h3>{E(step.Title)}</h3><p>{Block(step.Action)}</p><p><strong>Done when:</strong> {Block(step.DoneWhen)}</p><p>Declared observed: {(record.Done?"Yes":"No")}</p>");if(includePrivate)body.Append($"<p><strong>Note:</strong> {Block(record.Note)}</p><p><strong>Evidence:</strong> {Block(record.Evidence)}</p>");body.Append("</li>");}body.Append("</ol>");
         if(includePrivate)body.Append($"<h2>Actual artifact</h2><pre>{E(run.ArtifactText)}</pre><h2>Result note</h2><p>{Block(run.ResultNote)}</p>");
-        body.Append("<p>This report is a portable local record. It does not submit a public outcome or authenticate another person's approval.</p>");return Page(run.Snapshot.Title+" — Run report",body.ToString());
+        return Page(run.Snapshot.Title+" — Run report",body.ToString());
     }
     /// <summary>Returns the actual text recorded as an artifact rather than generating a claim of completion.</summary>
     public static string Artifact(ProcedureWorkspace workspace,Guid runId){ProcedureExchangeRules.Validate(workspace);var run=workspace.Runs.FirstOrDefault(item=>item.Id==runId)??throw new ProcedureValidationException("Select a run first.");if(string.IsNullOrWhiteSpace(run.ArtifactText))throw new ProcedureValidationException("Record the actual artifact text before downloading it.");return run.ArtifactText;}
