@@ -26,6 +26,7 @@
                 <p><strong>@(Status.Account.Premium ? Texts.Text("Yaratıcı Plus", "Creator Plus") : Texts.Text("Ücretsiz hesap", "Free account"))</strong></p>
                 <p>@Texts.Text("Proje kotan:", "Project allowance:") @Status.Account.ProjectLimit</p>
                 <p class="small">@Texts.Text("Tarayıcı oturum çerezi hesabını açık tutar. Başka bir cihazda erişim için kurtarma anahtarını sakla.", "A browser session cookie keeps you signed in. Save your recovery key to access the account on another device.")</p>
+                <button class="secondary" disabled="@Busy" @onclick="Logout">@Texts.Text("Bu tarayıcıdan çıkış yap", "Sign out of this browser")</button>
             }
             @if (!string.IsNullOrEmpty(RecoveryKey))
             {
@@ -38,6 +39,7 @@
             <h2>@Texts.Text("Yaratıcı Plus", "Creator Plus")</h2>
             <p>@Texts.Text("100 proje için bulut kasası. Kaynak kodun herkese açık olması, sunucu hesabının ve özel dosyalarının herkese açık olduğu anlamına gelmez.", "A cloud vault for 100 projects. Public source code does not make your server account or private project files public.")</p>
             <ul><li>@Texts.Text("Özel projelerini sunucuda saklama", "Private server-side project storage")</li><li>@Texts.Text("Kurtarma anahtarıyla farklı cihazdan erişim", "Access across devices with your recovery key")</li><li>@Texts.Text("Ödeme sağlayıcısında abonelik yönetimi", "Subscription management with the payment provider")</li></ul>
+            <p class="small">@Texts.Text("Yenilemeyi iptal ettiğinde ödediğin dönem sonuna kadar erişimin sürer. Ücretli dönem bittiğinde hesabın ücretsiz kotaya döner; mevcut dosyaların otomatik silinmez.", "Cancelling renewal preserves access through the paid period. After that period your account returns to its free allowance; existing files are not automatically deleted.")</p>
             @if (Status?.Plans is not null)
             {
                 @foreach (var plan in Status.Plans) { <p><strong>@plan.Name · @plan.PriceLabel</strong></p> }
@@ -106,6 +108,8 @@
     Task CreateAccount() => Execute(async () => { var result = await Api.PostAsync<RecoveryResult>("commerce/account", new { }); RecoveryKey = result.RecoveryKey; Status = await Api.GetAsync<CommerceStatus>("commerce/status"); });
     /// <summary>Exchanges a private recovery credential for a server-issued browser session.</summary>
     Task Recover() => Execute(async () => { await Api.PostAsync<JsonElement>("commerce/recover", new { recoveryKey = RecoverValue }); RecoverValue = ""; RecoveryKey = ""; Status = await Api.GetAsync<CommerceStatus>("commerce/status"); });
+    /// <summary>Ends only this browser's session, then clears private data from the visible page.</summary>
+    Task Logout() => Execute(async () => { await Api.PostAsync<JsonElement>("commerce/logout", new { }); RecoveryKey = ""; SelectedBody = null; ProjectBody = null; Status = await Api.GetAsync<CommerceStatus>("commerce/status"); });
     /// <summary>Opens a server-created hosted checkout; the server chooses price and account metadata.</summary>
     Task Checkout(string provider) => Execute(async () => { var result = await Api.PostAsync<UrlResult>("commerce/checkout", new { provider, plan = "creator-monthly" }); OpenProviderUrl(result.Url); });
     /// <summary>Opens the authenticated payment-provider portal for subscription management.</summary>
