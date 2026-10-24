@@ -1,0 +1,23 @@
+# Games batch 001
+
+Five standalone local games live in `public/rota-ustasi`, `public/kelime-borsasi`, `public/yanki-hafizasi`, `public/fabrika-akisi`, and `public/ikilem-tiyatrosu`. Each has its own `index.html`, styles, logic, and interface. No shared wrapper, downloaded dependencies, account service, or fabricated social activity is required.
+
+## Mechanics and architecture
+
+- **Rota Ustası:** a seeded random generator adds a guaranteed Hamiltonian route and extra weighted edges. A bit-mask dynamic program computes the exact shortest remaining completion for hints and the completed-route comparison. The final city can only be entered last. Map generation supports up to twelve cities.
+- **Kelime Borsası:** an explicit local Turkish dictionary is the authority. Daily seed selects the opening inventory and bonus letter. Purchases reduce coins; valid submissions consume inventory, refund three coins per character, and award length, rarity, bonus-letter, and growth points. Eight submissions end a run. Duplicate words are rejected.
+- **Yankı Hafızası:** user gesture enables Web Audio. Playback and input are separate phases, and a cancellation token prevents an abandoned game's timers from advancing a new game. Visual shapes and numbers preserve play without audio. The rhythm mode distinguishes long presses at 450 milliseconds; the sequence mode ignores press length.
+- **Fabrika Akışı:** each machine instance holds its current job and elapsed production time. Inputs are reserved when the job starts, and output is created only upon completion. Machine pauses preserve work. The simulation uses measured tick time, capped after background suspension, with no offline production claim. Resources, machine progress, and completed goals persist locally.
+- **İkilem Tiyatrosu:** a finite scene graph changes six bounded state variables and explicit story flags. Choice requirements expose their actual missing condition. Eight endings depend on accumulated state. Undo restores the entire preceding snapshot. Sharing produces a result sentence and the actual game URL; it does not invent friend activity.
+
+## Product discussion
+
+The creative and social agents were consulted. Rota Ustası differs from Gizli Harita because it generates mathematically solvable routes instead of user-authored escape rooms. A future authoring integration could validate creator maps. İkilem Tiyatrosu differs from Hikâye Ağacı because it uses balanced scripted state and endings instead of collaboratively created paragraphs. A result-to-new-play sharing loop is a concrete future experiment; no unimplemented shared outcomes are claimed.
+
+## Local records and revenue
+
+All records are browser-local. Losing browser storage can lose progress. No game claims actual revenue, concurrent players, social voting, or health benefits. `catalog/games-001.json` records distinct revenue hypotheses: digital expansions, sponsored themes/events, optional ad-free memberships, and supporter models. These are unverified proposals.
+
+## Validation
+
+All five inline scripts pass the installed Node.js JavaScript parser. Targeted logic checks cover generated routes, inventory economics, memory input phases, production resource conservation, and reachability of the story endings. Browser-only audio and visual presentation still require interactive use; the logic checks do not claim to be a rendered-browser test.

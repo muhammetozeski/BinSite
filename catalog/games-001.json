@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Rota Ustası",
+    "slug": "rota-ustasi",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Her şehri bir kez ziyaret ederek başlangıçtan bitişe en kısa rotayı kurduğun, her seferinde çözülebilir harita üreten çizge bulmacası.",
+    "features": ["6, 8, 10 ve 12 şehirli seviyeler", "Garantili çözülebilir serbest ve günlük haritalar", "Gerçek en kısa rotayla puan karşılaştırması", "Çıkmazı tanıyan ipucu ve geri alma", "Tarayıcıda zorluk başına rekor"],
+    "businessHypothesis": "Günlük bulmaca tekrar ziyaret sağlayabilir. Gelecekte elle hazırlanmış seviye paketleri dijital ürün, markalı şehir turnuvaları sponsor ürünü ve isteğe bağlı reklamsız üyelik olabilir; kullanıcı ve gelir doğrulanmadı."
+  },
+  {
+    "id": 2,
+    "name": "Kelime Borsası",
+    "slug": "kelime-borsasi",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Türkçe kelime üretimini harf envanteri ve sermaye yönetimiyle birleştiren, sekiz teslimlik günlük strateji oyunu.",
+    "features": ["Yerel Türkçe sözlük", "Harf maliyetleri ve satın alma pazarı", "Kullanılınca tüketilen harfler", "Günlük başlangıç harfleri ve bonus harf", "Uzunluk ve nadirliğe göre puan", "Tekrarlanan kelimeyi reddetme", "Yerel günlük rekor"],
+    "businessHypothesis": "Kelime oyuncularında günlük tekrar ve strateji paylaşımı araştırılabilir. Eğitimci sınıf paketleri dijital ürün, kelime festivali sponsorluğu veya reklamsız premium mod olasıdır; ödeme ve talep doğrulanmadı."
+  },
+  {
+    "id": 3,
+    "name": "Yankı Hafızası",
+    "slug": "yanki-hafizasi",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Ses, şekil ve renklerden oluşan büyüyen sırayı tekrarladığın; uzun-kısa basma ritmini de sınayan hafıza oyunu.",
+    "features": ["20 turluk artan sıra", "Gerçek sentezlenen dört nota", "Tamamen sessiz oynama", "Sıra veya sıra ve ritim modu", "Fare, dokunma ve 1–4 klavye kontrolü", "Üç can ve bedelli yeniden dinleme", "Mod başına yerel rekor"],
+    "businessHypothesis": "Kısa oyun oturumları ve farklı ses paketleri talep görebilir. Müzisyen iş birlikleriyle sponsor paket, dijital tema satışı veya reklamsız üyelik denenebilir; bilişsel veya tıbbi fayda ve gelir iddiası yoktur."
+  },
+  {
+    "id": 4,
+    "name": "Fabrika Akışı",
+    "slug": "fabrika-akisi",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Cevherden cihaza uzanan beş üretim hattını dengelediğin, gerçek kaynak tüketimi ve süreli dönüşümler içeren fabrika simülasyonu.",
+    "features": ["Beş kaynak ve beş makine türü", "Her tür için sekiz üretim hattı", "Girdileri ayıran gerçek üretim döngüleri", "Artan makine maliyeti ve stok satışı", "Ödüllü üretim hedefleri", "1×, 2×, 4× simülasyon", "Otomatik cihaz satışı", "Yerel kayıt ve devam"],
+    "businessHypothesis": "Daha uzun oturumları seven oyuncular için yeni fabrika senaryoları dijital paket olarak sunulabilir. Sponsorlu endüstri teması veya destekçi üyeliği değerlendirilebilir; simülasyon kredilerinin gerçek parasal değeri yoktur ve gelir doğrulanmadı."
+  },
+  {
+    "id": 5,
+    "name": "İkilem Tiyatrosu",
+    "slug": "ikilem-tiyatrosu",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Fırtına gecesinde bir mahalle radyosunun geleceğini belirlediğin, önceki kararların sonraki seçenekleri açıp kapattığı dallanan anlatı oyunu.",
+    "features": ["12 karar sahnesi", "Güven, yayın gücü, bağımsızlık, kaynak, borç ve kanıt dengeleri", "Önceki karara bağlı seçenekler", "Sekiz farklı son", "Karar defteri ve geri alma", "Keşfedilen sonlar koleksiyonu", "Son ve oyun bağlantısı paylaşma", "Yerel kayıt ve devam"],
+    "businessHypothesis": "Okurların farklı sonları keşfetmesi ve sonucu paylaşması organik dağıtım yaratabilir. Yeni yazar bölümleri dijital ürün, temalı hikâye sponsorluğu veya isteğe bağlı destekçi üyelik olabilir; satış ve kullanıcı büyümesi doğrulanmadı."
+  }
+]
