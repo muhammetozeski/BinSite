@@ -104,16 +104,15 @@ html[data-bs-theme="dark"] #copy{background:#405e6d;color:#f4f8fa;border:1px sol
     <div class="layout">
       <section id="catalog" aria-labelledby="catalog-title"><h2 id="catalog-title">Recipes</h2><p id="results" class="muted" aria-live="polite"></p><div id="recipes"></div></section>
       <aside aria-labelledby="shopping-title">
-        <div id="menu"><h2>My menu</h2><details class="readability-help"><summary>Help</summary><p class="muted">Choose the portions and add a recipe to your menu. Ingredients are combined into one list.</p></details><div id="menu-items"></div></div>
+        <div id="menu"><h2>My menu</h2><details class="readability-help"><summary>How the menu works</summary><p class="muted">Choose the portions and add a recipe to your menu. Ingredients are combined into one list.</p></details><div id="menu-items"></div></div>
         <h2 id="shopping-title" style="margin-top:24px">Shopping list</h2>
         <p id="shopping-summary" class="muted" aria-live="polite"></p><ul id="shopping"></ul>
         <div id="list-actions" class="actions"><button id="copy" type="button">Copy missing items</button><button id="print" type="button">Print missing items</button><button id="clear" type="button">Clear menu</button></div>
         <textarea id="copy-text" readonly hidden aria-label="Shopping list to copy"></textarea>
-        <details class="readability-help"><summary>Help</summary><p class="storage"><small>Your favorites, menu, and checked items are stored in this browser. The page works offline. Clearing browser data may erase your records.</small></p></details>
+        <details class="readability-help"><summary>Saved menu</summary><p class="storage"><small>Your favorites, menu and checked items stay in this browser. Clearing browser data can erase them.</small></p></details>
       </aside>
     </div>
   </main>
-  <footer>Measures: 1 tablespoon of liquid is about 15 ml; the cup used in these recipes is 200 ml. Adjust salt and spices to taste.</footer>
   <script>
     'use strict';
     const recipes = [

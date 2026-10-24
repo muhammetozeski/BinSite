@@ -131,18 +131,9 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
           <h2 id="notes-heading">Notes</h2>
 
           <textarea id="notes" aria-labelledby="notes-heading" rows="10" maxlength="50000" placeholder="Add ideas or reminders."></textarea>
-          <small id="note-count">0 characters</small>
           <button id="save-notes" type="button" hidden>Retry saving</button>
           <p><small id="note-status">Your notes are saved automatically.</small></p>
         </section>
-        <details class="panel" aria-labelledby="guide-heading">
-          <summary id="guide-heading">Planning tips</summary>
-          <ol class="guide">
-            <li>Choose three things you want to finish today. Break large tasks into steps you can complete in one sitting.</li>
-            <li>Add due dates to time-sensitive tasks. Review overdue and high-priority tasks first.</li>
-            <li>Check off each finished task. At the end of the day, review what remains.</li>
-          </ol>
-        </details>
         <details class="panel" aria-labelledby="storage-heading">
           <summary id="storage-heading">Backup and storage</summary>
           
@@ -154,7 +145,6 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
       </aside>
     </div>
   </main>
-  <footer>Download a backup before changing devices.</footer>
   <script>
     'use strict';
     const STORAGE_KEY = 'gunluk-planlayici-v1';
@@ -250,7 +240,7 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
         if (sort === 'priority') return ranks[a.priority] - ranks[b.priority] || b.createdAt - a.createdAt;
         return (a.due || '9999-99-99').localeCompare(b.due || '9999-99-99') || ranks[a.priority] - ranks[b.priority] || b.createdAt - a.createdAt;
       });
-      $('results').textContent = `Showing ${visible.length} of ${state.tasks.length} tasks.`;
+      $('results').textContent = state.tasks.length ? `Showing ${visible.length} of ${state.tasks.length} tasks.` : '';
       const list = $('task-list');
       list.replaceChildren();
       if (!visible.length) list.append(node('p', 'empty', state.tasks.length ? 'No tasks match this search or filter.' : 'No tasks yet. Add your first task above.'));
@@ -326,7 +316,6 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
     }
     $('notes').addEventListener('input', () => {
       state.notes = $('notes').value;
-      $('note-count').textContent = `${state.notes.length.toLocaleString('en-US')} characters`;
       $('note-status').textContent = 'Saving…';
       clearTimeout(noteTimer); noteTimer = setTimeout(saveNotes, 400);
     });
@@ -355,7 +344,7 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
         const imported = validate(JSON.parse(await file.text()));
         if (!confirm(`${imported.tasks.length} tasks and the notebook will be restored. Replace current records?`)) return;
         clearTimeout(noteTimer); state = imported; resetForm();
-        $('notes').value = state.notes; $('note-count').textContent = `${state.notes.length.toLocaleString('en-US')} characters`;
+        $('notes').value = state.notes;
         const saved = persist();
         $('note-status').textContent = saved ? 'Notes saved.' : 'Could not save. Download a backup.';
         render(); if (saved) message('Backup restored.');
@@ -370,7 +359,6 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
       message('Previous records could not be read or browser storage is unavailable. Restore a backup before entering new data if you have one.', true);
     }
     $('notes').value = state.notes;
-    $('note-count').textContent = `${state.notes.length.toLocaleString('en-US')} characters`;
     render();
   </script>
 <script src="/assets/revenue.js" data-binsite-revenue data-ads="on" defer></script></body>
