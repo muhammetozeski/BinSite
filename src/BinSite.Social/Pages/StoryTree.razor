@@ -71,7 +71,7 @@
                         <p id="continuation-error" class="field-error">@ContinuationError</p>
                         <button type="submit" disabled="@Busy">@(Busy ? "Publishing…" : PendingContinuation is not null ? "Open published continuation" : "Publish continuation")</button>
                     </form>
-                } else { <p class="hint">Choose an earlier paragraph to add a continuation.</p> }
+                } else { <p class="hint">@(Current.Nodes.Count >= 300 ? "This story is full. Start a new story." : "Choose an earlier paragraph to add a continuation.")</p> }
                 <ReportBox Kind="story" TargetId="@Current.Story.Id" />
             </section>
         }
@@ -85,7 +85,7 @@
             </div>
         </aside>
     </div>
-    <footer><details><summary>About publishing and privacy</summary><p>Only share writing you have permission to publish. Keep personal information, harassment and spam out of stories. Use Report on an inappropriate paragraph.</p><p>Stories allow up to 300 paragraphs and paths up to 24 continuations long. Content reported from three different network addresses is hidden automatically. Anonymous cookie identifiers, network-address hashes and report reasons help limit abuse. Reports are not reviewed by a human in this version.</p><a href="/privacy/">Privacy</a></details></footer>
+    <footer><details><summary>About publishing and privacy</summary><p>Only share writing you have permission to publish. Keep personal information, harassment and spam out of stories. Use Report on an inappropriate paragraph.</p><p>Reported content may be hidden automatically. Reports are not reviewed by a person.</p><a href="/privacy/">Privacy</a></details></footer>
 </div>
 @code {
     [SupplyParameterFromQuery(Name = "hikaye")] public string? StoryId { get; set; }
