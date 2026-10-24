@@ -7,6 +7,8 @@ on:
       - catalog/**
       - functions/**
       - src/**
+      - server/**
+      - content/**
       - scripts/**
       - wrangler.toml
       - .github/workflows/deploy.yml

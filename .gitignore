@@ -21,5 +21,8 @@ public/catalog-studio.js
 public/review-room.js
 public/field-work.js
 public/field-work-sw.js
+public/procedure-exchange.js
+public/shift-cover.js
+public/signal-foundry.js
 public/*.br
 public/*.gz
