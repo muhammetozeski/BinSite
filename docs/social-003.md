@@ -26,7 +26,7 @@ The author creates a private draft, adds at most twelve sections with original t
 
 ### Birlikte Bil
 
-An unlisted team room generates multiplication, clued Turkish word and coordinate-walk questions. The view returns only the current question, never its answer or future question records. Two to six identities can join. Only the current flag holder may answer; a correct answer advances the stage into a handoff state. The same person cannot continue until they assign the flag to another joined member. The server persists holder, stage and completion history, allowing asynchronous return rather than requiring simultaneous presence. A correct final answer persists the finished state.
+An unlisted team room generates multiplication, clued English word and coordinate-walk questions. The view returns only the current question, never its answer or future question records. Two to six identities can join. Only the current flag holder may answer; a correct answer advances the stage into a handoff state. The same person cannot continue until they assign the flag to another joined member. The server persists holder, stage and completion history, allowing asynchronous return rather than requiring simultaneous presence. A correct final answer persists the finished state.
 
 ### Üretim Ortaklığı
 
@@ -37,3 +37,7 @@ An owner creates a one-to-fourteen-day creative project and up to forty tasks wi
 The first five new Razor products compiled in Release with zero warnings and zero errors on 2026-10-24. The backend executed against real Node SQLite through a D1-compatible test adapter in `C:\C\SocialBackendTests\collaboration-api-test.mjs`.
 
 Six meaningful integration groups passed: full tournament roster, owner-only results and actual champion advancement; chapter comments, monotonic progress and stale-write rejection; course draft privacy, answer-key withholding, prerequisites and correct-only completion; relay minimum membership, private future stages, holder authorization and mandatory different-member handoff; jam assignee-only delivery plus owner-only rejection/resubmission/approval; and origin protection with network-deduplicated report hiding. These tests use an in-memory database and do not create production engagement. Rendered browser behaviour and production publication remain separate evidence owned by root integration.
+
+## English-only package update
+
+Packaged editorial stories, prompts, teaching drafts, fictional exhibitions, default draft text, API user-facing messages and social catalog copy now use English. Existing database contributions were not translated or rewritten. Product styles use flat surfaces, strong colors and functional selection indicators; decorative shadows and rounded cards were removed. The three social API modules retained their state and authorization checks and passed all eighteen existing SQLite integration groups after the copy update.

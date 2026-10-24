@@ -35,7 +35,7 @@ public abstract class ProductComponent : ComponentBase, IDisposable
             Status = Ui.English ? error.Status switch
             {
                 HttpStatusCode.NotFound => "This content was not found or has been hidden after reports.",
-                HttpStatusCode.Conflict => "The server rejected a duplicate vote or a reached content limit. Refresh to check the saved state.",
+                HttpStatusCode.Conflict => "The state changed or this action is no longer available. Refresh to inspect the saved state; your draft has been kept.",
                 HttpStatusCode.TooManyRequests => "The short-term limit has been reached. Try again later.",
                 HttpStatusCode.BadRequest => "Check the text lengths, distinct options and future date, then try again.",
                 _ => "The server could not complete this action. Your form text has been kept for a manual retry."

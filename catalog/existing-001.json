@@ -1,4 +1,30 @@
 [
-  {"id":14,"name":"Günlük Planlayıcı","slug":"gunluk-planlayici","category":"Araç","stage":1,"description":"Görevlerini tarih ve önceliğe göre düzenle; notlarını tarayıcıda sakla ve yedekle.","features":["Görev ekleme, düzenleme ve filtreleme","Otomatik kaydedilen notlar","JSON yedek alma ve geri yükleme"],"businessHypothesis":"Ekip çalışma alanları ve gelişmiş raporlar için ayrı ücretli sürüm değerlendirilebilir; mevcut sürüm ücretsizdir."},
-  {"id":15,"name":"Tarif Defteri","slug":"tarif-defteri","category":"Yaşam","stage":1,"description":"Sekiz ayrıntılı tariften menü oluştur; porsiyonları ayarla ve tek alışveriş listesi hazırla.","features":["Malzeme, öğün ve süreyle arama","Porsiyonlara göre malzeme hesabı","Birleşen alışveriş listesi ve favoriler"],"businessHypothesis":"Açıkça belirtilen sponsorlu tarif koleksiyonları ve uygun satış ortaklığı bağlantıları değerlendirilebilir; mevcut tarifler editoryaldir."}
+  {
+    "id": 14,
+    "name": "Daily Planner",
+    "slug": "gunluk-planlayici",
+    "category": "Tools",
+    "stage": 1,
+    "description": "Organize tasks by date and priority, keep notes in your browser, and make portable backups.",
+    "features": [
+      "Task creation, editing and filters",
+      "Automatically saved notes",
+      "JSON backup and restore"
+    ],
+    "businessHypothesis": "A future team workspace could offer paid collaboration and reporting; this standalone planner is free."
+  },
+  {
+    "id": 15,
+    "name": "Recipe Book",
+    "slug": "tarif-defteri",
+    "category": "Cooking",
+    "stage": 1,
+    "description": "Build a menu from eight complete recipes, adjust the servings, and combine ingredients into one shopping list.",
+    "features": [
+      "Search by ingredient, meal and duration",
+      "Serving-based ingredient calculations",
+      "Combined shopping list and saved favorites"
+    ],
+    "businessHypothesis": "Display advertising can support the free recipe collection after a publisher account is approved."
+  }
 ]

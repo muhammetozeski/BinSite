@@ -1,332 +1,337 @@
 [
   {
     "id": 16,
-    "name": "Ses Atölyesi",
+    "name": "Audio Workshop",
     "slug": "ses-atolyesi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Ses dosyalarını kesip sıralayan, ters çeviren ve gerçek WAV dosyası üreten yerel montaj masası.",
+    "description": "Trim, reverse and arrange local audio selections into an actual WAV assembly.",
     "features": [
-      "Ses çözümleme ve dalga gösterimi",
-      "Gerçek örnek kesimi",
-      "Mono/stereo birleştirme",
-      "16 bit WAV indirme",
-      "İki ses örneği"
+      "Audio decoding and waveform",
+      "Sample-accurate trimming",
+      "Clip reordering",
+      "Mono/stereo assembly",
+      "Edge fades and reversal",
+      "16-bit WAV export",
+      "Original generated samples"
     ],
-    "businessHypothesis": "Üretilen çalışmayı paylaşan kişilerin alıcıları yeni üretime davet etmesi büyümeyi destekleyebilir. Üretici paketleri veya eğitim atölyeleri gelir adayıdır; kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 17,
-    "name": "Sesli Kartpostal",
+    "name": "Audio Postcard",
     "slug": "sesli-kartpostal",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Kişisel mesajını aynı melodiyi çalan paylaşılabilir karta dönüştürür.",
+    "description": "Combine a personal message with a reproducible generated melody in a shareable card.",
     "features": [
-      "Tohumdan 12 notalık beste",
-      "Üç ses hissi",
-      "Metin ve kâğıt rengi",
-      "Tam içerikli URL",
-      "Yerel kayıt"
+      "Seeded twelve-note melody",
+      "Three musical moods",
+      "Message and paper settings",
+      "Self-contained sharing link",
+      "Local saving"
     ],
-    "businessHypothesis": "Üretilen çalışmayı paylaşan kişilerin alıcıları yeni üretime davet etmesi büyümeyi destekleyebilir. Üretici paketleri veya eğitim atölyeleri gelir adayıdır; kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 18,
-    "name": "Işık Resmi",
+    "name": "Light Drawing",
     "slug": "isik-resmi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Parlak izleri biriktirerek uzun pozlama benzeri resimler üretir.",
+    "description": "Accumulate moving light strokes into a long-exposure style drawing.",
     "features": [
-      "Toplamalı ışık çizimi",
-      "Pozlama ve fırça",
-      "Çizilişini yeniden oynatma",
-      "Yerel kayıt",
-      "PNG indirme",
-      "Sarmal örneği"
+      "Additive light strokes",
+      "Exposure and brush controls",
+      "Drawing replay",
+      "Undo and local saving",
+      "PNG export",
+      "Original spiral example"
     ],
-    "businessHypothesis": "Üretilen çalışmayı paylaşan kişilerin alıcıları yeni üretime davet etmesi büyümeyi destekleyebilir. Üretici paketleri veya eğitim atölyeleri gelir adayıdır; kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 19,
-    "name": "Kaleydoskop",
+    "name": "Kaleidoscope",
     "slug": "kaleydoskop",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Çizgiyi dönüş ve yansımayla çoğaltan simetrik desen tezgâhı.",
+    "description": "Build editable radial patterns using rotations and mirrored source strokes.",
     "features": [
-      "2–16 dilimli simetri",
-      "Ayna dönüşümleri",
-      "Döndürme",
-      "Proje içe/dışa aktarımı",
-      "PNG indirme",
-      "Çiçek örneği"
+      "Two to sixteen sectors",
+      "Optional reflection",
+      "Whole-pattern rotation",
+      "Brush and color controls",
+      "Validated project files",
+      "PNG export"
     ],
-    "businessHypothesis": "Üretilen çalışmayı paylaşan kişilerin alıcıları yeni üretime davet etmesi büyümeyi destekleyebilir. Üretici paketleri veya eğitim atölyeleri gelir adayıdır; kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 20,
-    "name": "Zincir Fizik",
+    "name": "Chain Physics",
     "slug": "zincir-fizik",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Eğimler, çarpışan toplar ve yeni top üreten hedeflerle zincir reaksiyonu düzenekleri kurar.",
+    "description": "Draw ramps and release colliding balls to trigger a chain of new motion.",
     "features": [
-      "Çizilebilir eğimler",
-      "Yerçekimi ve top çarpışmaları",
-      "Hedeflerden yeni top",
-      "Sabit fizik adımı",
-      "Düzenek paylaşımı",
-      "Üç katlı örnek"
+      "Editable ramp segments",
+      "Gravity and ball collisions",
+      "One-shot target releases",
+      "Fixed physics steps",
+      "Layout sharing",
+      "Three-level example"
     ],
-    "businessHypothesis": "Üretilen çalışmayı paylaşan kişilerin alıcıları yeni üretime davet etmesi büyümeyi destekleyebilir. Üretici paketleri veya eğitim atölyeleri gelir adayıdır; kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 21,
-    "name": "Harf Afiş",
+    "name": "Type Poster",
     "slug": "harf-afis",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Yazıyı yığın, yay ve çapraz yerleşimlerle vektör afişe dönüştürür.",
+    "description": "Turn words into vector posters using stacked, curved and diagonal typography.",
     "features": [
-      "Üç tipografik yerleşim",
-      "Yazı ailesi ve harf aralığı",
-      "SVG ve PNG dışa aktarımı",
-      "Düzenlenebilir bağlantı"
+      "Three text arrangements",
+      "Font and letter-spacing controls",
+      "SVG and PNG export",
+      "Editable sharing link"
     ],
-    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 22,
-    "name": "Döşeme Ustası",
+    "name": "Tile Workshop",
     "slug": "doseme-ustasi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Kare, üçgen ve altıgen taşlarla renk ve motif içeren geometrik yüzeyler üretir.",
+    "description": "Paint and rotate motifs across square, triangular or hexagonal surface tiles.",
     "features": [
-      "Üç taş geometrisi",
-      "Taş boyama ve motif döndürme",
-      "Desen örnekleri",
-      "Yerel kayıt",
-      "PNG indirme"
+      "Three tile geometries",
+      "Individual tile colors",
+      "Motif rotation",
+      "Pattern examples",
+      "Local saving",
+      "PNG export"
     ],
-    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 23,
-    "name": "Yürüyen Avatar",
+    "name": "Walking Avatar",
     "slug": "yuruyen-avatar",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "İskeletin iki pozunu düzenleyip eklem açıları arasında hareket döngüsü oluşturur.",
+    "description": "Animate a parameterized skeleton by interpolating between two editable poses.",
     "features": [
-      "Dört eklem açısı",
-      "Kemik uzunluğu ayarları",
-      "A ve B pozu",
-      "Yürüyüş ve dans örnekleri",
-      "SVG poz ve paylaşım bağlantısı"
+      "Four joint angles",
+      "Bone-length controls",
+      "Two saved poses",
+      "Walk and dance examples",
+      "SVG pose export",
+      "Rig sharing link"
     ],
-    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 24,
-    "name": "Dokuma Tezgâhı",
+    "name": "Weaving Loom",
     "slug": "dokuma-tezgahi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Çözgü ve atkı ipliklerinin hangi kesişimde üstte kalacağını tasarlayan sanal örgü tezgâhı.",
+    "description": "Design warp and weft crossings with a real editable binary lift matrix.",
     "features": [
-      "Dört örgü algoritması",
-      "İplik başına renk",
-      "Üst/alt kesişim düzenleme",
-      "Kaldırma kartı görünümü",
-      "PNG ve CSV dışa aktarımı",
-      "Yerel kayıt"
+      "Four weave algorithms",
+      "Individual thread colors",
+      "Over/under editing",
+      "Lift-card view",
+      "PNG and CSV export",
+      "Local saving"
     ],
-    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 25,
-    "name": "Ritim Çemberi",
+    "name": "Rhythm Circles",
     "slug": "ritim-cemberi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Aynı turu farklı sayıda vuruşa bölen üç ses halkasıyla poliritimleri duyurur.",
+    "description": "Hear and compare independent subdivisions of one shared musical cycle.",
     "features": [
-      "Bağımsız halka vuruş sayıları",
-      "Ses saatine bağlı zamanlama",
-      "Halka başına ses seçimi",
-      "Tur süresi ayarı",
-      "Oran paylaşımı"
+      "Three independent pulse rings",
+      "Audio-clock scheduling",
+      "Per-ring sound controls",
+      "Cycle duration",
+      "Ratio sharing link"
     ],
-    "businessHypothesis": "Kullanıcıların ürettiklerini paylaşarak başka üreticileri davet etmesi sınanabilir. Özel üretici araçları, içerik paketleri ve atölyeler gelir adayıdır; kullanım ve gelir sonucu ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 26,
-    "name": "Ses Görseli",
+    "name": "Sound Viewer",
     "slug": "ses-gorseli",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Gerçek ses dosyasını veya osilatörü frekans spektrumu ve zaman dalgası olarak gösterir.",
+    "description": "Inspect an actual audio source as a live frequency spectrum and time-domain waveform.",
     "features": [
-      "Gerçek Audio Analyser verileri",
-      "Dosya açma ve dört osilatör dalgası",
-      "En güçlü frekans ve etkin seviye",
-      "Spektral ağırlık merkezi",
-      "PNG indirme"
+      "Real audio analyzer data",
+      "Local audio files",
+      "Four oscillator waveforms",
+      "Peak frequency and RMS level",
+      "Spectral centroid",
+      "PNG export"
     ],
-    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 27,
-    "name": "Mantık Tahtası",
+    "name": "Logic Board",
     "slug": "mantik-tahtasi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Mantık kapılarını bağlayıp girişleri değiştirerek gerçek boolean devreleri kurar.",
+    "description": "Connect digital gates and toggle inputs to evaluate real Boolean circuits.",
     "features": [
-      "Yedi kapı türü",
-      "Sürüklenen kapılar ve kablolar",
-      "Çevrimleri bilinmeyen olarak gösterme",
-      "Doğruluk tablosu",
-      "Paylaşılan devre",
-      "Yarım toplayıcı örneği"
+      "Seven gate types",
+      "Movable gates and wires",
+      "Cycle detection",
+      "Truth-table generation",
+      "Circuit sharing",
+      "Half-adder example"
     ],
-    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 28,
-    "name": "Perspektif Oda",
+    "name": "Perspective Room",
     "slug": "perspektif-oda",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Parametrik eşyalarla gerçek perspektif projeksiyonlu bir oda eskizi oluşturur.",
+    "description": "Arrange parameterized furniture volumes in a depth-projected room sketch.",
     "features": [
-      "Beş hacim türü",
-      "Konum, dönüş ve renk",
-      "Kamera yönü ve yüksekliği",
-      "PNG görüntü",
-      "Düzenlenebilir bağlantı"
+      "Five volume types",
+      "Position, rotation and color",
+      "Camera direction and elevation",
+      "PNG export",
+      "Editable layout link"
     ],
-    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 29,
-    "name": "Kâğıt Katla",
+    "name": "Paper Fold",
     "slug": "kagit-katla",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Girilen ölçülerden katlama çizgileri ve yapıştırma kulakları içeren A4 kutu açınımı üretir.",
+    "description": "Generate an A4 box net with physical dimensions, fold lines and glue tabs.",
     "features": [
-      "Gerçek milimetre ölçüsü",
-      "A4 sığdırma ve ölçek bildirimi",
-      "Kesme ve katlama çizgileri",
-      "SVG indirme ve yazdırma",
-      "Kontrol ölçü çizgisi"
+      "Millimeter dimensions",
+      "Explicit fitting scale",
+      "Cut and fold guides",
+      "SVG export",
+      "Print layout",
+      "Scale-check line"
     ],
-    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 30,
-    "name": "Düğüm Hikâye",
+    "name": "Story Nodes",
     "slug": "dugum-hikaye",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Düğümlü hikâyeler yazıp seçimlerle bağlayarak oynanabilir alternatif yollar üretir.",
+    "description": "Author a branching story graph and let readers choose their path through it.",
     "features": [
-      "20 düğüme kadar hikâye haritası",
-      "İkişer seçenek ve hedef bağlantıları",
-      "Erişilebilir düğüm hesabı",
-      "Okur modu",
-      "Paylaşılabilir tam hikâye",
-      "Dosya indirme ve yerel kayıt"
+      "Up to twenty story nodes",
+      "Two choices per node",
+      "Reachability analysis",
+      "Reader mode",
+      "Complete story links",
+      "Project download and local saving"
     ],
-    "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 31,
-    "name": "Sözcük Bestesi",
+    "name": "Word Composition",
     "slug": "sozcuk-bestesi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Yalnız eldeki sözcükleri kullanarak 12 farklı sözcük ve üç satırlık bir metin kurma oyunu.",
+    "description": "Write a three-line piece using twelve distinct words from a limited word bank.",
     "features": [
-      "Üç editoryal kelime dünyası",
-      "Tek kullanımlık sözcük havuzu",
-      "Satır ve sözcük kısıtı doğrulama",
-      "Örnek beste",
-      "Tam içerikli bağlantı",
-      "Metin indirme"
+      "Three curated word banks",
+      "Single-use word selection",
+      "Word and line checks",
+      "Original example",
+      "Complete sharing link",
+      "Text export"
     ],
-    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 32,
-    "name": "Rüzgâr Sanatı",
+    "name": "Wind Art",
     "slug": "ruzgar-sanati",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Çizilen yerel kuvvet alanlarının parçacıkları etkileyerek oluşturduğu fiziksel akış sanatı.",
+    "description": "Draw local vector fields that guide particles into evolving physical flow art.",
     "features": [
-      "Rüzgâr oku çizme",
-      "Parçacık kaynağını taşıma",
-      "Yerçekimi ve sürüklenme",
-      "İz kalıcılığı ve renk",
-      "PNG indirme",
-      "Kuvvet alanı bağlantısı"
+      "Editable wind arrows",
+      "Movable particle source",
+      "Gravity and drag",
+      "Trail persistence",
+      "Color palettes",
+      "PNG and field sharing"
     ],
-    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 33,
-    "name": "Jest Fırçası",
+    "name": "Gesture Brush",
     "slug": "jest-fircasi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Kaydedilen bir el hareketini yol boyunca tekrarlanan özel fırçaya dönüştürür.",
+    "description": "Record a gesture and reuse its shape as a brush stamped along a new path.",
     "features": [
-      "Yeni jest kaydetme",
-      "Yön boyunca damga döndürme",
-      "Boyut ve mesafe ayarı",
-      "Eski jestleri koruma",
-      "PNG indirme",
-      "Doğrulanan proje dosyaları",
-      "Yaprak yolu örneği"
+      "Custom gesture recording",
+      "Direction-following stamps",
+      "Size and spacing controls",
+      "Original brush references",
+      "PNG export",
+      "Validated project files"
     ],
-    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 34,
-    "name": "Ses Manzarası",
+    "name": "Sound Landscape",
     "slug": "ses-manzarasi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Rüzgâr, yağmur, dalga ve uzak çan dokularını tarayıcıda sentezleyip canlı karıştırır.",
+    "description": "Synthesize and mix wind, rain, wave and bell textures locally.",
     "features": [
-      "Dört prosedürel ses katmanı",
-      "Üç başlangıç manzarası",
-      "Katman başına düzey",
-      "Süreli yumuşak kapanma",
-      "Karışım bağlantısı"
+      "Four procedural sound layers",
+      "Three starter mixes",
+      "Per-layer levels",
+      "Timed fade and stop",
+      "Mix sharing link"
     ],
-    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 35,
-    "name": "Şifre Postası",
+    "name": "Cipher Post",
     "slug": "sifre-postasi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 3,
-    "description": "Bir cümleyi harf kaydırmalı veya nokta/çizgi kodlu oynanabilir bulmacaya çevirir.",
+    "description": "Turn a message into a playable letter-shift or dot/dash decoding puzzle.",
     "features": [
-      "İki gerçek kod dönüşümü",
-      "Çözme çemberi ve kod alfabesi",
-      "Özgün örnek görevler",
-      "Çözüm denetimi ve gerçek deneme/süre",
-      "Asıl metni eklemeyen oyuncu URL’si",
-      "Şifreli metin indirme"
+      "Two encoding methods",
+      "Interactive decoding wheel",
+      "Code alphabet guide",
+      "Original puzzle examples",
+      "Answer and attempt checks",
+      "Ciphertext sharing and text export"
     ],
-    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   }
 ]

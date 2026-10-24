@@ -16,9 +16,9 @@ foreach ($item in Get-ChildItem -LiteralPath $webRoot) {
 }
 $bootstrap = [System.IO.File]::ReadAllText((Join-Path $webRoot 'index.html'))
 $blazorProducts = @(Get-ChildItem -LiteralPath (Join-Path $projectRoot 'catalog') -Filter '*.json' | ForEach-Object {
-    Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json | Where-Object { $_.category -in @('Social', 'Sosyal') -and $_.stage -ge 3 }
+    Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json | Where-Object { $_.category -eq 'Social' -and $_.stage -ge 3 }
 })
-$blazorProducts += [pscustomobject]@{ slug = 'uyelik'; name = 'Yaratıcı hesabı' }
+$blazorProducts += [pscustomobject]@{ slug = 'uyelik'; name = 'Creator account' }
 foreach ($product in $blazorProducts) {
     if ($product.slug -notmatch '^[a-z0-9]+(?:-[a-z0-9]+)*$') { throw 'Invalid Blazor product path.' }
     $productDirectory = Join-Path $publicRoot $product.slug

@@ -1,52 +1,89 @@
 [
   {
     "id": 1,
-    "name": "Rota Ustası",
+    "name": "Route Master",
     "slug": "rota-ustasi",
-    "category": "Oyun",
+    "category": "Games",
     "stage": 1,
-    "description": "Her şehri bir kez ziyaret ederek başlangıçtan bitişe en kısa rotayı kurduğun, her seferinde çözülebilir harita üreten çizge bulmacası.",
-    "features": ["6, 8, 10 ve 12 şehirli seviyeler", "Garantili çözülebilir serbest ve günlük haritalar", "Gerçek en kısa rotayla puan karşılaştırması", "Çıkmazı tanıyan ipucu ve geri alma", "Tarayıcıda zorluk başına rekor"],
-    "businessHypothesis": "Günlük bulmaca tekrar ziyaret sağlayabilir. Gelecekte elle hazırlanmış seviye paketleri dijital ürün, markalı şehir turnuvaları sponsor ürünü ve isteğe bağlı reklamsız üyelik olabilir; kullanıcı ve gelir doğrulanmadı."
+    "description": "Visit each city exactly once, then reach the final city using the shortest possible route.",
+    "features": [
+      "Four sizes from 6 to 12 cities",
+      "Solvable seeded and daily maps",
+      "Exact shortest-route scoring",
+      "Completion-aware hints and undo",
+      "Browser-local records"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
   },
   {
     "id": 2,
-    "name": "Kelime Borsası",
+    "name": "Word Market",
     "slug": "kelime-borsasi",
-    "category": "Oyun",
+    "category": "Games",
     "stage": 1,
-    "description": "Türkçe kelime üretimini harf envanteri ve sermaye yönetimiyle birleştiren, sekiz teslimlik günlük strateji oyunu.",
-    "features": ["Yerel Türkçe sözlük", "Harf maliyetleri ve satın alma pazarı", "Kullanılınca tüketilen harfler", "Günlük başlangıç harfleri ve bonus harf", "Uzunluk ve nadirliğe göre puan", "Tekrarlanan kelimeyi reddetme", "Yerel günlük rekor"],
-    "businessHypothesis": "Kelime oyuncularında günlük tekrar ve strateji paylaşımı araştırılabilir. Eğitimci sınıf paketleri dijital ürün, kelime festivali sponsorluğu veya reklamsız premium mod olasıdır; ödeme ve talep doğrulanmadı."
+    "description": "An English word strategy game combining letter purchases, a consumable inventory, and eight carefully planned submissions.",
+    "features": [
+      "1,613-word English dictionary",
+      "A–Z letter market with individual prices",
+      "Letters consumed by submitted words",
+      "Daily starting inventory and bonus letter",
+      "Length, rarity, and growth scoring",
+      "Duplicate-word rejection and daily local record"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
   },
   {
     "id": 3,
-    "name": "Yankı Hafızası",
+    "name": "Echo Memory",
     "slug": "yanki-hafizasi",
-    "category": "Oyun",
+    "category": "Games",
     "stage": 1,
-    "description": "Ses, şekil ve renklerden oluşan büyüyen sırayı tekrarladığın; uzun-kısa basma ritmini de sınayan hafıza oyunu.",
-    "features": ["20 turluk artan sıra", "Gerçek sentezlenen dört nota", "Tamamen sessiz oynama", "Sıra veya sıra ve ritim modu", "Fare, dokunma ve 1–4 klavye kontrolü", "Üç can ve bedelli yeniden dinleme", "Mod başına yerel rekor"],
-    "businessHypothesis": "Kısa oyun oturumları ve farklı ses paketleri talep görebilir. Müzisyen iş birlikleriyle sponsor paket, dijital tema satışı veya reklamsız üyelik denenebilir; bilişsel veya tıbbi fayda ve gelir iddiası yoktur."
+    "description": "Repeat a growing sequence of sounds, shapes, and colors, with an optional short-and-long rhythm challenge.",
+    "features": [
+      "Twenty increasingly long rounds",
+      "Four locally synthesized notes",
+      "Complete visual support in mute mode",
+      "Order-only and order-plus-rhythm modes",
+      "Mouse, touch, and keyboard controls",
+      "Three lives and paid replays",
+      "Local records for each mode"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
   },
   {
     "id": 4,
-    "name": "Fabrika Akışı",
+    "name": "Factory Flow",
     "slug": "fabrika-akisi",
-    "category": "Oyun",
+    "category": "Games",
     "stage": 1,
-    "description": "Cevherden cihaza uzanan beş üretim hattını dengelediğin, gerçek kaynak tüketimi ve süreli dönüşümler içeren fabrika simülasyonu.",
-    "features": ["Beş kaynak ve beş makine türü", "Her tür için sekiz üretim hattı", "Girdileri ayıran gerçek üretim döngüleri", "Artan makine maliyeti ve stok satışı", "Ödüllü üretim hedefleri", "1×, 2×, 4× simülasyon", "Otomatik cihaz satışı", "Yerel kayıt ve devam"],
-    "businessHypothesis": "Daha uzun oturumları seven oyuncular için yeni fabrika senaryoları dijital paket olarak sunulabilir. Sponsorlu endüstri teması veya destekçi üyeliği değerlendirilebilir; simülasyon kredilerinin gerçek parasal değeri yoktur ve gelir doğrulanmadı."
+    "description": "Balance five production lines, real input consumption, timed jobs, sales, and expansion to manufacture twenty devices.",
+    "features": [
+      "Five resources and five machine types",
+      "Up to eight lines per type",
+      "Reserved inputs and timed outputs",
+      "Increasing machine prices and inventory sales",
+      "One-time production target rewards",
+      "Three simulation speeds",
+      "Automatic device sales and local saves"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
   },
   {
     "id": 5,
-    "name": "İkilem Tiyatrosu",
+    "name": "Dilemma Theatre",
     "slug": "ikilem-tiyatrosu",
-    "category": "Oyun",
+    "category": "Games",
     "stage": 1,
-    "description": "Fırtına gecesinde bir mahalle radyosunun geleceğini belirlediğin, önceki kararların sonraki seçenekleri açıp kapattığı dallanan anlatı oyunu.",
-    "features": ["12 karar sahnesi", "Güven, yayın gücü, bağımsızlık, kaynak, borç ve kanıt dengeleri", "Önceki karara bağlı seçenekler", "Sekiz farklı son", "Karar defteri ve geri alma", "Keşfedilen sonlar koleksiyonu", "Son ve oyun bağlantısı paylaşma", "Yerel kayıt ve devam"],
-    "businessHypothesis": "Okurların farklı sonları keşfetmesi ve sonucu paylaşması organik dağıtım yaratabilir. Yeni yazar bölümleri dijital ürün, temalı hikâye sponsorluğu veya isteğe bağlı destekçi üyelik olabilir; satış ve kullanıcı büyümesi doğrulanmadı."
+    "description": "Decide the future of a neighborhood radio station through a storm, where earlier choices unlock later options and eight different endings.",
+    "features": [
+      "Twelve authored decision scenes",
+      "Six interacting state variables",
+      "Choices gated by earlier actions",
+      "Eight reachable endings",
+      "Decision log and full-state undo",
+      "Local ending collection",
+      "Shareable ending text and game link"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
   }
 ]

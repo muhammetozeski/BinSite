@@ -1,12 +1,190 @@
 [
-  {"id":41,"name":"Kütle Kaçışı","slug":"kutle-kacisi","category":"Oyun","stage":5,"description":"Gezegen çekimi, momentum ve sınırlı yakıt altında araştırma kapsüllerini kurtarıp çıkışa ulaştığın yörünge uçuş oyunu.","features":["Gerçek zamanlı çekim ve itki integrasyonu","Dönüş, ters itki ve sınırlı yakıt","Hız sınırıyla kapsül toplama","Çarpışma ve menzil kaybı","Tohumlu görev bağlantısı","Dokunma ve klavye kumandası"],"businessHypothesis":"Gelişmiş görev senaryoları dijital paket, uzay temalı etkinlik sponsorluğu ve isteğe bağlı destekçi üyeliği denenebilir; talep ve gelir doğrulanmadı."},
-  {"id":42,"name":"Sözcük Adası","slug":"sozcuk-adasi","category":"Oyun","stage":5,"description":"Komşu harflerde tek kullanımlık rotalar çizerek kelime bulduğun, yeni hücreleri ele geçirip bağlantılı alanlardan puan aldığın Türkçe sözcük oyunu.","features":["8×8 komşuluk haritası","Her tahtada sekiz farklı garanti kelime","Yerel Türkçe sözlük","Yeni toprak ve sınır bağlantısı puanı","On hamlede otuz hücre hedefi","Aynı adayı açan paylaşım bağlantısı"],"businessHypothesis":"Günlük ada serileri geri dönüşü araştırmak için kullanılabilir. Eğitimci bulmaca paketleri, markalı kelime haftası ve reklamsız sürüm olası gelir yollarıdır; sonuçlar ölçülmedi."},
-  {"id":43,"name":"Sokak Orkestrası","slug":"sokak-orkestrasi","category":"Oyun","stage":5,"description":"Dört müzisyenin ayrı nota kanallarını zamanında karşılayıp uyum göstergesini koruduğun, üç özgün düzenlemeli performans oyunu.","features":["Davul, bas, gitar ve ıslık kanalları","Üç ayrı tempo ve nota düzeni","Kusursuz ve kabul edilen vuruş aralıkları","Zincir, kaçan nota ve orkestra uyumu","Tarayıcıda sentezlenen sesler ve sessiz mod","16 ölçülük konser ve aynı düzenleme bağlantısı"],"businessHypothesis":"Müzisyenlerin sponsorlu konserleri, yeni çalınabilir düzenleme paketleri ve destekçi üyeliği araştırılabilir; müzik aracı veya gerçek dinleyici istatistiği iddiası yoktur."},
-  {"id":44,"name":"Topoloji Bahçesi","slug":"topoloji-bahcesi","category":"Oyun","stage":5,"description":"Karışmış düğümleri taşıyarak bütün kenarları kesişmesiz yerleştirdiğin, üst üste bindirme kestirmelerini de denetleyen çizge düzenleme bulmacası.","features":["6, 9 ve 12 düğümlü garantili çözülebilir çizgeler","Canlı kesişim denetimi","Düğüm üst üste binmesi ve düğümden geçen kenar denetimi","Fare ve klavye taşıma","Bedelli silik çözüm planı","Hamle/süre puanı ve ortak bulmaca bağlantısı"],"businessHypothesis":"Elle tasarlanmış zor bahçeler dijital paket, okul etkinlikleri veya sponsorlu haftalık turnuvalar olarak test edilebilir; mevcut sürüm tek kişilik yerel oyundur."},
-  {"id":45,"name":"Paket Rotası","slug":"paket-rotasi","category":"Oyun","stage":5,"description":"İki aracın yüklerini, ortak depo stokunu, yakıtını ve müşteri zaman pencerelerini birlikte yönettiğin teslimat stratejisi.","features":["İki bağımsız araç ve anlık rota değişimi","Üç paketlik kapasite ve iki stok türü","Açılış/kapanış zamanlı altı sipariş","Yakıt ve bütçeli ikmal","Birlikte ilerleyen simülasyon dakikaları","Başlangıç kaynaklarıyla mümkün operasyon üretimi","Tekrar oynama ve aynı operasyon bağlantısı"],"businessHypothesis":"Genişleyen şehir/senaryo paketleri, sponsorlu lojistik görevleri ve isteğe bağlı reklamsız üyelik değerlendirilebilir; simülasyon kredileri gerçek para değildir."}
-  ,{"id":46,"name":"Işık Mührü","slug":"isik-muhru","category":"Oyun","stage":5,"description":"Aynaların yönünü değiştirip kırmızı, yeşil ve mavi ışınları gereken hedef renginde birleştirdiğin optik bulmaca.","features":["Üç elle tasarlanmış ve doğrulanmış optik düzen","İki yönde dönen aynalar ve engel blokları","Gerçek ışın izleme ve döngü sonlandırma","Mor, sarı ve beyaz renk hedefleri","Hamle puanı ve aynı karışım bağlantısı"],"businessHypothesis":"Yeni optik bulmaca koleksiyonları dijital paket, bilim etkinliği sponsorluğu veya isteğe bağlı reklamsız sürüm olabilir; gelir doğrulanmadı."}
-  ,{"id":47,"name":"Zaman Çıkmazı","slug":"zaman-cikmazi","category":"Oyun","stage":5,"description":"Kendi eylemlerini hayalet kayıtları olarak geçmişte bıraktığın, basınç plakaları ve eşzamanlı zaman döngüleriyle kapılar açtığın bulmaca.","features":["Bir, iki ve üç hayaletli özgün haritalar","Kaydedilmiş eylemlerin eşzamanlı tekrar oynatımı","Son konumda bekleyen geçmiş karakter","Zamana bağlı kapı ve plaka durumu","Geri sarma, son kayıt kaldırma ve toplam eylem puanı","Aynı bulmaca bağlantısı"],"businessHypothesis":"Daha karmaşık zaman senaryoları bölüm paketi ve sponsorlu bulmaca haftası olarak araştırılabilir; gerçek oyuncu veya satış verisi yoktur."}
-  ,{"id":48,"name":"Davranış Dedektifi","slug":"davranis-dedektifi","category":"Oyun","stage":5,"description":"Renk, şekil, sayı ve dokudan oluşan örneklerle gizli mantık kuralını sınırlı deney bütçesinde çıkardığın hipotez oyunu.","features":["Birbirinden ayırt edilebilir sekiz gizli kural","108 olası deney örneği","Üç başlangıç gözlemi ve altı deney hakkı","Kalan tutarlı kural sayısı","Yanlış sava somut karşı örnek","Aynı kural ve gözlemleri açan bağlantı"],"businessHypothesis":"Okul mantık atölyeleri, eğitimci vaka paketleri ve sponsorlu bilim etkinlikleri denenebilir; başarı veya gelir ölçülmedi."}
-  ,{"id":49,"name":"İkiz Labirent","slug":"ikiz-labirent","category":"Oyun","stage":5,"description":"Aynalanan yatay komutlarla iki farklı labirentteki karakteri birlikte yönlendirip çıkışlara aynı anda ulaştırdığın ortak durum bulmacası.","features":["Birbirinden farklı iki duvar haritası","Duvar karşısında bağımsız bekleme davranışı","Ortak durum uzayında çözüm denetimiyle harita üretimi","Mevcut iki konumdan gerçek çözüm ipucu","Geri alma, hamle puanı ve aynı harita bağlantısı"],"businessHypothesis":"Elle tasarlanmış zorluk serileri, günlük bulmaca sponsorluğu ve dijital bölüm koleksiyonları olası gelir yollarıdır; talep doğrulanmadı."}
-  ,{"id":50,"name":"Deste Ekosistemi","slug":"deste-ekosistemi","category":"Oyun","stage":5,"description":"On iki mevsimlik kart seçimleriyle orman, su, yaban yaşamı, gıda ve kirlilik arasındaki etkileşimi dengelediğin sürdürülebilirlik stratejisi.","features":["On iki farklı politika kartı","Altı önceden görülen hava olayı","Birbirini etkileyen beş kaynak","Mevsim maliyetleri, çöküş ve sürdürülebilirlik hedefi","Bir mevsim geri alma ve karar defteri","Aynı kart/hava sırasını açan paylaşım"],"businessHypothesis":"Yeni bölgesel senaryo desteleri, eğitim etkinliği sponsorluğu ve destekçi üyeliği test edilebilir; kurmaca model çevresel tahmin veya doğrulanmış gelir değildir."}
+  {
+    "id": 41,
+    "name": "Gravity Escape",
+    "slug": "kutle-kacisi",
+    "category": "Games",
+    "stage": 5,
+    "description": "Rescue research capsules from a gravity well while managing momentum, rotation, speed, and limited thrust fuel.",
+    "features": [
+      "Real-time inverse-square gravity",
+      "Directional thrust and finite fuel",
+      "Speed-limited capsule collection",
+      "Collision and range failure",
+      "Reproducible mission links",
+      "Keyboard and touch flight controls"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 42,
+    "name": "Word Island",
+    "slug": "sozcuk-adasi",
+    "category": "Games",
+    "stage": 5,
+    "description": "Trace English words through neighboring cells to claim territory and connect new areas to your existing island.",
+    "features": [
+      "Eight-by-eight adjacency board",
+      "Eight distinct embedded English words per board",
+      "1,613-word English dictionary",
+      "New-cell and territory-connection scoring",
+      "Thirty-cell target within ten words",
+      "Reproducible island links"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 43,
+    "name": "Street Orchestra",
+    "slug": "sokak-orkestrasi",
+    "category": "Games",
+    "stage": 5,
+    "description": "Perform four instrument lanes on time while preserving band cohesion across three original sixteen-bar arrangements.",
+    "features": [
+      "Drums, bass, guitar, and whistle lanes",
+      "Three tempos and authored rhythmic patterns",
+      "Perfect and accepted timing windows",
+      "Combos, missed notes, and cohesion",
+      "Locally synthesized audio and mute mode",
+      "Shareable concert arrangements"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 44,
+    "name": "Topology Garden",
+    "slug": "topoloji-bahcesi",
+    "category": "Games",
+    "stage": 5,
+    "description": "Untangle a graph by moving its nodes until no edges cross and no nodes overlap or lie on unrelated edges.",
+    "features": [
+      "Solvable 6-, 9-, and 12-node graphs",
+      "Live intersection analysis",
+      "Node-overlap and node-edge checks",
+      "Mouse and keyboard positioning",
+      "Optional scored solution preview",
+      "Move and time scoring",
+      "Shareable initial layouts"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 45,
+    "name": "Parcel Dispatch",
+    "slug": "paket-rotasi",
+    "category": "Games",
+    "stage": 5,
+    "description": "Manage two delivery vans, shared depot stock, cargo capacity, fuel, budgets, and customer time windows.",
+    "features": [
+      "Two independent vans and editable routes",
+      "Two cargo types and three-package capacity",
+      "Six delivery windows",
+      "Paid stock and fuel replenishment",
+      "Simultaneous minute-based simulation",
+      "Operations verified feasible with starting supplies",
+      "Replay and identical-operation links"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 46,
+    "name": "Light Seal",
+    "slug": "isik-muhru",
+    "category": "Games",
+    "stage": 5,
+    "description": "Rotate mirrors to route red, green, and blue rays into the required combined target color.",
+    "features": [
+      "Three authored verified optical layouts",
+      "Two mirror orientations and blocking tiles",
+      "Ray tracing with loop termination",
+      "Purple, yellow, and white targets",
+      "Rotation scoring and reproducible scrambles"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 47,
+    "name": "Time Deadlock",
+    "slug": "zaman-cikmazi",
+    "category": "Games",
+    "stage": 5,
+    "description": "Record your actions as replaying ghosts that hold pressure plates and open gates for later versions of yourself.",
+    "features": [
+      "One-, two-, and three-ghost layouts",
+      "Simultaneous replay of recorded paths",
+      "Ghosts hold their final position",
+      "Time-aware gates and pressure plates",
+      "Rewind, remove the last ghost, and total-action scoring",
+      "Shareable authored puzzles"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 48,
+    "name": "Rule Detective",
+    "slug": "davranis-dedektifi",
+    "category": "Games",
+    "stage": 5,
+    "description": "Choose experiments with colors, shapes, numbers, and patterns to identify a hidden rule within a limited test budget.",
+    "features": [
+      "Eight distinguishable hidden logic rules",
+      "108 possible sample configurations",
+      "Three starting observations and six experiments",
+      "Consistent-hypothesis count",
+      "Concrete counterexamples to incorrect guesses",
+      "Identical-case sharing links"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 49,
+    "name": "Twin Maze",
+    "slug": "ikiz-labirent",
+    "category": "Games",
+    "stage": 5,
+    "description": "Control two different mazes with mirrored horizontal movement and reach both exits on the same turn.",
+    "features": [
+      "Two independently blocked maze boards",
+      "One character may stop while the other moves",
+      "Joint-state solvability checks during generation",
+      "Hints from both current positions",
+      "Undo, move scoring, and identical-maze links"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 50,
+    "name": "Ecosystem Deck",
+    "slug": "deste-ekosistemi",
+    "category": "Games",
+    "stage": 5,
+    "description": "Choose policies over twelve seasons to balance interacting forest, water, wildlife, food, and pollution resources.",
+    "features": [
+      "Twelve policy cards",
+      "Six revealed weather events",
+      "Five coupled resources",
+      "Seasonal costs, collapse, and sustainability targets",
+      "Undo one season and review the decision log",
+      "Identical deck-and-weather links"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  },
+  {
+    "id": 51,
+    "name": "Echo Map",
+    "slug": "yanki-haritasi",
+    "category": "Games",
+    "stage": 5,
+    "description": "Explore a dark maze through temporary sonar pulses, recover three signal cores, and escape before oxygen runs out.",
+    "features": [
+      "Connected seeded maze generation",
+      "Temporary radius-based sonar visibility",
+      "Persistent memory of visited paths and bumped walls",
+      "Three recoverable signal cores",
+      "Battery pickups and limited sonar charges",
+      "Oxygen based on a feasible collection route",
+      "Reproducible exploration links"
+    ],
+    "businessHypothesis": "Approved display advertising can support free access. Paid private project storage is a separate optional service. Revenue and audience growth remain unverified."
+  }
 ]

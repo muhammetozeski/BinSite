@@ -6,9 +6,9 @@ Three independent products use one standalone .NET 10 / C# 14 Blazor WebAssembly
 
 Shared persistence runs in `functions/api/[[path]].js` on Cloudflare Pages Functions with a D1 SQLite binding named `DB`. This is a JavaScript serverless API bridge, not a C# server or MAUI native package. `schema/social.sql` creates the data tables. The C# `SocialApi` service calls that API over the current origin.
 
-Browser-compatible equivalents implement the relevant CSharpProgram components: scoped language preference in browser storage, central HTTP logging that excludes user content and secret link identifiers, typed models, and one final UI action boundary. Desktop filesystem settings, log files, executable signing and Windows launcher distribution do not apply to this browser output. Mutations are not automatically retried because the first write might have succeeded. A failed action keeps draft text and exposes a manual retry. Turkish and English interface strings are selected by `UiText`; editorial and user content retain their authored language.
+Browser-compatible equivalents implement the relevant CSharpProgram components: a scoped English-only interface text selector, central HTTP logging that excludes user content and secret link identifiers, typed models, and one final UI action boundary. Desktop filesystem settings, log files, executable signing and Windows launcher distribution do not apply to this browser output. Mutations are not automatically retried because the first write might have succeeded. A failed action keeps draft text and exposes a manual retry. The interface is English-only through `UiText`; editorial and user content retain their authored language.
 
-The authored content contains 15 original story openings, 15 two-option creative poll prompts, and five letter-writing prompts in each interface language. Suggestions are explicitly labelled editorial, fill an unpublished draft, and never create a fabricated user post, vote or account.
+The authored content contains 15 original story openings, 15 two-option creative poll prompts, and five letter-writing prompts in English. Suggestions are explicitly labelled editorial, fill an unpublished draft, and never create a fabricated user post, vote or account.
 
 ## API contract
 
@@ -56,3 +56,7 @@ The social agent proposed Story Tree as the strongest current social candidate: 
 Useful future measurements are shared-link visit → paragraph read → continuation published → branch link copied. For Idea Duel they are shared-link visit → valid vote → new poll created. For Time Capsule they are creation → link saved → revisit after unlock. These are proposed measurement definitions, not collected metrics, revenue evidence or user counts.
 
 Any future payment entitlement must be granted server-side only after a verified payment-provider webhook, with an idempotent event ledger and a durable order-to-customer binding. A browser success redirect must never grant access. Paid sponsorship must be clearly labelled and must not alter public poll results. Commerce implementation and account recovery are owned by the root integration, outside these anonymous content identities.
+
+## English-only package update
+
+Packaged editorial stories, prompts, teaching drafts, fictional exhibitions, default draft text, API user-facing messages and social catalog copy now use English. Existing database contributions were not translated or rewritten. Product styles use flat surfaces, strong colors and functional selection indicators; decorative shadows and rounded cards were removed. The three social API modules retained their state and authorization checks and passed all eighteen existing SQLite integration groups after the copy update.

@@ -1,32 +1,52 @@
 [
   {
     "id": 11,
-    "name": "Hikâye Ağacı",
+    "name": "Story Tree",
     "slug": "hikaye-agaci",
-    "category": "Sosyal",
+    "category": "Social",
     "stage": 3,
-    "description": "Bir hikâyenin her paragrafından yeni ihtimaller açılan, katkıları ortak sunucuda saklanan kolektif yazı alanı.",
-    "features": ["C# Blazor arayüzü", "Kalıcı paylaşılan hikâye ağacı", "Paragraf ve dal bağlantıları", "15 özgün editoryal başlangıç önerisi", "Türkçe ve İngilizce arayüz", "Raporlama ve sunucu hız sınırları"],
-    "businessHypothesis": "Bir dalı okuyan kişinin kendi devamını yazıp paylaşması yeni okurları yazara dönüştürebilir. Topluluk oluşursa isteğe bağlı özel yazı odaları ve editoryal etkinlikler gelir modeli olarak ölçülebilir; gelir ve büyüme henüz doğrulanmış değildir."
+    "description": "Write a branching story together. Each paragraph can open a new direction, with actual contributions stored on the shared server.",
+    "features": [
+      "C# Blazor interface",
+      "Persistent branching story graph",
+      "Shareable paragraph links",
+      "15 original editorial openings",
+      "English interface",
+      "Reporting and server limits"
+    ],
+    "businessHypothesis": "A reader can publish a continuation and share a new entry point. Repeat writing and actual shared-link participation must be measured before assuming demand or revenue."
   },
   {
     "id": 12,
-    "name": "Fikir Düellosu",
+    "name": "Idea Duel",
     "slug": "fikir-duellosu",
-    "category": "Sosyal",
+    "category": "Social",
     "stage": 3,
-    "description": "İki yaratıcı öneriyi herkese açık bir düelloda karşılaştır, bağlantıyı paylaş ve sunucuda kayıtlı gerçek oyları izle.",
-    "features": ["C# Blazor arayüzü", "Gerçek anket oluşturma ve oy kaydı", "Çerez kimliği başına oy tekilliği", "Sunucuda hesaplanan sonuçlar", "15 özgün editoryal düello önerisi", "Raporlama ve Türkçe/İngilizce arayüz"],
-    "businessHypothesis": "İçerik üreticileri ve topluluklar bir sonraki etkinlik veya ürün fikrini karşılaştırmak için düelloları paylaşabilir. İleride özel panolar ve açıkça etiketlenmiş sponsorlu yaratıcı yarışmalar test edilebilir; mevcut sayımlar gerçek kayıtları gösterir ve kişi doğrulaması sağlamaz."
+    "description": "Compare two creative ideas in a public duel, share its link and track votes actually recorded by the server.",
+    "features": [
+      "Actual poll creation and voting",
+      "One vote per cookie identity",
+      "Server-computed results",
+      "15 original editorial suggestions",
+      "English interface and reporting"
+    ],
+    "businessHypothesis": "Creators may share duels to choose a future activity or idea. Repeat poll creation and incoming votes can indicate demand; advertising revenue remains unverified."
   },
   {
     "id": 13,
-    "name": "Zaman Kapsülü",
+    "name": "Time Capsule",
     "slug": "zaman-kapsulu",
-    "category": "Sosyal",
+    "category": "Social",
     "stage": 3,
-    "description": "Bir mektubu gelecekteki tarihe kilitle; sunucu tarih gelmeden içeriği tarayıcıya göndermez ve rastgele bağlantı dışında gezilebilir liste sunmaz.",
-    "features": ["C# Blazor arayüzü", "Sunucu saatine göre içerik kilidi", "Kalıcı kapsül kaydı", "Listelenmeyen paylaşım bağlantısı", "Editoryal mektup soruları", "Türkçe/İngilizce arayüz ve raporlama"],
-    "businessHypothesis": "Mezuniyet, yıl dönümü ve arkadaş grubu gelenekleri kapsül paylaşımı ve zamanında geri dönüş yaratabilir. İleride doğrulanmış saklama süresi, hesap kurtarma ve teslim hizmetleri için ödeme isteği araştırılabilir; ilk sürüm bu hizmetleri veya gelir güvencesini sunmaz."
+    "description": "Seal a letter until a future date. The server withholds its body until opening time and provides an unlisted random link.",
+    "features": [
+      "Server-clock content lock",
+      "Persistent capsule storage",
+      "Unlisted sharing links",
+      "Editorial writing prompts",
+      "English C# interface",
+      "Reporting controls"
+    ],
+    "businessHypothesis": "Celebrations and group traditions could create return visits after opening. Link saving and actual return use must be observed; permanent storage and delivery services are not promised."
   }
 ]

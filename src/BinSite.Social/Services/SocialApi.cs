@@ -36,7 +36,7 @@ public sealed class SocialApi(HttpClient http, ILogger<SocialApi> logger)
             if (!response.IsSuccessStatusCode)
             {
                 var failure = await response.Content.ReadFromJsonAsync<ErrorEnvelope>();
-                throw new ApiFailure(response.StatusCode, failure?.Error ?? "İşlem tamamlanamadı.");
+                throw new ApiFailure(response.StatusCode, failure?.Error ?? "The action could not be completed.");
             }
             return await response.Content.ReadFromJsonAsync<T>() ?? throw new InvalidOperationException("API returned an empty result.");
         }

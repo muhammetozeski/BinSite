@@ -4,6 +4,7 @@ namespace BinSite.Social.Shared;
 /// <summary>Shares transport and revision attachment without defining any product's domain workflow.</summary>
 public abstract class CollaborationComponent:ProductComponent
 {
+ static readonly JsonSerializerOptions JsonOptions=new(JsonSerializerDefaults.Web);
  /// <summary>Reads only one product's bounded public directory.</summary>
  protected Task<SpaceList> DirectoryAsync(string kind)=>Api.GetAsync<SpaceList>("collaboration/"+kind);
  /// <summary>Reads a server-filtered typed workspace for the current cookie identity.</summary>
@@ -13,7 +14,7 @@ public abstract class CollaborationComponent:ProductComponent
  /// <summary>Attaches the expected revision to one domain action; the server owns authorization and transitions.</summary>
  protected Task<Space<T>> ActionAsync<T>(string kind,Space<T> space,string action,object data)
  {
-  var fields=JsonSerializer.SerializeToElement(data).EnumerateObject().ToDictionary(item=>item.Name,item=>item.Value);
+  var fields=JsonSerializer.SerializeToElement(data,JsonOptions).EnumerateObject().ToDictionary(item=>item.Name,item=>item.Value);
   fields["revision"]=JsonSerializer.SerializeToElement(space.Revision);
   return Api.PostAsync<Space<T>>($"collaboration/{kind}/{space.Id}/{action}",fields);
  }

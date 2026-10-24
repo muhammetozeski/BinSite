@@ -9,7 +9,7 @@
 
 <PageTitle>@Texts.Text("Yaratıcı hesabım — BinSite", "My creator account — BinSite")</PageTitle>
 <main class="membership">
-    <header><div><a href="/">BinSite</a><h1>@Texts.Text("Ürettiklerine yer aç.", "Make room for your creations.")</h1><p>@Texts.Text("Oyunlar ve editörler ücretsiz. Hesabınla projelerini sunucuda sakla; aynı kurtarma anahtarıyla başka tarayıcıdan aç.", "Games and editors are free. Store projects on the server and use a recovery key to access them from another browser.")</p></div><LanguageSwitch /></header>
+    <header><div><a href="/">BinSite</a><h1>Creator account</h1><p>@Texts.Text("Oyunlar ve editörler ücretsiz. Hesabınla projelerini sunucuda sakla; aynı kurtarma anahtarıyla başka tarayıcıdan aç.", "Games and editors are free. Store projects on the server and use a recovery key to access them from another browser.")</p></div><LanguageSwitch /></header>
     @if (!string.IsNullOrEmpty(Message)) { <p class="notice" role="status">@Message</p> }
     @if (Busy) { <p aria-live="polite">@Texts.Text("İşlem sürüyor…", "Working…")</p> }
     <div class="columns">

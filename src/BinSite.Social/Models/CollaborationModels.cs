@@ -34,3 +34,29 @@ public sealed record JamSubmission(string Body,string Link,long At);
 public sealed record JamTask(string Id,string Title,string Spec,string Status,string? Assignee,JamSubmission? Submission,string Review);
 /// <summary>A time-bounded creative collaboration project.</summary>
 public sealed record JamState(string Theme,string Brief,long Deadline,List<Participant> Members,List<JamTask> Tasks);
+/// <summary>A measured ingredient whose unit is preserved during group aggregation.</summary>
+public sealed record RecipeIngredient(string Name,string Unit,double Quantity);
+/// <summary>A branch in an actual recipe version tree.</summary>
+public sealed record RecipeVersion(string Id,string? ParentId,string Title,int Servings,List<RecipeIngredient> Ingredients,string Steps,string MemberId,long At);
+/// <summary>One participant's selected version and desired serving count.</summary>
+public sealed record RecipePlan(string MemberId,string VersionId,int Servings);
+/// <summary>Shared recipe branches and server-computed group ingredient totals.</summary>
+public sealed record RecipeLabState(List<Participant> Members,List<RecipeVersion> Versions,List<RecipePlan> Plans,List<RecipeIngredient> Totals);
+/// <summary>A bounded procedural sound patch containing parameters only, never binary media.</summary>
+public sealed record SoundPatch(string Id,string? ParentId,string MemberId,string Title,string Wave,double Frequency,double Duration,double Gain,int[] Sequence,long At);
+/// <summary>Actual shared sound patches with remix lineage.</summary>
+public sealed record SoundState(List<Participant> Members,List<SoundPatch> Patches);
+/// <summary>An older authored version of a fictional location.</summary>
+public sealed record PlaceHistory(string Title,string Description,string Editor,long At);
+/// <summary>A fictional grid location and its bounded revision history.</summary>
+public sealed record WorldPlace(string Id,int X,int Y,string Title,string Description,string Editor,long At,List<PlaceHistory> History);
+/// <summary>A shared fictional world map, without real-world location collection.</summary>
+public sealed record WorldState(string Theme,List<Participant> Members,List<WorldPlace> Places);
+/// <summary>A clue whose text is omitted until a distinct-member threshold is reached.</summary>
+public sealed record CrowdHint(int Index,int Threshold,int Votes,string? Text,bool MyVote);
+/// <summary>A collective riddle view with its private solution excluded.</summary>
+public sealed record CrowdState(int Scene,List<Participant> Members,bool Solved,List<CrowdHint> Hints);
+/// <summary>A turn-authorized fictional letter in an invited group chain.</summary>
+public sealed record ChainEntry(string Id,string MemberId,string Body,long At);
+/// <summary>A membership-filtered narrative chain and persistent turn index.</summary>
+public sealed record LetterState(string Opening,int Capacity,int Length,string Status,int MemberCount,List<Participant> Members,List<ChainEntry> Entries,int Turn);

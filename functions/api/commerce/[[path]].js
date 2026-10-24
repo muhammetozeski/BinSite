@@ -29,39 +29,39 @@ function sameHex(a, b) {
 function randomToken() { const bytes = crypto.getRandomValues(new Uint8Array(32)); return btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, ''); }
 function sessionCookie(token, clear = false) { return `${COOKIE}=${clear ? '' : token}; Path=/api/commerce; Max-Age=${clear ? 0 : SESSION_MS / 1000}; HttpOnly; Secure; SameSite=Strict`; }
 function idOf(object) { return typeof object === 'string' ? object : object?.id || ''; }
-function requireId(value) { if (typeof value !== 'string' || !UUID.test(value)) throw new CommerceError(400, 'Proje kimliği geçersiz.', 'invalid_id'); return value; }
+function requireId(value) { if (typeof value !== 'string' || !UUID.test(value)) throw new CommerceError(400, 'Invalid project identifier.', 'invalid_id'); return value; }
 function text(value, label, max) {
-  if (typeof value !== 'string') throw new CommerceError(400, `${label} metin olmalı.`, 'invalid_field');
+  if (typeof value !== 'string') throw new CommerceError(400, `${label} must be text.`, 'invalid_field');
   const result = value.trim().normalize('NFC');
-  if (!result || result.length > max || /[\u0000-\u001f\u007f]/u.test(result)) throw new CommerceError(400, `${label} 1–${max} karakter olmalı.`, 'invalid_field');
+  if (!result || result.length > max || /[\u0000-\u001f\u007f]/u.test(result)) throw new CommerceError(400, `${label} must contain 1–${max} characters.`, 'invalid_field');
   return result;
 }
 
 async function rawBody(request, maximum) {
   const length = Number(request.headers.get('content-length'));
-  if (Number.isFinite(length) && length > maximum) throw new CommerceError(413, 'Gönderilen veri sınırı aşıyor.', 'body_too_large');
-  const reader = request.body?.getReader(); if (!reader) throw new CommerceError(400, 'İstek gövdesi eksik.', 'missing_body');
+  if (Number.isFinite(length) && length > maximum) throw new CommerceError(413, 'The submitted data exceeds the size limit.', 'body_too_large');
+  const reader = request.body?.getReader(); if (!reader) throw new CommerceError(400, 'The request body is missing.', 'missing_body');
   let total = 0; const chunks = [];
-  while (true) { const { value, done } = await reader.read(); if (done) break; total += value.byteLength; if (total > maximum) { await reader.cancel(); throw new CommerceError(413, 'Gönderilen veri sınırı aşıyor.', 'body_too_large'); } chunks.push(value); }
+  while (true) { const { value, done } = await reader.read(); if (done) break; total += value.byteLength; if (total > maximum) { await reader.cancel(); throw new CommerceError(413, 'The submitted data exceeds the size limit.', 'body_too_large'); } chunks.push(value); }
   const bytes = new Uint8Array(total); let offset = 0; for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
-  try { return new TextDecoder('utf-8', { fatal: true }).decode(bytes); } catch { throw new CommerceError(400, 'Metin kodlaması geçersiz.', 'invalid_encoding'); }
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(bytes); } catch { throw new CommerceError(400, 'Invalid text encoding.', 'invalid_encoding'); }
 }
-function parseObject(raw) { try { const value = JSON.parse(raw); if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(); return value; } catch { throw new CommerceError(400, 'JSON nesnesi bekleniyor.', 'invalid_json'); } }
+function parseObject(raw) { try { const value = JSON.parse(raw); if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(); return value; } catch { throw new CommerceError(400, 'A JSON object is required.', 'invalid_json'); } }
 async function bodyJson(request) {
-  if (!(request.headers.get('content-type') || '').toLowerCase().startsWith('application/json')) throw new CommerceError(415, 'İstek JSON biçiminde olmalı.', 'content_type');
+  if (!(request.headers.get('content-type') || '').toLowerCase().startsWith('application/json')) throw new CommerceError(415, 'Send the request as JSON.', 'content_type');
   return parseObject(await rawBody(request, 70000));
 }
 
 function providers(env) { return { stripe: !!(env.STRIPE_SECRET_KEY && env.STRIPE_PRICE_ID && env.STRIPE_WEBHOOK_SECRET && env.STRIPE_PORTAL_CONFIGURATION_ID), lemon: !!(env.LEMON_API_KEY && env.LEMON_STORE_ID && env.LEMON_VARIANT_ID && env.LEMON_WEBHOOK_SECRET) }; }
 function planInfo(env) {
   const amount = Number(env.CREATOR_MONTHLY_CENTS || 500);
-  return { id: PLAN, name: 'Üretici Üyeliği', priceLabel: `${(amount / 100).toFixed(2)} USD / ay`, features: ['100 özel bulut projesi', 'Her projede 64 KB JSON verisi', 'Cihazlar arasında kurtarma anahtarıyla erişim', 'Üyelik sona erse de mevcut projeleri okuma ve silme'] };
+  return { id: PLAN, name: 'Creator Membership', priceLabel: `${(amount / 100).toFixed(2)} USD / month`, features: ['100 private cloud projects', '64 KB of JSON data per project', 'Access across devices with your recovery key', 'Read and delete existing projects after membership ends'] };
 }
 async function limit(db, ip, action, maximum, seconds = 60) {
   const now = Date.now(), bucket = Math.floor(now / (seconds * 1000));
   const key = `${action}:${ip}:${bucket}`;
   const result = await db.prepare('INSERT INTO commerce_rate_limits (rate_key, count, expires_at) VALUES (?, 1, ?) ON CONFLICT(rate_key) DO UPDATE SET count = count + 1 WHERE count < ? RETURNING count').bind(key, (bucket + 1) * seconds * 1000, maximum).all();
-  if (!result.results?.length) throw new CommerceError(429, 'Bu işlem için kısa süreli sınır doldu. Biraz sonra tekrar deneyin.', 'rate_limit');
+  if (!result.results?.length) throw new CommerceError(429, 'The short-term action limit has been reached. Try again later.', 'rate_limit');
   if (Math.random() < .02) await db.prepare('DELETE FROM commerce_rate_limits WHERE expires_at < ?').bind(now).run();
 }
 async function accountFromRequest(request, db) {
@@ -90,35 +90,35 @@ async function providerFetch(env, provider, endpoint, options = {}) {
     if (options.body) { headers['Content-Type'] = stripe ? 'application/x-www-form-urlencoded' : 'application/vnd.api+json'; body = stripe ? new URLSearchParams(options.body).toString() : JSON.stringify(options.body); }
     if (options.idempotencyKey && stripe) headers['Idempotency-Key'] = options.idempotencyKey;
     const response = await fetch((stripe ? 'https://api.stripe.com/v1/' : 'https://api.lemonsqueezy.com/v1/') + endpoint, { method: options.method || (body ? 'POST' : 'GET'), headers, body, signal: controller.signal });
-    if (!response.ok) throw new CommerceError(502, 'Ödeme sağlayıcısı işlemi şu anda tamamlayamadı.', 'provider_error');
+    if (!response.ok) throw new CommerceError(502, 'The payment provider could not complete this action right now.', 'provider_error');
     return await response.json();
-  } catch (error) { if (error instanceof CommerceError) throw error; throw new CommerceError(502, 'Ödeme sağlayıcısına erişilemiyor. Tekrar deneyebilirsiniz.', 'provider_unavailable'); }
+  } catch (error) { if (error instanceof CommerceError) throw error; throw new CommerceError(502, 'The payment provider is unavailable. Please try again.', 'provider_unavailable'); }
   finally { clearTimeout(timer); }
 }
 function externalUrl(value, provider, portal = false) {
   try { const url = new URL(value); const host = url.hostname; const allowed = provider === 'stripe' ? portal ? host === 'billing.stripe.com' : host === 'checkout.stripe.com' : host === 'lemonsqueezy.com' || host.endsWith('.lemonsqueezy.com'); if (url.protocol === 'https:' && allowed) return url.href; } catch {}
-  throw new CommerceError(502, 'Sağlayıcı geçerli bir ödeme bağlantısı vermedi.', 'provider_url');
+  throw new CommerceError(502, 'The provider did not return a valid payment link.', 'provider_url');
 }
 async function lock(db, key) {
   const token = crypto.randomUUID(), now = Date.now();
   const result = await db.prepare('INSERT INTO commerce_locks (lock_key, lease_token, expires_at) VALUES (?, ?, ?) ON CONFLICT(lock_key) DO UPDATE SET lease_token = excluded.lease_token, expires_at = excluded.expires_at WHERE expires_at < ? RETURNING lease_token').bind(key, token, now + 55000, now).all();
-  if (!result.results?.length) throw new CommerceError(409, 'Bu işlem işleniyor. Biraz sonra tekrar deneyin.', 'processing');
+  if (!result.results?.length) throw new CommerceError(409, 'This action is being processed. Try again shortly.', 'processing');
   return async () => { await db.prepare('DELETE FROM commerce_locks WHERE lock_key = ? AND lease_token = ?').bind(key, token).run(); };
 }
 async function ownedAttempt(db, provider, reference, claimedMember) {
   if (!UUID.test(reference || '')) return null;
   const row = await db.prepare('SELECT id, member_id, provider_checkout_id FROM commerce_checkouts WHERE id = ? AND provider = ? AND plan_id = ?').bind(reference, provider, PLAN).first();
-  if (row && claimedMember && row.member_id !== claimedMember) throw new CommerceError(400, 'Ödeme hesabı eşleşmiyor.', 'member_mismatch');
+  if (row && claimedMember && row.member_id !== claimedMember) throw new CommerceError(400, 'The payment account does not match.', 'member_mismatch');
   return row;
 }
 async function knownMember(db, provider, subscriptionId, customerId, reference, claimedMember) {
   const known = await db.prepare('SELECT member_id FROM commerce_subscriptions WHERE provider = ? AND subscription_id = ?').bind(provider, subscriptionId).first();
   const attempt = await ownedAttempt(db, provider, reference, claimedMember);
-  if (known && attempt && known.member_id !== attempt.member_id) throw new CommerceError(400, 'Abonelik hesabı eşleşmiyor.', 'member_mismatch');
+  if (known && attempt && known.member_id !== attempt.member_id) throw new CommerceError(400, 'The subscription account does not match.', 'member_mismatch');
   const memberId = known?.member_id || attempt?.member_id;
   if (!memberId) return null;
   const existingCustomer = await db.prepare('SELECT member_id FROM commerce_customers WHERE provider = ? AND customer_id = ?').bind(provider, customerId).first();
-  if (existingCustomer && existingCustomer.member_id !== memberId) throw new CommerceError(400, 'Müşteri hesabı eşleşmiyor.', 'member_mismatch');
+  if (existingCustomer && existingCustomer.member_id !== memberId) throw new CommerceError(400, 'The customer account does not match.', 'member_mismatch');
   return memberId;
 }
 
@@ -228,23 +228,23 @@ async function lemonEvent(env, event) {
 
 async function verifyWebhook(request, env, provider, raw) {
   if (provider === 'stripe') {
-    if (!env.STRIPE_WEBHOOK_SECRET || !env.STRIPE_SECRET_KEY) throw new CommerceError(503, 'Stripe bildirimleri henüz yapılandırılmadı.', 'provider_unconfigured');
+    if (!env.STRIPE_WEBHOOK_SECRET || !env.STRIPE_SECRET_KEY) throw new CommerceError(503, 'Stripe webhooks have not been configured.', 'provider_unconfigured');
     const fields = (request.headers.get('stripe-signature') || '').split(',').map(part => part.split('='));
     const timestamp = fields.find(([key]) => key === 't')?.[1], signatures = fields.filter(([key]) => key === 'v1').map(([, value]) => value);
-    if (!/^\d+$/.test(timestamp || '') || Math.abs(Date.now() / 1000 - Number(timestamp)) > 300) throw new CommerceError(400, 'Bildirim imzası veya zamanı geçersiz.', 'webhook_signature');
+    if (!/^\d+$/.test(timestamp || '') || Math.abs(Date.now() / 1000 - Number(timestamp)) > 300) throw new CommerceError(400, 'The webhook signature or timestamp is invalid.', 'webhook_signature');
     const expected = await hmac(env.STRIPE_WEBHOOK_SECRET, timestamp + '.' + raw);
-    if (!signatures.some(signature => sameHex(signature, expected))) throw new CommerceError(400, 'Bildirim imzası geçersiz.', 'webhook_signature');
+    if (!signatures.some(signature => sameHex(signature, expected))) throw new CommerceError(400, 'The webhook signature is invalid.', 'webhook_signature');
   } else {
-    if (!env.LEMON_WEBHOOK_SECRET || !env.LEMON_API_KEY) throw new CommerceError(503, 'Lemon Squeezy bildirimleri henüz yapılandırılmadı.', 'provider_unconfigured');
-    if (!sameHex(request.headers.get('x-signature'), await hmac(env.LEMON_WEBHOOK_SECRET, raw))) throw new CommerceError(400, 'Bildirim imzası geçersiz.', 'webhook_signature');
+    if (!env.LEMON_WEBHOOK_SECRET || !env.LEMON_API_KEY) throw new CommerceError(503, 'Lemon Squeezy webhooks have not been configured.', 'provider_unconfigured');
+    if (!sameHex(request.headers.get('x-signature'), await hmac(env.LEMON_WEBHOOK_SECRET, raw))) throw new CommerceError(400, 'The webhook signature is invalid.', 'webhook_signature');
   }
 }
 async function webhook(request, env, provider) {
   const raw = await rawBody(request, 262144); await verifyWebhook(request, env, provider, raw); const event = parseObject(raw);
-  if (provider === 'stripe' && (typeof event.id !== 'string' || !/^evt_[A-Za-z0-9]+$/.test(event.id))) throw new CommerceError(400, 'Bildirim kimliği geçersiz.', 'webhook_event');
+  if (provider === 'stripe' && (typeof event.id !== 'string' || !/^evt_[A-Za-z0-9]+$/.test(event.id))) throw new CommerceError(400, 'The webhook event identifier is invalid.', 'webhook_event');
   const eventId = provider === 'stripe' ? event.id : await hash(raw), now = Date.now(), lease = crypto.randomUUID();
   const claimed = await env.DB.prepare('INSERT INTO commerce_events (provider, event_id, state, lease_token, lease_until, received_at) VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT(provider, event_id) DO UPDATE SET lease_token = excluded.lease_token, lease_until = excluded.lease_until WHERE state = ? AND lease_until < ? RETURNING event_id').bind(provider, eventId, 'pending', lease, now + 55000, now, 'pending', now).all();
-  if (!claimed.results?.length) { const existing = await env.DB.prepare('SELECT state FROM commerce_events WHERE provider = ? AND event_id = ?').bind(provider, eventId).first(); if (existing?.state === 'done') return json({ received: true, duplicate: true }); throw new CommerceError(409, 'Bildirim işleniyor; tekrar gönderilebilir.', 'processing'); }
+  if (!claimed.results?.length) { const existing = await env.DB.prepare('SELECT state FROM commerce_events WHERE provider = ? AND event_id = ?').bind(provider, eventId).first(); if (existing?.state === 'done') return json({ received: true, duplicate: true }); throw new CommerceError(409, 'The webhook event is being processed and may be retried.', 'processing'); }
   try {
     if (provider === 'stripe') await stripeEvent(env, event); else await lemonEvent(env, event);
     await env.DB.prepare('UPDATE commerce_events SET state = ?, processed_at = ?, lease_until = 0 WHERE provider = ? AND event_id = ? AND lease_token = ?').bind('done', Date.now(), provider, eventId, lease).run();
@@ -254,13 +254,13 @@ async function webhook(request, env, provider) {
 
 async function checkout(request, env, member, body, origin) {
   const provider = body.provider;
-  if (!['stripe', 'lemon'].includes(provider) || body.plan !== PLAN) throw new CommerceError(400, 'Plan veya sağlayıcı geçersiz.', 'invalid_plan');
-  if (!providers(env)[provider]) throw new CommerceError(503, 'Bu ödeme yöntemi henüz etkin değil. Şu anda ödeme alınmaz.', 'provider_unconfigured');
-  const status = await accountStatus(env.DB, member); if (status.premium) throw new CommerceError(409, 'Zaten aktif bir üyeliğiniz var. Yeni ödeme yerine abonelik yönetimini kullanın.', 'already_subscribed');
+  if (!['stripe', 'lemon'].includes(provider) || body.plan !== PLAN) throw new CommerceError(400, 'Invalid plan or payment provider.', 'invalid_plan');
+  if (!providers(env)[provider]) throw new CommerceError(503, 'This payment method is not enabled. No payment is being taken.', 'provider_unconfigured');
+  const status = await accountStatus(env.DB, member); if (status.premium) throw new CommerceError(409, 'You already have an active membership. Use subscription management instead of making another payment.', 'already_subscribed');
   const release = await lock(env.DB, 'checkout:' + member.id);
   try {
     const existing = await env.DB.prepare('SELECT id FROM commerce_checkouts WHERE member_id = ? AND created_at > ? ORDER BY created_at DESC LIMIT 1').bind(member.id, Date.now() - 90000).first();
-    if (existing) throw new CommerceError(409, 'Az önce bir ödeme sayfası açıldı. İşlemi oradan tamamlayın veya kısa süre sonra yeniden deneyin.', 'checkout_pending');
+    if (existing) throw new CommerceError(409, 'A checkout was opened recently. Complete it there, or try again shortly.', 'checkout_pending');
     const reference = crypto.randomUUID();
     await env.DB.prepare('INSERT INTO commerce_checkouts (id, member_id, provider, plan_id, created_at) VALUES (?, ?, ?, ?, ?)').bind(reference, member.id, provider, PLAN, Date.now()).run();
     let response;
@@ -278,28 +278,28 @@ async function checkout(request, env, member, body, origin) {
   } finally { await release(); }
 }
 async function portal(env, member, provider, origin) {
-  if (!['stripe', 'lemon'].includes(provider) || !providers(env)[provider]) throw new CommerceError(503, 'Bu abonelik yönetimi henüz etkin değil.', 'provider_unconfigured');
+  if (!['stripe', 'lemon'].includes(provider) || !providers(env)[provider]) throw new CommerceError(503, 'Subscription management is not enabled for this provider.', 'provider_unconfigured');
   const row = await env.DB.prepare('SELECT customer_id, subscription_id FROM commerce_subscriptions WHERE provider = ? AND member_id = ? ORDER BY updated_at DESC LIMIT 1').bind(provider, member.id).first();
-  if (!row) throw new CommerceError(404, 'Bu sağlayıcıda aboneliğiniz bulunamadı.', 'subscription_missing');
+  if (!row) throw new CommerceError(404, 'No subscription was found for this provider.', 'subscription_missing');
   if (provider === 'stripe') { const session = await providerFetch(env, 'stripe', 'billing_portal/sessions', { body: { customer: row.customer_id, configuration: env.STRIPE_PORTAL_CONFIGURATION_ID, return_url: origin + '/uyelik/' } }); return { url: externalUrl(session.url, provider, true) }; }
   const result = await providerFetch(env, 'lemon', 'subscriptions/' + row.subscription_id);
   return { url: externalUrl(result.data.attributes.urls.customer_portal, provider, true) };
 }
 function projectFields(body) {
-  const title = text(body.title, 'Başlık', 100), kind = text(body.kind, 'Proje türü', 40);
-  if (!/^[a-z][a-z0-9-]{0,39}$/.test(kind) || !body.body || typeof body.body !== 'object' || Array.isArray(body.body)) throw new CommerceError(400, 'Proje türü veya JSON gövdesi geçersiz.', 'invalid_project');
-  const value = JSON.stringify(body.body); if (encoder.encode(value).byteLength > 65536) throw new CommerceError(413, 'Bir proje en fazla 64 KB veri saklayabilir.', 'project_too_large');
+  const title = text(body.title, 'Title', 100), kind = text(body.kind, 'Project type', 40);
+  if (!/^[a-z][a-z0-9-]{0,39}$/.test(kind) || !body.body || typeof body.body !== 'object' || Array.isArray(body.body)) throw new CommerceError(400, 'Invalid project type or JSON body.', 'invalid_project');
+  const value = JSON.stringify(body.body); if (encoder.encode(value).byteLength > 65536) throw new CommerceError(413, 'A project can store at most 64 KB of data.', 'project_too_large');
   return { title, kind, value };
 }
 
 export async function onRequest(context) {
   const { request, env } = context;
   try {
-    if (!env.DB) throw new CommerceError(503, 'Üyelik kayıt hizmeti henüz etkin değil.', 'database_unavailable');
+    if (!env.DB) throw new CommerceError(503, 'Membership storage is not enabled.', 'database_unavailable');
     const url = new URL(request.url), route = url.pathname.replace(/^\/api\/commerce\/?/, '').replace(/\/+$/, ''), parts = route.split('/');
-    if (parts[0] === 'webhooks' && parts.length === 2 && ['stripe', 'lemon'].includes(parts[1])) { if (request.method !== 'POST') throw new CommerceError(405, 'Bildirim POST olmalı.', 'method'); return await webhook(request, env, parts[1]); }
-    if (!['GET', 'POST'].includes(request.method)) throw new CommerceError(405, 'Bu yöntem desteklenmiyor.', 'method');
-    if (request.method === 'POST' && request.headers.get('origin') !== url.origin) throw new CommerceError(403, 'İşlemi sitenin kendi sayfasından gönderin.', 'origin');
+    if (parts[0] === 'webhooks' && parts.length === 2 && ['stripe', 'lemon'].includes(parts[1])) { if (request.method !== 'POST') throw new CommerceError(405, 'Webhooks require POST.', 'method'); return await webhook(request, env, parts[1]); }
+    if (!['GET', 'POST'].includes(request.method)) throw new CommerceError(405, 'This request method is not supported.', 'method');
+    if (request.method === 'POST' && request.headers.get('origin') !== url.origin) throw new CommerceError(403, 'Submit this action from the site itself.', 'origin');
     const ip = await hash((env.COMMERCE_RATE_SALT || 'binsite-commerce-v1') + ':' + (request.headers.get('CF-Connecting-IP') || 'local'));
     await limit(env.DB, ip, request.method === 'GET' ? 'read' : 'write', request.method === 'GET' ? 90 : 30);
     const member = await accountFromRequest(request, env.DB);
@@ -308,14 +308,14 @@ export async function onRequest(context) {
       return json({ account: await accountStatus(env.DB, member), providers: providers(env), projects, plans: [planInfo(env)], configurationVersion: env.COMMERCE_CONFIG_VERSION || null, providerModes: { stripe: env.STRIPE_SECRET_KEY ? env.STRIPE_SECRET_KEY.startsWith('sk_live_') ? 'live' : 'test' : null, lemon: env.LEMON_API_KEY ? env.LEMON_TEST_MODE === 'true' ? 'test' : 'live' : null }, paymentMode: env.STRIPE_SECRET_KEY?.startsWith('sk_live_') || (env.LEMON_API_KEY && env.LEMON_TEST_MODE !== 'true') ? 'live' : 'test' });
     }
     if (request.method === 'GET' && parts[0] === 'projects') {
-      if (!member) throw new CommerceError(401, 'Önce hesap oluşturun veya kurtarma anahtarınızla giriş yapın.', 'authentication');
+      if (!member) throw new CommerceError(401, 'Create an account or sign in with your recovery key first.', 'authentication');
       if (parts.length === 1) return json({ projects: (await env.DB.prepare('SELECT id, title, kind, updated_at AS updatedAt FROM commerce_projects WHERE member_id = ? ORDER BY updated_at DESC LIMIT 100').bind(member.id).all()).results });
-      if (parts.length === 2) { const row = await env.DB.prepare('SELECT id, title, kind, body, updated_at AS updatedAt FROM commerce_projects WHERE id = ? AND member_id = ?').bind(requireId(parts[1]), member.id).first(); if (!row) throw new CommerceError(404, 'Proje bulunamadı.', 'not_found'); return json({ project: { ...row, body: JSON.parse(row.body) } }); }
+      if (parts.length === 2) { const row = await env.DB.prepare('SELECT id, title, kind, body, updated_at AS updatedAt FROM commerce_projects WHERE id = ? AND member_id = ?').bind(requireId(parts[1]), member.id).first(); if (!row) throw new CommerceError(404, 'The project was not found.', 'not_found'); return json({ project: { ...row, body: JSON.parse(row.body) } }); }
     }
-    if (request.method !== 'POST') throw new CommerceError(404, 'Adres bulunamadı.', 'not_found');
+    if (request.method !== 'POST') throw new CommerceError(404, 'The address was not found.', 'not_found');
     const body = await bodyJson(request);
     if (route === 'account') {
-      if (member) throw new CommerceError(409, 'Bu tarayıcıda zaten bir hesap açık.', 'already_signed_in');
+      if (member) throw new CommerceError(409, 'An account is already signed in on this browser.', 'already_signed_in');
       await limit(env.DB, ip, 'account', 4, 3600);
       const id = crypto.randomUUID(), recoveryKey = 'bin-' + randomToken(), now = Date.now();
       await env.DB.prepare('INSERT INTO commerce_members (id, recovery_hash, created_at) VALUES (?, ?, ?)').bind(id, await hash(recoveryKey), now).run();
@@ -323,28 +323,28 @@ export async function onRequest(context) {
     }
     if (route === 'recover') {
       await limit(env.DB, ip, 'recover', 10, 3600);
-      if (typeof body.recoveryKey !== 'string' || !/^bin-[A-Za-z0-9_-]{43}$/.test(body.recoveryKey.trim())) throw new CommerceError(401, 'Kurtarma anahtarı bulunamadı.', 'recovery_failed');
+      if (typeof body.recoveryKey !== 'string' || !/^bin-[A-Za-z0-9_-]{43}$/.test(body.recoveryKey.trim())) throw new CommerceError(401, 'The recovery key was not found.', 'recovery_failed');
       const account = await env.DB.prepare('SELECT id FROM commerce_members WHERE recovery_hash = ?').bind(await hash(body.recoveryKey.trim())).first();
-      if (!account) throw new CommerceError(401, 'Kurtarma anahtarı bulunamadı.', 'recovery_failed');
+      if (!account) throw new CommerceError(401, 'The recovery key was not found.', 'recovery_failed');
       return json({ ok: true }, 200, await startSession(env.DB, account.id, true));
     }
-    if (!member) throw new CommerceError(401, 'Önce hesap oluşturun veya kurtarma anahtarınızla giriş yapın.', 'authentication');
+    if (!member) throw new CommerceError(401, 'Create an account or sign in with your recovery key first.', 'authentication');
     if (route === 'logout') { const match = (request.headers.get('cookie') || '').split(';').map(value => value.trim()).find(value => value.startsWith(COOKIE + '=')); await env.DB.prepare('DELETE FROM commerce_sessions WHERE session_hash = ?').bind(await hash(match.slice(COOKIE.length + 1))).run(); return json({ ok: true }, 200, sessionCookie('', true)); }
     if (route === 'checkout') { await limit(env.DB, member.id, 'checkout', 5, 3600); return json(await checkout(request, env, member, body, url.origin)); }
     if (route === 'portal') { await limit(env.DB, member.id, 'portal', 10, 3600); return json(await portal(env, member, body.provider, url.origin)); }
     if (parts[0] === 'projects') {
-      if (parts.length === 3 && parts[2] === 'delete') { const result = await env.DB.prepare('DELETE FROM commerce_projects WHERE id = ? AND member_id = ?').bind(requireId(parts[1]), member.id).run(); if (!result.meta.changes) throw new CommerceError(404, 'Proje bulunamadı.', 'not_found'); return json({ ok: true }); }
+      if (parts.length === 3 && parts[2] === 'delete') { const result = await env.DB.prepare('DELETE FROM commerce_projects WHERE id = ? AND member_id = ?').bind(requireId(parts[1]), member.id).run(); if (!result.meta.changes) throw new CommerceError(404, 'The project was not found.', 'not_found'); return json({ ok: true }); }
       if (parts.length === 1) {
         const fields = projectFields(body), id = crypto.randomUUID(), now = Date.now();
         const result = await env.DB.prepare('INSERT INTO commerce_projects (id, member_id, title, kind, body, created_at, updated_at) SELECT ?, ?, ?, ?, ?, ?, ? WHERE (SELECT COUNT(*) FROM commerce_projects WHERE member_id = ?) < CASE WHEN EXISTS(SELECT 1 FROM commerce_subscriptions WHERE member_id = ? AND premium = 1 AND expires_at > ?) THEN 100 ELSE 3 END').bind(id, member.id, fields.title, fields.kind, fields.value, now, now, member.id, member.id, now).run();
-        if (!result.meta.changes) throw new CommerceError(409, 'Proje sınırına ulaştınız. Ücretsiz hesap 3, aktif üyelik 100 proje saklayabilir.', 'project_limit'); return json({ id }, 201);
+        if (!result.meta.changes) throw new CommerceError(409, 'The project limit has been reached. Free accounts can store 3 projects; active memberships can store 100.', 'project_limit'); return json({ id }, 201);
       }
-      if (parts.length === 2) { const fields = projectFields(body), id = requireId(parts[1]); const result = await env.DB.prepare('UPDATE commerce_projects SET title = ?, kind = ?, body = ?, updated_at = ? WHERE id = ? AND member_id = ?').bind(fields.title, fields.kind, fields.value, Date.now(), id, member.id).run(); if (!result.meta.changes) throw new CommerceError(404, 'Proje bulunamadı.', 'not_found'); return json({ id }); }
+      if (parts.length === 2) { const fields = projectFields(body), id = requireId(parts[1]); const result = await env.DB.prepare('UPDATE commerce_projects SET title = ?, kind = ?, body = ?, updated_at = ? WHERE id = ? AND member_id = ?').bind(fields.title, fields.kind, fields.value, Date.now(), id, member.id).run(); if (!result.meta.changes) throw new CommerceError(404, 'The project was not found.', 'not_found'); return json({ id }); }
     }
-    throw new CommerceError(404, 'Adres bulunamadı.', 'not_found');
+    throw new CommerceError(404, 'The address was not found.', 'not_found');
   } catch (error) {
     if (error instanceof CommerceError) return json({ error: error.message, code: error.code }, error.status);
     console.error('Commerce request failed', { name: error?.name || 'Error' });
-    return json({ error: 'İşlem tamamlanamadı. Biraz sonra yeniden deneyin.', code: 'internal_error' }, 500);
+    return json({ error: 'The action could not be completed. Please try again later.', code: 'internal_error' }, 500);
   }
 }

@@ -75,3 +75,7 @@ The actual server handler ran against real Node SQLite through a D1-compatible a
 - Foreign-origin mutation rejection and report deduplication with hiding only after three distinct networks.
 
 These tests used an in-memory database and did not fabricate production activity. Production checks and deployment evidence belong to the root integration record.
+
+## English-only package update
+
+Packaged editorial stories, prompts, teaching drafts, fictional exhibitions, default draft text, API user-facing messages and social catalog copy now use English. Existing database contributions were not translated or rewritten. Product styles use flat surfaces, strong colors and functional selection indicators; decorative shadows and rounded cards were removed. The three social API modules retained their state and authorization checks and passed all eighteen existing SQLite integration groups after the copy update.

@@ -1,162 +1,166 @@
 [
   {
     "id": 76,
-    "name": "Video Kurgu",
+    "name": "Video Workshop",
     "slug": "video-kurgu",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Yerel video kesitlerini hız ve üst yazıyla sıralayıp gerçek WebM montajı üretir.",
+    "description": "Trim and arrange local video clips with speed, captions and actual WebM recording.",
     "features": [
-      "Yerel video çözümleme",
-      "Kesme, hız ve zaman çizelgesi",
-      "Sesin Web Audio üzerinden kayda eklenmesi",
-      "Canvas ve MediaRecorder ile gerçek WebM",
-      "Dosyasız özgün hareket örneği"
+      "Local video sources",
+      "Trimmed timeline clips",
+      "Speed and captions",
+      "Audio mixing into export",
+      "Real MediaRecorder output",
+      "Original procedural demo"
     ],
-    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 77,
-    "name": "Düğüm Gölgelendirici",
+    "name": "Shader Nodes",
     "slug": "dugum-golgelendirici",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Matematik düğümlerini bağlayarak gerçek WebGL fragment programı üretir.",
+    "description": "Build a mathematical graph that compiles into a real WebGL fragment program.",
     "features": [
-      "Yönlü düğüm grafiği",
-      "Çevrim denetimi",
-      "Gerçek shader compile/link kontrolleri",
-      "Zaman ve renk fazı",
-      "PNG, GLSL ve proje çıktısı"
+      "Directed math graph",
+      "Dependency and cycle checks",
+      "Shader compile/link errors",
+      "Time and color phase",
+      "PNG, GLSL and project export"
     ],
-    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 78,
-    "name": "Hareketli Yazı",
+    "name": "Motion Type",
     "slug": "hareketli-yazi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Yazı katmanlarının konum, ölçek, dönüş ve saydamlığını anahtar karelerle canlandırır.",
+    "description": "Animate layered text with transform and opacity keyframes.",
     "features": [
-      "Çok katmanlı tipografi",
-      "Anahtar kare ekleme ve silme",
-      "Üç interpolasyon davranışı",
-      "Bağımsız oynayan HTML çıktısı",
-      "Proje dosyası açma ve indirme"
+      "Multiple text tracks",
+      "Keyframe editing",
+      "Three interpolation modes",
+      "Standalone animation HTML",
+      "Project import/export"
     ],
-    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 79,
-    "name": "Müzik Haritası",
+    "name": "Music Map",
     "slug": "muzik-haritasi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Mekâna yerleştirilen notalar arasında dolaşılan rotayı zamanlı stereo besteye dönüştürür.",
+    "description": "Turn a walk through spatial note nodes into a timed stereo composition.",
     "features": [
-      "Nota düğümü yerleştirme ve taşıma",
-      "Canlı dolaşma ve ziyaret kaydı",
-      "X konumundan stereo denge",
-      "Gerçek PCM WAV üretimi",
-      "Harita projesi içe/dışa aktarımı"
+      "Editable note positions",
+      "Live traversal recording",
+      "Position-based stereo balance",
+      "Actual PCM WAV export",
+      "Project import/export"
     ],
-    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 80,
-    "name": "Gölge Sahnesi",
+    "name": "Shadow Stage",
     "slug": "golge-sahnesi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Işık konumu ve kukla derinliğiyle hesaplanan gölgelerden iki pozlu tiyatro kurar.",
+    "description": "Create a two-pose shadow play using light position and projected puppet depth.",
     "features": [
-      "Dört kukla türü",
-      "Işın izdüşümüyle gölge boyutu",
-      "İki poz arasında animasyon",
-      "Işık genişliğinden yumuşak kenar",
-      "PNG ve paylaşılabilir sahne"
+      "Four puppet types",
+      "Ray-based shadow projection",
+      "Pose interpolation",
+      "Soft-edge approximation",
+      "PNG and scene sharing"
     ],
-    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 81,
-    "name": "Dünya Dokumacı",
+    "name": "World Weaver",
     "slug": "dunya-dokumaci",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Aynı tohumdan coğrafya ve yerleşim üretip yükseltiyi düzenleyen kurmaca harita stüdyosu.",
+    "description": "Generate seeded geography, edit terrain and connect fictional settlements with land routes.",
     "features": [
-      "Çok ölçekli deterministik yükselti ve nem",
-      "Yükselti fırçası",
-      "Yerleşim adlandırma",
-      "A* kara yolu arama",
-      "PNG ve dünya dosyası"
+      "Deterministic terrain and moisture",
+      "Elevation brushes",
+      "Settlement names",
+      "Terrain-aware A* paths",
+      "PNG and world files"
     ],
-    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 82,
-    "name": "Mikro Kitap",
+    "name": "Micro Book",
     "slug": "mikro-kitap",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Metni gerçek yazı genişliğiyle sayfalara bölüp kapaklı bağımsız mini kitap üretir.",
+    "description": "Measure a manuscript into pages and produce a standalone illustrated mini book.",
     "features": [
-      "Ölçülen satırlarla sayfalama",
-      "Kapak ve sayfa düzenleme",
-      "Bağımsız okunabilir/yazdırılabilir HTML",
-      "Proje içe/dışa aktarımı",
-      "Özgün atlas metni"
+      "Text-metric pagination",
+      "Cover and page editing",
+      "Standalone reading HTML",
+      "Print layout",
+      "Project files",
+      "Original sample manuscript"
     ],
-    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 83,
-    "name": "Sergi Kurucu",
+    "name": "Exhibition Builder",
     "slug": "sergi-kurucu",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Kullanıcının eser metni, rengi ve yerleşiminden yürüyerek keşfedilen 2D sergi üretir.",
+    "description": "Arrange authored exhibits in a walkable two-dimensional gallery.",
     "features": [
-      "Eser yerleştirme ve açıklamalar",
-      "Klavye veya tıklamayla gezme",
-      "Yakın eser okuma",
-      "Bağımsız sergi HTML çıktısı",
-      "Proje dosyası"
+      "Exhibit placement and text",
+      "Keyboard or pointer navigation",
+      "Nearby exhibit descriptions",
+      "Standalone gallery HTML",
+      "Project files"
     ],
-    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 84,
-    "name": "Sahne Akışı",
+    "name": "Stage Cues",
     "slug": "sahne-akisi",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Ses, ışık, yazı ve karartma olaylarını bir prova zaman çizelgesinde birleştirir.",
+    "description": "Rehearse sound, light, caption and blackout events on a cue timeline.",
     "features": [
-      "Işık geçişleri ve sentez sesler",
-      "Otomatik zamanlı prova",
-      "Manuel GO ilerletme",
-      "CSV işaret listesi",
-      "Proje dosyası"
+      "Light transitions",
+      "Synthesized sound events",
+      "Timed automatic playback",
+      "Manual GO controls",
+      "CSV cue sheet",
+      "Project files"
     ],
-    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   },
   {
     "id": 85,
-    "name": "Kat İzleri",
+    "name": "Fold Geometry",
     "slug": "kat-izleri",
-    "category": "Yaratıcılık",
+    "category": "Creative tools",
     "stage": 6,
-    "description": "Üç menteşe açısıyla gerçek 3B köşe ve üçgen koordinatlarından katlanmış kâğıt oluşturur.",
+    "description": "Build an actual hinged paper mesh from three fold angles and inspect its projection.",
     "features": [
-      "Dört bağlı panel",
-      "Gerçek 10 köşe / 8 üçgen mesh",
-      "Katlanma ilerlemesi",
-      "Kamera dönüşleri",
-      "OBJ, PNG ve paylaşılabilir geometri"
+      "Four connected panels",
+      "Ten vertices and eight triangles",
+      "Fold progress",
+      "Camera controls",
+      "OBJ mesh export",
+      "PNG and geometry sharing"
     ],
-    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
   }
 ]

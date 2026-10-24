@@ -1,43 +1,39 @@
 namespace BinSite.Social.Services;
-
 /// <summary>Original editorial prompts; selecting one fills a draft and never fabricates a public user post.</summary>
 public static class EditorialPrompts
 {
-    public static readonly StoryPrompt[] Stories =
-    [
-        new("Son vapurdaki mektup", "Vapurun son yolcusu inince koltuğun üzerinde bir mektup kaldı. Zarfın üstünde kaptanın adı, içinde ise yarın sabah geçeceği bütün duraklar yazılıydı. Listenin en altında denizde bulunmayan bir ada vardı."),
-        new("Unutulan pazartesi", "Kasabadaki herkes salı sabahı uyandı. Telefonlar, takvimler ve gazeteler pazartesinin hiç yaşanmadığını söylüyordu. Yalnızca fırıncı, pazartesi pişirdiği ve henüz sıcak olan ekmeği elinde tutuyordu."),
-        new("Komşunun geleceği", "Her gece saat üçte yan daireden henüz yazılmamış bir şarkı duyuluyordu. Melodi bir gün radyoda çaldığında, sunucu bestecinin dün doğan bir bebek olduğunu söyledi. Kapıyı çalmak için elini kaldırdı."),
-        new("Gökyüzü kütüphanesi", "Şehirde ilk kez yağmur yerine kitap ayraçları yağdı. Her ayracın üzerinde farklı bir insanın en son okuduğu cümle vardı. Çocuk, kendi ayracını bulduğunda cümlenin henüz başlamadığını fark etti."),
-        new("İkinci el gölgeler", "Dükkân yalnızca güneş batarken açılıyordu. Vitrinde sahiplerinden ayrılmış gölgeler, küçük etiketlerle bekliyordu. En pahalı gölge hiç kimseye benzemiyordu; dükkân sahibi onun yarına ait olduğunu söyledi."),
-        new("Sessiz istasyon", "Tren istasyonundaki bütün anonslar bir hafta önce sustu. Sonra bir sabah yalnızca tek bir perondan fısıltı geldi: 'Bu trene binersen kaybettiğin bir şeyi bulacaksın, ama onun ne olduğunu seçemeyeceksin.'"),
-        new("Kırmızı düğmeli terzi", "Terzi her cekete görünmeyen bir cep dikiyordu. Müşteriler ceplerine ellerini soktuklarında bir eşyaya değil, unuttukları bir anıya dokunuyordu. Bir gün dükkâna bütün cepleri boşalmış bir kadın geldi."),
-        new("Denizin gönderdiği fatura", "Balıkçı ağını çektiğinde içinde mühürlü bir fatura buldu. Denizin aldığı bütün eşyalar tek tek yazılmıştı. En altta, kimsenin hatırlamadığı bir geminin iade işlemi için bir imza isteniyordu."),
-        new("Son yetişkin", "Mahallenin çocukları bir sabah bütün yetişkinlerin oyun oynamayı unuttuğunu gördü. Parktaki yaşlı bekçi kuralları hatırlayan tek kişiydi. Çocukları yanına çağırdı ve yere hiç görmedikleri bir seksek çizdi."),
-        new("Bir oda fazla", "Ev yıllardır aynı evdi: iki oda, bir salon. Ama elektrikler kesilince koridorun sonunda üçüncü bir kapı belirdi. Kapının altından gelen ışıkta, evin otuz yıl sonraki hâli görünüyordu."),
-        new("Kayıp sesler tamircisi", "Tamircinin raflarında kavanozlar dolusu ses vardı: kapanmayan bir kapının gıcırtısı, çoktan yıkılmış bir sinemanın alkışı, söylenmemiş bir özür. Çırak, kendi adının yazıldığı kavanozu açtı."),
-        new("Ayın iade günü", "Ay bir sabah her zamankinden daha yakın göründü. Belediyeye gelen tek sayfalık dilekçede, gökyüzüne asılan bütün dileklerin sahiplerine iade edileceği yazıyordu. İlk paket apartmanın çatısına düştü."),
-        new("Dakika bahçesi", "Bahçıvan çiçek yerine dakikalar yetiştiriyordu. Bazıları kısa bir kahkaha kadar hızlı, bazıları vedalar kadar ağırdı. Şehrin bütün saatleri durduğunda bahçede açmamış tek bir tomurcuk kaldı."),
-        new("Görünmez orkestranın şefi", "Konser salonunda hiçbir müzisyen yoktu ama bütün koltuklar doluydu. Şef elini kaldırınca herkes kendi çocukluğundan gelen bir enstrüman duydu. Ön sıradaki kadın ise yarından gelen bir ses işitti."),
-        new("Dönüş biletinin arkası", "Biletin ön yüzünde evin adresi, arkasında ise henüz tanışmadığı birinin el yazısı vardı. 'Döndüğünde kapıyı üç kez çalma' diyordu. Otobüs şoförü bileti görünce ilk kez yolculardan birine yerini verdi.")
-    ];
-
-    public static readonly PollPrompt[] Polls =
-    [
-        new("Mahalleye tek bir yer açılacak: hangisi?", "Gece açık masa oyunu kütüphanesi", "Kendi kısa filmini çekebildiğin mini stüdyo"),
-        new("Bir şehir festivalinin ana etkinliği ne olsun?", "Sokak sokak ilerleyen ortak hikâye oyunu", "Herkesin bir sahne tasarladığı sessiz konser"),
-        new("Yeni bir sosyal ağda en çok neyi istersin?", "Birlikte bir şey üreten küçük gruplar", "Birbirine meydan okuyan günlük yaratıcı görevler"),
-        new("Arkadaş grubuyla hafta sonu hangi oyunu oynarsın?", "Şehirde ipucu toplayarak çözülen gizem", "Evde nesneleri konuşturan doğaçlama yarışması"),
-        new("Bir oyun yalnızca tek kurala sahip olsa hangisi?", "Her hamlede bir önceki kuralı değiştir", "Rakibine yardım etmeden puan alamazsın"),
-        new("Bir topluluk uygulamasının kalbi ne olsun?", "Herkesin bir saat öğretebildiği yetenek takası", "Tamamen yabancıların tamamladığı ortak projeler"),
-        new("Bir müzede en çok neyi deneyimlemek istersin?", "Bitmemiş icatları ziyaretçilerin tamamlaması", "Bir nesnenin geçmişini seslerle keşfetmek"),
-        new("İnternetteki bir eğlence kanalında hangisine dönersin?", "İzleyicinin kuralları değiştirdiği yarışmalar", "Her bölümün sonunu farklı bir kişinin yazdığı dizi"),
-        new("Yeni bir kelime oyununun farkı ne olsun?", "Kelimeyi tarif etmek yerine sesini çizmek", "Harfleri arkadaşının bulmacasında kazanmak"),
-        new("Bir kutlama için hangi sürprizi hazırlarsın?", "Her arkadaşın bir ipucu bıraktığı dijital hazine", "Bir yıl sonra açılacak ortak zaman kapsülü"),
-        new("Bir ortak çalışma alanında hangi fikir daha çekici?", "Gürültü yerine konuya göre değişen ses odaları", "Birbirinin projesine on dakika ayıran ekip eşleşmesi"),
-        new("Bir hikâye uygulaması okuru nasıl oyuna alsın?", "Her paragrafta yepyeni bir yazar devralsın", "Okurlar karakterin neyi hatırladığını seçsin"),
-        new("Bir kafe menüsünde eğlenceli olan hangisi?", "Tarifini müşterilerin oyladığı haftalık içecek", "Bir içeceğe bağlı küçük bir masaüstü gizemi"),
-        new("Bir yarışmada hangi başarı daha anlamlı olsun?", "En az hamleyle herkese kazandırmak", "Kendi çözümünü bir başkasına öğretebilmek"),
-        new("Dijital bir koleksiyonun amacı ne olsun?", "Ziyaret ettiğin yerlerin seslerinden kendi haritan", "Öğrendiğin şeylerin birbirine bağlandığı kişisel atlas")
-    ];
+ public static readonly StoryPrompt[] Stories=[
+  new("The Letter on the Last Ferry","After the final passenger left, an envelope remained on a seat. It bore the captain's name and listed every stop he would pass tomorrow. At the bottom was an island that did not exist in the sea."),
+  new("The Missing Monday","Everyone in town woke on Tuesday. Phones, calendars and newspapers agreed that Monday had never happened. Only the baker was holding the bread he had baked on Monday, still warm."),
+  new("The Neighbor's Future","Every night at three, an unwritten song came from next door. When it finally played on the radio, the presenter named its composer: a baby born yesterday. She raised her hand to knock."),
+  new("The Sky Library","Bookmarks fell instead of rain. Each carried the last sentence a different person had read. When the child found his own bookmark, he discovered that its sentence had not yet begun."),
+  new("Secondhand Shadows","The shop opened only at sunset. Shadows separated from their owners waited in the window under little labels. The most expensive resembled nobody. The shopkeeper said it belonged to tomorrow."),
+  new("The Silent Station","The station announcements had been silent for a week. Then one platform whispered: 'Board this train and you will find something you lost, but you cannot choose what it is.'"),
+  new("The Tailor's Hidden Pockets","The tailor sewed an invisible pocket into every jacket. Customers reached inside and touched forgotten memories instead of objects. One day a woman arrived whose pockets had all become empty."),
+  new("The Sea's Invoice","The fisherman pulled a sealed invoice from his net. It itemized everything the sea had taken. At the bottom, someone requested a signature to return a ship nobody remembered."),
+  new("The Last Adult Who Could Play","The children woke to find that all the adults had forgotten how to play. Only the old park keeper remembered the rules. He called them over and drew a hopscotch grid nobody recognized."),
+  new("One Extra Room","The house had always held two bedrooms and a living room. During a power cut, a third door appeared at the end of the hall. Light beneath it showed the house thirty years from now."),
+  new("The Repairer of Lost Sounds","Jars held the creak of a door, applause from a demolished cinema and an apology never spoken. The apprentice opened the jar bearing his own name."),
+  new("The Moon's Return Day","The moon looked unusually close. A one-page notice told the city that wishes hung in the sky would be returned to their owners. The first parcel landed on an apartment roof."),
+  new("The Minute Garden","The gardener grew minutes instead of flowers. Some passed as quickly as laughter; others weighed as heavily as farewells. When all the clocks stopped, a single bud remained closed."),
+  new("The Invisible Orchestra","The concert hall had no musicians, but every seat was taken. When the conductor lifted her hand, everyone heard an instrument from childhood. A woman in the front row heard a sound from tomorrow."),
+  new("The Back of the Return Ticket","The ticket's front named his home address. Its back held the handwriting of someone he had not met: 'Do not knock three times when you return.' The driver saw it and offered him his own seat.")
+ ];
+ public static readonly PollPrompt[] Polls=[
+  new("The neighborhood can open one place. Which should it be?","A late-night board-game library","A tiny studio where anyone can make a short film"),
+  new("What should be the main event of a city festival?","A shared story game unfolding across streets","A silent concert with visitor-designed stages"),
+  new("What would you want most from a new social network?","Small groups that make things together","Daily creative challenges between friends"),
+  new("Which weekend game would you play with friends?","A city mystery solved by collecting clues","An improv contest where household objects speak"),
+  new("If a game had only one rule, which would you choose?","Change the previous rule after every move","You cannot score without helping an opponent"),
+  new("What should be the heart of a community app?","An hour-for-an-hour skill exchange","Shared projects completed by strangers"),
+  new("Which museum experience would you choose?","Visitors complete unfinished inventions","Explore an object's past through sound"),
+  new("Which entertainment channel would bring you back?","Contests where viewers change the rules","A series with a different ending writer each episode"),
+  new("What should make a new word game different?","Draw a word's sound instead of defining it","Earn letters inside a friend's puzzle"),
+  new("Which surprise would you prepare for a celebration?","A digital treasure hunt with a clue from every friend","A shared time capsule opening in a year"),
+  new("Which shared-workspace idea is more appealing?","Sound rooms organized around tasks","Teams exchanging ten minutes of project help"),
+  new("How should a story app involve its readers?","A new writer takes over each paragraph","Readers choose what the character remembers"),
+  new("Which playful cafe idea would you try?","A weekly drink recipe chosen by customers","A small table mystery attached to a drink"),
+  new("Which contest achievement should matter more?","Help everyone win in the fewest moves","Teach your own solution to someone else"),
+  new("What should a digital collection help you create?","A personal map made from places' sounds","An atlas linking things you have learned")
+ ];
 }

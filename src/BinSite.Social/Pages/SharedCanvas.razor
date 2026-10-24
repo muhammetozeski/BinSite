@@ -9,9 +9,9 @@ else{<div class="canvas-heading"><h2>@Current.Canvas.Title</h2><span>@T("Sunucu 
 </section></main><footer><p>@T("Tuval herkese açıktır ve Cloudflare veritabanında saklanır. Kimlik anonim çerezdir; kişi doğrulaması yoktur. Hakaret, nefret, kişisel bilgi ve izinsiz eser paylaşma. Üç farklı ağdan raporlanan tuval otomatik gizlenir; hız sınırları ağ özeti ve çerez kimliğiyle uygulanır. İnsan incelemesi hizmeti sunulmaz.", "Canvases are public and stored in a Cloudflare database. Identity uses an anonymous cookie, without person verification. No harassment, hate, personal information or unauthorized works. Three distinct-network reports automatically hide a canvas; request limits use network hashes and cookie identities. No human review service is provided.")</p></footer></div>
 @code{
  [SupplyParameterFromQuery(Name="tuval")]public string? CanvasId{get;set;}
- static readonly string[] Colors=["#fffdf7","#252936","#d9474b","#ec9b41","#f5d45b","#4e9d61","#267c86","#4279bc","#7356a4","#c666a3","#9b7158","#c8d2d5"];
- static readonly string[] ColorNames=["Krem","Kömür","Kırmızı","Turuncu","Sarı","Yeşil","Turkuaz","Mavi","Mor","Pembe","Toprak","Gri"];
- static readonly string[] ColorEnglish=["Cream","Charcoal","Red","Orange","Yellow","Green","Teal","Blue","Purple","Pink","Earth","Grey"];
+ static readonly string[] Colors=["#ffffff","#111111","#d00000","#f07800","#ffcf00","#008a2e","#007888","#1649e1","#7019bd","#d40091","#7d3f10","#858585"];
+ static string[] ColorNames=>ColorEnglish;
+ static readonly string[] ColorEnglish=["White","Charcoal","Red","Orange","Yellow","Green","Teal","Blue","Purple","Pink","Earth","Grey"];
  List<CanvasInfo> Canvases=[];CanvasDetail? Current;readonly Dictionary<(int,int),int> Pending=[];string Title="",Challenge="";int SelectedColor=1;
  /// <summary>Loads real canvas headers and an optional shared canvas.</summary>
  protected override Task OnParametersSetAsync()=>ExecuteAsync(async()=>{await LoadListAsync();if(!string.IsNullOrEmpty(CanvasId))await LoadAsync(CanvasId);});
@@ -38,5 +38,5 @@ else{<div class="canvas-heading"><h2>@Current.Canvas.Title</h2><span>@T("Sunucu 
  /// <summary>Builds a public independent canvas link.</summary>
  string Link()=>ContentLink("ortak-tuval","tuval",Current?.Canvas.Id??"");
  /// <summary>Offers distinct editorial constraints as optional collaboration exercises.</summary>
- string[] Prompts()=>Ui.English?["Build a skyline where every person owns one building.","Make a creature using only five colors.","Draw a tiny garden; leave paths for the next person.","Create an imaginary flag without borrowing a real one.","Represent one sound using only shapes.","Build a maze together and reserve a visible exit.","Make a four-panel story using only pixels.","Create a map of a place that does not exist."]:["Her kişinin bir bina çizdiği ortak bir silüet yapın.","Yalnızca beş renkle bir canlı oluşturun.","Minik bir bahçe çizin; sonraki kişi için yollar bırakın.","Gerçek bir bayrağı kopyalamadan hayalî bir bayrak tasarlayın.","Bir sesi yalnızca şekillerle anlatın.","Birlikte labirent yapın ve görünür bir çıkış bırakın.","Piksellerle dört karelik bir hikâye anlatın.","Var olmayan bir yerin haritasını çizin."];
+ string[] Prompts()=>["Build a skyline where every person owns one building.","Make a creature using only five colors.","Draw a tiny garden; leave paths for the next person.","Create an imaginary flag without borrowing a real one.","Represent one sound using only shapes.","Build a maze together and reserve a visible exit.","Make a four-panel story using only pixels.","Create a map of a place that does not exist."];
 }
