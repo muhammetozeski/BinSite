@@ -1,8 +1,8 @@
 {
-  "verifiedAtIstanbul": "2026-10-24 18:02:22",
-  "verifiedPathCount": 69,
   "scope": "HTTP delivery only; interaction and API checks are recorded separately.",
-  "liveCatalogCount": 69,
+  "origin": "https://muhammetozeski-binsite.pages.dev",
+  "verifiedAtIstanbul": "2026-10-24 18:51:56",
+  "liveCatalogCount": 72,
   "verifiedPaths": [
     "birlikte-bil",
     "catalog-studio",
@@ -46,6 +46,7 @@
     "paket-rotasi",
     "parola-ekibi",
     "perspektif-oda",
+    "procedure-exchange",
     "review-room",
     "ritim-cemberi",
     "ritim-masasi",
@@ -57,7 +58,9 @@
     "ses-gorseli",
     "ses-manzarasi",
     "sesli-kartpostal",
+    "shift-cover-desk",
     "sifre-postasi",
+    "signal-foundry",
     "sokak-orkestrasi",
     "sonsuz-cizgi-roman",
     "sozcuk-adasi",
@@ -74,5 +77,5 @@
     "zaman-pazari",
     "zincir-fizik"
   ],
-  "origin": "https://muhammetozeski-binsite.pages.dev"
+  "verifiedPathCount": 72
 }
