@@ -139,7 +139,7 @@ public static class FieldWorkRules
             _ => order.Status
         };
         order.CompletedAt = order.Status == FieldWorkStatus.Complete ? DateTimeOffset.UtcNow : null;
-        Record(order, StatusLabel(order.Status), order.Status == FieldWorkStatus.Complete ? "Review recorded. This is not a signed inspection." : "Required items checked.");
+        Record(order, StatusLabel(order.Status), order.Status == FieldWorkStatus.Complete ? "Review recorded." : order.Status == FieldWorkStatus.ReadyForReview ? "All required items are filled." : "Work started.");
         return new(true, []);
     }
 

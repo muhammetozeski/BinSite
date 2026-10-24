@@ -70,3 +70,51 @@ Different outputs such as PNG, SVG, editable project files and weave CSV were re
 ## Verification boundary
 
 All ten changed static application scripts passed JavaScript syntax compilation with Node's `vm.Script`. This check parses the actual inline scripts without executing the interface. No browser playback, download, clipboard, storage or interaction result is claimed by this pass. No separate shared C# build was performed by this agent; integration and publication remain coordinated by the root agent.
+
+## Field Work Pack and Shift & Cover Desk follow-up
+
+Both products were subsequently reviewed in full, including their current Razor markup, event handlers, styles, model, examples, validation, persistence bridge and exports. This is a source review; no browser session or provider/account action is claimed. No automated keyword search was used.
+
+All paths below are under `src/BinSite.Social/`. Line ranges identify the source as read before these edits.
+
+| File | Full lines read | Result |
+| --- | --- | --- |
+| Pages/FieldWorkPack.razor | 1–562 | Updated |
+| Pages/FieldWorkPack.razor.css | 1–4 | Unchanged |
+| Models/FieldWorkModels.cs | 1–98 | Unchanged |
+| Services/FieldWorkCloud.cs | 1–86 | Unchanged |
+| Services/FieldWorkExamples.cs | 1–77 | Unchanged |
+| Services/FieldWorkReport.cs | 1–63 | Updated |
+| Services/FieldWorkRules.cs | 1–215 | Updated user-facing messages only |
+| wwwroot/field-work.js | 1–153 | Updated error messages only |
+| wwwroot/field-work-sw.js | 1–38 | Updated error messages only |
+| Pages/ShiftCoverDesk.razor | 1–335 | Updated |
+| Pages/ShiftCoverDesk.razor.css | 1–1 | Unchanged |
+| Models/ShiftCoverModels.cs | 1–87 | Unchanged |
+| Services/ShiftCoverExamples.cs | 1–78 | Shortened visible example copy |
+| Services/ShiftCoverExports.cs | 1–125 | Updated user-facing labels and explanations |
+| Services/ShiftCoverPlanner.cs | 1–62 | Unchanged |
+| Services/ShiftCoverRules.cs | 1–232 | Unchanged |
+| Services/ShiftCoverVault.cs | 1–34 | Updated validation messages only |
+| wwwroot/shift-cover.js | 1–62 | Updated error messages only |
+
+### Field Work Pack
+
+- The invitation message said "Open Private workspace", but the visible section is Sharing. It now names Sharing and explains joining.
+- Both clicking the invitation field and the Copy button invoked the same copy action. Copying now uses the dedicated button; the field remains selectable.
+- Raw source-image hashes were displayed in the checklist and report without a user task. Those displays were removed. Fingerprints remain in saved data and still enforce original-photo matching.
+- Active section buttons, empty-title order creation, first/last field moves and adding beyond the field limit no longer invite ineffective actions. The current shared project's list entry does not duplicate its dedicated Reload control.
+- "Committed changes", "photo bytes", storage-engine names and offline-worker setup explanations were replaced with editing, saving, photo and reconnect instructions. Error and history messages describe the affected task.
+- Required-item checks, order status locks, template snapshots, photo decoding/matching and replacement confirmations remain. Project files/reports include photos; online saves exclude them. That distinction, original-photo relinking, the self-reported nature of completion and the genuine offline setup step remain visible.
+- Save order file, save whole project, download report and print report were retained: they produce different scopes or delivery actions.
+
+### Shift & Cover Desk
+
+- "Choose the planning period" had no period-selection control. The heading now says Planning limits. Fixed-offset and daylight-saving consequences remain explained.
+- "Actual availability", "entered capabilities" and similar qualifiers were shortened to the fields users edit. Project-file controls and download confirmations now describe the output directly.
+- New person/New shift actually cleared the form. They now say Clear form or Cancel edit and are disabled when clearing would change nothing. Active tabs, empty snapshot names and assigning a seat to its existing occupant are also guarded.
+- Open-seat reasons exposed internal codes such as `shift-hours` and algorithm language such as "bounded search" and "infeasibility proof". They now name the missing role, availability, shift hours, total hours, overlapping shifts or rest time, and explain what can be changed. They still refer only to the current assignments, not a proof that no solution exists.
+- Snapshot sign-in/recovery instructions, example notes and export messages were shortened. The first snapshot view now tells users to refresh their saved-roster list.
+- Full-project files, all-seat/person CSV, calendars and print reports were retained as distinct outputs. Current conflict checks, valid locks, swaps, fixed-offset conversion, previous calendar-import behavior, fictional-example labels, snapshot limits and staff-acceptance limitations remain. No planner, assignment rule, server API or persistence algorithm was changed.
+
+The three edited browser scripts (`field-work.js`, `field-work-sw.js`, `shift-cover.js`) passed Node's module syntax check. This does not establish browser storage, image decoding, offline caching, printing, calendar import or account behavior. No shared C# build was started by this agent; the root agent coordinates the combined build. CSS and layout were preserved. No staging or publication was performed by this agent.

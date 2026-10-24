@@ -51,7 +51,7 @@ public static class FieldWorkReport
         if (!string.IsNullOrWhiteSpace(order.Notes)) html.Append("<h2>Work-order notes</h2><p class=\"note\">").Append(E(order.Notes)).Append("</p>");
         html.Append("<h2>Work history</h2><ol>");
         foreach (var entry in order.History) html.Append("<li>").Append(E(entry.At.ToString("u", CultureInfo.InvariantCulture))).Append(" · <strong>").Append(E(entry.Action)).Append("</strong> · ").Append(E(entry.Detail)).Append("</li>");
-        html.Append("</ol><footer><p>This report records the author’s review. It is not a signed or independent inspection.</p><p>Attached photos are included in this file.</p></footer></body></html>");
+        html.Append("</ol></body></html>");
         return html.ToString();
     }
 
