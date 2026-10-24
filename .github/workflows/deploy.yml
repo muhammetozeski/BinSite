@@ -9,6 +9,7 @@ on:
       - src/**
       - server/**
       - content/**
+      - integrations/**
       - scripts/**
       - wrangler.toml
       - .github/workflows/deploy.yml
@@ -37,7 +38,10 @@ jobs:
       - name: Check normalized C# product routes
         run: node scripts/check-routes.mjs
       - name: Compile C# data applications
-        run: ./scripts/Publish-Blazor.ps1
+        run: |
+          node integrations/youtube/Prepare.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'YouTube runtime preparation failed.' }
+          ./scripts/Publish-Blazor.ps1
       - name: Build directory from implemented products
         run: node scripts/build.mjs
       - name: Prepare optional advertising and membership links

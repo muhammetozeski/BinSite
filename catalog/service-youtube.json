@@ -1,0 +1,19 @@
+[
+  {
+    "id": 105,
+    "name": "YouTube Link Checker",
+    "slug": "youtube-tools",
+    "category": "Tools",
+    "stage": 8,
+    "runtime": "blazor",
+    "adEligible": false,
+    "description": "Check video links, get titles and thumbnails, and export a table or thumbnail sheet.",
+    "features": [
+      "Public YouTube titles, channel names and thumbnails",
+      "Checks up to twenty links with per-link results",
+      "Thumbnail preview and image download",
+      "Table export and PNG thumbnail sheets"
+    ],
+    "businessHypothesis": "Batch checks and visual exports may help editors and course creators prepare video references. Demand and revenue have not been measured."
+  }
+]
