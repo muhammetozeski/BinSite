@@ -11,10 +11,10 @@
 <main class="field-work">
     <header><a href="/">Product directory</a><h1>Field Work Pack</h1><p>Turn a checklist into a work order, record measurements and actual photos, then produce a handoff report.</p></header>
     <nav aria-label="Workspace sections">
-        <button class="@(View == "orders" ? "selected" : "")" @onclick='() => View = "orders"'>Work orders (@Workspace.Orders.Count)</button>
-        <button class="@(View == "templates" ? "selected" : "")" @onclick='() => View = "templates"'>Checklist library (@Workspace.Templates.Count)</button>
-        <button class="@(View == "cloud" ? "selected" : "")" @onclick="OpenCloud">Private workspace (optional)</button>
-        <button class="@(View == "help" ? "selected" : "")" @onclick='() => View = "help"'>How this works</button>
+        <button class="@(View == "orders" ? "selected" : "")" @onclick='() => View = "orders"' disabled="@Busy">Work orders (@Workspace.Orders.Count)</button>
+        <button class="@(View == "templates" ? "selected" : "")" @onclick='() => View = "templates"' disabled="@Busy">Checklist library (@Workspace.Templates.Count)</button>
+        <button class="@(View == "cloud" ? "selected" : "")" @onclick="OpenCloud" disabled="@Busy">Private workspace (optional)</button>
+        <button class="@(View == "help" ? "selected" : "")" @onclick='() => View = "help"' disabled="@Busy">How this works</button>
     </nav>
     <p class="notice" role="status" aria-live="polite">@Message</p>
     @if (!string.IsNullOrWhiteSpace(StorageMessage)) { <p class="storage">@StorageMessage</p> }
@@ -42,7 +42,7 @@
                 <div class="order-list">
                     @foreach (var item in Workspace.Orders.OrderByDescending(value => value.UpdatedAt))
                     {
-                        <button class="@(SelectedOrderId == item.Id ? "selected" : "")" @onclick="() => SelectOrder(item.Id)"><strong>@item.Title</strong><span>@FieldWorkRules.StatusLabel(item.Status) · @item.UpdatedAt.ToLocalTime().ToString("MMM d, HH:mm", System.Globalization.CultureInfo.InvariantCulture)</span></button>
+                        <button class="@(SelectedOrderId == item.Id ? "selected" : "")" @onclick="() => SelectOrder(item.Id)" disabled="@Busy"><strong>@item.Title</strong><span>@FieldWorkRules.StatusLabel(item.Status) · @item.UpdatedAt.ToLocalTime().ToString("MMM d, HH:mm", System.Globalization.CultureInfo.InvariantCulture)</span></button>
                     }
                 </div>
                 @if (Workspace.Orders.Count == 0) { <p>No orders yet. The eight starter checklists are editable examples, not completed work.</p> }
@@ -317,7 +317,7 @@
     }, "create-order");
 
     /// <summary>Selects an existing order without creating or altering evidence.</summary>
-    void SelectOrder(Guid id) { SelectedOrderId = id; Message = "Work order selected."; }
+    void SelectOrder(Guid id) { if (Busy) return; SelectedOrderId = id; Message = "Work order selected."; }
 
     /// <summary>Records an editable field change before saving its actual current values.</summary>
     Task OrderChanged() => Execute(async () => { if (CurrentOrder is null) return; FieldWorkRules.Touch(CurrentOrder); await Persist(); }, "edit-order");
@@ -325,10 +325,11 @@
     /// <summary>Performs one validated state transition and exposes each unresolved requirement if blocked.</summary>
     Task Advance() => Execute(async () =>
     {
-        if (CurrentOrder is null) return;
-        var result = FieldWorkRules.Advance(CurrentOrder);
+        var order = CurrentOrder;
+        if (order is null) return;
+        var result = FieldWorkRules.Advance(order);
         if (!result.Succeeded) { Message = $"Cannot advance: {result.Issues.Count} unresolved item(s). {result.Issues[0].Label}: {result.Issues[0].Message}"; return; }
-        await Persist(); Message = $"Order is now {FieldWorkRules.StatusLabel(CurrentOrder.Status)}.";
+        await Persist(); Message = $"Order is now {FieldWorkRules.StatusLabel(order.Status)}.";
     }, "advance");
 
     /// <summary>Explicitly reopens a reviewed order so edits cannot silently retain a completed label.</summary>
@@ -337,17 +338,25 @@
     /// <summary>Decodes a user-selected image, compresses actual pixels, and binds those bytes to the selected requirement.</summary>
     Task AttachPhoto(InputFileChangeEventArgs args, Guid fieldId) => Execute(async () =>
     {
-        if (CurrentOrder is null || Module is null || CurrentOrder.Status != FieldWorkStatus.InProgress) return;
+        var workspace = Workspace;
+        var order = CurrentOrder;
+        var module = Module;
+        if (order is null || module is null || order.Status != FieldWorkStatus.InProgress) return;
+        var field = order.Fields.FirstOrDefault(value => value.Id == fieldId && value.Kind == FieldWorkFieldKind.Photo);
+        var answer = order.Answers.FirstOrDefault(value => value.FieldId == fieldId);
+        if (field is null || answer is null) throw new InvalidOperationException("Choose an existing photo requirement in this work order.");
+        var previous = answer.Photo;
+        var revision = order.Revision;
         await using var stream = args.File.OpenReadStream(8 * 1024 * 1024);
         using var memory = new MemoryStream(); await stream.CopyToAsync(memory);
-        var prepared = await Module.InvokeAsync<FieldWorkPhoto>("preparePhoto", Convert.ToBase64String(memory.ToArray()), args.File.ContentType, args.File.Name);
+        var prepared = await module.InvokeAsync<FieldWorkPhoto>("preparePhoto", Convert.ToBase64String(memory.ToArray()), args.File.ContentType, args.File.Name);
         if (!FieldWorkRules.HasRasterEvidence(prepared)) throw new InvalidOperationException("The image could not be prepared as valid photo evidence.");
-        var answer = CurrentOrder.Answers.First(value => value.FieldId == fieldId);
-        if (answer.Photo is { DataUrl.Length: 0 } expected && !string.IsNullOrWhiteSpace(expected.SourceSha256) && expected.SourceSha256 != prepared.SourceSha256) throw new InvalidOperationException("This file does not match the expected source fingerprint. Use the original image or explicitly remove the old photo reference first.");
-        var previous = answer.Photo; answer.Photo = prepared;
-        try { FieldWorkRules.Serialize(Workspace); }
+        if (!ReferenceEquals(Workspace, workspace) || !workspace.Orders.Contains(order) || order.Status != FieldWorkStatus.InProgress || order.Revision != revision || !order.Fields.Contains(field) || !order.Answers.Contains(answer) || !ReferenceEquals(answer.Photo, previous)) throw new InvalidOperationException("The target work order changed while the image was being prepared. Its photo was not replaced; select the intended order and try again.");
+        if (previous is { DataUrl.Length: 0 } expected && !string.IsNullOrWhiteSpace(expected.SourceSha256) && expected.SourceSha256 != prepared.SourceSha256) throw new InvalidOperationException("This file does not match the expected source fingerprint. Use the original image or explicitly remove the old photo reference first.");
+        answer.Photo = prepared;
+        try { FieldWorkRules.Serialize(workspace); }
         catch { answer.Photo = previous; throw; }
-        FieldWorkRules.Touch(CurrentOrder); await Persist(); Message = "Actual photo pixels were attached and saved locally.";
+        FieldWorkRules.Touch(order); await Persist(); Message = "Actual photo pixels were attached and saved locally.";
     }, "attach-photo");
 
     /// <summary>Removes image bytes and their reference, making a required photo field incomplete again.</summary>
