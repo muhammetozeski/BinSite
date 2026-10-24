@@ -13,7 +13,14 @@ public sealed class SignalFoundryClient(SocialApi api, HttpClient http, ILogger<
 
     public async Task<List<SignalChallenge>> ListAsync() => (await api.GetAsync<ChallengeList>(Prefix + "challenges")).Challenges;
     public async Task<SignalChallenge> ReadAsync(string id) => (await api.GetAsync<ChallengeEnvelope>(Prefix + "challenges/" + Encode(id))).Challenge;
-    public Task<SignalAttempt> ResumeAsync(string id, string attemptKey = "") => ScopedAsync<SignalAttempt>(HttpMethod.Get, Prefix + "attempts/" + Encode(id), null, attemptKey);
+    public async Task<SignalAttempt> ResumeAsync(string id, string attemptKey = "")
+    {
+        var attempt = await ScopedAsync<SignalAttempt>(HttpMethod.Get, Prefix + "attempts/" + Encode(id), null, attemptKey);
+        // An authoritative read replaces the uncertain local action with its saved evidence.
+        Pending.Remove("query:" + id);
+        Pending.Remove("finish:" + id);
+        return attempt;
+    }
     public Task<SignalAttempt> StartAsync(string id) => PostAsync<SignalAttempt>("start:" + id, Prefix + "challenges/" + Encode(id) + "/attempts", requestId => new { requestId });
     public Task<SignalQueryResult> QueryAsync(string attemptId, int[] input, string program, string attemptKey = "")
     {
