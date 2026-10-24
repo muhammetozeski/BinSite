@@ -5,7 +5,7 @@
     "slug": "ses-atolyesi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Trim, reverse and arrange local audio selections into an actual WAV assembly.",
+    "description": "Trim and mix audio clips, then download a WAV file.",
     "features": [
       "Audio decoding and waveform",
       "Sample-accurate trimming",
@@ -140,7 +140,7 @@
     "slug": "dokuma-tezgahi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Design warp and weft crossings with a real editable binary lift matrix.",
+    "description": "Design weaving patterns by choosing which threads pass over or under.",
     "features": [
       "Four weave algorithms",
       "Individual thread colors",
@@ -173,7 +173,7 @@
     "slug": "ses-gorseli",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Inspect an actual audio source as a live frequency spectrum and time-domain waveform.",
+    "description": "See your audio as a waveform and frequency spectrum.",
     "features": [
       "Real audio analyzer data",
       "Local audio files",
@@ -190,7 +190,7 @@
     "slug": "mantik-tahtasi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Connect digital gates and toggle inputs to evaluate real Boolean circuits.",
+    "description": "Build logic circuits and see how changing one input changes the result.",
     "features": [
       "Seven gate types",
       "Movable gates and wires",
@@ -207,7 +207,7 @@
     "slug": "perspektif-oda",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Arrange parameterized furniture volumes in a depth-projected room sketch.",
+    "description": "Arrange furniture in a simple room sketch.",
     "features": [
       "Five volume types",
       "Position, rotation and color",
@@ -223,7 +223,7 @@
     "slug": "kagit-katla",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Generate an A4 box net with physical dimensions, fold lines and glue tabs.",
+    "description": "Make a printable box template with your chosen dimensions.",
     "features": [
       "Millimeter dimensions",
       "Explicit fitting scale",

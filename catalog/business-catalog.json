@@ -11,7 +11,7 @@
       "slug": "catalog-studio/guide",
       "title": "CSV catalog walkthrough and practice files"
     },
-    "description": "Turn a product spreadsheet and photos into a searchable catalog you can share or print.",
+    "description": "Turn a CSV product list and photos into a searchable catalog.",
     "features": [
       "Quoted comma, semicolon and tab import with revisable header mapping",
       "Physical CSV row evidence for missing, duplicate and invalid fields",

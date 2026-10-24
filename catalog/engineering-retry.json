@@ -11,7 +11,7 @@
       "themeAttribute": "data-ra-theme",
       "assetAttribute": "data-ra-appearance"
     },
-    "description": "Execute a real .NET job-client operation under delayed acknowledgement, inspect durable duplicate effects, and compare a corrected build against retained evidence.",
+    "description": "Check whether retrying your .NET job creates duplicate work.",
     "features": [
       "Real C# operation callbacks and a maintained synthetic JSON POST/jobs scenario",
       "Server-derived results from durable resources, request sequence and key relationships",

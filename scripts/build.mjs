@@ -43,14 +43,14 @@ function cards(kind) {
 const categories = [...new Set(entries.map(entry => entry.category))];
 await writeFile(path.join(root, 'public', 'index.html'), `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Edit media, create something, collaborate or play. Find a tool by what you want to do."><title>BinSite — Tools and games</title><link rel="stylesheet" href="/assets/catalog.css"></head><body>
-<header><a class="brand" href="/">BinSite</a><nav aria-label="Browse"><a href="#tools">Tools</a><a href="#games">Games</a></nav></header>
+<header><span class="brand">BinSite</span><nav aria-label="Browse"><a href="#tools">Tools</a><a href="#games">Games</a></nav></header>
 <main><section class="intro"><h1>Tools &amp; games</h1></section>
 <section class="find" aria-label="Find a tool or game"><div><label for="search">Search</label><input id="search" type="search" placeholder="Video, audio, stories, puzzles"></div><div><label for="category">Category</label><select id="category"><option value="">All categories</option>${categories.map(category => `<option>${escape(category)}</option>`).join('')}</select></div></section>
 <p id="results" role="status" aria-live="polite"></p>
 <section id="tools" class="product-group" data-product-group><h2>Tools &amp; communities</h2><div class="projects">${cards('tools')}</div></section>
 <section id="games" class="product-group" data-product-group><h2>Games &amp; playful experiments</h2><div class="projects">${cards('games')}</div></section>
 <p id="empty" hidden>No matches. Try another search.</p></main>
-<footer><a href="/privacy/">Privacy</a></footer><script src="/assets/catalog.js" defer></script></body></html>\n`);
+<script src="/assets/catalog.js" defer></script></body></html>\n`);
 const sitemapPaths = entries.filter(entry => !entry.url).flatMap(entry => entry.guide ? [entry.slug, entry.guide.slug] : [entry.slug]);
 await writeFile(path.join(root, 'public', 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://muhammetozeski-binsite.pages.dev/</loc></url>${sitemapPaths.map(slug => `<url><loc>https://muhammetozeski-binsite.pages.dev/${slug}/</loc></url>`).join('')}</urlset>\n`);
 console.log(`Built directory: ${entries.length} products grouped into tools and games.`);

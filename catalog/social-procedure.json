@@ -7,7 +7,7 @@
     "stage": 7,
     "runtime": "blazor",
     "adEligible": false,
-    "description": "Write a reusable procedure, perform a pinned local run with actual output, and improve a published method through attributed versions and explicit outcomes.",
+    "description": "Share step-by-step procedures, try them and report what worked.",
     "features": [
       "Twelve original, complete editorial methods with concrete inputs, actions, done checks and expected artifacts",
       "Independent local authoring, immutable run snapshots, private execution records and explicit completed, partial or blocked declarations",

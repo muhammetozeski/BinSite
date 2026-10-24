@@ -5,7 +5,7 @@
     "slug": "video-kurgu",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Trim and arrange local video clips with speed, captions and actual WebM recording.",
+    "description": "Trim clips, add captions and download your edited video.",
     "features": [
       "Local video sources",
       "Trimmed timeline clips",
@@ -22,7 +22,7 @@
     "slug": "dugum-golgelendirici",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Build a mathematical graph that compiles into a real WebGL fragment program.",
+    "description": "Make animated patterns by combining simple operations.",
     "features": [
       "Directed math graph",
       "Dependency and cycle checks",
@@ -86,7 +86,7 @@
     "slug": "dunya-dokumaci",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Generate seeded geography, edit terrain and connect fictional settlements with land routes.",
+    "description": "Create a fictional map, paint terrain and connect settlements with routes.",
     "features": [
       "Deterministic terrain and moisture",
       "Elevation brushes",
@@ -119,7 +119,7 @@
     "slug": "sergi-kurucu",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Arrange authored exhibits in a walkable two-dimensional gallery.",
+    "description": "Build a gallery people can walk through in their browser.",
     "features": [
       "Exhibit placement and text",
       "Keyboard or pointer navigation",
@@ -152,7 +152,7 @@
     "slug": "kat-izleri",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Build an actual hinged paper mesh from three fold angles and inspect its projection.",
+    "description": "Fold a paper model and see how its shape changes.",
     "features": [
       "Four connected panels",
       "Ten vertices and eight triangles",

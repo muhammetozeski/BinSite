@@ -7,7 +7,8 @@
   const footer = document.createElement('aside');
   footer.setAttribute('aria-label', 'Site links');
   footer.style.cssText = 'clear:both;max-width:1100px;margin:32px auto 12px;padding:16px;border-top:1px solid #aaa6;font:14px/1.6 system-ui,sans-serif;position:static';
-  const links = [['Account', '/uyelik/'], ['Advertising', '/advertising/'], ['Privacy', '/privacy/'], ['Home', '/']];
+  const currentPath = location.pathname.replace(/\/+$/, '') || '/';
+  const links = [['Account', '/uyelik/'], ['Privacy', '/privacy/'], ['Home', '/']].filter(([, href]) => (href.replace(/\/+$/, '') || '/') !== currentPath);
   for (const [index, [title, href]] of links.entries()) { if (index) footer.append(document.createTextNode(' · ')); const link = document.createElement('a'); link.textContent = title; link.href = href; link.style.color = 'inherit'; footer.append(link); }
   document.body.append(footer);
   if (!adEligible) return;

@@ -21,7 +21,7 @@
     "slug": "kelime-borsasi",
     "category": "Games",
     "stage": 1,
-    "description": "An English word strategy game combining letter purchases, a consumable inventory, and eight carefully planned submissions.",
+    "description": "Buy letters, build words and manage your remaining letter supply.",
     "features": [
       "1,613-word English dictionary",
       "A–Z letter market with individual prices",
@@ -263,7 +263,7 @@
     "slug": "ses-atolyesi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Trim, reverse and arrange local audio selections into an actual WAV assembly.",
+    "description": "Trim and mix audio clips, then download a WAV file.",
     "features": [
       "Audio decoding and waveform",
       "Sample-accurate trimming",
@@ -398,7 +398,7 @@
     "slug": "dokuma-tezgahi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Design warp and weft crossings with a real editable binary lift matrix.",
+    "description": "Design weaving patterns by choosing which threads pass over or under.",
     "features": [
       "Four weave algorithms",
       "Individual thread colors",
@@ -431,7 +431,7 @@
     "slug": "ses-gorseli",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Inspect an actual audio source as a live frequency spectrum and time-domain waveform.",
+    "description": "See your audio as a waveform and frequency spectrum.",
     "features": [
       "Real audio analyzer data",
       "Local audio files",
@@ -448,7 +448,7 @@
     "slug": "mantik-tahtasi",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Connect digital gates and toggle inputs to evaluate real Boolean circuits.",
+    "description": "Build logic circuits and see how changing one input changes the result.",
     "features": [
       "Seven gate types",
       "Movable gates and wires",
@@ -465,7 +465,7 @@
     "slug": "perspektif-oda",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Arrange parameterized furniture volumes in a depth-projected room sketch.",
+    "description": "Arrange furniture in a simple room sketch.",
     "features": [
       "Five volume types",
       "Position, rotation and color",
@@ -481,7 +481,7 @@
     "slug": "kagit-katla",
     "category": "Creative tools",
     "stage": 3,
-    "description": "Generate an A4 box net with physical dimensions, fold lines and glue tabs.",
+    "description": "Make a printable box template with your chosen dimensions.",
     "features": [
       "Millimeter dimensions",
       "Explicit fitting scale",
@@ -635,7 +635,7 @@
     "slug": "zaman-pazari",
     "category": "Social",
     "stage": 4,
-    "description": "Share skills without money through actual listings, private on-site proposals and completion confirmed by both participants.",
+    "description": "Offer a skill, agree on an exchange and keep the conversation in one place.",
     "features": [
       "Skill offers and learning requests",
       "Time-bounded sessions",
@@ -959,7 +959,7 @@
     "slug": "video-kurgu",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Trim and arrange local video clips with speed, captions and actual WebM recording.",
+    "description": "Trim clips, add captions and download your edited video.",
     "features": [
       "Local video sources",
       "Trimmed timeline clips",
@@ -976,7 +976,7 @@
     "slug": "dugum-golgelendirici",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Build a mathematical graph that compiles into a real WebGL fragment program.",
+    "description": "Make animated patterns by combining simple operations.",
     "features": [
       "Directed math graph",
       "Dependency and cycle checks",
@@ -1040,7 +1040,7 @@
     "slug": "dunya-dokumaci",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Generate seeded geography, edit terrain and connect fictional settlements with land routes.",
+    "description": "Create a fictional map, paint terrain and connect settlements with routes.",
     "features": [
       "Deterministic terrain and moisture",
       "Elevation brushes",
@@ -1073,7 +1073,7 @@
     "slug": "sergi-kurucu",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Arrange authored exhibits in a walkable two-dimensional gallery.",
+    "description": "Build a gallery people can walk through in their browser.",
     "features": [
       "Exhibit placement and text",
       "Keyboard or pointer navigation",
@@ -1106,7 +1106,7 @@
     "slug": "kat-izleri",
     "category": "Creative tools",
     "stage": 6,
-    "description": "Build an actual hinged paper mesh from three fold angles and inspect its projection.",
+    "description": "Fold a paper model and see how its shape changes.",
     "features": [
       "Four connected panels",
       "Ten vertices and eight triangles",
@@ -1129,7 +1129,7 @@
       "slug": "catalog-studio/guide",
       "title": "CSV catalog walkthrough and practice files"
     },
-    "description": "Turn a product spreadsheet and photos into a searchable catalog you can share or print.",
+    "description": "Turn a CSV product list and photos into a searchable catalog.",
     "features": [
       "Quoted comma, semicolon and tab import with revisable header mapping",
       "Physical CSV row evidence for missing, duplicate and invalid fields",
@@ -1205,7 +1205,7 @@
     "stage": 7,
     "runtime": "blazor",
     "adEligible": false,
-    "description": "Write a reusable procedure, perform a pinned local run with actual output, and improve a published method through attributed versions and explicit outcomes.",
+    "description": "Share step-by-step procedures, try them and report what worked.",
     "features": [
       "Twelve original, complete editorial methods with concrete inputs, actions, done checks and expected artifacts",
       "Independent local authoring, immutable run snapshots, private execution records and explicit completed, partial or blocked declarations",
@@ -1268,7 +1268,7 @@
       "themeAttribute": "data-ra-theme",
       "assetAttribute": "data-ra-appearance"
     },
-    "description": "Execute a real .NET job-client operation under delayed acknowledgement, inspect durable duplicate effects, and compare a corrected build against retained evidence.",
+    "description": "Check whether retrying your .NET job creates duplicate work.",
     "features": [
       "Real C# operation callbacks and a maintained synthetic JSON POST/jobs scenario",
       "Server-derived results from durable resources, request sequence and key relationships",
@@ -1303,5 +1303,22 @@
       "Optional larger cloud locker through Polar; advertising requires publisher and real consent setup"
     ],
     "businessHypothesis": "Repeat play, human interception and shared custom yards may encourage return visits and friend invitations. An optional Polar subscription expands private cloud arena capacity without selling a gameplay advantage. AdSense is prepared behind real publisher and consent-management configuration. Live payment, advertising fill, enjoyment, audience growth and revenue have not been established."
+  },
+  {
+    "id": 105,
+    "name": "YouTube Link Checker",
+    "slug": "youtube-tools",
+    "category": "Tools",
+    "stage": 8,
+    "runtime": "blazor",
+    "adEligible": false,
+    "description": "Check video links, get titles and thumbnails, and export a table or thumbnail sheet.",
+    "features": [
+      "Public YouTube titles, channel names and thumbnails",
+      "Checks up to twenty links with per-link results",
+      "Thumbnail preview and image download",
+      "Table export and PNG thumbnail sheets"
+    ],
+    "businessHypothesis": "Batch checks and visual exports may help editors and course creators prepare video references. Demand and revenue have not been measured."
   }
 ]
