@@ -676,5 +676,417 @@
       "6 özgün kurmaca görev sahnesi"
     ],
     "businessHypothesis": "Bir oyuncunun üç kişiyi odaya davet etmesi ve sonraki oyunda rol değiştirmeleri ölçülebilir bir paylaşım döngüsüdür. Topluluklar düzenli oynarsa daha derin görev paketleri ve takım etkinlikleri araştırılabilir; ücretli içerik ve gelir etkisi henüz doğrulanmadı."
+  },
+  {
+    "id": 41,
+    "name": "Kütle Kaçışı",
+    "slug": "kutle-kacisi",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "Gezegen çekimi, momentum ve sınırlı yakıt altında araştırma kapsüllerini kurtarıp çıkışa ulaştığın yörünge uçuş oyunu.",
+    "features": [
+      "Gerçek zamanlı çekim ve itki integrasyonu",
+      "Dönüş, ters itki ve sınırlı yakıt",
+      "Hız sınırıyla kapsül toplama",
+      "Çarpışma ve menzil kaybı",
+      "Tohumlu görev bağlantısı",
+      "Dokunma ve klavye kumandası"
+    ],
+    "businessHypothesis": "Gelişmiş görev senaryoları dijital paket, uzay temalı etkinlik sponsorluğu ve isteğe bağlı destekçi üyeliği denenebilir; talep ve gelir doğrulanmadı."
+  },
+  {
+    "id": 42,
+    "name": "Sözcük Adası",
+    "slug": "sozcuk-adasi",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "Komşu harflerde tek kullanımlık rotalar çizerek kelime bulduğun, yeni hücreleri ele geçirip bağlantılı alanlardan puan aldığın Türkçe sözcük oyunu.",
+    "features": [
+      "8×8 komşuluk haritası",
+      "Her tahtada sekiz farklı garanti kelime",
+      "Yerel Türkçe sözlük",
+      "Yeni toprak ve sınır bağlantısı puanı",
+      "On hamlede otuz hücre hedefi",
+      "Aynı adayı açan paylaşım bağlantısı"
+    ],
+    "businessHypothesis": "Günlük ada serileri geri dönüşü araştırmak için kullanılabilir. Eğitimci bulmaca paketleri, markalı kelime haftası ve reklamsız sürüm olası gelir yollarıdır; sonuçlar ölçülmedi."
+  },
+  {
+    "id": 43,
+    "name": "Sokak Orkestrası",
+    "slug": "sokak-orkestrasi",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "Dört müzisyenin ayrı nota kanallarını zamanında karşılayıp uyum göstergesini koruduğun, üç özgün düzenlemeli performans oyunu.",
+    "features": [
+      "Davul, bas, gitar ve ıslık kanalları",
+      "Üç ayrı tempo ve nota düzeni",
+      "Kusursuz ve kabul edilen vuruş aralıkları",
+      "Zincir, kaçan nota ve orkestra uyumu",
+      "Tarayıcıda sentezlenen sesler ve sessiz mod",
+      "16 ölçülük konser ve aynı düzenleme bağlantısı"
+    ],
+    "businessHypothesis": "Müzisyenlerin sponsorlu konserleri, yeni çalınabilir düzenleme paketleri ve destekçi üyeliği araştırılabilir; müzik aracı veya gerçek dinleyici istatistiği iddiası yoktur."
+  },
+  {
+    "id": 44,
+    "name": "Topoloji Bahçesi",
+    "slug": "topoloji-bahcesi",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "Karışmış düğümleri taşıyarak bütün kenarları kesişmesiz yerleştirdiğin, üst üste bindirme kestirmelerini de denetleyen çizge düzenleme bulmacası.",
+    "features": [
+      "6, 9 ve 12 düğümlü garantili çözülebilir çizgeler",
+      "Canlı kesişim denetimi",
+      "Düğüm üst üste binmesi ve düğümden geçen kenar denetimi",
+      "Fare ve klavye taşıma",
+      "Bedelli silik çözüm planı",
+      "Hamle/süre puanı ve ortak bulmaca bağlantısı"
+    ],
+    "businessHypothesis": "Elle tasarlanmış zor bahçeler dijital paket, okul etkinlikleri veya sponsorlu haftalık turnuvalar olarak test edilebilir; mevcut sürüm tek kişilik yerel oyundur."
+  },
+  {
+    "id": 45,
+    "name": "Paket Rotası",
+    "slug": "paket-rotasi",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "İki aracın yüklerini, ortak depo stokunu, yakıtını ve müşteri zaman pencerelerini birlikte yönettiğin teslimat stratejisi.",
+    "features": [
+      "İki bağımsız araç ve anlık rota değişimi",
+      "Üç paketlik kapasite ve iki stok türü",
+      "Açılış/kapanış zamanlı altı sipariş",
+      "Yakıt ve bütçeli ikmal",
+      "Birlikte ilerleyen simülasyon dakikaları",
+      "Başlangıç kaynaklarıyla mümkün operasyon üretimi",
+      "Tekrar oynama ve aynı operasyon bağlantısı"
+    ],
+    "businessHypothesis": "Genişleyen şehir/senaryo paketleri, sponsorlu lojistik görevleri ve isteğe bağlı reklamsız üyelik değerlendirilebilir; simülasyon kredileri gerçek para değildir."
+  },
+  {
+    "id": 46,
+    "name": "Işık Mührü",
+    "slug": "isik-muhru",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "Aynaların yönünü değiştirip kırmızı, yeşil ve mavi ışınları gereken hedef renginde birleştirdiğin optik bulmaca.",
+    "features": [
+      "Üç elle tasarlanmış ve doğrulanmış optik düzen",
+      "İki yönde dönen aynalar ve engel blokları",
+      "Gerçek ışın izleme ve döngü sonlandırma",
+      "Mor, sarı ve beyaz renk hedefleri",
+      "Hamle puanı ve aynı karışım bağlantısı"
+    ],
+    "businessHypothesis": "Yeni optik bulmaca koleksiyonları dijital paket, bilim etkinliği sponsorluğu veya isteğe bağlı reklamsız sürüm olabilir; gelir doğrulanmadı."
+  },
+  {
+    "id": 47,
+    "name": "Zaman Çıkmazı",
+    "slug": "zaman-cikmazi",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "Kendi eylemlerini hayalet kayıtları olarak geçmişte bıraktığın, basınç plakaları ve eşzamanlı zaman döngüleriyle kapılar açtığın bulmaca.",
+    "features": [
+      "Bir, iki ve üç hayaletli özgün haritalar",
+      "Kaydedilmiş eylemlerin eşzamanlı tekrar oynatımı",
+      "Son konumda bekleyen geçmiş karakter",
+      "Zamana bağlı kapı ve plaka durumu",
+      "Geri sarma, son kayıt kaldırma ve toplam eylem puanı",
+      "Aynı bulmaca bağlantısı"
+    ],
+    "businessHypothesis": "Daha karmaşık zaman senaryoları bölüm paketi ve sponsorlu bulmaca haftası olarak araştırılabilir; gerçek oyuncu veya satış verisi yoktur."
+  },
+  {
+    "id": 48,
+    "name": "Davranış Dedektifi",
+    "slug": "davranis-dedektifi",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "Renk, şekil, sayı ve dokudan oluşan örneklerle gizli mantık kuralını sınırlı deney bütçesinde çıkardığın hipotez oyunu.",
+    "features": [
+      "Birbirinden ayırt edilebilir sekiz gizli kural",
+      "108 olası deney örneği",
+      "Üç başlangıç gözlemi ve altı deney hakkı",
+      "Kalan tutarlı kural sayısı",
+      "Yanlış sava somut karşı örnek",
+      "Aynı kural ve gözlemleri açan bağlantı"
+    ],
+    "businessHypothesis": "Okul mantık atölyeleri, eğitimci vaka paketleri ve sponsorlu bilim etkinlikleri denenebilir; başarı veya gelir ölçülmedi."
+  },
+  {
+    "id": 49,
+    "name": "İkiz Labirent",
+    "slug": "ikiz-labirent",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "Aynalanan yatay komutlarla iki farklı labirentteki karakteri birlikte yönlendirip çıkışlara aynı anda ulaştırdığın ortak durum bulmacası.",
+    "features": [
+      "Birbirinden farklı iki duvar haritası",
+      "Duvar karşısında bağımsız bekleme davranışı",
+      "Ortak durum uzayında çözüm denetimiyle harita üretimi",
+      "Mevcut iki konumdan gerçek çözüm ipucu",
+      "Geri alma, hamle puanı ve aynı harita bağlantısı"
+    ],
+    "businessHypothesis": "Elle tasarlanmış zorluk serileri, günlük bulmaca sponsorluğu ve dijital bölüm koleksiyonları olası gelir yollarıdır; talep doğrulanmadı."
+  },
+  {
+    "id": 50,
+    "name": "Deste Ekosistemi",
+    "slug": "deste-ekosistemi",
+    "category": "Oyun",
+    "stage": 5,
+    "description": "On iki mevsimlik kart seçimleriyle orman, su, yaban yaşamı, gıda ve kirlilik arasındaki etkileşimi dengelediğin sürdürülebilirlik stratejisi.",
+    "features": [
+      "On iki farklı politika kartı",
+      "Altı önceden görülen hava olayı",
+      "Birbirini etkileyen beş kaynak",
+      "Mevsim maliyetleri, çöküş ve sürdürülebilirlik hedefi",
+      "Bir mevsim geri alma ve karar defteri",
+      "Aynı kart/hava sırasını açan paylaşım"
+    ],
+    "businessHypothesis": "Yeni bölgesel senaryo desteleri, eğitim etkinliği sponsorluğu ve destekçi üyeliği test edilebilir; kurmaca model çevresel tahmin veya doğrulanmış gelir değildir."
+  },
+  {
+    "id": 61,
+    "name": "Mini Turnuva",
+    "slug": "mini-turnuva",
+    "category": "Sosyal",
+    "stage": 6,
+    "description": "Gerçek katılımla 4 veya 8 kişilik eleme ağacı kur; yalnız organizatörün onayladığı kazananlar sonraki eşleşmeye ilerlesin.",
+    "features": [
+      "Gerçek katılım ve kontenjan kontrolü",
+      "Sunucuda rastgele başlangıç eşleşmeleri",
+      "Organizatöre özel sonuç onayı",
+      "Turdan tura gerçek kazanan ilerlemesi",
+      "Revision ile eşzamanlı değişiklik kontrolü"
+    ],
+    "businessHypothesis": "Küçük oyun topluluklarının organizatör davetiyle katılması tekrar turnuva oluşturmayı teşvik edebilir. Düzenli etkinlik yönetimi ihtiyacı gözlenirse daha geniş organizatör araçları araştırılabilir; gelir ve kullanıcı etkisi henüz ölçülmedi."
+  },
+  {
+    "id": 62,
+    "name": "Kitap Arkadaşı",
+    "slug": "kitap-arkadasi",
+    "category": "Sosyal",
+    "stage": 6,
+    "description": "Dört özgün kurmaca kısa metin etrafında okuma kulübü kur; bölüm bazlı yorumlar ve okurun kendi bildirdiği ilerlemeyi birlikte izle.",
+    "features": [
+      "4 özgün kurmaca metin ve toplam 12 bölüm",
+      "Gerçek kalıcı okuma kulüpleri",
+      "Bölüme özel tartışma",
+      "Katılımcı bazında kendi beyanıyla okuma ilerlemesi",
+      "Bağımsız kulüp davet bağlantısı"
+    ],
+    "businessHypothesis": "Aynı kısa metni okuyup belirli bölümde konuşmak düşük katılım eşiği sağlayabilir. Kulüplerin tekrar kullanımında okuma dizileri ve kolaylaştırıcı araç ihtiyaçları ölçülebilir; mevcut metinler editoryaldir ve sahte kullanıcı içeriği değildir."
+  },
+  {
+    "id": 63,
+    "name": "Mikro Akademi",
+    "slug": "mikro-akademi",
+    "category": "Sosyal",
+    "stage": 6,
+    "description": "Mini ders ve kontrol sorularını yazar olarak oluştur; cevap anahtarını sunucuda koru ve öğrenci ilerlemesini doğru cevap ile önkoşula bağla.",
+    "features": [
+      "Yazar taslağı ve değişmez yayımlanmış ders",
+      "12 bölüme kadar özgün ders yazımı",
+      "Dört seçenekli sunucu doğrulaması",
+      "Önceki bölüm önkoşulu",
+      "Doğru yanıttan sonra açıklama",
+      "3 özgün editoryal bölüm taslağı"
+    ],
+    "businessHypothesis": "Bir beceriyi kısa dersle öğreten kişinin öğrencilerini davet etmesi üretici ve öğrenen döngüsü kurabilir. Tekrar öğrenme ve ders tamamlama gözlenirse özel sınıf ve ders araçları test edilebilir; akreditasyon veya gelir iddiası yoktur."
+  },
+  {
+    "id": 64,
+    "name": "Birlikte Bil",
+    "slug": "birlikte-bil",
+    "category": "Sosyal",
+    "stage": 6,
+    "description": "Asenkron takım odasında üç üretilmiş soruyu sırayla çöz; her doğru yanıttan sonra bayrağı başka üyeye devrederek ilerle.",
+    "features": [
+      "2–6 kimlikli gerçek takım odası",
+      "Her odada üretilen üç aşama",
+      "Sunucuda gizlenen cevaplar ve gelecek aşamalar",
+      "Yetkili bayrak sahibi ve zorunlu devir",
+      "Kalıcı aşama geçmişi",
+      "Eşzamanlı çevrimiçi olma gerektirmeyen akış"
+    ],
+    "businessHypothesis": "Bir katılımcının bitirdiği aşamayı başka kişiye devretmesi ertelenmiş geri dönüş yaratabilir. Takımın tamamlanma süresi ve devirden sonra dönüş oranı ölçülmeden büyüme başarısı varsayılmaz."
+  },
+  {
+    "id": 65,
+    "name": "Üretim Ortaklığı",
+    "slug": "uretim-ortakligi",
+    "category": "Sosyal",
+    "stage": 6,
+    "description": "Süresi belli yaratıcı jam projelerinde gönüllü görev alma, teslim ve proje sahibinin onay veya düzeltme sürecini yönet.",
+    "features": [
+      "Gerçek proje ve gönüllü katılımı",
+      "Sunucu saatiyle teslim sonu",
+      "Görevi atomik olarak alma",
+      "Yalnız görevi alanın teslim yetkisi",
+      "Sahip onayı ve düzeltme dönüşü",
+      "8 özgün editoryal görev taslağı"
+    ],
+    "businessHypothesis": "Yaratıcı toplulukların küçük ve tamamlanabilir projelerde tekrar buluşması düzenli jam ihtiyacı yaratabilir. Gerçek teslim ve onay oranları gözlenirse topluluk organizasyon araçları araştırılabilir; ücret veya çalışma sözleşmesi yönetilmez."
+  },
+  {
+    "id": 76,
+    "name": "Video Kurgu",
+    "slug": "video-kurgu",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Yerel video kesitlerini hız ve üst yazıyla sıralayıp gerçek WebM montajı üretir.",
+    "features": [
+      "Yerel video çözümleme",
+      "Kesme, hız ve zaman çizelgesi",
+      "Sesin Web Audio üzerinden kayda eklenmesi",
+      "Canvas ve MediaRecorder ile gerçek WebM",
+      "Dosyasız özgün hareket örneği"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 77,
+    "name": "Düğüm Gölgelendirici",
+    "slug": "dugum-golgelendirici",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Matematik düğümlerini bağlayarak gerçek WebGL fragment programı üretir.",
+    "features": [
+      "Yönlü düğüm grafiği",
+      "Çevrim denetimi",
+      "Gerçek shader compile/link kontrolleri",
+      "Zaman ve renk fazı",
+      "PNG, GLSL ve proje çıktısı"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 78,
+    "name": "Hareketli Yazı",
+    "slug": "hareketli-yazi",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Yazı katmanlarının konum, ölçek, dönüş ve saydamlığını anahtar karelerle canlandırır.",
+    "features": [
+      "Çok katmanlı tipografi",
+      "Anahtar kare ekleme ve silme",
+      "Üç interpolasyon davranışı",
+      "Bağımsız oynayan HTML çıktısı",
+      "Proje dosyası açma ve indirme"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 79,
+    "name": "Müzik Haritası",
+    "slug": "muzik-haritasi",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Mekâna yerleştirilen notalar arasında dolaşılan rotayı zamanlı stereo besteye dönüştürür.",
+    "features": [
+      "Nota düğümü yerleştirme ve taşıma",
+      "Canlı dolaşma ve ziyaret kaydı",
+      "X konumundan stereo denge",
+      "Gerçek PCM WAV üretimi",
+      "Harita projesi içe/dışa aktarımı"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 80,
+    "name": "Gölge Sahnesi",
+    "slug": "golge-sahnesi",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Işık konumu ve kukla derinliğiyle hesaplanan gölgelerden iki pozlu tiyatro kurar.",
+    "features": [
+      "Dört kukla türü",
+      "Işın izdüşümüyle gölge boyutu",
+      "İki poz arasında animasyon",
+      "Işık genişliğinden yumuşak kenar",
+      "PNG ve paylaşılabilir sahne"
+    ],
+    "businessHypothesis": "Üretim dosyalarının ve bağımsız eserlerin paylaşılması yeni üreticiler kazandırabilir. Gelişmiş dışa aktarımlar ve ekip çalışma alanları gelir adayıdır; talep ve kazanç henüz ölçülmedi."
+  },
+  {
+    "id": 81,
+    "name": "Dünya Dokumacı",
+    "slug": "dunya-dokumaci",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Aynı tohumdan coğrafya ve yerleşim üretip yükseltiyi düzenleyen kurmaca harita stüdyosu.",
+    "features": [
+      "Çok ölçekli deterministik yükselti ve nem",
+      "Yükselti fırçası",
+      "Yerleşim adlandırma",
+      "A* kara yolu arama",
+      "PNG ve dünya dosyası"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 82,
+    "name": "Mikro Kitap",
+    "slug": "mikro-kitap",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Metni gerçek yazı genişliğiyle sayfalara bölüp kapaklı bağımsız mini kitap üretir.",
+    "features": [
+      "Ölçülen satırlarla sayfalama",
+      "Kapak ve sayfa düzenleme",
+      "Bağımsız okunabilir/yazdırılabilir HTML",
+      "Proje içe/dışa aktarımı",
+      "Özgün atlas metni"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 83,
+    "name": "Sergi Kurucu",
+    "slug": "sergi-kurucu",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Kullanıcının eser metni, rengi ve yerleşiminden yürüyerek keşfedilen 2D sergi üretir.",
+    "features": [
+      "Eser yerleştirme ve açıklamalar",
+      "Klavye veya tıklamayla gezme",
+      "Yakın eser okuma",
+      "Bağımsız sergi HTML çıktısı",
+      "Proje dosyası"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 84,
+    "name": "Sahne Akışı",
+    "slug": "sahne-akisi",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Ses, ışık, yazı ve karartma olaylarını bir prova zaman çizelgesinde birleştirir.",
+    "features": [
+      "Işık geçişleri ve sentez sesler",
+      "Otomatik zamanlı prova",
+      "Manuel GO ilerletme",
+      "CSV işaret listesi",
+      "Proje dosyası"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
+  },
+  {
+    "id": 85,
+    "name": "Kat İzleri",
+    "slug": "kat-izleri",
+    "category": "Yaratıcılık",
+    "stage": 6,
+    "description": "Üç menteşe açısıyla gerçek 3B köşe ve üçgen koordinatlarından katlanmış kâğıt oluşturur.",
+    "features": [
+      "Dört bağlı panel",
+      "Gerçek 10 köşe / 8 üçgen mesh",
+      "Katlanma ilerlemesi",
+      "Kamera dönüşleri",
+      "OBJ, PNG ve paylaşılabilir geometri"
+    ],
+    "businessHypothesis": "Bağımsız üretilmiş eserler ve düzenlenebilir projeler paylaşım yoluyla yeni üreticileri çekebilir. Ekip atölyeleri ve gelişmiş üretim araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
   }
 ]
