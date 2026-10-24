@@ -5,8 +5,8 @@
     <header>
         <nav aria-label="Navigation"><a href="/">Home</a><span>Story Tree</span><LanguageSwitch /></nav>
         <h1>Write a story together.</h1>
-        <p>You write the beginning. Others add different continuations. Readers choose what happens next.</p>
-        <button @onclick="ShowComposer" disabled="@Busy">Start a story</button>
+        <p>Write the opening. Readers choose a path or add their own.</p>
+        @if (!Creating) { <button @onclick="ShowComposer" disabled="@Busy">Start a story</button> }
     </header>
     @if (!string.IsNullOrEmpty(Status)) {
         <div class="status" data-error="@HasError.ToString().ToLowerInvariant()" role="status">@Status</div>
@@ -28,7 +28,7 @@
                 </form>
                 <details class="prompts"><summary>Need a starting idea?</summary>
                     @foreach (var prompt in EditorialPrompts.Stories) {
-                        <button class="story-choice" @onclick="() => UsePrompt(prompt)"><strong>@prompt.Title</strong><span>@prompt.Opening</span></button>
+                        <button class="story-choice" disabled="@Busy" @onclick="() => UsePrompt(prompt)"><strong>@prompt.Title</strong><span>@prompt.Opening</span></button>
                     }
                 </details>
             </section>
@@ -42,7 +42,6 @@
                     <div class="branches"><button class="branch" @onclick="() => ExampleChoice = 1"><strong>Board the train</strong><span>The doors open. Someone inside knows your name.</span><span aria-hidden="true">→</span></button><button class="branch" @onclick="() => ExampleChoice = 2"><strong>Follow the suitcase</strong><span>It rolls toward a staircase that wasn't there before.</span><span aria-hidden="true">→</span></button></div>
                 } else {
                     <article class="paragraph current"><p>@(ExampleChoice == 1 ? "Every passenger is holding the same photograph: you, standing on this platform tomorrow. A child offers you the empty seat beside her. ‘We still have time to change it,’ she says." : "The staircase leads below the tracks to a room full of unopened letters. One has today's date and your handwriting. Inside is a single sentence: ‘Whatever happens, do not board the train.’")</p></article>
-                    <p class="hint">One beginning, two different stories. You can add another path.</p>
                     <button class="secondary" @onclick="() => ExampleChoice = 0">Try the other path</button>
                 }
                 <div class="example-action"><button @onclick="UseExample">Start from this beginning</button></div>
@@ -132,7 +131,7 @@
             PendingStory = null;
             Title = Opening = "";
             await LoadListAsync();
-        }, "Your story is published. Copy its link to invite someone to continue it.");
+        }, "Story published.");
     }
     async Task ContinueAsync()
     {
