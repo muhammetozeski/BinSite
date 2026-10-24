@@ -12,7 +12,7 @@
     <textarea id="youtube-links" rows="4" maxlength="16000" spellcheck="false" placeholder="Paste YouTube links, one per line" @bind="Input" @bind:event="oninput" disabled="@Busy"></textarea>
     <div class="actions">
         <button class="primary" disabled="@(Busy || Module is null || string.IsNullOrWhiteSpace(Input))" @onclick="Check">Check links</button>
-        @if (Busy) { <button @onclick="Cancel">Cancel</button> }
+        @if (Busy && CanCancel) { <button @onclick="Cancel">Cancel</button> }
         @if (Rows.Count > 0) {
         <button disabled="@Busy" @onclick='() => Output("copy")'>Copy results</button>
         <button disabled="@(Busy || Rows.Count == 0)" @onclick='() => Output("csv")'>Export table</button>
@@ -35,7 +35,7 @@
     }
     @if (Rows.Count > 0)
     {
-        <p class="summary">@AvailableCount / @Rows.Count public details found</p>
+        <p class="summary">@AvailableCount of @Rows.Count videos found</p>
         <div class="results">
             @foreach (var row in Rows)
             {
@@ -54,14 +54,13 @@
                         @if (row.Width.HasValue && row.Height.HasValue) { <p class="dimensions">@row.Width × @row.Height</p> }
                         @if (row.Title is null) { <p class="input-link">@row.Input</p> }
                         <div class="row-actions">
-                            @if (row.ThumbnailUrl is not null) { <button disabled="@Busy" @onclick='() => Output("thumbnail", row.Id)'>Download image</button> }
                             @if (row.Url is not null && row.Title is null) { <a href="@row.Url" target="_blank" rel="noopener noreferrer">Open video</a> }
                         </div>
                     </div>
                 </article>
             }
         </div>
-        <p class="small">Playback can vary by location or account.</p>
+
     }
 </main>
 
@@ -70,7 +69,7 @@
     private string Session = "", Input = "", Message = "", Error = "", WorkingText = "Checking…";
     private List<YouTubeLinkRow> Rows = [];
     private YouTubeLinkRow? Preview;
-    private bool Busy, Disposed, FocusPreview;
+    private bool Busy, Disposed, FocusPreview, CanCancel;
     private void ShowPreview(YouTubeLinkRow row) { Preview = row; FocusPreview = true; }
     private int AvailableImageCount => Rows.Count(row => row.Status == "available" && row.ThumbnailUrl is not null);
     private int AvailableCount => Rows.Count(row => row.Status == "available");
@@ -94,7 +93,7 @@
     private async Task Check()
     {
         if (Busy || Module is null) return;
-        Busy = true; Error = ""; Message = ""; Preview = null; WorkingText = "Checking links…";
+        Busy = true; CanCancel = true; Error = ""; Message = ""; Preview = null; WorkingText = "Checking links…";
         try
         {
             var result = await Module.InvokeAsync<YouTubeLinkBatch>("check", Session, Input);
@@ -103,18 +102,18 @@
             Message = result.Canceled ? "Canceled. Completed checks are shown." : "";
         }
         catch (JSException ex) { if (!Disposed) Error = ex.Message.Split('\n')[0]; }
-        finally { if (!Disposed) Busy = false; }
+        finally { if (!Disposed) { Busy = false; CanCancel = false; } }
     }
     private async Task Cancel()
     {
-        if (Module is null || !Busy) return;
+        if (Module is null || !Busy || !CanCancel) return;
         WorkingText = "Canceling…";
         await Module.InvokeVoidAsync("cancel", Session);
     }
     private async Task Output(string kind, string? videoId = null)
     {
         if (Busy || Module is null) return;
-        Busy = true; Error = ""; Message = ""; WorkingText = kind == "sheet" ? "Preparing thumbnail sheet…" : "Preparing output…";
+        Busy = true; CanCancel = kind is "thumbnail" or "sheet"; Error = ""; Message = ""; WorkingText = kind == "sheet" ? "Preparing thumbnail sheet…" : "Preparing output…";
         try
         {
             if (kind == "copy") { await Module.InvokeVoidAsync("copyResults", Session); if (!Disposed) Message = "Results copied."; }
@@ -128,12 +127,12 @@
             }
         }
         catch (JSException ex) { if (!Disposed) Error = ex.Message.Split('\n')[0]; }
-        finally { if (!Disposed) Busy = false; }
+        finally { if (!Disposed) { Busy = false; CanCancel = false; } }
     }
-    private async Task Clear() { if (Busy || Module is null) return; Busy = true; try { await Module.InvokeVoidAsync("clear", Session); if (!Disposed) { Input = ""; Rows = []; Preview = null; Message = ""; Error = ""; } } finally { if (!Disposed) Busy = false; } }
+    private async Task Clear() { if (Busy || Module is null) return; Busy = true; try { await Module.InvokeVoidAsync("clear", Session); if (!Disposed) { Input = ""; Rows = []; Preview = null; Message = ""; Error = ""; } } finally { if (!Disposed) { Busy = false; CanCancel = false; } } }
     private static string StatusText(YouTubeLinkRow row) => row.Status switch
     {
-        "available" => "Public details found",
+        "available" => "Details found",
         "unavailable" => "Details unavailable",
         "invalid" => row.Message,
         "canceled" => "Canceled",
