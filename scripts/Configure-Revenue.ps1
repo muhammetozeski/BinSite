@@ -192,7 +192,7 @@ try {
     }
 
     $environment = @{}
-    if ($production.ContainsKey('env_vars')) { foreach ($name in $production.env_vars.Keys) { $environment[$name] = $production.env_vars[$name] } }
+    # PATCH merges only changed keys; GET returns redacted secret values that must not be written back.
     foreach ($name in $settings.Keys) { $environment[$name] = $settings[$name] }
     $null = Invoke-Cloudflare '' @{ deployment_configs = @{ production = @{ env_vars = $environment } } } 'PATCH'
     $verification = Invoke-Cloudflare ''

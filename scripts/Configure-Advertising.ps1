@@ -11,9 +11,8 @@ $headers = @{ Authorization = "Bearer $env:CLOUDFLARE_API_TOKEN" }
 $url = "https://api.cloudflare.com/client/v4/accounts/$($hosting.accountId)/pages/projects/$($hosting.projectName)"
 $project = Invoke-RestMethod -Uri $url -Headers $headers
 if (-not $project.success) { throw 'Could not read the Pages project.' }
-$configuration = $project.result.deployment_configs.production
 $variables = @{}
-if ($configuration.env_vars) { foreach ($property in $configuration.env_vars.PSObject.Properties) { $variables[$property.Name] = $property.Value } }
+# PATCH merges these keys. GET redacts existing secret values, so never copy them back.
 $variables.ADSENSE_CLIENT = @{ type = 'plain_text'; value = $PublisherId }
 $variables.ADSENSE_SLOT = @{ type = 'plain_text'; value = $SlotId }
 $variables.ADSENSE_CONSENT_READY = @{ type = 'plain_text'; value = $ConsentPlatformReady.IsPresent.ToString().ToLowerInvariant() }
