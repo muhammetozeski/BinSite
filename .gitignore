@@ -17,3 +17,5 @@ public/_framework/
 public/BinSite.Social.styles.css
 public/social.css
 public/social.js
+public/*.br
+public/*.gz
