@@ -11,6 +11,10 @@ Use this index to find project-specific implementation knowledge before repeatin
 - [Web Analytics access](Web-Analytics-Access.md): the observed permission boundary between working Pages/D1 access and the separate analytics creation endpoint.
 - [Membership revenue](Revenue-Architecture.md): two provider adapters, signed notifications, paid-period entitlements and private project storage.
 - [Private workspaces](Workspaces.md): owner/editor/viewer access, shared membership allowance, one-use invitations and revision conflicts.
+- [Catalog Studio](Catalog-Studio.md): CSV mapping and repairs, local image binding and independent catalog exports.
+- [Client Review Room](Review-Room.md): file-version identities, anchored review notes and delivery records.
+- [Field Work Pack](Field-Work-Pack.md): checklist snapshots, actual photo evidence and local reports.
+- [Procedure service](Procedure-Service.md): immutable public procedures, pinned forks, explicit outcomes and owner moderation.
 - [English migration](English-Migration.md): legacy shopping keys, preserved progress and the route ambiguity found in a real browser.
 - [Social products](social-001.md): API contracts, cookie identity limits and local integration checks for the first social products.
 - [Community products](social-002.md): shared canvas revisions, debate reviews, private exchange states, curator approvals and private team clues.

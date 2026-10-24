@@ -17,5 +17,9 @@ public/_framework/
 public/BinSite.Social.styles.css
 public/social.css
 public/social.js
+public/catalog-studio.js
+public/review-room.js
+public/field-work.js
+public/field-work-sw.js
 public/*.br
 public/*.gz
