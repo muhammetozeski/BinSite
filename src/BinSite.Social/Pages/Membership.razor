@@ -33,7 +33,7 @@
             {
                 <div class="key"><h3>@Texts.Text("Kurtarma anahtarını şimdi sakla", "Save your recovery key now")</h3><p>@Texts.Text("Bu anahtarı bilen hesabına erişebilir. Kimseyle paylaşma; bir kez gösterilir.", "Anyone with this key can access your account. Keep it private; it is shown once.")</p><textarea readonly aria-label="Recovery key">@RecoveryKey</textarea><button disabled="@Busy" @onclick="CopyKey">@Texts.Text("Anahtarı kopyala", "Copy recovery key")</button></div>
             }
-            <details><summary>Sign in with a recovery key</summary><p class="small">Signing in here signs out your other devices.</p><label for="recover-key">@Texts.Text("Kurtarma anahtarı", "Recovery key")</label><input id="recover-key" type="password" autocomplete="off" @bind="RecoverValue" disabled="@Busy"><button disabled="@(Busy||string.IsNullOrWhiteSpace(RecoverValue))" @onclick="Recover">Sign in</button></details>
+            <details><summary>Sign in with a recovery key</summary><p class="small">Signing in here signs out your other devices.</p><label for="recover-key">@Texts.Text("Kurtarma anahtarı", "Recovery key")</label><input id="recover-key" type="password" autocomplete="off" @bind="RecoverValue" @bind:event="oninput" disabled="@Busy"><button disabled="@(Busy||string.IsNullOrWhiteSpace(RecoverValue))" @onclick="Recover">Sign in</button></details>
             <button class="secondary" disabled="@Busy" @onclick="Load">@Texts.Text("Durumu yenile", "Refresh status")</button>
         </section>
         @if (SubscriptionsAvailable) {
@@ -66,7 +66,7 @@
         <p>@Texts.Text("Çizgi Döngüsü veya Gizli Harita gibi bir editörden indirdiğin JSON proje dosyasını yükle. Kaydın yalnızca hesabına görünür.", "Upload a project file downloaded from an editor to keep a private copy here.")</p>
         @if (Status?.Account is not null)
         {
-            <label for="project-title">@Texts.Text("Proje adı", "Project title")</label><input id="project-title" maxlength="100" @bind="ProjectTitle" disabled="@Busy">
+            <label for="project-title">@Texts.Text("Proje adı", "Project title")</label><input id="project-title" maxlength="100" @bind="ProjectTitle" @bind:event="oninput" disabled="@Busy">
             <InputFile @key="Status.Account.Id" OnChange="ChooseFile" accept="application/json,.json" disabled="@Busy" />
             <p class="small">@Texts.Text("En fazla 64 KB. Yüklemeden önce dosyanın içinde parola veya erişim anahtarı olmadığından emin ol.", "Up to 64 KB. Make sure your file contains no passwords or access keys before uploading.")</p>
             <button disabled="@(Busy || ProjectBody is null || string.IsNullOrWhiteSpace(ProjectTitle))" @onclick="SaveProject">@Texts.Text("Projeyi kasaya kaydet", "Save project to vault")</button>
