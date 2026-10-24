@@ -3,7 +3,7 @@
     "id": 103,
     "name": "Retry Assurance",
     "slug": "retry-assurance",
-    "url": "https://muhammetozeski-retry-assurance.pages.dev/",
+    "runtime": "mounted",
     "category": "Engineering",
     "stage": 9,
     "adEligible": false,

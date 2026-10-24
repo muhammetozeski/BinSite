@@ -175,6 +175,11 @@ export function transformHtml(input, relativeFile = 'index.html') {
 /** Visits physical HTML files only; framework output and directory symlinks are excluded. */
 export async function prepareAppearance(publicRoot = defaultPublic) {
   const root = path.resolve(publicRoot);
+  let ownedRoots = new Set();
+  try {
+    const catalog = JSON.parse(await readFile(path.join(root, 'catalog.json'), 'utf8'));
+    ownedRoots = new Set(catalog.filter(item => item.runtime === 'mounted').map(item => item.slug));
+  } catch (error) { if (error.code !== 'ENOENT') throw error; }
   let htmlCount = 0, updatedCount = 0;
   async function visit(directory) {
     const entries = await readdir(directory, { withFileTypes: true });
@@ -182,6 +187,7 @@ export async function prepareAppearance(publicRoot = defaultPublic) {
     for (const entry of entries) {
       if (entry.name.toLowerCase() === '_framework') continue;
       const filename = path.join(directory, entry.name);
+      if (entry.isDirectory() && directory === root && ownedRoots.has(entry.name)) continue;
       if (entry.isDirectory()) await visit(filename);
       else if (entry.isFile() && /\.html?$/i.test(entry.name)) {
         const input = await readFile(filename, 'utf8');

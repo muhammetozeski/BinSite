@@ -1,0 +1,55 @@
+[
+  {
+    "key": "retry",
+    "slug": "retry-assurance",
+    "repository": "muhammetozeski/RetryAssurance",
+    "sourceDirectory": "RetryAssurance",
+    "ref": "402157fa8a965bc4105982795485faee76b2c867",
+    "publishScript": "scripts/Publish-Portal.ps1",
+    "publishArguments": { "ServiceBaseUrl": "https://muhammetozeski-binsite.pages.dev/retry-assurance/" },
+    "backendFiles": ["server/handler.mjs", "server/security.mjs", "server/accounts.mjs", "server/projects.mjs", "server/executions.mjs", "server/billing.mjs", "server/protocol.mjs"],
+    "databaseBinding": "RETRY_DB",
+    "environmentPrefix": "RETRY_",
+    "environmentKeys": ["RATE_SALT", "STRIPE_SECRET_KEY", "STRIPE_PRICE_ID", "STRIPE_WEBHOOK_SECRET"],
+    "derivedRateKey": "RATE_SALT"
+  },
+  {
+    "key": "freight",
+    "slug": "three-beat-freight",
+    "repository": "muhammetozeski/ThreeBeatFreight",
+    "sourceDirectory": "ThreeBeatFreight",
+    "ref": "183b77d4e763aa3565244e9e79177b0f1d2aaf14",
+    "publishScript": "scripts/Build.ps1",
+    "publishArguments": {},
+    "backendFiles": ["server/handler.mjs", "server/http.mjs", "server/revenue.mjs", "game/engine.mjs", "game/content.mjs"],
+    "databaseBinding": "FREIGHT_DB",
+    "environmentPrefix": "FREIGHT_",
+    "environmentKeys": ["POLAR_ACCESS_TOKEN", "POLAR_PRODUCT_ID", "POLAR_WEBHOOK_SECRET", "POLAR_MODE", "ADSENSE_CONSENT_READY", "ADSENSE_CLIENT", "ADSENSE_SLOT"]
+  },
+  {
+    "key": "interlock",
+    "slug": "interlock-expeditions",
+    "repository": "muhammetozeski/InterlockExpeditions",
+    "sourceDirectory": "InterlockExpeditions",
+    "ref": "412dcd37430e81282ce0b23cfad41236a043e6dc",
+    "publishScript": "scripts/Publish.ps1",
+    "publishArguments": {},
+    "backendFiles": ["server/mount-gateway.mjs"],
+    "environmentPrefix": "INTERLOCK_",
+    "environmentKeys": ["GATEWAY_SECRET"]
+  },
+  {
+    "key": "stagefold",
+    "slug": "stagefold",
+    "repository": "muhammetozeski/StageFold",
+    "sourceDirectory": "StageFold",
+    "ref": "ed450ab45fa32a0327a098004748a984bab1a6d5",
+    "publishScript": "scripts/Publish-App.ps1",
+    "publishArguments": {},
+    "backendFiles": ["functions/api/[[path]].js", "server/accounts.mjs", "server/billing.mjs", "server/cuts.mjs", "server/film.mjs", "server/moderation.mjs", "server/projects.mjs", "server/security.mjs", "server/paths.mjs"],
+    "databaseBinding": "STAGEFOLD_DB",
+    "environmentPrefix": "STAGEFOLD_",
+    "environmentKeys": ["RATE_SALT", "MODERATION_KEY", "STRIPE_SECRET_KEY", "STRIPE_PRICE_ID", "STRIPE_WEBHOOK_SECRET"],
+    "derivedRateKey": "RATE_SALT"
+  }
+]

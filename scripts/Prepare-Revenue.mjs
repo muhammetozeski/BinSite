@@ -16,7 +16,7 @@ const publisher = /^ca-pub-\d{16}$/.test(variables.ADSENSE_CLIENT?.value || '') 
 const slot = /^\d{5,20}$/.test(variables.ADSENSE_SLOT?.value || '') ? variables.ADSENSE_SLOT.value : null;
 const enabled = Boolean(publisher && slot && variables.ADSENSE_CONSENT_READY?.value === 'true');
 await writeFile(path.join(root, 'public/revenue-config.json'), JSON.stringify({ adSense: { enabled, client: enabled ? publisher : null, slot: enabled ? slot : null }, membership: '/uyelik/', advertising: '/advertising/', privacy: '/privacy/' }, null, 2) + '\n');
-const paths = [{ relative: 'index.html', adEligible: true }, ...catalog.filter(product => !product.url).map(product => ({ relative: `${product.slug}/index.html`, adEligible: product.adEligible !== false }))];
+const paths = [{ relative: 'index.html', adEligible: true }, ...catalog.filter(product => !product.url && product.runtime !== 'mounted').map(product => ({ relative: `${product.slug}/index.html`, adEligible: product.adEligible !== false }))];
 for (const { relative, adEligible } of paths) {
   const filename = path.join(root, 'public', relative);
   const html = await readFile(filename, 'utf8');

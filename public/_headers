@@ -3,3 +3,36 @@
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: SAMEORIGIN
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# BEGIN BINSITE MOUNTED PRODUCTS
+# retry-assurance
+/retry-assurance/*
+  Referrer-Policy: no-referrer
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'
+
+# three-beat-freight
+/three-beat-freight/*
+  Content-Security-Policy: frame-ancestors 'none'
+
+/three-beat-freight/assets/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+/three-beat-freight/index.html
+  Cache-Control: no-cache
+
+# interlock-expeditions
+/interlock-expeditions/*
+  Referrer-Policy: no-referrer
+
+/interlock-expeditions/_framework/*
+  Cache-Control: no-cache
+
+/interlock-expeditions/index.html
+  Cache-Control: no-cache
+
+# stagefold
+/stagefold/*
+  Referrer-Policy: no-referrer
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'
+
+# END BINSITE MOUNTED PRODUCTS

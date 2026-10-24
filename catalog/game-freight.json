@@ -3,7 +3,7 @@
     "id": 104,
     "name": "Three Beat Freight",
     "slug": "three-beat-freight",
-    "url": "https://three-beat-freight.pages.dev/",
+    "runtime": "mounted",
     "category": "Games",
     "stage": 9,
     "adEligible": false,
@@ -11,7 +11,7 @@
       "themeAttribute": "data-bs-theme",
       "assetAttribute": "data-freight-appearance"
     },
-    "description": "Program three commands, intercept cargo and return to your dock. Play solo dispatches or resolve hidden plans together in real private rooms.",
+    "description": "Plan three moves to intercept cargo and return to your dock. Play solo or with friends.",
     "features": [
       "Twelve original freight yards and 24 playable solo contracts",
       "Shared deterministic rules for simultaneous movement, shoves, belts and delivery",

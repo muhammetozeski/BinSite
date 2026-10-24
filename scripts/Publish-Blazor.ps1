@@ -20,7 +20,7 @@ if (-not $appPlaceholder) { throw 'The browser entry point is missing its applic
 $hosting = Get-Content -LiteralPath (Join-Path $projectRoot 'docs/hosting.json') -Raw | ConvertFrom-Json
 $siteOrigin = $hosting.siteUrl.TrimEnd('/')
 $blazorProducts = @(Get-ChildItem -LiteralPath (Join-Path $projectRoot 'catalog') -Filter '*.json' | ForEach-Object {
-    Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json | Where-Object { -not $_.url -and ($_.runtime -eq 'blazor' -or ($_.category -eq 'Social' -and $_.stage -ge 3)) }
+    Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json | Where-Object { -not $_.url -and $_.runtime -ne 'mounted' -and ($_.runtime -eq 'blazor' -or ($_.category -eq 'Social' -and $_.stage -ge 3)) }
 })
 $blazorProducts += [pscustomobject]@{
     slug = 'uyelik'; name = 'Creator account'

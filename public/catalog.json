@@ -1260,7 +1260,7 @@
     "id": 103,
     "name": "Retry Assurance",
     "slug": "retry-assurance",
-    "url": "https://muhammetozeski-retry-assurance.pages.dev/",
+    "runtime": "mounted",
     "category": "Engineering",
     "stage": 9,
     "adEligible": false,
@@ -1284,7 +1284,7 @@
     "id": 104,
     "name": "Three Beat Freight",
     "slug": "three-beat-freight",
-    "url": "https://three-beat-freight.pages.dev/",
+    "runtime": "mounted",
     "category": "Games",
     "stage": 9,
     "adEligible": false,
@@ -1292,7 +1292,7 @@
       "themeAttribute": "data-bs-theme",
       "assetAttribute": "data-freight-appearance"
     },
-    "description": "Program three commands, intercept cargo and return to your dock. Play solo dispatches or resolve hidden plans together in real private rooms.",
+    "description": "Plan three moves to intercept cargo and return to your dock. Play solo or with friends.",
     "features": [
       "Twelve original freight yards and 24 playable solo contracts",
       "Shared deterministic rules for simultaneous movement, shoves, belts and delivery",
@@ -1320,5 +1320,45 @@
       "Table export and PNG thumbnail sheets"
     ],
     "businessHypothesis": "Batch checks and visual exports may help editors and course creators prepare video references. Demand and revenue have not been measured."
+  },
+  {
+    "id": 106,
+    "name": "StageFold",
+    "slug": "stagefold",
+    "runtime": "mounted",
+    "category": "Creative",
+    "stage": 9,
+    "adEligible": false,
+    "appearance": {
+      "themeAttribute": "data-sf-theme",
+      "assetAttribute": "data-sf-appearance"
+    },
+    "description": "Move a cast, write their lines and direct a short animated film.",
+    "features": [
+      "Twelve complete editable films",
+      "Animated vector performers and timed dialogue",
+      "Film files, video exports and shared alternate cuts"
+    ],
+    "businessHypothesis": "Creators may pay for additional shared film capacity. Existing billing remains optional and requires merchant configuration; adoption and revenue have not been observed."
+  },
+  {
+    "id": 107,
+    "name": "Interlock Expeditions",
+    "slug": "interlock-expeditions",
+    "runtime": "mounted",
+    "category": "Games",
+    "stage": 9,
+    "adEligible": false,
+    "appearance": {
+      "themeAttribute": "data-interlock-theme",
+      "assetAttribute": "data-interlock-appearance"
+    },
+    "description": "Solve an adventure with a friend using your different clue cards.",
+    "features": [
+      "Six complete adventures with six puzzles each",
+      "Two crews with different clue cards and shared controls",
+      "Room invitations and reconnect keys"
+    ],
+    "businessHypothesis": "Frequent hosts may pay for additional hosted-room capacity. Existing billing remains optional and requires merchant configuration; adoption and revenue have not been observed."
   }
 ]

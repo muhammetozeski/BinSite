@@ -26,3 +26,9 @@ public/shift-cover.js
 public/signal-foundry.js
 public/*.br
 public/*.gz
+.mounted-sources/
+integrations/mounted/
+public/retry-assurance/
+public/three-beat-freight/
+public/interlock-expeditions/
+public/stagefold/

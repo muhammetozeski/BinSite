@@ -42,6 +42,10 @@ jobs:
           node integrations/youtube/Prepare.mjs
           if ($LASTEXITCODE -ne 0) { throw 'YouTube runtime preparation failed.' }
           ./scripts/Publish-Blazor.ps1
+      - name: Fetch pinned mounted source repositories
+        run: ./scripts/Fetch-MountedSources.ps1
+      - name: Publish mounted applications and merge hosting rules
+        run: ./scripts/Prepare-MountedProducts.ps1 -SourcesRoot (Join-Path $PWD '.mounted-sources')
       - name: Build directory from implemented products
         run: node scripts/build.mjs
       - name: Prepare optional advertising and membership links

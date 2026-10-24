@@ -1,0 +1,28 @@
+[
+  {
+    "id": 106,
+    "name": "StageFold",
+    "slug": "stagefold",
+    "runtime": "mounted",
+    "category": "Creative",
+    "stage": 9,
+    "adEligible": false,
+    "appearance": { "themeAttribute": "data-sf-theme", "assetAttribute": "data-sf-appearance" },
+    "description": "Move a cast, write their lines and direct a short animated film.",
+    "features": ["Twelve complete editable films", "Animated vector performers and timed dialogue", "Film files, video exports and shared alternate cuts"],
+    "businessHypothesis": "Creators may pay for additional shared film capacity. Existing billing remains optional and requires merchant configuration; adoption and revenue have not been observed."
+  },
+  {
+    "id": 107,
+    "name": "Interlock Expeditions",
+    "slug": "interlock-expeditions",
+    "runtime": "mounted",
+    "category": "Games",
+    "stage": 9,
+    "adEligible": false,
+    "appearance": { "themeAttribute": "data-interlock-theme", "assetAttribute": "data-interlock-appearance" },
+    "description": "Solve an adventure with a friend using your different clue cards.",
+    "features": ["Six complete adventures with six puzzles each", "Two crews with different clue cards and shared controls", "Room invitations and reconnect keys"],
+    "businessHypothesis": "Frequent hosts may pay for additional hosted-room capacity. Existing billing remains optional and requires merchant configuration; adoption and revenue have not been observed."
+  }
+]

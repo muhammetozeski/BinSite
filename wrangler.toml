@@ -6,3 +6,18 @@ compatibility_date = "2026-10-24"
 binding = "DB"
 database_name = "binsite-social"
 database_id = "0d78a266-b606-4f56-8c5b-dce819f6276a"
+
+[[d1_databases]]
+binding = "RETRY_DB"
+database_name = "retry-assurance"
+database_id = "0d144a72-cc9d-47a1-ac1f-9d5d55c0647e"
+
+[[d1_databases]]
+binding = "FREIGHT_DB"
+database_name = "three-beat-freight"
+database_id = "49498b36-b298-498f-bc31-1efb876650e9"
+
+[[d1_databases]]
+binding = "STAGEFOLD_DB"
+database_name = "stagefold"
+database_id = "18a3be59-9bf6-4c13-bc47-8a045fc2c71f"
