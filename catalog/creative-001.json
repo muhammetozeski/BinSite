@@ -69,7 +69,8 @@
       "Cell drawing",
       "Pattern links and image export"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   },
   {
     "id": 10,
@@ -87,6 +88,7 @@
       "Local drafts and project files",
       "Alternative-adventure creation"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   }
 ]

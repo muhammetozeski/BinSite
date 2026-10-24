@@ -37,7 +37,7 @@
     "slug": "mikro-akademi",
     "category": "Social",
     "stage": 6,
-    "description": "Author mini lessons and quizzes, keep answer keys on the server and unlock learner progress through correct answers and prerequisites.",
+    "description": "Create short lessons with quizzes, then let learners unlock the next lesson as they progress.",
     "features": [
       "Private author drafts",
       "Up to 12 lesson sections",
@@ -63,7 +63,8 @@
       "Mandatory different-member handoff",
       "Persistent stage history"
     ],
-    "businessHypothesis": "A completed stage invites another participant to return later. Handoff-to-return rate and team completion time can test whether the asynchronous loop works."
+    "businessHypothesis": "A completed stage invites another participant to return later. Handoff-to-return rate and team completion time can test whether the asynchronous loop works.",
+    "directoryGroup": "games"
   },
   {
     "id": 65,

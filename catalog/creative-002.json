@@ -82,7 +82,8 @@
       "Layout sharing",
       "Three-level example"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   },
   {
     "id": 21,
@@ -265,7 +266,8 @@
       "Complete sharing link",
       "Text export"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   },
   {
     "id": 32,
@@ -332,6 +334,7 @@
       "Answer and attempt checks",
       "Ciphertext sharing and text export"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   }
 ]

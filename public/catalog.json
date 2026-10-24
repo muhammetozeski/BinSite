@@ -156,7 +156,8 @@
       "Cell drawing",
       "Pattern links and image export"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   },
   {
     "id": 10,
@@ -174,7 +175,8 @@
       "Local drafts and project files",
       "Alternative-adventure creation"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   },
   {
     "id": 11,
@@ -182,7 +184,7 @@
     "slug": "hikaye-agaci",
     "category": "Social",
     "stage": 3,
-    "description": "Write a branching story together. Each paragraph can open a new direction, with actual contributions stored on the shared server.",
+    "description": "Write a story together. Add a different continuation, then let readers choose what happens next.",
     "features": [
       "C# Blazor interface",
       "Persistent branching story graph",
@@ -199,7 +201,7 @@
     "slug": "fikir-duellosu",
     "category": "Social",
     "stage": 3,
-    "description": "Compare two creative ideas in a public duel, share its link and track votes actually recorded by the server.",
+    "description": "Share two ideas and let people vote for their favorite.",
     "features": [
       "Actual poll creation and voting",
       "One vote per cookie identity",
@@ -207,7 +209,8 @@
       "15 original editorial suggestions",
       "English interface and reporting"
     ],
-    "businessHypothesis": "Creators may share duels to choose a future activity or idea. Repeat poll creation and incoming votes can indicate demand; advertising revenue remains unverified."
+    "businessHypothesis": "Creators may share duels to choose a future activity or idea. Repeat poll creation and incoming votes can indicate demand; advertising revenue remains unverified.",
+    "directoryGroup": "games"
   },
   {
     "id": 13,
@@ -215,7 +218,7 @@
     "slug": "zaman-kapsulu",
     "category": "Social",
     "stage": 3,
-    "description": "Seal a letter until a future date. The server withholds its body until opening time and provides an unlisted random link.",
+    "description": "Write a letter that stays sealed until a date you choose, then share its link.",
     "features": [
       "Server-clock content lock",
       "Persistent capsule storage",
@@ -337,7 +340,8 @@
       "Layout sharing",
       "Three-level example"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   },
   {
     "id": 21,
@@ -520,7 +524,8 @@
       "Complete sharing link",
       "Text export"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   },
   {
     "id": 32,
@@ -587,7 +592,8 @@
       "Answer and attempt checks",
       "Ciphertext sharing and text export"
     ],
-    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured."
+    "businessHypothesis": "Sharing completed work and editable projects may bring new creators. Advanced exports, curated content and team workshops are possible paid offerings. Demand, audience and revenue have not been measured.",
+    "directoryGroup": "games"
   },
   {
     "id": 36,
@@ -595,7 +601,7 @@
     "slug": "ortak-tuval",
     "category": "Social",
     "stage": 4,
-    "description": "Draw together on a 24 by 16 grid, publish changed cells in batches and resolve conflicts with the server revision.",
+    "description": "Draw a pixel picture together. Add your changes without overwriting someone else's.",
     "features": [
       "Actual shared pixel canvas",
       "Up to 32 changed cells per batch",
@@ -663,7 +669,7 @@
     "slug": "parola-ekibi",
     "category": "Social",
     "stage": 4,
-    "description": "Combine four distinct private cards in an actual cooperative puzzle with server-managed roles, capacity and solution checking.",
+    "description": "Solve a puzzle together using four different private clue cards.",
     "features": [
       "Four private information cards",
       "Server-enforced role capacity",
@@ -672,7 +678,8 @@
       "Limited attempts and 24-hour rooms",
       "6 original fictional mission settings"
     ],
-    "businessHypothesis": "A player invites three others, and a returning group can switch roles. Role-fill time, incomplete-team abandonment and second-room creation can test the social loop."
+    "businessHypothesis": "A player invites three others, and a returning group can switch roles. Role-fill time, incomplete-team abandonment and second-room creation can test the social loop.",
+    "directoryGroup": "games"
   },
   {
     "id": 41,
@@ -900,7 +907,7 @@
     "slug": "mikro-akademi",
     "category": "Social",
     "stage": 6,
-    "description": "Author mini lessons and quizzes, keep answer keys on the server and unlock learner progress through correct answers and prerequisites.",
+    "description": "Create short lessons with quizzes, then let learners unlock the next lesson as they progress.",
     "features": [
       "Private author drafts",
       "Up to 12 lesson sections",
@@ -926,7 +933,8 @@
       "Mandatory different-member handoff",
       "Persistent stage history"
     ],
-    "businessHypothesis": "A completed stage invites another participant to return later. Handoff-to-return rate and team completion time can test whether the asynchronous loop works."
+    "businessHypothesis": "A completed stage invites another participant to return later. Handoff-to-return rate and team completion time can test whether the asynchronous loop works.",
+    "directoryGroup": "games"
   },
   {
     "id": 65,
@@ -1121,7 +1129,7 @@
       "slug": "catalog-studio/guide",
       "title": "CSV catalog walkthrough and practice files"
     },
-    "description": "Import a product CSV, repair concrete row issues, match local photos and produce a self-contained searchable catalog or printable snapshot.",
+    "description": "Turn a product spreadsheet and photos into a searchable catalog you can share or print.",
     "features": [
       "Quoted comma, semicolon and tab import with revisable header mapping",
       "Physical CSV row evidence for missing, duplicate and invalid fields",
@@ -1146,7 +1154,7 @@
       "slug": "review-room/guide",
       "title": "Precise revision feedback and delivery walkthrough"
     },
-    "description": "Review actual local image and video versions with precise comments, explicit decisions, side-by-side record comparison and portable delivery exports.",
+    "description": "Compare image and video versions, leave precise feedback, and export your review.",
     "features": [
       "Real local image/video selection and complete SHA-256 file identities",
       "Normalized image markers and actual video-player timestamps",
@@ -1172,7 +1180,7 @@
       "slug": "field-work-pack/guide",
       "title": "Evidence checklist and handoff walkthrough"
     },
-    "description": "Build a work-order checklist, record required confirmations, bounded measurements and actual photos, then review the work and export a complete handoff report.",
+    "description": "Complete job checklists with measurements and photos, then download a handoff report.",
     "features": [
       "Eight editable administrative checklist examples",
       "Custom confirmation, measurement and photo fields",
@@ -1216,7 +1224,7 @@
     "stage": 8,
     "runtime": "blazor",
     "adEligible": false,
-    "description": "Build a real local roster from entered roles, dated availability, coverage needs and hour/rest limits. Inspect unresolved seats, validate manual assignments and two-sided swaps, and export actual per-person schedules.",
+    "description": "Build a staff schedule from availability and coverage needs, check shift swaps, and download individual calendars.",
     "features": [
       "Editable roles, up to 60 people, 24 explicit availability windows per person, 120 shifts and 240 required seats",
       "One shared validator for skills, complete availability, project hours, single-shift duration, overlap and entered minimum rest",

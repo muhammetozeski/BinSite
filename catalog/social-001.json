@@ -5,7 +5,7 @@
     "slug": "hikaye-agaci",
     "category": "Social",
     "stage": 3,
-    "description": "Write a branching story together. Each paragraph can open a new direction, with actual contributions stored on the shared server.",
+    "description": "Write a story together. Add a different continuation, then let readers choose what happens next.",
     "features": [
       "C# Blazor interface",
       "Persistent branching story graph",
@@ -22,7 +22,7 @@
     "slug": "fikir-duellosu",
     "category": "Social",
     "stage": 3,
-    "description": "Compare two creative ideas in a public duel, share its link and track votes actually recorded by the server.",
+    "description": "Share two ideas and let people vote for their favorite.",
     "features": [
       "Actual poll creation and voting",
       "One vote per cookie identity",
@@ -30,7 +30,8 @@
       "15 original editorial suggestions",
       "English interface and reporting"
     ],
-    "businessHypothesis": "Creators may share duels to choose a future activity or idea. Repeat poll creation and incoming votes can indicate demand; advertising revenue remains unverified."
+    "businessHypothesis": "Creators may share duels to choose a future activity or idea. Repeat poll creation and incoming votes can indicate demand; advertising revenue remains unverified.",
+    "directoryGroup": "games"
   },
   {
     "id": 13,
@@ -38,7 +39,7 @@
     "slug": "zaman-kapsulu",
     "category": "Social",
     "stage": 3,
-    "description": "Seal a letter until a future date. The server withholds its body until opening time and provides an unlisted random link.",
+    "description": "Write a letter that stays sealed until a date you choose, then share its link.",
     "features": [
       "Server-clock content lock",
       "Persistent capsule storage",

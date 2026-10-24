@@ -5,7 +5,7 @@
     "slug": "ortak-tuval",
     "category": "Social",
     "stage": 4,
-    "description": "Draw together on a 24 by 16 grid, publish changed cells in batches and resolve conflicts with the server revision.",
+    "description": "Draw a pixel picture together. Add your changes without overwriting someone else's.",
     "features": [
       "Actual shared pixel canvas",
       "Up to 32 changed cells per batch",
@@ -73,7 +73,7 @@
     "slug": "parola-ekibi",
     "category": "Social",
     "stage": 4,
-    "description": "Combine four distinct private cards in an actual cooperative puzzle with server-managed roles, capacity and solution checking.",
+    "description": "Solve a puzzle together using four different private clue cards.",
     "features": [
       "Four private information cards",
       "Server-enforced role capacity",
@@ -82,6 +82,7 @@
       "Limited attempts and 24-hour rooms",
       "6 original fictional mission settings"
     ],
-    "businessHypothesis": "A player invites three others, and a returning group can switch roles. Role-fill time, incomplete-team abandonment and second-room creation can test the social loop."
+    "businessHypothesis": "A player invites three others, and a returning group can switch roles. Role-fill time, incomplete-team abandonment and second-room creation can test the social loop.",
+    "directoryGroup": "games"
   }
 ]
