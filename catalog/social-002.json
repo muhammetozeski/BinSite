@@ -1,0 +1,3 @@
+[
+  {"id":36,"name":"Ortak Tuval","slug":"ortak-tuval","category":"Sosyal","stage":4,"description":"24×16 ortak tuvalde hücreleri birlikte boya; değişiklikleri paketle yayımla ve sunucu sürümüyle çakışmaları gör.","features":["Gerçek paylaşılan piksel tuvali","Değişen en fazla 32 hücrelik paketler","Sunucuda sürüm ve çakışma denetimi","12 renk ve 8 editoryal çizim görevi","Türkçe/İngilizce C# Blazor arayüzü","Raporlama ve hız sınırları"],"businessHypothesis":"Grupların ortak bir resim üretip tuval bağlantısını paylaşması yeni katkıları çağırabilir. Topluluk kullanımı gözlenirse özel atölye ve etkinlik ihtiyaçları ölçülebilir; kullanıcı veya gelir başarısı henüz doğrulanmış değildir."}
+]

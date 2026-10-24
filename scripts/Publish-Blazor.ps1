@@ -11,13 +11,20 @@ if ($NoRestore) { $publishArgs += '--no-restore' }
 if ($LASTEXITCODE -ne 0) { throw 'Blazor publication failed.' }
 $webRoot = Join-Path $publishRoot 'wwwroot'
 foreach ($item in Get-ChildItem -LiteralPath $webRoot) {
-    if ($item.Name -eq 'index.html') { continue }
+    if ($item.Name -in @('index.html', 'index.html.br', 'index.html.gz')) { continue }
     Copy-Item -LiteralPath $item.FullName -Destination $publicRoot -Recurse -Force
 }
 $bootstrap = [System.IO.File]::ReadAllText((Join-Path $webRoot 'index.html'))
-foreach ($slug in @('hikaye-agaci', 'fikir-duellosu', 'zaman-kapsulu', 'uyelik')) {
-    $productDirectory = Join-Path $publicRoot $slug
+$blazorProducts = @(Get-ChildItem -LiteralPath (Join-Path $projectRoot 'catalog') -Filter '*.json' | ForEach-Object {
+    Get-Content -LiteralPath $_.FullName -Raw | ConvertFrom-Json | Where-Object { $_.category -eq 'Sosyal' -and $_.stage -ge 3 }
+})
+$blazorProducts += [pscustomobject]@{ slug = 'uyelik'; name = 'Yaratıcı hesabı' }
+foreach ($product in $blazorProducts) {
+    if ($product.slug -notmatch '^[a-z0-9]+(?:-[a-z0-9]+)*$') { throw 'Invalid Blazor product path.' }
+    $productDirectory = Join-Path $publicRoot $product.slug
     New-Item -ItemType Directory -Path $productDirectory -Force | Out-Null
-    [System.IO.File]::WriteAllText((Join-Path $productDirectory 'index.html'), $bootstrap, [System.Text.UTF8Encoding]::new($false))
+    $productTitle = [System.Net.WebUtility]::HtmlEncode($product.name + ' — BinSite')
+    $productBootstrap = [regex]::Replace($bootstrap, '<title>.*?</title>', "<title>$productTitle</title>")
+    [System.IO.File]::WriteAllText((Join-Path $productDirectory 'index.html'), $productBootstrap, [System.Text.UTF8Encoding]::new($false))
 }
 Write-Host 'Published C# browser runtime and independent social entry points; portfolio homepage preserved.'

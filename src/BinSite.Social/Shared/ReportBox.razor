@@ -11,8 +11,9 @@
 @code {
     [Parameter, EditorRequired] public string Kind { get; set; } = "";
     [Parameter, EditorRequired] public string TargetId { get; set; } = "";
+    [Parameter] public string Endpoint { get; set; } = "reports";
     string Reason = "";
 
     /// <summary>Records an anonymous report; no moderation or review completion is asserted.</summary>
-    Task SubmitAsync() => ExecuteAsync(async () => { await Api.PostAsync<ReportResponse>("reports", new { kind = Kind, id = TargetId, reason = Reason }); Reason = ""; }, T("Raporun kaydedildi.", "Your report was recorded."));
+    Task SubmitAsync() => ExecuteAsync(async () => { await Api.PostAsync<ReportResponse>(Endpoint, new { kind = Kind, id = TargetId, reason = Reason }); Reason = ""; }, T("Raporun kaydedildi.", "Your report was recorded."));
 }
