@@ -88,7 +88,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 details.readability-help{border-top:1px solid #50606e;padding-top:10px;margin:18px 0;font-size:14px;line-height:1.6}
 details.readability-help summary{cursor:pointer;font-weight:650;min-height:34px;display:list-item}
 details.readability-help p{max-width:75ch;margin:10px 0}
-html[data-bs-theme="dark"] #copy{background:#405e6d;color:#f4f8fa;border:1px solid #91b0be;font-weight:700}
+html[data-bs-theme="dark"] #copy{background:#405e6d;color:#f4f8fa;border:1px solid #91b0be;font-weight:700}@media print{html[data-bs-theme="dark"],html[data-bs-theme="dark"] body,html[data-bs-theme="dark"] aside{color-scheme:light;background:white;color:black}html[data-bs-theme="dark"] #shopping-summary{color:black}aside>details{display:none}}
 </style>
 </head>
 <body>
@@ -97,9 +97,9 @@ html[data-bs-theme="dark"] #copy{background:#405e6d;color:#f4f8fa;border:1px sol
     <noscript><p>Enable JavaScript to use search, portion calculations, and the shopping list.</p></noscript>
     <div id="message" role="status" aria-live="polite"></div>
     <section class="filters" aria-label="Recipe filters">
-      <div><label for="search">Search recipes or ingredients</label><input type="search" id="search" placeholder="For example: tomatoes, pasta"><small>Recipes must match every comma-separated term.</small></div>
+      <div><label for="search">Search recipes or ingredients</label><input type="search" id="search" placeholder="For example: tomatoes, pasta"><small>Use commas to require each ingredient.</small></div>
       <div><label for="category">Meal</label><select id="category"><option value="all">All recipes</option><option>Breakfast</option><option>Soup</option><option>Main course</option><option>Salad</option></select></div>
-      <div><label for="duration">Preparation and cooking</label><select id="duration"><option value="999">Any duration</option><option value="15">Up to 15 minutes</option><option value="30">Up to 30 minutes</option></select><label class="check-label"><input type="checkbox" id="favorites">Favorites only</label></div>
+      <div><label for="duration">Ready in</label><select id="duration"><option value="999">Any duration</option><option value="15">Up to 15 minutes</option><option value="30">Up to 30 minutes</option></select><label class="check-label"><input type="checkbox" id="favorites">Favorites only</label></div>
     </section>
     <div class="layout">
       <section id="catalog" aria-labelledby="catalog-title"><h2 id="catalog-title">Recipes</h2><p id="results" class="muted" aria-live="polite"></p><div id="recipes"></div></section>
@@ -107,7 +107,7 @@ html[data-bs-theme="dark"] #copy{background:#405e6d;color:#f4f8fa;border:1px sol
         <div id="menu"><h2>My menu</h2><details class="readability-help"><summary>Help</summary><p class="muted">Choose the portions and add a recipe to your menu. Ingredients are combined into one list.</p></details><div id="menu-items"></div></div>
         <h2 id="shopping-title" style="margin-top:24px">Shopping list</h2>
         <p id="shopping-summary" class="muted" aria-live="polite"></p><ul id="shopping"></ul>
-        <div id="list-actions" class="actions"><button id="copy" type="button">Copy list</button><button id="print" type="button">Print missing items</button><button id="clear" type="button">Clear menu</button></div>
+        <div id="list-actions" class="actions"><button id="copy" type="button">Copy missing items</button><button id="print" type="button">Print missing items</button><button id="clear" type="button">Clear menu</button></div>
         <textarea id="copy-text" readonly hidden aria-label="Shopping list to copy"></textarea>
         <details class="readability-help"><summary>Help</summary><p class="storage"><small>Your favorites, menu, and checked items are stored in this browser. The page works offline. Clearing browser data may erase your records.</small></p></details>
       </aside>
@@ -554,12 +554,12 @@ html[data-bs-theme="dark"] #copy{background:#405e6d;color:#f4f8fa;border:1px sol
         label.append(check, element('span', `${item.name} — ${number(item.amount)} ${item.unit}`)); li.append(label); $('shopping').append(li);
       });
       updateSummary();
-      for (const id of ['copy', 'print', 'clear']) $(id).disabled = !items.length;
+      $('clear').disabled = !state.menu.length;
       $('copy-text').hidden = true;
     }
     function updateSummary() {
       const total = shoppingItems().length;
-      $('shopping-summary').textContent = total ? `${total} ingredients · ${total - state.checked.length} missing. Check off items you already have.` : 'Add a recipe to see the ingredients here.';
+      const missing = total - state.checked.length; $('copy').disabled = $('print').disabled = missing === 0; $('shopping-summary').textContent = total ? `${total} ingredients · ${missing} missing. Check off items you already have.` : 'Add a recipe to see the ingredients here.';
     }
     function renderRecipes() {
       const queries = normalize($('search').value).split(',').map(value => value.trim()).filter(Boolean);
@@ -573,7 +573,7 @@ html[data-bs-theme="dark"] #copy{background:#405e6d;color:#f4f8fa;border:1px sol
       if (!visible.length) $('recipes').append(element('p', 'No matching recipes. Change the search or filters.', 'empty'));
       visible.forEach(recipe => {
         const card = element('article', undefined, 'recipe');
-        card.append(element('h2', recipe.title), element('p', recipe.description), element('p', `${recipe.category} · About ${recipe.minutes} minutes · Base recipe ${recipe.servings} servings`, 'meta'));
+        card.append(element('h2', recipe.title), element('p', recipe.description), element('p', `${recipe.category} · About ${recipe.minutes} minutes`, 'meta'));
         const portion = element('div', undefined, 'portion'); const label = element('label', 'Servings'); const input = element('input');
         input.type = 'number'; input.required = true; input.min = '1'; input.max = '24'; input.step = '1'; input.value = recipe.servings; input.id = `servings-${recipe.id}`; label.htmlFor = input.id; portion.append(label, input); card.append(portion);
         const details = element('details'); details.append(element('summary', 'Ingredients and method'), element('h3', 'Ingredients'));
@@ -589,7 +589,7 @@ html[data-bs-theme="dark"] #copy{background:#405e6d;color:#f4f8fa;border:1px sol
           if (existing && existing.servings + servings > 96) { notify('You can add up to 96 servings of one recipe to the menu.', true); return; }
           if (existing) existing.servings += servings; else state.menu.push({ id: recipe.id, servings });
           state.checked = state.checked.filter(key => !recipe.ingredients.some(([name, , unit]) => `${name}|${unit}` === key));
-          drawMenu(); if (save()) notify(`${recipe.title}, ${servings} servings added to your menu. Its ingredients have been marked as missing again.`);
+          drawMenu(); if (save()) notify(`Added ${servings} servings of ${recipe.title}; its ingredients are unchecked.`);
         });
         const favorite = element('button', state.favorites.includes(recipe.id) ? 'Remove favorite' : 'Add favorite'); favorite.type = 'button'; favorite.setAttribute('aria-pressed', String(state.favorites.includes(recipe.id)));
         favorite.addEventListener('click', () => { if (state.favorites.includes(recipe.id)) state.favorites = state.favorites.filter(id => id !== recipe.id); else state.favorites.push(recipe.id); renderRecipes(); save(); });
