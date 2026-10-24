@@ -34,4 +34,14 @@ These completed groups and the five additional static pages map to the 77 catalo
 
 ## Verification
 
-The actual shared navigation and directory scripts passed 17 controlled DOM consumer assertions, including delayed navigation, hidden menus, cross-origin links, configuration-independent navigation, multiword search, no results and clearing the search. The three edited additional-page scripts parsed. These checks do not represent native interactions. Product-specific checks and reading ranges are in the linked records. Coordinated publication evidence is appended after deployment.
+The actual shared navigation and directory scripts passed 21 controlled DOM consumer assertions, including delayed navigation, hidden menus, closed/open/nested disclosures and summary links, cross-origin links, configuration-independent navigation, multiword search, no results and clearing the search. The three edited additional-page scripts parsed. These checks do not represent native interactions. Product-specific checks and reading ranges are in the linked records. Coordinated publication evidence is appended after deployment.
+
+## Published result
+
+The main cleanup source `27ef6774334b24a1df71db38e91432ddc1ea2fee` passed [workflow 40143810261](https://github.com/muhammetozeski/BinSite/actions/runs/40143810261). The final two live findings were included in `cc8355428cc4aaf53f3fe63826aa612f5eacad9e`, published successfully by [workflow 40144362519](https://github.com/muhammetozeski/BinSite/actions/runs/40144362519).
+
+After the main cleanup, the existing delivery verifier checked all 77 catalog URLs: HTTP 200, English document metadata, dark defaults and appearance dependencies. Directory CSS/search and shared navigation assets matched source. After the final release, the two changed resources—`assets/revenue.js` and `fabrika-akisi/index.html`—again returned HTTP 200 and matched the final source. Unchanged delivery checks were not repeated merely to create another count.
+
+Read-only production observation showed the compact directory with one opening link per entry, Story Tree's story/example/choice screen, Catalog Studio's actual editable example catalog, and Factory Flow's working counters. Factory's zero-stock sale buttons were visibly disabled while positive-stock sales remained available. Story Tree retained visible footer privacy access with its help closed and did not duplicate its header Home link. The initial native observation exposed the closed-disclosure geometry issue; the final observation confirmed its correction.
+
+[Published directory screenshot](homepage-cleanup.png). Browser navigation and observation did not exercise forms, file dialogs, clipboard, payments or account mutations. This evidence is narrower than claiming every state and interaction was graphically tested.
