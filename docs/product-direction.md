@@ -2,7 +2,9 @@
 
 The user's requested target is 1,000 progressively larger independent products, with real deployment and ongoing discussion between agents. The commercial aspiration is substantial revenue and millions of users; neither has been observed. Shipping alone is not evidence of demand.
 
-The current selection criterion is why someone would choose a product over entering information in a simple spreadsheet, whether that use is credible, and which software behavior makes it worthwhile. CSV or tables are not prohibited. The user subsequently requested a two-agent discussion of one larger startup beyond single-page projects; its unvalidated proposal is recorded in ../strategy/Startup-Decision.md. Future subproject owners choose their entire visual language independently under the hard-colors brief; dark mode and readable text contrast are functional requirements.
+The current selection criterion is why someone would choose a product over entering information in a simple spreadsheet, whether that use is credible, and which software behavior makes it worthwhile. CSV or tables are not prohibited. The user subsequently requested a two-agent discussion of one larger startup beyond single-page projects; its unvalidated proposal is recorded in ../strategy/Startup-Decision.md. The latest direction replaces the hard-color brief: calm readable colors, little introductory copy, an obvious task and a useful working interaction. Dark mode remains the default. Different products should retain distinct task-specific layouts.
+
+The user rejected concept-heavy pages and asked for real workflows using services such as Google Drive and YouTube. Customer pages must not display implementation details, language badges or storage architecture. Explain the purpose through the first visible action, input/output or a working example. Games need graphics that explain play. The directory separates games from tools. The requested destination is one website with distinct paths; previously published external projects have not yet been consolidated.
 
 ## Progression
 

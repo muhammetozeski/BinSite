@@ -14,7 +14,7 @@ Use standard HTML, CSS, and JavaScript when sufficient. Every product must provi
 
 Product catalog entries use `id`, `name`, `slug`, `category`, `stage`, `description`, `features`, and `businessHypothesis`. Business hypotheses are proposals, not observed outcomes. Save no secrets in source or generated files. New products remain in this permanent directory. Source is public at https://github.com/muhammetozeski/BinSite, as requested by the user.
 
-An independently hosted product may supply `url`, an absolute HTTPS address without credentials, query or fragment. The directory links directly to that address; it does not generate another product or wrapper page. The build rejects duplicate normalized product URLs, skips local bootstrap/revenue injection for external entries, and keeps other hosts out of this host's sitemap. Independent projects maintain their own source and hosting registry entries. Optional `appearance: { "themeAttribute": "data-example-theme", "assetAttribute": "data-example-appearance" }` identifies that project's dark-default HTML attribute and its script/style evidence markers without requiring shared assets. The delivery ledger records the verified URL, so changing an address requires a new check.
+The user now requests one website with distinct products at paths. Existing external `url` entries remain implemented in the directory while consolidation is pending; this is not evidence that consolidation is complete. The build rejects duplicate normalized product URLs, skips local bootstrap/revenue injection for external entries, and keeps other hosts out of this host's sitemap. The delivery ledger records the verified URL, so changing an address requires a new check.
 
 ## Local use
 
@@ -22,7 +22,7 @@ Individual static products can be opened directly. A local or deployed HTTP orig
 
 The public directory is https://muhammetozeski-binsite.pages.dev/ . Pushes to `main` compile the C# browser client, build the directory from completed catalog entries, check sources, and deploy with GitHub Actions. Run `scripts/Verify-Live.ps1` after a successful deployment to update the HTTP delivery ledger; interaction checks are recorded separately.
 
-Product interfaces and bundled content are English-only. Interfaces prioritize working controls and content, use hard, high-contrast colors, and avoid decorative 3D, gradients, glow effects, oversized promotional sections, and a forced shared product shell. Advertising is based on publisher networks such as AdSense; the direct-sponsorship workshop has been removed.
+Product interfaces and bundled content are English-only. The latest brief replaces hard colors with calm, readable interfaces, concise task descriptions and prominent working controls. Do not display language badges or implementation notes such as framework names and shared-server storage. The purpose should be apparent from the controls and an immediately usable example. Tools and games are separate directory groups. Games need meaningful graphics. Prioritize useful workflows with existing service APIs over more small concepts. Advertising is based on publisher networks such as AdSense; the direct-sponsorship workshop has been removed.
 
 ## Project knowledge
 
