@@ -1,0 +1,323 @@
+@page "/shift-cover-desk/"
+@using System.Globalization
+@using System.Text
+@using Microsoft.AspNetCore.Components.Forms
+@inject IJSRuntime Javascript
+@inject SocialApi Api
+@inject ILogger<ShiftCoverDesk> Logger
+@implements IAsyncDisposable
+
+<PageTitle>Shift &amp; Cover Desk — Local roster planning</PageTitle>
+<main class="shift-cover">
+    <header><a href="/">Product directory</a><h1>Shift &amp; Cover Desk</h1><p>Enter coverage, skills and real availability. Build a checked roster and export each person's schedule.</p></header>
+    <nav aria-label="Planning sections">
+        @foreach (var tab in Tabs) { <button class="@(View == tab.Key ? "selected" : "")" disabled="@Busy" @onclick="() => SelectView(tab.Key)">@tab.Value</button> }
+    </nav>
+    <p class="message" role="status" aria-live="polite">@Message</p>
+    @if (!string.IsNullOrEmpty(StorageMessage)) { <p class="storage">@StorageMessage</p> }
+    @if (Busy) { <p role="status">Working…</p> }
+    <div class="tools">
+        <button disabled="@(Busy || Module is null)" @onclick="SaveNow">Save locally</button>
+        <button disabled="@(Busy || Module is null)" @onclick="DownloadJson">Download project JSON</button>
+        <label class="file-control">Open project JSON<InputFile OnChange="ImportJson" accept=".json,application/json" disabled="@(Busy || Module is null)" /></label>
+        <button disabled="@Busy" @onclick="NewProject">New blank roster</button>
+    </div>
+    <p class="summary"><strong>@Project.Assignments.Count / @RequiredSeats seats assigned</strong> · @CurrentIssues.Count constraint issue(s) · @Project.People.Count people · @ShiftCoverRules.OffsetLabel(Project.UtcOffsetMinutes) fixed planning clock</p>
+    @if (!string.IsNullOrEmpty(Project.ExampleOrigin)) { <p class="example-origin">Started from the fictional editable example “@Project.ExampleOrigin”. Its original names, availability and limits were invented for this exercise.</p> }
+
+    @if (View == "setup")
+    {
+        <section><h2>Planning clock and project</h2><fieldset disabled="@Busy">
+            <label>Roster title<input maxlength="140" @bind="TitleDraft" /></label>
+            <label>Fixed UTC offset<select @bind="OffsetDraft">@foreach (var offset in Enumerable.Range(-48, 105).Select(value => value * 15)) { <option value="@offset">@ShiftCoverRules.OffsetLabel(offset)</option> }</select></label>
+            <p>Every dated window uses this clock. Changing the offset reinterprets all times and changes calendar instants. Daylight-saving transitions are not applied automatically: split a period that needs different offsets into separate projects.</p>
+            <label>Planning notes<textarea maxlength="6000" rows="3" @bind="NotesDraft"></textarea></label>
+            <button @onclick="SaveSettings">Save project settings</button>
+        </fieldset></section>
+        <section><h2>Roles / capabilities</h2><p>A shift requires one role. A person must explicitly have that role; a blank skill list does not mean all roles.</p>
+            <fieldset disabled="@Busy"><label>Role name<input maxlength="80" @bind="RoleNameDraft" placeholder="For example: Welcome desk" /></label><button @onclick="SaveRole">@(EditingRoleId is null ? "Add role" : "Save role name")</button>@if (EditingRoleId is not null) { <button @onclick="ResetRoleDraft">Cancel role edit</button> }</fieldset>
+            <table><thead><tr><th>Role</th><th>Entered people</th><th>Actions</th></tr></thead><tbody>@foreach (var role in Project.Roles) { <tr><td>@role.Name</td><td>@Project.People.Count(value => value.RoleIds.Contains(role.Id))</td><td><button disabled="@Busy" @onclick="() => EditRole(role)">Rename</button><button disabled="@Busy" @onclick="() => DeleteRole(role.Id)">Delete unused role</button></td></tr> }</tbody></table>
+        </section>
+        <section><h2>Choose the planning period</h2><p>Use dated shifts and availability within one period of at most 62 days. Total-hour limits apply to this whole project, not a calendar week. Limits are your planning inputs; this tool does not determine legal compliance, certifications, consent or employment eligibility.</p><p>Start with roles, add people and availability, enter shift requirements, then generate suggestions or assign seats manually. Saved rule changes can expose conflicts in existing assignments; those assignments stay visible until you fix them.</p></section>
+    }
+    else if (View == "people")
+    {
+        <div class="split"><section><h2>People and entered limits</h2><p>Use a label you choose; email, phone and personal details are not required.</p>
+            <table><thead><tr><th>Person label</th><th>Roles</th><th>Availability</th><th>Hours</th><th>Actions</th></tr></thead><tbody>@foreach (var person in Project.People) { <tr><td>@person.Label</td><td>@string.Join(", ", Project.Roles.Where(role => person.RoleIds.Contains(role.Id)).Select(role => role.Name))</td><td>@person.Availability.Count window(s)</td><td>@ShiftCoverRules.Hours(AssignedHours(person.Id)) / @ShiftCoverRules.Hours(person.MaximumTotalHours)</td><td><button disabled="@Busy" @onclick="() => EditPerson(person)">Edit</button><button disabled="@Busy" @onclick="() => DeletePerson(person.Id)">Remove</button></td></tr> }</tbody></table>
+            @if (Project.People.Count == 0) { <p>No people entered. Availability is never assumed.</p> }
+            <button disabled="@Busy" @onclick="NewPersonDraft">New person</button>
+        </section><section><h2>@(EditingPersonId is null ? "Add a person" : "Edit person")</h2><fieldset disabled="@Busy">
+            <label>Person label<input maxlength="100" @bind="PersonLabelDraft" /></label>
+            <fieldset><legend>Entered roles / capabilities</legend>@foreach (var role in Project.Roles) { <label class="check"><input type="checkbox" checked="@PersonRolesDraft.Contains(role.Id)" @onchange="args => TogglePersonRole(role.Id, args)" />@role.Name</label> }@if (Project.Roles.Count == 0) { <p>Add a role in Setup first.</p> }</fieldset>
+            <div class="fields"><label>Maximum hours in this project<input type="number" min="0" max="2000" step="0.25" @bind="TotalHoursDraft" /></label><label>Maximum hours in one shift<input type="number" min="0.25" max="24" step="0.25" @bind="ShiftHoursDraft" /></label><label>Minimum rest between shifts (minutes)<input type="number" min="0" max="2880" step="1" @bind="RestMinutesDraft" /></label></div>
+            <h3>Actual availability</h3><p>No windows means unavailable. Adjacent or overlapping windows are combined; a real gap is not bridged.</p>
+            <div class="fields"><label>Available from (@ShiftCoverRules.OffsetLabel(Project.UtcOffsetMinutes))<input type="datetime-local" value="@AvailabilityStartDraft" @onchange="args => AvailabilityStartDraft = args.Value?.ToString() ?? string.Empty" /></label><label>Available until<input type="datetime-local" value="@AvailabilityEndDraft" @onchange="args => AvailabilityEndDraft = args.Value?.ToString() ?? string.Empty" /></label></div>
+            <button @onclick="AddAvailabilityDraft">Add window to draft</button>
+            <ol>@for (var index = 0; index < AvailabilityDraft.Count; index++) { var position = index; var window = AvailabilityDraft[index]; <li>@ShiftCoverRules.Display(window.Start) → @ShiftCoverRules.Display(window.End) <button @onclick="() => RemoveAvailabilityDraft(position)">Remove window</button></li> }</ol>
+            <button class="strong" @onclick="SavePerson">Save person and availability</button><button @onclick="NewPersonDraft">Clear person draft</button>
+        </fieldset></section></div>
+    }
+    else if (View == "shifts")
+    {
+        <div class="split"><section><h2>Coverage requirements</h2><p>Each numbered seat needs one person. Overnight shifts require an end date on the following day.</p>
+            <table><thead><tr><th>Shift / role</th><th>Planning clock</th><th>Seats</th><th>Actions</th></tr></thead><tbody>@foreach (var shift in Project.Shifts.OrderBy(value => value.Start, StringComparer.Ordinal)) { <tr><td>@shift.Title<br /><span>@RoleName(shift.RoleId)</span></td><td>@ShiftCoverRules.Display(shift.Start)<br />to @ShiftCoverRules.Display(shift.End)</td><td>@Project.Assignments.Count(value => value.ShiftId == shift.Id) / @shift.RequiredPeople</td><td><button disabled="@Busy" @onclick="() => EditShift(shift)">Edit</button><button disabled="@Busy" @onclick="() => DeleteShift(shift.Id)">Remove</button></td></tr> }</tbody></table>
+            @if (Project.Shifts.Count == 0) { <p>No coverage requirements yet.</p> }
+            <button disabled="@Busy" @onclick="NewShiftDraft">New shift</button>
+        </section><section><h2>@(EditingShiftId is null ? "Add a shift" : "Edit shift")</h2><fieldset disabled="@Busy">
+            <label>Shift label<input maxlength="140" @bind="ShiftTitleDraft" /></label><label>Required role<select @bind="ShiftRoleDraft"><option value="">Choose a role</option>@foreach (var role in Project.Roles) { <option value="@role.Id">@role.Name</option> }</select></label>
+            <label>Start (@ShiftCoverRules.OffsetLabel(Project.UtcOffsetMinutes))<input type="datetime-local" value="@ShiftStartDraft" @onchange="args => ShiftStartDraft = args.Value?.ToString() ?? string.Empty" /></label><label>End (include the correct date)<input type="datetime-local" value="@ShiftEndDraft" @onchange="args => ShiftEndDraft = args.Value?.ToString() ?? string.Empty" /></label>
+            <label>Required people / seats<input type="number" min="1" max="12" step="1" @bind="ShiftSeatsDraft" /></label><button class="strong" @onclick="SaveShift">Save requirement</button><button @onclick="NewShiftDraft">Clear shift draft</button>
+        </fieldset></section></div>
+    }
+    else if (View == "schedule")
+    {
+        <section><h2>Build and inspect coverage</h2><p>Suggestions keep valid locked seats and may replace every unlocked assignment. Eight deterministic greedy passes try different priorities, with at most @ShiftCoverPlanner.MaximumCandidateChecks dynamic candidate checks. The best measured coverage is retained. An open seat is not proof that no valid roster exists.</p>
+            <div class="tools"><button class="strong" disabled="@(Busy || Project.Shifts.Count == 0)" @onclick="Generate">Suggest a checked roster</button><button disabled="@(Busy || Project.Assignments.Count == 0)" @onclick="ClearAssignments">Clear assignments</button><button disabled="@(Busy || Project.Shifts.Count == 0 || Module is null)" @onclick="DownloadCsv">Download all seats CSV</button><button disabled="@(Busy || Project.Assignments.Count == 0 || CurrentIssues.Count > 0 || Module is null)" @onclick="DownloadCalendar">Download all assignments calendar</button><button disabled="@(Busy || Module is null)" @onclick="DownloadReport">Download print-ready HTML</button></div>
+            @if (CurrentIssues.Count > 0) { <div class="conflicts"><h3>Current conflicts</h3><p>Rule changes retained these assignments as a draft. Fix them before exporting a calendar.</p><ul>@foreach (var issue in CurrentIssues) { <li>@AssignmentLabel(issue.AssignmentId) — @issue.Message</li> }</ul></div> }
+            <table><thead><tr><th>Shift / role</th><th>Time (@ShiftCoverRules.OffsetLabel(Project.UtcOffsetMinutes))</th><th>Seat</th><th>Assigned person</th><th>Actions / reason</th></tr></thead><tbody>
+                @foreach (var shift in Project.Shifts.OrderBy(value => value.Start, StringComparer.Ordinal).ThenBy(value => value.Id))
+                {
+                    @for (var seat = 0; seat < shift.RequiredPeople; seat++)
+                    {
+                        var position = seat; var assignment = Project.Assignments.FirstOrDefault(value => value.ShiftId == shift.Id && value.Seat == position);
+                        <tr><td>@shift.Title<br /><span>@RoleName(shift.RoleId)</span></td><td>@ShiftCoverRules.Display(shift.Start)<br />to @ShiftCoverRules.Display(shift.End)</td><td>@(position + 1)</td><td>@(assignment is null ? "UNFILLED" : PersonName(assignment.PersonId))@if (assignment?.Locked == true) { <span> · Locked</span> }</td><td><button disabled="@Busy" @onclick="() => SelectSeat(shift.Id, position)">@(assignment is null ? "Explain / assign" : "Inspect / replace")</button>@if (assignment is not null) { <button disabled="@Busy" @onclick="() => ToggleLock(assignment.Id)">@(assignment.Locked ? "Unlock" : "Lock")</button><button disabled="@Busy" @onclick="() => ClearSeat(shift.Id, position)">Clear seat</button> } else { <details><summary>Current blockers</summary><p>@OpenReason(shift.Id, position)</p></details> }</td></tr>
+                    }
+                }
+            </tbody></table>
+        </section>
+        <div class="split"><section><h2>Manual assignment</h2><fieldset disabled="@Busy"><label>Shift<select value="@ManualShiftId" @onchange="SelectManualShift"><option value="">Choose a shift</option>@foreach (var shift in Project.Shifts.OrderBy(value => value.Start, StringComparer.Ordinal)) { <option value="@shift.Id">@shift.Title · @ShiftCoverRules.Display(shift.Start)</option> }</select></label>
+            @if (ManualShift is { } manualShift)
+            {
+                <label>Seat<select @bind="ManualSeat">@for (var index = 0; index < manualShift.RequiredPeople; index++) { <option value="@index">Seat @(index + 1)</option> }</select></label><label>Person<select @bind="ManualPersonId"><option value="">Choose a person</option>@foreach (var person in Project.People.OrderBy(value => value.Label, StringComparer.Ordinal)) { <option value="@person.Id">@person.Label</option> }</select></label><button @onclick="AssignManual">Validate and assign / replace</button>
+                <h3>Candidate checks for this seat</h3><p>The existing occupant is temporarily excluded when checking a replacement. Limits still include that person's other shifts.</p><table><thead><tr><th>Person</th><th>Other assigned hours</th><th>Actual current check</th></tr></thead><tbody>@foreach (var candidate in ShiftCoverRules.Candidates(Project, manualShift.Id, ManualSeat)) { <tr><td>@candidate.Label</td><td>@ShiftCoverRules.Hours(candidate.AssignedHours)</td><td>@(candidate.Issues.Count == 0 ? "Eligible for this seat now" : string.Join(" ", candidate.Issues.Select(value => value.Message)))</td></tr> }</tbody></table>
+            }
+        </fieldset></section><section><h2>Swap two occupied seats</h2><p>This is an organizer's local change. It does not submit a request to staff or record anyone's acceptance.</p><fieldset disabled="@Busy"><label>First assignment<select @bind="SwapFirst"><option value="">Choose an assignment</option>@foreach (var assignment in Project.Assignments) { <option value="@assignment.Id">@AssignmentLabel(assignment.Id)</option> }</select></label><label>Second assignment<select @bind="SwapSecond"><option value="">Choose another assignment</option>@foreach (var assignment in Project.Assignments) { <option value="@assignment.Id">@AssignmentLabel(assignment.Id)</option> }</select></label><button disabled="@(Project.Assignments.Count < 2)" @onclick="SwapAssignments">Validate both sides and swap</button></fieldset></section></div>
+        <section><h2>Per-person schedules</h2><p>Times below use the fixed project clock. Calendar files contain UTC instants and may display in the calendar application's own zone. Imported files do not automatically remove or update earlier imports.</p>
+            @foreach (var person in Project.People.OrderBy(value => value.Label, StringComparer.Ordinal))
+            {
+                var assignments = Project.Assignments.Where(value => value.PersonId == person.Id).OrderBy(value => Project.Shifts.First(shift => shift.Id == value.ShiftId).Start, StringComparer.Ordinal).ToArray();
+                <article class="person-schedule"><h3>@person.Label — @ShiftCoverRules.Hours(AssignedHours(person.Id)) / @ShiftCoverRules.Hours(person.MaximumTotalHours) hours</h3><p>Single-shift limit @ShiftCoverRules.Hours(person.MaximumShiftHours) hours; entered minimum rest @person.MinimumRestMinutes minutes.</p><div class="tools"><button disabled="@(Busy || Module is null)" @onclick="() => DownloadPersonCsv(person.Id)">Person CSV</button><button disabled="@(Busy || Module is null || assignments.Length == 0 || CurrentIssues.Count > 0)" @onclick="() => DownloadPersonCalendar(person.Id)">Person calendar</button></div>
+                    @if (assignments.Length == 0) { <p>No assigned shifts.</p> } else { <ul>@foreach (var assignment in assignments) { var shift = Project.Shifts.First(value => value.Id == assignment.ShiftId); <li><strong>@shift.Title</strong> · @RoleName(shift.RoleId) · @ShiftCoverRules.Display(shift.Start) → @ShiftCoverRules.Display(shift.End) · seat @(assignment.Seat + 1)</li> }</ul> }
+                </article>
+            }
+        </section>
+    }
+    else if (View == "examples")
+    {
+        <section><h2>Eight fictional editable rosters</h2><p>These are written exercises, not real workers or customer schedules. Some intentionally leave coverage gaps. Opening an example replaces the current local document only after confirmation; download a backup to keep both.</p>
+            <table><thead><tr><th>Example</th><th>Planning problem</th><th>Action</th></tr></thead><tbody>@foreach (var example in ShiftCoverExamples.All) { <tr><td>@example.Title</td><td>@example.Description</td><td><button disabled="@Busy" @onclick="() => LoadExample(example.Id)">Open editable example</button></td></tr> }</tbody></table>
+        </section>
+    }
+    else if (View == "vault")
+    {
+        <section><h2>Optional owner-only cloud snapshots</h2><p>The whole planner works locally without an account or API key. A real Creator account can store roster JSON in its private project vault. These snapshots do not share staff access, invitations, collaborative editing or revision history.</p><p><a href="/uyelik/" target="_blank" rel="noopener">Open or recover a real Creator account</a>. The actual account service enforces the combined free / membership project allowance. Membership adds saved-project capacity; every vault file remains limited to 64 KiB.</p>
+            <fieldset disabled="@(Busy || Module is null)"><label>Outer vault label (separate from the roster title)<input maxlength="100" @bind="VaultLabel" /></label><p>Current JSON body: @ProjectBytes bytes / @ShiftCoverVault.MaximumBodyBytes bytes. Local full JSON supports up to 2 MB.</p><button disabled="@(ProjectBytes > ShiftCoverVault.MaximumBodyBytes)" @onclick="SaveVault">Save a new private snapshot</button><button @onclick="RefreshVault">List my real saved snapshots</button></fieldset>
+            <p>@VaultMessage</p><table><thead><tr><th>Saved label</th><th>Saved UTC</th><th>Actions</th></tr></thead><tbody>@foreach (var item in VaultItems.Where(value => value.Kind == "roster")) { <tr><td>@item.Title</td><td>@DateTimeOffset.FromUnixTimeMilliseconds(item.UpdatedAt).ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)</td><td><button disabled="@Busy" @onclick="() => LoadVault(item.Id)">Open validated JSON</button><button disabled="@Busy" @onclick="() => DeleteVault(item.Id)">Delete saved snapshot</button></td></tr> }</tbody></table>
+        </section>
+    }
+    <footer><p>All availability, skills and limits are entered by the organizer. “Passes constraints” refers to those inputs. Files and local changes do not constitute employee consent, a staffing certification or legal advice. Once loaded, local planning and file exports need no server connection; reopening the app offline has not been installed or promised.</p></footer>
+</main>
+
+@code {
+    const bool IsLogEnabled = true;
+    static readonly IReadOnlyDictionary<string, string> Tabs = new Dictionary<string, string> { ["setup"] = "Setup", ["people"] = "People & availability", ["shifts"] = "Shift requirements", ["schedule"] = "Roster & exports", ["examples"] = "Fictional examples", ["vault"] = "Private vault (optional)" };
+    ShiftCoverProject Project = ShiftCoverRules.Create();
+    IJSObjectReference? Module;
+    List<ShiftCoverIssue> CurrentIssues = [];
+    readonly Dictionary<(Guid, int), string> OpenReasons = [];
+    List<ShiftCoverVaultItem> VaultItems = [];
+    bool Busy, Disposed;
+    string View = "setup", Message = "Opening local storage…", StorageMessage = "";
+    string TitleDraft = "Untitled roster", NotesDraft = "", RoleNameDraft = "";
+    int OffsetDraft;
+    Guid? EditingRoleId, EditingPersonId, EditingShiftId;
+    string PersonLabelDraft = "";
+    List<Guid> PersonRolesDraft = [];
+    List<ShiftCoverWindow> AvailabilityDraft = [];
+    decimal TotalHoursDraft = 24, ShiftHoursDraft = 8;
+    int RestMinutesDraft = 480;
+    string AvailabilityStartDraft = ShiftCoverRules.ClockText(DateTime.UtcNow.Date.AddHours(9));
+    string AvailabilityEndDraft = ShiftCoverRules.ClockText(DateTime.UtcNow.Date.AddHours(17));
+    string ShiftTitleDraft = "", ShiftRoleDraft = "";
+    string ShiftStartDraft = ShiftCoverRules.ClockText(DateTime.UtcNow.Date.AddHours(9));
+    string ShiftEndDraft = ShiftCoverRules.ClockText(DateTime.UtcNow.Date.AddHours(13));
+    int ShiftSeatsDraft = 1;
+    string ManualShiftId = "", ManualPersonId = "", SwapFirst = "", SwapSecond = "";
+    int ManualSeat;
+    string VaultLabel = "Roster snapshot", VaultMessage = "No account request has been made.";
+    int RequiredSeats => Project.Shifts.Sum(value => value.RequiredPeople);
+    int ProjectBytes => Encoding.UTF8.GetByteCount(ShiftCoverRules.Serialize(Project));
+    ShiftCoverShift? ManualShift => Guid.TryParse(ManualShiftId, out var id) ? Project.Shifts.FirstOrDefault(value => value.Id == id) : null;
+    ShiftCoverVault Vault => new(Api);
+
+    /// <summary>Loads this product's browser storage only; no account request occurs during local startup.</summary>
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        await Execute(async () =>
+        {
+            Module = await Javascript.InvokeAsync<IJSObjectReference>("import", "/shift-cover.js");
+            var json = await Module.InvokeAsync<string?>("loadProject");
+            if (!string.IsNullOrWhiteSpace(json)) Install(ShiftCoverRules.Restore(json)); else Install(Project);
+            Message = "Local planner ready. Enter your own constraints or open a clearly fictional example.";
+        }, "open-local");
+        StateHasChanged();
+    }
+
+    /// <summary>Serializes user actions, contains failures and excludes names, schedules and project contents from logs.</summary>
+    async Task Execute(Func<Task> action, string operation)
+    {
+        if (Busy || Disposed) return;
+        Busy = true;
+        try { if (IsLogEnabled) Logger.LogInformation("Roster action started; operation={Operation}", operation); await action(); }
+        catch (ApiFailure error) { Message = error.Message; VaultMessage = error.Message; if (error.Status == System.Net.HttpStatusCode.Unauthorized) VaultMessage = "Open or recover your real Creator account, then retry. The local roster remains usable."; }
+        catch (InvalidOperationException error) { Message = error.Message; if (IsLogEnabled) Logger.LogWarning("Roster validation rejected; operation={Operation}", operation); }
+        catch (JSException) { Message = "The browser operation failed. Keep this page open and download project JSON if local saving is unavailable."; if (IsLogEnabled) Logger.LogWarning("Roster browser operation failed; operation={Operation}", operation); }
+        catch (HttpRequestException) { Message = VaultMessage = "The account service could not be reached. Local planning is available. Refresh the vault list before retrying a save."; }
+        catch (Exception error) { Message = "The action could not be completed. Keep this page open and download a JSON backup."; if (IsLogEnabled) Logger.LogError("Roster action failed; operation={Operation}; type={Type}", operation, error.GetType().Name); }
+        finally { Busy = false; }
+    }
+
+    /// <summary>Writes and verifies the whole local document; a failed write is never labelled saved.</summary>
+    async Task Persist()
+    {
+        if (Module is null) throw new InvalidOperationException("Browser storage is not ready. Wait for startup or refresh before editing.");
+        var savedAt = DateTimeOffset.UtcNow;
+        Project.UpdatedAt = savedAt >= Project.CreatedAt ? savedAt : Project.CreatedAt;
+        try { var mode = await Module.InvokeAsync<string>("saveProject", ShiftCoverRules.Serialize(Project)); StorageMessage = "Saved locally using " + mode + ". Keep JSON exports as portable backups."; }
+        catch { StorageMessage = "Local save failed. The roster remains in this open page; download project JSON before closing."; throw; }
+    }
+
+    /// <summary>Installs already validated data and refreshes all conflict and coverage diagnostics.</summary>
+    void Install(ShiftCoverProject next)
+    {
+        ShiftCoverRules.ValidateStructure(next);
+        var differentProject = next.Id != Project.Id;
+        Project = next; CurrentIssues = ShiftCoverRules.AssignmentIssues(Project);
+        if (differentProject)
+        {
+            EditingRoleId = null; RoleNameDraft = ""; ClearPersonDraft(); ClearShiftDraft(); ManualShiftId = ""; ManualSeat = 0;
+            var first = Project.Shifts.OrderBy(value => value.Start, StringComparer.Ordinal).FirstOrDefault();
+            var date = DateTime.UtcNow.AddMinutes(Project.UtcOffsetMinutes).Date;
+            AvailabilityStartDraft = ShiftStartDraft = first?.Start ?? ShiftCoverRules.ClockText(date.AddHours(9));
+            AvailabilityEndDraft = ShiftEndDraft = first?.End ?? ShiftCoverRules.ClockText(date.AddHours(17));
+        }
+        PersonRolesDraft.RemoveAll(id => !Project.Roles.Any(role => role.Id == id));
+        if (!Guid.TryParse(ShiftRoleDraft, out var draftRole) || !Project.Roles.Any(role => role.Id == draftRole)) ShiftRoleDraft = Project.Roles.FirstOrDefault()?.Id.ToString() ?? "";
+        TitleDraft = Project.Title; NotesDraft = Project.Notes; OffsetDraft = Project.UtcOffsetMinutes; OpenReasons.Clear();
+        foreach (var shift in Project.Shifts) for (var seat = 0; seat < shift.RequiredPeople; seat++) if (!Project.Assignments.Any(value => value.ShiftId == shift.Id && value.Seat == seat)) OpenReasons[(shift.Id, seat)] = ShiftCoverExports.UnfilledReason(Project, shift.Id, seat);
+        if (ManualShift is null) { ManualShiftId = Project.Shifts.FirstOrDefault()?.Id.ToString() ?? ""; ManualSeat = 0; }
+        if (ManualShift is { } manual && ManualSeat >= manual.RequiredPeople) ManualSeat = 0;
+        ManualPersonId = ""; SwapFirst = SwapSecond = "";
+    }
+
+    /// <summary>Applies a detached valid edit before attempting durable browser storage.</summary>
+    async Task Commit(ShiftCoverProject next, string message) { Install(next); await Persist(); Message = message; }
+    /// <summary>Changes only the visible section while no asynchronous action is active.</summary>
+    void SelectView(string value) { if (!Busy && Tabs.ContainsKey(value)) View = value; }
+    /// <summary>Persists the current valid document explicitly.</summary>
+    Task SaveNow() => Execute(async () => { await Persist(); Message = "The current roster was saved locally."; }, "save-local");
+    /// <summary>Saves the explicitly entered clock and project notes without silently shifting wall-clock values.</summary>
+    Task SaveSettings() => Execute(async () => { var title = TitleDraft; var notes = NotesDraft; var offset = OffsetDraft; await Commit(ShiftCoverRules.Change(Project, next => { next.Title = title.Trim(); next.Notes = notes; next.UtcOffsetMinutes = offset; }), "Project settings saved. Recheck exported instants if you changed the fixed offset."); }, "save-settings");
+    /// <summary>Starts a separate blank roster after the user's explicit replacement confirmation.</summary>
+    Task NewProject() => Execute(async () => { if (!await ConfirmReplacement()) return; ResetDrafts(); await Commit(ShiftCoverRules.Create(), "Blank local roster created. No staff or availability has been assumed."); View = "setup"; }, "new-roster");
+    /// <summary>Asks before replacing entered work; a truly empty document needs no dialog.</summary>
+    async Task<bool> ConfirmReplacement() => Project.People.Count == 0 && Project.Shifts.Count == 0 && Project.Roles.Count == 0 || await Javascript.InvokeAsync<bool>("confirm", "Replace this local roster? Download project JSON first to keep both documents.");
+
+    /// <summary>Loads one role label into an isolated editor.</summary>
+    void EditRole(ShiftCoverRole role) { if (Busy) return; EditingRoleId = role.Id; RoleNameDraft = role.Name; }
+    /// <summary>Resets only the unsaved role draft.</summary>
+    void ResetRoleDraft() { if (Busy) return; EditingRoleId = null; RoleNameDraft = ""; }
+    /// <summary>Creates or renames one role while retaining all identity-based references.</summary>
+    Task SaveRole() => Execute(async () => { var id = EditingRoleId; var name = RoleNameDraft.Trim(); var next = ShiftCoverRules.Change(Project, value => { if (id is { } existing) (value.Roles.FirstOrDefault(role => role.Id == existing) ?? throw new InvalidOperationException("The role no longer exists.")).Name = name; else value.Roles.Add(new() { Name = name }); }); await Commit(next, "Role saved."); EditingRoleId = null; RoleNameDraft = ""; }, "save-role");
+    /// <summary>Refuses removal of an in-use requirement role; unused skill references are removed together.</summary>
+    Task DeleteRole(Guid id) => Execute(async () => { if (Project.Shifts.Any(value => value.RoleId == id)) throw new InvalidOperationException("This role is used by a shift. Change or remove those shift requirements first."); await Commit(ShiftCoverRules.Change(Project, next => { next.Roles.RemoveAll(value => value.Id == id); foreach (var person in next.People) person.RoleIds.Remove(id); }), "Unused role removed."); if (EditingRoleId == id) { EditingRoleId = null; RoleNameDraft = ""; } }, "delete-role");
+
+    /// <summary>Begins an independent new-person draft without modifying saved availability.</summary>
+    void NewPersonDraft() { if (Busy) return; ClearPersonDraft(); }
+    /// <summary>Clears person editor fields internally, including after a completed save.</summary>
+    void ClearPersonDraft() { EditingPersonId = null; PersonLabelDraft = ""; PersonRolesDraft = []; AvailabilityDraft = []; TotalHoursDraft = 24; ShiftHoursDraft = 8; RestMinutesDraft = 480; }
+    /// <summary>Copies existing person data so unfinished editor changes cannot alter assignments.</summary>
+    void EditPerson(ShiftCoverPerson person) { if (Busy) return; EditingPersonId = person.Id; PersonLabelDraft = person.Label; PersonRolesDraft = person.RoleIds.ToList(); AvailabilityDraft = person.Availability.Select(value => new ShiftCoverWindow { Start = value.Start, End = value.End }).ToList(); TotalHoursDraft = person.MaximumTotalHours; ShiftHoursDraft = person.MaximumShiftHours; RestMinutesDraft = person.MinimumRestMinutes; }
+    /// <summary>Changes only a draft capability, never inferring a capability from availability.</summary>
+    void TogglePersonRole(Guid id, ChangeEventArgs args) { if (Busy) return; if (args.Value is true) { if (!PersonRolesDraft.Contains(id)) PersonRolesDraft.Add(id); } else PersonRolesDraft.Remove(id); }
+    /// <summary>Adds a complete dated availability interval to the unsaved editor.</summary>
+    Task AddAvailabilityDraft() => Execute(() => { if (AvailabilityDraft.Count >= 24) throw new InvalidOperationException("Up to 24 availability windows are supported per person."); var from = ShiftCoverRules.Clock(AvailabilityStartDraft); var to = ShiftCoverRules.Clock(AvailabilityEndDraft); if (to <= from || to - from > TimeSpan.FromDays(62)) throw new InvalidOperationException("Availability must end after its start within a 62-day planning period."); AvailabilityDraft.Add(new() { Start = AvailabilityStartDraft, End = AvailabilityEndDraft }); Message = "Availability window added to the draft. Save the person to commit it."; return Task.CompletedTask; }, "draft-availability");
+    /// <summary>Removes one unsaved availability interval by its displayed position.</summary>
+    void RemoveAvailabilityDraft(int position) { if (!Busy && position >= 0 && position < AvailabilityDraft.Count) AvailabilityDraft.RemoveAt(position); }
+    /// <summary>Commits the complete detached person draft and retains any newly exposed assignments as visible conflicts.</summary>
+    Task SavePerson() => Execute(async () => { var person = new ShiftCoverPerson { Id = EditingPersonId ?? Guid.NewGuid(), Label = PersonLabelDraft.Trim(), RoleIds = PersonRolesDraft.ToList(), MaximumTotalHours = TotalHoursDraft, MaximumShiftHours = ShiftHoursDraft, MinimumRestMinutes = RestMinutesDraft, Availability = AvailabilityDraft.Select(value => new ShiftCoverWindow { Start = value.Start, End = value.End }).ToList() }; await Commit(ShiftCoverRules.Change(Project, next => { var index = next.People.FindIndex(value => value.Id == person.Id); if (index < 0) next.People.Add(person); else next.People[index] = person; }), "Person and availability saved. Existing assignments were checked against the new inputs."); ClearPersonDraft(); }, "save-person");
+    /// <summary>Explicitly removes one person and their now-unfillable assignments after confirmation.</summary>
+    Task DeletePerson(Guid id) => Execute(async () => { if (Project.Assignments.Any(value => value.PersonId == id) && !await Javascript.InvokeAsync<bool>("confirm", "Remove this person and clear their assigned seats? The coverage requirements remain.")) return; await Commit(ShiftCoverRules.Change(Project, next => { next.Assignments.RemoveAll(value => value.PersonId == id); next.People.RemoveAll(value => value.Id == id); }), "Person removed; their previous seats are now open."); if (EditingPersonId == id) ClearPersonDraft(); }, "delete-person");
+
+    /// <summary>Begins a separate shift draft.</summary>
+    void NewShiftDraft() { if (Busy) return; ClearShiftDraft(); }
+    /// <summary>Resets shift identity and label while retaining convenient entered clock defaults.</summary>
+    void ClearShiftDraft() { EditingShiftId = null; ShiftTitleDraft = ""; ShiftRoleDraft = Project.Roles.FirstOrDefault()?.Id.ToString() ?? ""; ShiftSeatsDraft = 1; }
+    /// <summary>Copies a requirement into an isolated shift editor.</summary>
+    void EditShift(ShiftCoverShift shift) { if (Busy) return; EditingShiftId = shift.Id; ShiftTitleDraft = shift.Title; ShiftRoleDraft = shift.RoleId.ToString(); ShiftStartDraft = shift.Start; ShiftEndDraft = shift.End; ShiftSeatsDraft = shift.RequiredPeople; }
+    /// <summary>Commits requirement edits, refusing a reduction that would silently discard occupied seats.</summary>
+    Task SaveShift() => Execute(async () => { if (!Guid.TryParse(ShiftRoleDraft, out var role)) throw new InvalidOperationException("Choose a role for this shift."); var shift = new ShiftCoverShift { Id = EditingShiftId ?? Guid.NewGuid(), Title = ShiftTitleDraft.Trim(), RoleId = role, Start = ShiftStartDraft, End = ShiftEndDraft, RequiredPeople = ShiftSeatsDraft }; if (Project.Assignments.Any(value => value.ShiftId == shift.Id && value.Seat >= shift.RequiredPeople)) throw new InvalidOperationException("Clear the occupied seats being removed before reducing this requirement."); await Commit(ShiftCoverRules.Change(Project, next => { var index = next.Shifts.FindIndex(value => value.Id == shift.Id); if (index < 0) next.Shifts.Add(shift); else next.Shifts[index] = shift; }), "Shift requirement saved. Existing assignments were checked again."); ClearShiftDraft(); }, "save-shift");
+    /// <summary>Removes a requirement and its assignments only after an explicit user action.</summary>
+    Task DeleteShift(Guid id) => Execute(async () => { if (Project.Assignments.Any(value => value.ShiftId == id) && !await Javascript.InvokeAsync<bool>("confirm", "Remove this shift requirement and its assigned seats?")) return; await Commit(ShiftCoverRules.Change(Project, next => { next.Assignments.RemoveAll(value => value.ShiftId == id); next.Shifts.RemoveAll(value => value.Id == id); }), "Shift requirement removed."); if (EditingShiftId == id) ClearShiftDraft(); }, "delete-shift");
+
+    /// <summary>Runs the bounded deterministic planner and reports measured coverage and work performed.</summary>
+    Task Generate() => Execute(async () => { if (Project.Assignments.Any(value => !value.Locked) && !await Javascript.InvokeAsync<bool>("confirm", "Replace unlocked assignments with checked suggestions? Locked seats will remain.")) return; var source = Project; await Task.Yield(); var result = ShiftCoverPlanner.Suggest(source); await Commit(result.Project, $"Suggested {result.CoveredSeats} / {result.RequiredSeats} seats using {result.Passes} deterministic passes and {result.CandidateChecks} dynamic checks. {(result.BudgetReached ? "The search budget was reached. " : "")}Inspect every open seat; this search does not prove optimal coverage or infeasibility."); }, "suggest-roster");
+    /// <summary>Clears occupied seats without deleting people or requirements.</summary>
+    Task ClearAssignments() => Execute(async () => { if (!await Javascript.InvokeAsync<bool>("confirm", "Clear all assignments, including locked seats? People, availability and requirements remain.")) return; await Commit(ShiftCoverRules.Change(Project, next => next.Assignments.Clear()), "All seats are open. Planning inputs were retained."); }, "clear-assignments");
+    /// <summary>Selects a numbered seat without accepting an assignment or changing any worker's state.</summary>
+    void SelectSeat(Guid shiftId, int seat) { if (Busy) return; ManualShiftId = shiftId.ToString(); ManualSeat = seat; ManualPersonId = ""; Message = "Seat selected. Inspect the actual candidate checks below."; }
+    /// <summary>Resets the seat number when the user chooses a different requirement.</summary>
+    void SelectManualShift(ChangeEventArgs args) { if (Busy) return; ManualShiftId = args.Value?.ToString() ?? ""; ManualSeat = 0; ManualPersonId = ""; }
+    /// <summary>Commits one candidate only when it passes the same rules as an automatic suggestion.</summary>
+    Task AssignManual() => Execute(async () => { if (!Guid.TryParse(ManualShiftId, out var shift) || !Guid.TryParse(ManualPersonId, out var person)) throw new InvalidOperationException("Choose a shift, seat and person first."); await Commit(ShiftCoverRules.SetSeat(Project, shift, ManualSeat, person), "Manual assignment passed the entered constraints and was saved."); }, "manual-assignment");
+    /// <summary>Clears only the explicitly selected seat.</summary>
+    Task ClearSeat(Guid shift, int seat) => Execute(async () => { await Commit(ShiftCoverRules.SetSeat(Project, shift, seat, null), "The selected seat is now open."); }, "clear-seat");
+    /// <summary>Preserves only a currently valid assignment during subsequent suggestions.</summary>
+    Task ToggleLock(Guid id) => Execute(async () => { var assignment = Project.Assignments.FirstOrDefault(value => value.Id == id) ?? throw new InvalidOperationException("This assignment no longer exists."); if (!assignment.Locked && CurrentIssues.Any(value => value.AssignmentId == id)) throw new InvalidOperationException("Fix this assignment's conflicts before locking it."); await Commit(ShiftCoverRules.Change(Project, next => next.Assignments.First(value => value.Id == id).Locked = !assignment.Locked), assignment.Locked ? "Assignment unlocked." : "Valid assignment locked for future suggestions."); }, "toggle-lock");
+    /// <summary>Validates and commits both sides of an organizer's local swap atomically.</summary>
+    Task SwapAssignments() => Execute(async () => { if (!Guid.TryParse(SwapFirst, out var first) || !Guid.TryParse(SwapSecond, out var second)) throw new InvalidOperationException("Choose two occupied assignments."); await Commit(ShiftCoverRules.Swap(Project, first, second), "Both sides passed the entered constraints. The local swap was saved; no employee acceptance was recorded."); }, "swap-assignments");
+
+    /// <summary>Downloads a complete validated portable roster, including draft conflicts.</summary>
+    Task DownloadJson() => Download(() => ShiftCoverRules.Serialize(Project), "shift-cover-project.json", "application/json", "Project JSON download started.");
+    /// <summary>Downloads all demand rows, including unresolved and conflict-labelled rows.</summary>
+    Task DownloadCsv() => Download(() => ShiftCoverExports.Csv(Project), "shift-cover-seats.csv", "text/csv;charset=utf-8", "All-seat CSV download started, including open-seat reasons.");
+    /// <summary>Downloads one person's actual assigned rows.</summary>
+    Task DownloadPersonCsv(Guid person) => Download(() => ShiftCoverExports.Csv(Project, person), "person-schedule.csv", "text/csv;charset=utf-8", "Person schedule CSV download started.");
+    /// <summary>Downloads checked actual assignments as UTC iCalendar events.</summary>
+    Task DownloadCalendar() => Download(() => ShiftCoverExports.Calendar(Project), "shift-cover-schedule.ics", "text/calendar;charset=utf-8", "UTC calendar download started. Open seats are excluded; earlier imports are not automatically updated.");
+    /// <summary>Downloads only the selected person's checked calendar entries.</summary>
+    Task DownloadPersonCalendar(Guid person) => Download(() => ShiftCoverExports.Calendar(Project, person), "person-schedule.ics", "text/calendar;charset=utf-8", "Person calendar download started using actual UTC instants.");
+    /// <summary>Downloads the standalone per-person print report with all outstanding coverage.</summary>
+    Task DownloadReport() => Download(() => ShiftCoverExports.Html(Project), "shift-cover-report.html", "text/html;charset=utf-8", "Standalone HTML report download started. Open it to print the actual schedules and unresolved seats.");
+    /// <summary>Contains export creation and the browser download in one guarded user action.</summary>
+    Task Download(Func<string> contents, string name, string type, string success) => Execute(async () => { if (Module is null) throw new InvalidOperationException("The local browser module is not ready."); var data = contents(); await Module.InvokeVoidAsync("downloadText", data, name, type); Message = success; }, "download");
+    /// <summary>Parses the full import before an explicit replacement confirmation.</summary>
+    Task ImportJson(InputFileChangeEventArgs args) => Execute(async () => { await using var stream = args.File.OpenReadStream(ShiftCoverRules.MaximumProjectBytes); using var reader = new StreamReader(stream); var candidate = ShiftCoverRules.Restore(await reader.ReadToEndAsync()); if (!await ConfirmReplacement()) return; ResetDrafts(); await Commit(candidate, "Validated roster opened. Existing conflicts remain visible as draft conflicts."); }, "import-json");
+    /// <summary>Opens a newly generated fictional example without fabricating real worker participation.</summary>
+    Task LoadExample(string id) => Execute(async () => { var candidate = ShiftCoverExamples.Create(id); if (!await ConfirmReplacement()) return; ResetDrafts(); await Commit(candidate, "Fictional editable example opened. All original labels, availability and limits are invented."); View = "schedule"; }, "open-example");
+    /// <summary>Clears unsaved editors when a wholly different roster is installed.</summary>
+    void ResetDrafts() { EditingRoleId = null; RoleNameDraft = ""; ClearPersonDraft(); ClearShiftDraft(); ManualShiftId = ""; ManualSeat = 0; }
+
+    /// <summary>Lists only actual account-owned saved project metadata.</summary>
+    Task RefreshVault() => Execute(async () => { var result = await Vault.ListAsync(); VaultItems = result.Projects; VaultMessage = $"Loaded {VaultItems.Count(value => value.Kind == "roster")} saved roster snapshot(s) from the real account."; }, "list-vault");
+    /// <summary>Saves a new immutable-by-UI snapshot, without overwriting another saved schedule.</summary>
+    Task SaveVault() => Execute(async () => { var snapshot = ShiftCoverRules.Clone(Project); var label = VaultLabel; var saved = await Vault.SaveAsync(snapshot, label); var result = await Vault.ListAsync(); VaultItems = result.Projects; Message = VaultMessage = "A new owner-only snapshot was acknowledged by the server. Local roster files remain independent."; }, "save-vault");
+    /// <summary>Opens an actual owner-authorized server snapshot only after validation and confirmation.</summary>
+    Task LoadVault(string id) => Execute(async () => { var candidate = await Vault.LoadAsync(id); if (!await ConfirmReplacement()) return; ResetDrafts(); await Commit(candidate, "Private snapshot opened locally. This does not create a shared or collaborative roster."); }, "load-vault");
+    /// <summary>Deletes one explicitly confirmed saved record, leaving the current local roster intact.</summary>
+    Task DeleteVault(string id) => Execute(async () => { if (!await Javascript.InvokeAsync<bool>("confirm", "Delete this saved private snapshot? The current local roster remains available.")) return; await Vault.DeleteAsync(id); VaultItems = (await Vault.ListAsync()).Projects; VaultMessage = Message = "The saved private snapshot was deleted by the account service."; }, "delete-vault");
+
+    /// <summary>Returns the actual current workload of one person in project hours.</summary>
+    decimal AssignedHours(Guid id) => Project.Assignments.Where(value => value.PersonId == id).Sum(value => ShiftCoverRules.Minutes(Project.Shifts.First(shift => shift.Id == value.ShiftId))) / 60m;
+    /// <summary>Looks up an entered role label.</summary>
+    string RoleName(Guid id) => Project.Roles.FirstOrDefault(value => value.Id == id)?.Name ?? "Unknown role";
+    /// <summary>Looks up an entered person label.</summary>
+    string PersonName(Guid id) => Project.People.FirstOrDefault(value => value.Id == id)?.Label ?? "Unknown person";
+    /// <summary>Names an assignment with enough date context to distinguish similar requirements.</summary>
+    string AssignmentLabel(Guid? id) { var assignment = Project.Assignments.FirstOrDefault(value => value.Id == id); if (assignment is null) return "Assignment"; var shift = Project.Shifts.First(value => value.Id == assignment.ShiftId); return $"{PersonName(assignment.PersonId)} · {shift.Title} · {ShiftCoverRules.Display(shift.Start)} · seat {assignment.Seat + 1}"; }
+    /// <summary>Reads the coverage reason calculated for the current committed project.</summary>
+    string OpenReason(Guid shift, int seat) => OpenReasons.GetValueOrDefault((shift, seat), "Inspect the current candidate checks.");
+    /// <summary>Releases this product's module reference when leaving the page.</summary>
+    public async ValueTask DisposeAsync() { Disposed = true; if (Module is null) return; try { await Module.DisposeAsync(); } catch (JSDisconnectedException) { if (IsLogEnabled) Logger.LogDebug("Roster module disconnected during disposal."); } }
+}

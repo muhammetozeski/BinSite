@@ -1,0 +1,23 @@
+[
+  {
+    "id": 100,
+    "name": "Shift & Cover Desk",
+    "slug": "shift-cover-desk",
+    "category": "Workspace",
+    "stage": 8,
+    "runtime": "blazor",
+    "adEligible": false,
+    "description": "Build a real local roster from entered roles, dated availability, coverage needs and hour/rest limits. Inspect unresolved seats, validate manual assignments and two-sided swaps, and export actual per-person schedules.",
+    "features": [
+      "Editable roles, up to 60 people, 24 explicit availability windows per person, 120 shifts and 240 required seats",
+      "One shared validator for skills, complete availability, project hours, single-shift duration, overlap and entered minimum rest",
+      "Eight bounded deterministic suggestion passes, preserved valid locked seats and explicit current blockers without an infeasibility or optimality claim",
+      "Atomic manual replacement and two-sided swaps; changed input constraints retain existing assignments as visible draft conflicts",
+      "Eight clearly fictional editable rosters covering overnight work, adjacent windows, scarce capabilities and limited capacity",
+      "Complete local JSON import/export, verified IndexedDB saving with localStorage fallback, and separate per-person schedules",
+      "Conflict-labelled CSV, escaped standalone print-ready HTML and UTC iCalendar files with safe text encoding and UTF-8 line folding",
+      "Optional real-account owner-only project vault snapshots, separate 100-character labels and an enforced 64 KiB body limit"
+    ],
+    "businessHypothesis": "Organizations that repeatedly plan small teams may value saved rosters and portable schedules. The complete local workflow requires no account or API key. Existing optional membership can provide additional private cloud-project capacity; this app does not claim worker participation, collaboration, legal compliance, paid conversions or observed revenue. Private planning screens are not advertising eligible."
+  }
+]
