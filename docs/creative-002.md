@@ -14,7 +14,12 @@ These products own their HTML, CSS and JavaScript. No parent shell constrains th
 | Yürüyen Avatar | A parameterized skeleton computes limb endpoints from bone lengths and joint angles. Two saved poses interpolate continuously. This is skeletal motion, unlike the pixel animator's independent image frames. |
 | Dokuma Tezgâhı | A binary lift matrix chooses which warp/weft thread is visible at each crossing. Plain, twill, satin and basket algorithms create editable fabric drafts. CSV exports lift decisions, not decorative tile colors. |
 | Ritim Çemberi | Three independent equal subdivisions of a shared period make polyrhythms. Audio-clock scheduling and radial phase visualization differ from Ritim Masası's sixteen-step drum pattern editor. |
+| Ses Görseli | Real AnalyserNode frequency/time buffers drive spectrum, waveform, peak-bin frequency, root-mean-square amplitude and spectral centroid displays. User audio and four oscillator waves can be inspected; this is an analyzer rather than an audio editor. |
+| Mantık Tahtası | Directed connections evaluate seven gate types recursively with cycle detection. A half-adder example has real sum/carry outputs; up to four inputs can be enumerated into a truth table. |
+| Perspektif Oda | Parametric furniture boxes and room surfaces are projected through camera yaw/elevation with depth-dependent scale and face ordering. Objects have editable location, color and rotation. |
+| Kâğıt Katla | Physical millimeter dimensions generate an A4 box net, glue tabs and fold/cut guides. Oversize nets explicitly report their reduced output dimensions; printing includes a twenty-millimeter scale check. |
+| Düğüm Hikâye | A directed authoring graph stores node text and two labeled transitions. Reachability is computed from the start node. Reader choices traverse the actual graph, with a visit bound for authored cycles. Unlike Hikâye Ağacı, it is an offline, entirely authored story rather than a shared contribution service. |
 
 ## Execution evidence
 
-The ten scripts parse in Node.js. The WAV writer was executed against three signed stereo samples: container size, channel count, sample rate and left/right interleaving match their expected binary values. This is a writer-contract check, not a browser codec or listening test. Real browser audio permissions, rendering and downloads remain separate from this evidence.
+The fifteen scripts parse in Node.js. The WAV writer was executed against three signed stereo samples: container size, channel count, sample rate and left/right interleaving match their expected binary values. This is a writer-contract check, not a browser codec or listening test. Real browser audio permissions, rendering and downloads remain separate from this evidence.
