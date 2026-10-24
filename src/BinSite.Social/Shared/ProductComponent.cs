@@ -34,11 +34,8 @@ public abstract class ProductComponent : ComponentBase, IDisposable
             HasError = true;
             Status = Ui.English ? error.Status switch
             {
-                HttpStatusCode.NotFound => "This content was not found or has been hidden after reports.",
-                HttpStatusCode.Conflict => "The state changed or this action is no longer available. Refresh to inspect the saved state; your draft has been kept.",
-                HttpStatusCode.TooManyRequests => "The short-term limit has been reached. Try again later.",
-                HttpStatusCode.BadRequest => "Check the text lengths, distinct options and future date, then try again.",
-                _ => "The server could not complete this action. Your form text has been kept for a manual retry."
+                HttpStatusCode.NotFound or HttpStatusCode.Conflict or HttpStatusCode.TooManyRequests or HttpStatusCode.BadRequest => error.Message,
+                _ => "This action could not be completed. Please try again."
             } : error.Message;
         }
         catch (Exception) { HasError = true; Status = T("Bağlantı kurulamadı veya yanıt okunamadı. Form metnin korundu; yeniden deneyebilirsin.", "The connection or response failed. Your form text has been kept; you can retry."); }

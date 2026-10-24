@@ -34,9 +34,8 @@ foreach ($product in $blazorProducts) {
     $productTitle = [System.Net.WebUtility]::HtmlEncode($product.name + ' — BinSite')
     $productName = [System.Net.WebUtility]::HtmlEncode($product.name)
     $productDescription = [System.Net.WebUtility]::HtmlEncode($product.description)
-    $featureList = @($product.features | ForEach-Object { '<li>' + [System.Net.WebUtility]::HtmlEncode($_) + '</li>' }) -join ''
     $canonicalUrl = [System.Net.WebUtility]::HtmlEncode("$siteOrigin/$($product.slug)/")
-    $entryContent = "<div id=""app""><main class=""route-message""><h1>$productName</h1><p>$productDescription</p><ul>$featureList</ul><p role=""status"">Loading application controls.</p><noscript>Enable JavaScript to use this application's interactive controls.</noscript></main></div>"
+    $entryContent = "<div id=""app""><main class=""route-message""><h1>$productName</h1><p role=""status"">Loading…</p><noscript>Enable JavaScript to open $productName.</noscript></main></div>"
     $productBootstrap = $bootstrap.Replace('<title>BinSite Social</title>', "<title>$productTitle</title>").Replace($appPlaceholder, $entryContent)
     $metadata = "<meta name=""description"" content=""$productDescription""><link rel=""canonical"" href=""$canonicalUrl""><meta property=""og:title"" content=""$productName""><meta property=""og:description"" content=""$productDescription""><meta property=""og:url"" content=""$canonicalUrl"">"
     $productBootstrap = $productBootstrap.Replace('</head>', $metadata + '</head>')

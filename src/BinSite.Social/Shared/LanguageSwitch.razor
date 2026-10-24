@@ -1,5 +1,4 @@
 @inject UiText Ui
-<span class="language-label" lang="en">English</span>
 @code {
     /// <summary>Initializes browser language storage after JavaScript interop is available.</summary>
     protected override async Task OnAfterRenderAsync(bool firstRender) { if (firstRender) { await Ui.InitializeAsync(); StateHasChanged(); } }

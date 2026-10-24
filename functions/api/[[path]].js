@@ -127,7 +127,7 @@ async function dispatch(request, env, visitorHash, ipHash) {
   }
   if (parts.length === 3 && parts[0] === 'stories' && parts[2] === 'nodes') {
     const storyId = uuid(parts[1]), parentId = uuid(body.parentId);
-    const paragraph = textField(body.body, 'Paragraf', 30, 1600);
+    const paragraph = textField(body.body, 'Continuation', 30, 1600);
     const parent = await db.prepare('SELECT n.depth FROM story_nodes n JOIN stories s ON s.id = n.story_id WHERE n.id = ? AND n.story_id = ? AND n.hidden = 0 AND s.hidden = 0').bind(parentId, storyId).first();
     if (!parent) throw new ApiError(404, 'The parent branch was not found.');
     if (parent.depth >= 24) throw new ApiError(409, 'This branch has reached 24 continuations. Branch from an earlier paragraph.');

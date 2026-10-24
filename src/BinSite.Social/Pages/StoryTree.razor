@@ -1,70 +1,167 @@
 @page "/hikaye-agaci/"
 @inherits ProductComponent
-<PageTitle>@T("Hikâye Ağacı — Her paragraf başka bir ihtimal", "Story Tree — Each paragraph is another possibility")</PageTitle>
+<PageTitle>Story Tree — Write a story together</PageTitle>
 <div class="story-page">
-<header><div class="toolbar"><span class="kicker">@T("KOLEKTİF BİR YAZI DENEYİ", "A COLLABORATIVE WRITING EXPERIMENT")</span><LanguageSwitch /></div><h1>@T("Hikâye Ağacı", "Story Tree")</h1><p>@T("Aynı kapının ardında yüz farklı dünya olabilir. Bir hikâye seç, bir paragraf oku, kendi devamınla yeni bir dal aç.", "A hundred worlds can wait behind the same door. Choose a story, read a paragraph, and branch off with your own continuation.")</p><button @onclick="ShowComposer">@T("Yeni hikâye başlat", "Start a story")</button></header>
-@if (!string.IsNullOrEmpty(Status)) { <div class="status" data-error="@HasError.ToString().ToLowerInvariant()" role="status">@Status</div> }
-<div class="layout"><aside class="sidebar"><h2>@T("Başlangıçlar", "Openings")</h2><form @onsubmit="RefreshAsync" @onsubmit:preventDefault><label for="story-search">@T("Başlık ara", "Search titles")</label><input id="story-search" @bind="Search" type="search" maxlength="80"><button type="submit" class="secondary" disabled="@Busy">@T("Ara / Yenile", "Search / Refresh")</button></form><p class="small">@T("Son 30 hikâye. Gerçek katkılar ortak sunucudan gelir.", "Latest 30 stories. Actual contributions are loaded from the shared server.")</p><div class="story-list">
-@if (Stories.Count == 0) { <p class="small">@T("Henüz bir başlangıç yok. Aşağıdaki editoryal önerilerden ilham alabilirsin.", "No openings yet. Use an editorial suggestion below for inspiration.")</p> }
-@foreach (var story in Stories) { <button class="story-choice" @onclick="() => OpenStoryAsync(story.Id)"><strong>@story.Title</strong><span>@story.NodeCount @T("paragraf", "paragraphs") · @DateLabel(story.CreatedAt)</span></button> }
-</div><details><summary>@T("15 başlangıç önerisi", "15 editorial opening suggestions")</summary><p class="small">@T("Bunlar editörün yazdığı taslaklardır. Seçmek formu doldurur; yayımlama ayrıca senin eylemindir. Metinler Türkçedir.", "These are authored editorial drafts in English. Selecting one fills the form; publication requires your separate action.")</p>@foreach (var prompt in EditorialPrompts.Stories) { <button class="story-choice" @onclick="() => UsePrompt(prompt)"><strong>@prompt.Title</strong><span>@prompt.Opening</span></button> }</details></aside>
-<main>
-@if (Creating) {
-<section><h2>@T("İlk cümleyi sen kur.", "Write the first sentence.")</h2><form @onsubmit="CreateAsync" @onsubmit:preventDefault><label for="story-title">@T("Hikâyenin adı", "Story title")</label><input id="story-title" @bind="Title" required minlength="4" maxlength="100"><label for="story-opening">@T("İlk paragraf", "Opening paragraph")</label><textarea id="story-opening" @bind="Opening" required minlength="30" maxlength="1600"></textarea><p class="hint">@T("30–1600 karakter. Yazdığın metin herkese açık yayımlanır.", "30–1600 characters. Your text will be published publicly.")</p><div class="toolbar"><button type="submit" disabled="@Busy">@T("Hikâyeyi başlat", "Publish opening")</button><button type="button" class="secondary" @onclick="HideComposer">@T("Vazgeç", "Cancel")</button></div></form></section>
-} else if (Current is null) {
-<div class="empty"><h2>@T("Hangi ihtimali okuyacağız?", "Which possibility shall we read?")</h2><p>@T("Bir başlangıç seç veya ilk hikâyeyi sen yaz.", "Choose an opening or start the first story.")</p><p class="small">@T("Bu ürün C# Blazor arayüzü ve paylaşılan sunucu kaydıyla çalışır.", "This product uses a C# Blazor interface and shared server storage.")</p></div>
-} else {
-<section class="reading"><span class="kicker">@Current.Nodes.Count @T("paragraf", "paragraphs")</span><h2>@Current.Story.Title</h2><div class="toolbar"><button class="secondary" disabled="@Busy" @onclick="() => CopyAsync(ShareLink())">@T("Bu dalı paylaş", "Share this branch")</button><button class="secondary" disabled="@Busy" @onclick="ReloadCurrentAsync">@T("Yeni dalları kontrol et", "Check for new branches")</button></div>
-@if (CopyFallback is not null) { <input class="copy-fallback" readonly value="@CopyFallback" aria-label="@T("Dal bağlantısı", "Branch link")"> }
-@foreach (var node in Trail()) { <article @key="node.Id" class="@(node.Id == SelectedId ? "paragraph current" : "paragraph")"><p>@(node.Hidden == 1 ? T("Bu paragraf raporlar nedeniyle gizlendi.", "This paragraph was hidden after reports.") : node.Body)</p>@if (node.Id != SelectedId) { <button class="secondary" @onclick="() => SelectNodeAsync(node.Id)">@T("Buradan başka bir yöne git", "Explore another branch here")</button> }@if(node.Hidden == 0) { <ReportBox Kind="node" TargetId="@node.Id" /> }</article> }
-<h3>@T("Bir sonraki ihtimal", "The next possibility")</h3><div class="branches">@foreach (var child in Current.Nodes.Where(node => node.ParentId == SelectedId)) { <button class="branch" @onclick="() => SelectNodeAsync(child.Id)">@(child.Hidden == 1 ? T("Gizlenen paragrafın devamlarına bak", "Explore continuations of a hidden paragraph") : child.Body)</button> }</div>
-@if (CanContinue()) { <details><summary>@T("Bu paragraftan kendi dalını aç", "Open your own branch from this paragraph")</summary><form @onsubmit="ContinueAsync" @onsubmit:preventDefault><label for="continuation">@T("Senin devamın", "Your continuation")</label><textarea id="continuation" @bind="Continuation" required minlength="30" maxlength="1600"></textarea><p class="hint">@T("30–1600 karakter. Herkese açık yayımlanır. Var olan devamları değiştirmez.", "30–1600 characters. Published publicly as a new branch; existing continuations remain intact.")</p><button type="submit" disabled="@Busy">@T("Yeni dalı yayımla", "Publish new branch")</button></form></details> }
-else { <p class="small">@T("Bu paragraf gizlenmiş veya katkı sınırına ulaşılmış. Önceki paragrafları veya mevcut devamları seçebilirsin.", "This paragraph is hidden or a contribution limit has been reached. Choose an earlier paragraph or an existing continuation.")</p> }
-<ReportBox Kind="story" TargetId="@Current.Story.Id" /></section>
-}
-</main></div>
-<footer><h2>@T("Birlikte nasıl yazıyoruz?", "How do we write together?")</h2><p>@T("Her paragraftan birden fazla devam çıkabilir. Bir dalda en fazla 24 devam, bir hikâyede toplam 300 paragraf bulunur. Yayımlanan metinler Cloudflare üzerindeki veritabanında saklanır.", "Each paragraph can have multiple continuations. A branch supports up to 24 continuations, a story up to 300 paragraphs. Published text is stored in a Cloudflare database.")</p><p class="small">@T("Paylaşmaya yetkili olduğun metinleri yaz. Kişisel bilgi, taciz, nefret söylemi, izinsiz eser ve reklam/spam yayımlama. Üç farklı ağ adresinden raporlanan içerik otomatik gizlenir. Ağ adresinin özeti, anonim çerez kimliği ve rapor gerekçesi kötüye kullanımı sınırlamak için saklanır. Bu sürümde insan inceleme hizmeti sunulmaz.", "Only publish text you have permission to share. No personal information, harassment, hate, unauthorized works or spam. Content reported by three distinct network addresses is automatically hidden. Network-address hashes, anonymous cookie identities and report reasons are stored to limit abuse. This version does not provide human review.")</p></footer>
+    <header>
+        <nav aria-label="Navigation"><a href="/">Home</a><span>Story Tree</span><LanguageSwitch /></nav>
+        <h1>Write a story together.</h1>
+        <p>You write the beginning. Others add different continuations. Readers choose what happens next.</p>
+        <button @onclick="ShowComposer" disabled="@Busy">Start a story</button>
+    </header>
+    @if (!string.IsNullOrEmpty(Status)) {
+        <div class="status" data-error="@HasError.ToString().ToLowerInvariant()" role="status">@Status</div>
+    }
+    <div class="layout">
+        <main>
+        @if (Creating) {
+            <section class="composer">
+                <h2>How does your story begin?</h2>
+                <form @onsubmit="CreateAsync" @onsubmit:preventDefault novalidate>
+                    <label for="story-title">Title</label>
+                    <input id="story-title" @bind="Title" @bind:event="oninput" maxlength="100" aria-invalid="@(TitleError.Length > 0 ? "true" : "false")" aria-describedby="title-error">
+                    <p id="title-error" class="field-error">@TitleError</p>
+                    <label for="story-opening">First paragraph</label>
+                    <textarea id="story-opening" @bind="Opening" @bind:event="oninput" maxlength="1600" placeholder="Something unexpected happens…" aria-invalid="@(OpeningError.Length > 0 ? "true" : "false")" aria-describedby="opening-hint opening-error"></textarea>
+                    <p id="opening-hint" class="hint">30–1,600 characters. Your story and its continuations will be public.</p>
+                    <p id="opening-error" class="field-error">@OpeningError</p>
+                    <div class="toolbar"><button type="submit" disabled="@Busy">@(Busy ? "Publishing…" : PendingStory is not null ? "Open published story" : "Publish story")</button><button type="button" class="secondary" @onclick="HideComposer" disabled="@Busy">Back to reading</button></div>
+                </form>
+                <details class="prompts"><summary>Need a starting idea?</summary>
+                    @foreach (var prompt in EditorialPrompts.Stories) {
+                        <button class="story-choice" @onclick="() => UsePrompt(prompt)"><strong>@prompt.Title</strong><span>@prompt.Opening</span></button>
+                    }
+                </details>
+            </section>
+        } else if (Current is null) {
+            <section class="example" aria-label="Interactive story example">
+                <div class="section-heading"><h2>Try a story</h2><span class="hint">Example</span></div>
+                <h3>The last train</h3>
+                <article class="paragraph"><p>@ExampleOpening</p></article>
+                @if (ExampleChoice == 0) {
+                    <h3>What happens next?</h3>
+                    <div class="branches"><button class="branch" @onclick="() => ExampleChoice = 1"><strong>Board the train</strong><span>The doors open. Someone inside knows your name.</span><span aria-hidden="true">→</span></button><button class="branch" @onclick="() => ExampleChoice = 2"><strong>Follow the suitcase</strong><span>It rolls toward a staircase that wasn't there before.</span><span aria-hidden="true">→</span></button></div>
+                } else {
+                    <article class="paragraph current"><p>@(ExampleChoice == 1 ? "Every passenger is holding the same photograph: you, standing on this platform tomorrow. A child offers you the empty seat beside her. ‘We still have time to change it,’ she says." : "The staircase leads below the tracks to a room full of unopened letters. One has today's date and your handwriting. Inside is a single sentence: ‘Whatever happens, do not board the train.’")</p></article>
+                    <p class="hint">One beginning, two different stories. You can add another path.</p>
+                    <button class="secondary" @onclick="() => ExampleChoice = 0">Try the other path</button>
+                }
+                <div class="example-action"><button @onclick="UseExample">Start from this beginning</button></div>
+            </section>
+        } else {
+            <section class="reading">
+                <h2>@Current.Story.Title</h2>
+                <div class="toolbar"><button class="secondary" disabled="@Busy" @onclick="() => CopyAsync(ShareLink())">Copy story link</button><button class="secondary" disabled="@Busy" @onclick="ReloadCurrentAsync">Refresh</button></div>
+                @if (CopyFallback is not null) { <input class="copy-fallback" readonly value="@CopyFallback" aria-label="Story link"> }
+                @foreach (var node in Trail()) {
+                    <article @key="node.Id" class="@(node.Id == SelectedId ? "paragraph current" : "paragraph")"><p>@(node.Hidden == 1 ? "This paragraph is unavailable." : node.Body)</p>
+                        @if (node.Id != SelectedId) { <button class="secondary" @onclick="() => SelectNodeAsync(node.Id)">Choose a different continuation here</button> }
+                        @if (node.Hidden == 0) { <ReportBox Kind="node" TargetId="@node.Id" /> }
+                    </article>
+                }
+                <h3>What happens next?</h3>
+                <div class="branches">@foreach (var child in Current.Nodes.Where(node => node.ParentId == SelectedId)) {
+                    <button class="branch" @onclick="() => SelectNodeAsync(child.Id)">@(child.Hidden == 1 ? "Read the next available paragraph →" : child.Body)</button>
+                }</div>
+                @if (!Current.Nodes.Any(node => node.ParentId == SelectedId)) { <p class="hint">No continuation yet. What would you write?</p> }
+                @if (CanContinue()) {
+                    <form class="continuation" @onsubmit="ContinueAsync" @onsubmit:preventDefault novalidate>
+                        <label for="continuation">Add your continuation</label>
+                        <textarea id="continuation" @bind="Continuation" @bind:event="oninput" maxlength="1600" aria-invalid="@(ContinuationError.Length > 0 ? "true" : "false")" aria-describedby="continuation-hint continuation-error"></textarea>
+                        <p id="continuation-hint" class="hint">30–1,600 characters. This adds a new path for everyone to read.</p>
+                        <p id="continuation-error" class="field-error">@ContinuationError</p>
+                        <button type="submit" disabled="@Busy">@(Busy ? "Publishing…" : PendingContinuation is not null ? "Open published continuation" : "Publish continuation")</button>
+                    </form>
+                } else { <p class="hint">Choose an earlier paragraph to add a continuation.</p> }
+                <ReportBox Kind="story" TargetId="@Current.Story.Id" />
+            </section>
+        }
+        </main>
+        <aside class="sidebar" aria-label="Find a story">
+            <h2>Read a story</h2>
+            <form class="search" @onsubmit="RefreshAsync" @onsubmit:preventDefault><label for="story-search">Find by title</label><div><input id="story-search" @bind="Search" type="search" maxlength="80"><button type="submit" class="secondary" disabled="@Busy">Search</button></div></form>
+            <div class="story-list">
+                @if (Stories.Count == 0) { <p class="hint">@(Busy ? "Loading stories…" : string.IsNullOrWhiteSpace(Search) ? "No stories published yet. Try the example or start your own." : "No stories match that title.")</p> }
+                @foreach (var story in Stories) { <button class="story-choice" aria-current="@(Current?.Story.Id == story.Id ? "true" : null)" @onclick="() => OpenStoryAsync(story.Id)"><strong>@story.Title</strong><span>@story.NodeCount @(story.NodeCount == 1 ? "paragraph" : "paragraphs")</span></button> }
+            </div>
+        </aside>
+    </div>
+    <footer><details><summary>About publishing and privacy</summary><p>Only share writing you have permission to publish. Keep personal information, harassment and spam out of stories. Use Report on an inappropriate paragraph.</p><p>Stories allow up to 300 paragraphs and paths up to 24 continuations long. Content reported from three different network addresses is hidden automatically. Anonymous cookie identifiers, network-address hashes and report reasons help limit abuse. Reports are not reviewed by a human in this version.</p><a href="/privacy/">Privacy</a></details></footer>
 </div>
 @code {
     [SupplyParameterFromQuery(Name = "hikaye")] public string? StoryId { get; set; }
     [SupplyParameterFromQuery(Name = "dal")] public string? BranchId { get; set; }
+    const string ExampleOpening = "At midnight, the station clock stopped. A train that wasn't on the timetable pulled in, and a red suitcase rolled out onto the empty platform.";
     List<StorySummary> Stories = [];
     StoryDetail? Current;
     string Search = "", Title = "", Opening = "", Continuation = "";
+    string TitleError = "", OpeningError = "", ContinuationError = "";
     string? SelectedId;
+    CreatedResponse? PendingStory, PendingContinuation;
+    string? PendingContinuationStoryId;
     bool Creating;
+    int ExampleChoice;
 
-    /// <summary>Loads the public directory and an optional shared story at initial navigation.</summary>
     protected override async Task OnParametersSetAsync() => await ExecuteAsync(async () => { await LoadListAsync(); if (!string.IsNullOrEmpty(StoryId)) await LoadStoryAsync(StoryId, BranchId); });
-    /// <summary>Reads up to thirty actual stories matching the entered title filter.</summary>
     async Task LoadListAsync() => Stories = (await Api.GetAsync<StoriesResponse>("stories?q=" + Uri.EscapeDataString(Search))).Stories;
-    /// <summary>Refreshes the directory within the product's final error boundary.</summary>
     Task RefreshAsync() => ExecuteAsync(LoadListAsync);
-    /// <summary>Opens an actual story while retaining the form on failure.</summary>
     Task OpenStoryAsync(string id) => ExecuteAsync(() => LoadStoryAsync(id));
-    /// <summary>Loads a story graph and selects a valid paragraph, falling back to its opening.</summary>
     async Task LoadStoryAsync(string id, string? selected = null)
     {
-        Current = await Api.GetAsync<StoryDetail>("stories/" + id);
-        SelectedId = Current.Nodes.Any(node => node.Id == selected) ? selected : Current.Nodes.FirstOrDefault(node => node.ParentId is null)?.Id;
+        var loaded = await Api.GetAsync<StoryDetail>("stories/" + id);
+        Current = loaded;
+        SelectedId = loaded.Nodes.Any(node => node.Id == selected) ? selected : loaded.Nodes.FirstOrDefault(node => node.ParentId is null)?.Id;
         Creating = false;
         await Javascript.InvokeVoidAsync("binSiteSocial.replaceUrl", ShareLink());
     }
-    /// <summary>Refreshes only the displayed graph while preserving the selected branch.</summary>
     Task ReloadCurrentAsync() => Current is null ? Task.CompletedTask : ExecuteAsync(() => LoadStoryAsync(Current.Story.Id, SelectedId));
-    /// <summary>Starts a draft without creating server content.</summary>
-    void ShowComposer() => Creating = true;
-    /// <summary>Returns to the current reader without destroying draft text.</summary>
+    void ShowComposer() { Creating = true; Status = ""; }
     void HideComposer() => Creating = false;
-    /// <summary>Copies an explicitly editorial suggestion into an unpublished draft.</summary>
-    void UsePrompt(StoryPrompt prompt) { Title = prompt.Title; Opening = prompt.Opening; Creating = true; }
-    /// <summary>Creates one actual story, then opens its server-generated share identity.</summary>
-    Task CreateAsync() => ExecuteAsync(async () => { var created = await Api.PostAsync<CreatedResponse>("stories", new { title = Title, body = Opening }); await LoadStoryAsync(created.Id, created.NodeId); Title = Opening = ""; await LoadListAsync(); }, T("Başlangıcın yayımlandı. Bu hikâyeye başkaları da devam edebilir.", "Your opening was published. Other people can now continue the story."));
-    /// <summary>Adds one actual child paragraph without changing another writer's contribution.</summary>
-    Task ContinueAsync() => ExecuteAsync(async () => { if (Current is null || SelectedId is null) return; var created = await Api.PostAsync<CreatedResponse>($"stories/{Current.Story.Id}/nodes", new { parentId = SelectedId, body = Continuation }); await LoadStoryAsync(Current.Story.Id, created.Id); Continuation = ""; await LoadListAsync(); }, T("Yeni dalın yayımlandı.", "Your new branch was published."));
-    /// <summary>Selects a known paragraph and updates only the share address.</summary>
-    async Task SelectNodeAsync(string id) { SelectedId = id; Continuation = ""; await Javascript.InvokeVoidAsync("binSiteSocial.replaceUrl", ShareLink()); }
-    /// <summary>Returns the selected paragraph's ancestors in reading order, with a cycle guard.</summary>
+    void UsePrompt(StoryPrompt prompt) { if (PendingStory is not null) return; Title = prompt.Title; Opening = prompt.Opening; TitleError = OpeningError = ""; Creating = true; }
+    void UseExample() { if (PendingStory is not null) { Creating = true; return; } Title = "The last train"; Opening = ExampleOpening; Creating = true; TitleError = OpeningError = ""; }
+    async Task CreateAsync()
+    {
+        if (Busy) return;
+        if (PendingStory is null) {
+            TitleError = ValidateText(Title, "Title", 4, 100);
+            OpeningError = ValidateText(Opening, "First paragraph", 30, 1600);
+            if (TitleError.Length + OpeningError.Length > 0) return;
+        }
+        await ExecuteAsync(async () => {
+            PendingStory ??= await Api.PostAsync<CreatedResponse>("stories", new { title = Title, body = Opening });
+            await LoadStoryAsync(PendingStory.Id, PendingStory.NodeId);
+            PendingStory = null;
+            Title = Opening = "";
+            await LoadListAsync();
+        }, "Your story is published. Copy its link to invite someone to continue it.");
+    }
+    async Task ContinueAsync()
+    {
+        if (Busy || Current is null || SelectedId is null) return;
+        if (PendingContinuation is null) {
+            ContinuationError = ValidateText(Continuation, "Continuation", 30, 1600);
+            if (ContinuationError.Length > 0) return;
+        }
+        await ExecuteAsync(async () => {
+            if (PendingContinuation is null) {
+                PendingContinuationStoryId = Current.Story.Id;
+                PendingContinuation = await Api.PostAsync<CreatedResponse>($"stories/{Current.Story.Id}/nodes", new { parentId = SelectedId, body = Continuation });
+            }
+            await LoadStoryAsync(PendingContinuationStoryId!, PendingContinuation.Id);
+            PendingContinuation = null;
+            Continuation = "";
+            await LoadListAsync();
+        }, "Your continuation is published.");
+    }
+    static string ValidateText(string value, string label, int min, int max)
+    {
+        var clean = value.Trim().Normalize();
+        if (clean.Length < min || clean.Length > max) return $"{label} must be {min:N0}–{max:N0} characters.";
+        if (System.Text.RegularExpressions.Regex.IsMatch(clean, @"[\x00-\x08\x0B\x0C\x0E-\x1F]")) return $"Remove unsupported characters from {label.ToLowerInvariant()}.";
+        if (System.Text.RegularExpressions.Regex.IsMatch(clean, @"(.)\1{39,}")) return $"Remove long runs of repeated characters from {label.ToLowerInvariant()}.";
+        if (System.Text.RegularExpressions.Regex.Matches(clean, @"https?://", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Count > 2) return $"Use no more than two links in {label.ToLowerInvariant()}.";
+        return "";
+    }
+    async Task SelectNodeAsync(string id) { SelectedId = id; await Javascript.InvokeVoidAsync("binSiteSocial.replaceUrl", ShareLink()); }
     List<StoryNode> Trail()
     {
         List<StoryNode> trail = []; HashSet<string> seen = [];
@@ -72,8 +169,6 @@ else { <p class="small">@T("Bu paragraf gizlenmiş veya katkı sınırına ulaş
         while (node is not null && seen.Add(node.Id)) { trail.Insert(0, node); node = Current?.Nodes.FirstOrDefault(item => item.Id == node.ParentId); }
         return trail;
     }
-    /// <summary>Determines whether server-defined visible graph limits permit offering a continuation form.</summary>
     bool CanContinue() => Current is not null && Current.Nodes.Count < 300 && Current.Nodes.Any(node => node.Id == SelectedId && node.Hidden == 0 && node.Depth < 24);
-    /// <summary>Constructs an independently usable story-and-branch link.</summary>
     string ShareLink() => new Uri(new Uri(Navigation.BaseUri), $"hikaye-agaci/?hikaye={Current?.Story.Id}&dal={SelectedId}").AbsoluteUri;
 }
