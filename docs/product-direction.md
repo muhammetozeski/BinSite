@@ -21,4 +21,5 @@ These are product hypotheses. Actual sharing, return use, and creator activity m
 
 ## Current delivery architecture
 
-Source is private in https://github.com/muhammetozeski/BinSite. GitHub Actions builds the directory and uses Cloudflare's official Wrangler action to deploy `public` plus Pages Functions. This follows the already operating publication pattern in the user's AllRepos project. Production secrets live in GitHub Actions secrets, not source. Shared social state uses a Cloudflare D1 database; standalone products remain usable without the database.
+Source is public in https://github.com/muhammetozeski/BinSite. GitHub Actions builds the directory and uses Cloudflare's official Wrangler action to deploy `public` plus Pages Functions. This follows the already operating publication pattern in the user's AllRepos project. Production secrets live in GitHub Actions secrets, not source. Shared social state uses a Cloudflare D1 database; standalone products remain usable without the database.
+

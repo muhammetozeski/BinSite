@@ -12,8 +12,12 @@ A growing collection of independent Turkish web products. The target is 1,000 wo
 
 Use standard HTML, CSS, and JavaScript when sufficient. Every product must provide a useful or entertaining working interaction; changing a title, color, dataset, or prompt alone does not create another delivered product. Do not add fake users, fabricated engagement, unsupported revenue claims, or pretend network features.
 
-Product catalog entries use `id`, `name`, `slug`, `category`, `stage`, `description`, `features`, and `businessHypothesis`. Business hypotheses are proposals, not observed outcomes. Save no secrets in source or generated files. New products remain in this permanent directory.
+Product catalog entries use `id`, `name`, `slug`, `category`, `stage`, `description`, `features`, and `businessHypothesis`. Business hypotheses are proposals, not observed outcomes. Save no secrets in source or generated files. New products remain in this permanent directory. Source is public at https://github.com/muhammetozeski/BinSite, as requested by the user.
 
 ## Local use
 
 Individual static products can be opened directly. A local or deployed HTTP origin is required for shared server features. Publication details will be added after actual deployment.
+
+## Project knowledge
+
+Start at [the documentation index](docs/İçindekiler.md) for architecture and verified implementation knowledge. Apply [the writing guide](docs/Documentation-Guide.md) before changing knowledge documents. Read [the experience handover guide](Walkthrough/Walkthrough-Guide.md) and choose dated records by subject before resuming an interrupted task.

@@ -3,3 +3,17 @@ node_modules/
 .env.*
 .wrangler/
 *.log
+**/bin/
+**/obj/
+publish/
+AppCache/
+UserData/
+UserCache/
+*.pfx
+*.key
+*secrets*.json
+PFX-PAROLA.txt
+public/_framework/
+public/BinSite.Social.styles.css
+public/social.css
+public/social.js
