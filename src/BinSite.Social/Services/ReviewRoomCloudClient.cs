@@ -18,17 +18,19 @@ public sealed class ReviewRoomCloudClient(SocialApi api)
     }
 
     /// <summary>Creates or revision-checks a metadata-only workspace using the server's account, role and quota controls.</summary>
-    public async Task<ReviewCloudWorkspace> SaveAsync(ReviewProject project, ReviewCloudWorkspace? current)
+    public async Task<ReviewCloudWorkspace> SaveAsync(ReviewProject project, ReviewCloudWorkspace? current, string workspaceLabel)
     {
+        var label = workspaceLabel.Trim();
+        if (label.Length is < 1 or > 100) throw new ReviewValidationException("Use a cloud workspace label of 1–100 characters. The full local project title remains unchanged.");
         using var document = JsonDocument.Parse(ReviewRoomRules.Serialize(project));
         var body = document.RootElement.Clone();
         ReviewCloudEnvelope result;
-        if (current is null) result = await api.PostAsync<ReviewCloudEnvelope>(Prefix, new { kind = "review", title = project.Title, body });
+        if (current is null) result = await api.PostAsync<ReviewCloudEnvelope>(Prefix, new { kind = "review", title = label, body });
         else
         {
             EnsureReview(current);
             if (current.Role is not "owner" and not "editor") throw new ReviewValidationException("This cloud workspace is read-only for your account. Make a local copy to edit your own document.");
-            result = await api.PostAsync<ReviewCloudEnvelope>(Prefix + "/" + Uri.EscapeDataString(current.Id), new { revision = current.Revision, title = project.Title, body });
+            result = await api.PostAsync<ReviewCloudEnvelope>(Prefix + "/" + Uri.EscapeDataString(current.Id), new { revision = current.Revision, title = label, body });
         }
         EnsureReview(result.Workspace);
         return result.Workspace;

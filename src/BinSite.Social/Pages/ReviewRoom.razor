@@ -90,6 +90,7 @@
 </section>
 </div>
 <details class="cloud-panel"><summary>Optional real-account workspace sync and invitations</summary><p>Local work needs no account or API key. Cloud actions use a real <a href="/uyelik/">Creator account</a>. Only metadata, fingerprints, comments and decisions are saved. <strong>Every invited viewer or editor can read all shared JSON notes.</strong> Media files stay local; recipients must reconnect matching originals. There are no per-comment private notes.</p>
+    <label>Cloud workspace label (1–100 characters)<input @bind="CloudLabel" maxlength="100" disabled="@(Busy || !CanEdit)"></label><p class="small">This short server label is separate from the full project title inside your JSON. The full local title is never silently shortened.</p>
     @if (!string.IsNullOrWhiteSpace(InviteToken)) { <section class="invite"><p>This link contains a workspace invitation. Sign in to your actual Creator account, then accept it.</p><button @onclick="AcceptInviteAsync" disabled="@Busy">Accept invitation</button></section> }
     <div class="tool-row"><button @onclick="LoadCloudListAsync" disabled="@Busy">List my real workspaces</button><button @onclick="SaveCloudAsync" disabled="@(Busy || (!CanEdit && CloudWorkspace is not null))">@(CloudWorkspace is null ? "Create cloud copy of this JSON" : "Save expected cloud revision")</button>@if (CloudWorkspace is not null) { <button class="secondary" @onclick="() => LoadCloudAsync(CloudWorkspace.Id)" disabled="@Busy">Reload cloud record</button><button class="secondary" @onclick="MakeLocalCopy" disabled="@Busy">Work on a local copy</button> }</div>
     @if (CloudAccount is not null) { <p class="small">Server quota: @CloudAccount.UsedProjects / @CloudAccount.ProjectLimit shared project slots · @(CloudAccount.Premium ? "Active membership" : "Free account"). Workspace payload limits are enforced by the server.</p> }
@@ -122,7 +123,7 @@
     ReviewCloudWorkspace? CloudWorkspace;
     ReviewCloudAccount? CloudAccount;
     List<ReviewCloudItem> CloudItems = [];
-    string InviteRole = "viewer";
+    string InviteRole = "viewer", CloudLabel = "Untitled review";
     string? InviteLink;
     string InviteExpiry = "";
     ReviewAsset? SelectedAsset => Project.Assets.FirstOrDefault(item => item.Id == SelectedAssetId);
@@ -188,7 +189,7 @@
     }
 
     /// <summary>Commits heading changes as an explicit document edit.</summary>
-    Task SaveHeadingAsync() => RunAsync(() => { RequireEdit(); Apply(ReviewRoomRules.Rename(Project, TitleDraft, BriefDraft)); return Task.CompletedTask; }, "Project heading saved in this session.");
+    Task SaveHeadingAsync() => RunAsync(() => { RequireEdit(); Apply(ReviewRoomRules.Rename(Project, TitleDraft, BriefDraft)); if (CloudWorkspace is null) CloudLabel = Project.Title[..Math.Min(100, Project.Title.Length)]; return Task.CompletedTask; }, "Project heading saved in this session.");
     /// <summary>Reads actual local files and commits new assets atomically before retaining their browser handles.</summary>
     Task ImportAssetsAsync() => RunAsync(async () =>
     {
@@ -249,7 +250,7 @@
     {
         ReviewRoomRules.Validate(project); BoundTokens.Clear(); BoundNames.Clear(); ReconnectMessages.Clear();
         foreach (var file in LocalFiles.Values.ToArray()) { var matches = ReviewRoomRules.MatchingVersions(project, file); if (matches.Count == 0) { await (await ModuleAsync()).InvokeVoidAsync("discard", new[] { file.Token }); LocalFiles.Remove(file.Token); } else foreach (var id in matches) { BoundTokens[id] = file.Token; BoundNames[id] = file.Name; } }
-        Project = project; Dirty = dirty; TitleDraft = project.Title; BriefDraft = project.Brief; CommentDraft = DecisionNote = ""; FocusedCommentId = null; SelectedAssetId = SelectedVersionId = null; InviteLink = null;
+        Project = project; Dirty = dirty; TitleDraft = project.Title; BriefDraft = project.Brief; CloudLabel = project.Title[..Math.Min(100, project.Title.Length)]; CommentDraft = DecisionNote = ""; FocusedCommentId = null; SelectedAssetId = SelectedVersionId = null; InviteLink = null;
         if (project.Assets.FirstOrDefault() is { } asset) SelectVersion(asset.Id, asset.Versions[0].Id); else { AnchorX = AnchorY = AnchorTime = null; PendingMount = true; }
     }
     /// <summary>Creates a blank local document after explicit replacement confirmation.</summary>
@@ -268,15 +269,15 @@
     /// <summary>Lists actual account-authorized cloud records only after an explicit user action.</summary>
     Task LoadCloudListAsync() => RunAsync(async () => { var list = await Cloud.ListAsync(); CloudItems = list.Workspaces; CloudAccount = list.Account; }, "Real workspace list loaded from the server.");
     /// <summary>Saves only review JSON under real account quota, role and expected revision controls.</summary>
-    Task SaveCloudAsync() => RunAsync(async () => { CloudWorkspace = await Cloud.SaveAsync(Project, CloudWorkspace); Dirty = false; Status = "Review JSON saved to the actual cloud workspace. Media files were not uploaded. Share matching originals separately."; });
+    Task SaveCloudAsync() => RunAsync(async () => { CloudWorkspace = await Cloud.SaveAsync(Project, CloudWorkspace, CloudLabel); CloudLabel = CloudWorkspace.Title; Dirty = false; Status = "Review JSON saved to the actual cloud workspace. Media files were not uploaded. Share matching originals separately."; });
     /// <summary>Loads a strict review document from an authorized server workspace without trusting remote media links.</summary>
-    Task LoadCloudAsync(string id) => RunAsync(async () => { var workspace = await Cloud.LoadAsync(id); var restored = ReviewRoomRules.Restore(workspace.Body.GetRawText()); if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(restored, false); CloudWorkspace = workspace; PendingMount = true; Status = "Cloud review JSON loaded. Reconnect matching media on this device; all workspace notes are visible to invited members."; });
+    Task LoadCloudAsync(string id) => RunAsync(async () => { var workspace = await Cloud.LoadAsync(id); var restored = ReviewRoomRules.Restore(workspace.Body.GetRawText()); if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(restored, false); CloudWorkspace = workspace; CloudLabel = workspace.Title; PendingMount = true; Status = "Cloud review JSON loaded. Reconnect matching media on this device; all workspace notes are visible to invited members."; });
     /// <summary>Detaches local edits from a read-only or shared workspace without changing the server copy.</summary>
     void MakeLocalCopy() { CloudWorkspace = null; InviteLink = null; Dirty = true; PendingMount = true; Status = "Working on a local copy. The cloud workspace was not changed."; }
     /// <summary>Generates an actual server invitation for a chosen viewer/editor role.</summary>
     Task CreateInviteAsync() => RunAsync(async () => { if (CloudWorkspace is null) throw new ReviewValidationException("Save a real cloud workspace first."); var invite = await Cloud.InviteAsync(CloudWorkspace, InviteRole); InviteLink = new Uri(new Uri(Navigation.BaseUri), "review-room/?invite=" + Uri.EscapeDataString(invite.Token)).AbsoluteUri; InviteExpiry = DateTimeOffset.FromUnixTimeMilliseconds(invite.ExpiresAt).ToLocalTime().ToString("g"); });
     /// <summary>Accepts an invite with the actual account session, then loads the authorized JSON.</summary>
-    Task AcceptInviteAsync() => RunAsync(async () => { if (string.IsNullOrWhiteSpace(InviteToken)) return; var joined = await Cloud.JoinAsync(InviteToken); var workspace = await Cloud.LoadAsync(joined.WorkspaceId); var restored = ReviewRoomRules.Restore(workspace.Body.GetRawText()); if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(restored, false); CloudWorkspace = workspace; PendingMount = true; Status = "Invitation accepted by the server. Shared JSON loaded with role: " + joined.Role + ". Media files remain local."; });
+    Task AcceptInviteAsync() => RunAsync(async () => { if (string.IsNullOrWhiteSpace(InviteToken)) return; var joined = await Cloud.JoinAsync(InviteToken); var workspace = await Cloud.LoadAsync(joined.WorkspaceId); var restored = ReviewRoomRules.Restore(workspace.Body.GetRawText()); if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(restored, false); CloudWorkspace = workspace; CloudLabel = workspace.Title; PendingMount = true; Status = "Invitation accepted by the server. Shared JSON loaded with role: " + joined.Role + ". Media files remain local."; });
 
     /// <summary>Releases session-only blob URLs and the callback bridge when leaving the product.</summary>
     public async ValueTask DisposeAsync()

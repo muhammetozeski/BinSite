@@ -38,6 +38,8 @@ For each selected package, browser canvas drawing generates two real PNG files l
 
 The owner may request an actual viewer/editor invite. A recipient accepts it with their actual account session, loads the shared JSON and reconnects matching original media locally. **Every invited viewer or editor can read all notes in the shared JSON.** There is no per-comment private field or media upload. A viewer can inspect/export the authorized record or make a separate local copy; the app does not represent that as permission to alter the remote workspace.
 
+The server's workspace label is limited to 100 characters and is edited separately from the local project title, which supports 140. Only the short label is sent as the outer API title; the full project title remains intact inside the saved JSON. This resolves the independently identified title-limit mismatch without rejecting older local documents or silently truncating their title.
+
 Cloud payload quotas are separate from the larger local document limit. A server rejection preserves the current local project. The interface does not autosplit or discard records to fit a quota. Cloud history and member-management extensions exist in the root API but are not claimed as an implemented Review Room UI in this delivery.
 
 ## Source responsibilities
