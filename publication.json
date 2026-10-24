@@ -1,8 +1,4 @@
 {
-  "scope": "HTTP delivery only; interaction and API checks are recorded separately.",
-  "origin": "https://muhammetozeski-binsite.pages.dev",
-  "verifiedAtIstanbul": "2026-10-24 18:51:56",
-  "liveCatalogCount": 72,
   "verifiedPaths": [
     "birlikte-bil",
     "catalog-studio",
@@ -77,5 +73,9 @@
     "zaman-pazari",
     "zincir-fizik"
   ],
+  "verifiedAtIstanbul": "2026-10-24 19:40:08",
+  "origin": "https://muhammetozeski-binsite.pages.dev",
+  "liveCatalogCount": 72,
+  "scope": "HTTP delivery, English document language, dark default and appearance dependencies; interaction and API checks are recorded separately.",
   "verifiedPathCount": 72
 }
