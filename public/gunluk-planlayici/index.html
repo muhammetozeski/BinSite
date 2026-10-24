@@ -27,9 +27,9 @@
     label { display: block; font-size: .9rem; font-weight: 600; margin-bottom: 6px; }
     .muted, small, footer { color: #50635b; }
     .toolbar { display: flex; gap: 8px; flex-wrap: wrap; }
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+    .stats { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-bottom: 20px; }
     .stat, .panel { background: #fff; border: 1px solid #111111; border-radius: 0; padding: 20px; }
-    .stat strong { display: block; font-size: 1.8rem; margin-bottom: 4px; }
+    .stats .stat { padding: 0; border: 0; background: transparent; } .stat strong { display: inline; font-size: 1rem; margin-right: 6px; }
     .layout { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr); gap: 20px; align-items: start; }
     .stack { display: grid; gap: 20px; }
     .fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 12px 0; }
@@ -82,7 +82,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 details.readability-help{border-top:1px solid #50606e;padding-top:10px;margin:18px 0;font-size:14px;line-height:1.6}
 details.readability-help summary{cursor:pointer;font-weight:650;min-height:34px;display:list-item}
 details.readability-help p{max-width:75ch;margin:10px 0}
-html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:1px solid #91b0be;font-weight:700}
+html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:1px solid #91b0be;font-weight:700}html[data-bs-theme="dark"] #message{background:#25323d;color:#edf2f7;border-color:#7f9fac}html[data-bs-theme="dark"] #message.error{background:#402a2d;color:#ffe1df;border-color:#b98a8a}
 </style>
 </head>
 <body>
@@ -113,7 +113,7 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
             <div><label for="due">Due date</label><input id="due" type="date" min="0001-01-01" max="9999-12-31"></div>
             <div><label for="priority">Priority</label><select id="priority"><option value="normal">Normal</option><option value="high">High</option><option value="low">Low</option></select></div>
             <div><label for="category">Category</label><input id="category" placeholder="Work, home, personal" maxlength="40" list="categories"><datalist id="categories"></datalist></div>
-            <div class="full"><label for="details">Details <span class="muted">(optional)</span></label><textarea id="details" maxlength="5000" style="min-height:80px" placeholder="Steps, requirements, or anything you need to remember"></textarea></div>
+            <details class="full" id="task-details"><summary>Task notes</summary><label for="details">Details</label><textarea id="details" maxlength="5000" style="min-height:80px" placeholder="Steps or reminders for this task"></textarea></details>
           </div>
           <div class="toolbar"><button class="primary" id="submit-task" type="submit">Add task</button><button type="button" id="cancel-edit" hidden>Cancel editing</button></div>
         </form>
@@ -124,37 +124,37 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
         </div>
         <p class="muted" id="results" aria-live="polite"></p>
         <div id="task-list"></div>
-        <button id="clear-done" type="button" class="danger" hidden>Clear completed tasks</button>
+        <button id="clear-done" type="button" class="danger" hidden>Delete completed tasks</button>
       </section>
       <aside class="stack">
         <section class="panel" aria-labelledby="notes-heading">
-          <h2 id="notes-heading">Notebook</h2>
-          <label for="notes">Ideas and reminders</label>
-          <textarea id="notes" rows="10" maxlength="50000" placeholder="Write down what is on your mind."></textarea>
+          <h2 id="notes-heading">Notes</h2>
+
+          <textarea id="notes" aria-labelledby="notes-heading" rows="10" maxlength="50000" placeholder="Add ideas or reminders."></textarea>
           <small id="note-count">0 characters</small>
-          <button id="save-notes" type="button">Save notes</button>
+          <button id="save-notes" type="button" hidden>Retry saving</button>
           <p><small id="note-status">Your notes are saved automatically.</small></p>
         </section>
-        <section class="panel" aria-labelledby="guide-heading">
-          <h2 id="guide-heading">Plan your day</h2>
+        <details class="panel" aria-labelledby="guide-heading">
+          <summary id="guide-heading">Planning tips</summary>
           <ol class="guide">
             <li>Choose three things you want to finish today. Break large tasks into steps you can complete in one sitting.</li>
             <li>Add due dates to time-sensitive tasks. Review overdue and high-priority tasks first.</li>
             <li>Check off each finished task. At the end of the day, review what remains.</li>
           </ol>
-        </section>
-        <section class="panel" aria-labelledby="storage-heading">
-          <h2 id="storage-heading">Where is your data?</h2>
+        </details>
+        <details class="panel" aria-labelledby="storage-heading">
+          <summary id="storage-heading">Backup and storage</summary>
           
           
-          <details class="readability-help"><summary>Help</summary><p>Tasks and notes are stored in this browser. No account or internet connection is required.</p>
+          <p>Tasks and notes are stored in this browser.</p>
 <p>Clearing browser data can erase your records. Before switching browsers or moving this file, use the <strong>Download backup</strong> button above to save a copy.</p>
-<p>Restoring a backup replaces current tasks and notes with the records in that file. You will be asked to confirm.</p></details>
-        </section>
+<p>Restoring a backup replaces current tasks and notes with the records in that file. You will be asked to confirm.</p>
+        </details>
       </aside>
     </div>
   </main>
-  <footer>Daily Planner · Your records belong to this browser.</footer>
+  <footer>Download a backup before changing devices.</footer>
   <script>
     'use strict';
     const STORAGE_KEY = 'gunluk-planlayici-v1';
@@ -220,7 +220,7 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
       $('task-form').reset();
       $('title').setCustomValidity('');
       $('submit-task').textContent = 'Add task';
-      $('cancel-edit').hidden = true;
+      $('cancel-edit').hidden = true; $('task-details').open = false;
     }
     function render() {
       currentDay = localDay();
@@ -279,13 +279,13 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
           editingId = task.id;
           $('title').setCustomValidity('');
           for (const field of ['title', 'due', 'priority', 'category', 'details']) $(field).value = task[field];
-          $('submit-task').textContent = 'Save changes'; $('cancel-edit').hidden = false;
+          $('submit-task').textContent = 'Save changes'; $('cancel-edit').hidden = false; $('task-details').open = Boolean(task.details);
           $('task-form').scrollIntoView({ block: 'start' }); $('title').focus();
         });
         const remove = node('button', 'danger', 'Delete'); remove.type = 'button';
         remove.setAttribute('aria-label', `${task.title}: delete`);
         remove.addEventListener('click', () => {
-          if (!confirm(`“${task.title}” task be deleted?`)) return;
+          if (!confirm(`Delete “${task.title}”?`)) return;
           state.tasks = state.tasks.filter(item => item.id !== task.id);
           if (editingId === task.id) resetForm();
           const saved = persist(); render(); if (saved) message('Task deleted.');
@@ -305,7 +305,7 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
       if (wasEditing) Object.assign(state.tasks.find(task => task.id === editingId), values);
       else state.tasks.push({ ...values, id: crypto.randomUUID(), done: false, createdAt: Date.now() });
       const saved = persist(); resetForm(); render(); $('title').focus();
-      if (saved) message(wasEditing ? 'Task updated.' : 'Task added. Check the selected filter if it is not visible.');
+      if (saved) message(wasEditing ? 'Task updated.' : 'Task added.');
     });
     $('title').addEventListener('input', () => $('title').setCustomValidity(''));
     $('cancel-edit').addEventListener('click', resetForm);
@@ -321,7 +321,7 @@ html[data-bs-theme="dark"] #submit-task{background:#405e6d;color:#f4f8fa;border:
       clearTimeout(noteTimer);
       state.notes = $('notes').value;
       const saved = persist();
-      $('note-status').textContent = saved ? 'Notes saved.' : 'Could not save. Download a backup.';
+      $('note-status').textContent = saved ? 'Notes saved.' : 'Could not save. Retry or download a backup.'; $('save-notes').hidden = saved;
       if (saved && announce) message('Notes saved.');
     }
     $('notes').addEventListener('input', () => {
