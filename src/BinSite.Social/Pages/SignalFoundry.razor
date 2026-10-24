@@ -1,0 +1,257 @@
+@page "/signal-foundry/"
+@using System.Text.Json
+@implements IAsyncDisposable
+@inject SocialApi Api
+@inject HttpClient Http
+@inject ILogger<SignalFoundryClient> ClientLogger
+@inject IJSRuntime Javascript
+@inject NavigationManager Navigation
+@inject ILogger<SignalFoundry> Logger
+<PageTitle>Signal Foundry — Experiments before guesses</PageTitle>
+
+<div class="signal-foundry">
+    <header><h1>Signal Foundry</h1><p>Learn an unfamiliar stamp language. Choose experiments, reconstruct a new message, then teach a better version to someone else.</p></header>
+    <p class="status @(IsError ? "error" : "")" role="status" aria-live="polite">@Status</p>
+    @if (StorageWarning.Length > 0) { <p class="warning">@StorageWarning</p> }
+    <nav aria-label="Product mode"><button class="@(!ShowBuilder ? "selected" : "")" @onclick="() => ShowBuilder = false" disabled="@Busy">Play and investigate</button><button class="@(ShowBuilder ? "selected" : "")" @onclick="() => ShowBuilder = true" disabled="@Busy">Build a challenge</button><button @onclick="ResumeLatestAsync" disabled="@(Busy || !LatestResumeAvailable)">Resume latest browser attempt</button></nav>
+    <details class="rules"><summary>How to play · the eight possible rules</summary><p>Each board has nine cells: dot = empty, R = red, B = blue and Y = yellow. Paint with the four brush buttons; each cell also carries its letter. Every stamp A–D has a different rule, chosen from this menu. Apply programs left to right. Geometry wraps only when the operation says so.</p><ol>@foreach (var name in SignalFoundryEngine.OperationNames) { <li>@name</li> }</ol><p>Worked examples are free. Each requested experiment spends one query, even when its answer teaches nothing new. A successful deduction needs one possible final board; it does not need one fully identified language. If the evidence allows different final boards, any supported reconstruction is labelled consistent rather than uniquely deduced.</p></details>
+    @if (!ShowBuilder)
+    {
+        <div class="game-layout">
+            <aside class="mission-list"><h2>24 editorial missions</h2><p>Original scenarios progress from single stamps to missing evidence and composed rules. No account is needed to play.</p><button @onclick="RefreshAsync" disabled="@Busy">Refresh missions</button>@foreach (var mission in Missions) { <button class="@(Current?.Id == mission.Id ? "selected" : "")" @onclick="() => OpenAsync(mission.Id)" disabled="@Busy"><span>@mission.Id.Replace("sf-", "")</span> @mission.Title</button> }</aside>
+            <main>
+                @if (Current is null) { <section><h2>Choose a mission</h2><p>Editorial missions and shared attempts load from the game service. The local challenge builder works without an account and can be used while that service is unavailable.</p><button @onclick="() => ShowBuilder = true">Open local builder</button></section> }
+                else
+                {
+                    <section class="brief"><h2>@Current.Title</h2><p>@Current.Description</p><p class="small">@Current.AuthorAlias · @Current.EngineVersion @if (Current.ParentId is not null) { <span> · source <a href="@ChallengeUrl(Current.ParentId)">@Current.ParentId</a></span> }</p>
+                        @if (LocalPreview) { <p class="warning">Local author preview. The answer key is in this tab; this is not a server-verified attempt.</p> }
+                        <div class="toolbar"><button @onclick="StartAsync" disabled="@(Busy || Current.Withdrawn)">@(Attempt is null ? "Start this mission" : "Start a fresh attempt")</button><button @onclick="ResumeAsync" disabled="@(Busy || !CanResume || LocalPreview)">Resume this browser's saved attempt</button><button @onclick="ShareAsync" disabled="@(Busy || LocalPreview || !ModuleReady)">Copy challenge link</button></div>
+                        @if (Current.Withdrawn) { <p class="warning">The author has withdrawn this challenge. New attempts are unavailable.</p> }
+                        @if (ShareLink.Length > 0) { <label>Share link · the answer key is not in this address<input readonly value="@ShareLink" /></label> }
+                        @if (Current.Hint.Length > 0) { <details><summary>Open a mission-specific hint</summary><p>@Current.Hint</p></details> }
+                    </section>
+                    <section><h2>Worked evidence</h2><div class="evidence">@foreach (var example in Current.Examples) { <article><SignalFoundryBoard Cells="example.Input" ReadOnly Label="Example input" /><div class="program">@example.Program →</div><SignalFoundryBoard Cells="example.Output" ReadOnly Label="Observed example output" /></article> }</div></section>
+                    @if (Attempt is not null)
+                    {
+                        <div class="counts"><strong>@Attempt.QueriesRemaining experiments remaining</strong><span>@(Analysis?.CandidateCount ?? 0) consistent languages</span><span>@(Analysis?.TargetOutcomeCount ?? 0) possible final boards</span></div>
+                        @if (Attempt.ExpiresAt > 0) { <p class="small">Server attempt expires @DateTimeOffset.FromUnixTimeMilliseconds(Attempt.ExpiresAt).ToString("yyyy-MM-dd HH:mm 'UTC'"). Download your record before then. Guest attempts are tied to this browser's cookie.</p> }
+                        <fieldset disabled="@(Busy || Attempt.Finished)">
+                            <section class="experiment"><h2>1. Choose a calibration experiment</h2><p>Use an asymmetric, multicolor board to test a suspected rule. Empty or symmetric inputs can conceal differences.</p>@BrushControls()
+                                <div class="board-controls"><SignalFoundryBoard Cells="ProbeBoard" CellClicked="PaintProbe" Label="Editable experiment input" /><div><label>Stamps · A–D, at most eight<input @bind="ProbeProgram" @bind:after="SaveSessionAsync" maxlength="8" spellcheck="false" /></label><div class="toolbar"><button @onclick="UseTargetForProbe">Copy final input</button><button @onclick="ClearProbe">Clear cells</button></div><button @onclick="QueryAsync" disabled="@(Attempt.QueriesRemaining == 0)">Spend one experiment</button></div></div>
+                            </section>
+                            <section class="reconstruction"><h2>2. Reconstruct the final delivery</h2><p>Paint the result after applying <strong>@Current.Target.Program</strong> to this input. Submit only when ready; finishing reveals the answer key and locks this attempt.</p>@BrushControls()
+                                <div class="board-controls"><div><h3>Final input</h3><SignalFoundryBoard Cells="Current.Target.Input" ReadOnly Label="Final input board" /></div><strong class="program">@Current.Target.Program →</strong><div><h3>Your result</h3><SignalFoundryBoard Cells="Answer" CellClicked="PaintAnswer" Label="Editable final reconstruction" /></div></div><div class="toolbar"><button @onclick="CopyTargetToAnswer">Start from input</button><button @onclick="ClearAnswer">Clear answer</button><button class="finish" @onclick="FinishAsync">Finish and reveal</button></div>
+                            </section>
+                        </fieldset>
+                        @if (Attempt.Observations.Count > 0)
+                        {
+                            <section><h2>Experiment notebook</h2><div class="evidence">@for (var index = 0; index < Attempt.Observations.Count; index++) { var observation = Attempt.Observations[index]; var stepAnalysis = SignalFoundryEngine.Analyze(Current.Examples.Concat(Attempt.Observations.Take(index + 1)), Current.Target); <article><div class="small">Experiment @(index + 1) · @stepAnalysis.CandidateCount languages · @stepAnalysis.TargetOutcomeCount final boards</div><SignalFoundryBoard Cells="observation.Input" ReadOnly Label="Experiment input" /><div class="program">@observation.Program →</div><SignalFoundryBoard Cells="observation.Output" ReadOnly Label="Observed experiment output" /></article> }</div></section>
+                        }
+                        @if (Attempt.Finished && Attempt.Result is { } result)
+                        {
+                            <section class="result"><h2>@VerdictTitle(result.Verdict)</h2><p>@VerdictExplanation(result)</p><div class="board-controls"><div><h3>Your reconstruction</h3><SignalFoundryBoard Cells="Answer" ReadOnly Differences="DifferenceCells(result.ActualOutput)" Label="Submitted reconstruction; differences have dashed outlines" /></div><div><h3>Hidden rule's result</h3><SignalFoundryBoard Cells="result.ActualOutput" ReadOnly Label="Revealed actual output" /></div></div><p>@DifferenceCells(result.ActualOutput).Count cells differ from the hidden mapping's output. For an ambiguous mission, a different supported board can still be consistent.</p><p>@result.Explanation</p><ul>@for (var stamp = 0; stamp < result.Mapping.Length; stamp++) { <li><strong>@((char)('A' + stamp))</strong> = @SignalFoundryEngine.OperationNames[result.Mapping[stamp]]</li> }</ul><button @onclick="ForkToBuilder" disabled="@(Busy || !Current.AllowReuse)">Teach a fork with better examples</button>@if (!Current.AllowReuse) { <p>The author has not enabled reuse for this challenge.</p> }</section>
+                        }
+                        <section><label>My investigation notes · stored only in this browser<textarea @bind="Notes" @bind:after="SaveSessionAsync" maxlength="3000" rows="4"></textarea></label><button @onclick="ExportRecordAsync" disabled="@(!ModuleReady || Busy)">Download printable HTML play record</button></section>
+                    }
+                    @if (!LocalPreview)
+                    {
+                        <details class="moderation"><summary>Report a problem</summary><p>Reports require a real account. <a href="/uyelik/">Sign in or recover an account</a>.</p><label>Reason<select @bind="ReportReason"><option value="unsafe">Unsafe or abusive content</option><option value="spam">Spam</option><option value="rights">Rights or attribution concern</option><option value="privacy">Privacy concern</option></select></label><label>Details<textarea @bind="ReportNote" maxlength="900" rows="2"></textarea></label><button @onclick="ReportAsync" disabled="@Busy">Send report</button></details>
+                        @if (Current.Owned && !Current.Withdrawn) { <details class="moderation"><summary>Author controls</summary><p>Withdrawal stops new attempts. It does not rewrite previously published source versions.</p><label class="inline"><input type="checkbox" @bind="ConfirmWithdraw" /> Withdraw my challenge</label><button @onclick="WithdrawAsync" disabled="@(Busy || !ConfirmWithdraw)">Withdraw publication</button></details> }
+                    }
+                }
+            </main>
+        </div>
+    }
+    else
+    {
+        <main class="builder"><h2>Build a testable language</h2><p>Your draft and answer key stay on this device until you explicitly publish. JSON exports contain the hidden mapping: share the published challenge link with players, not the author project.</p>
+            <fieldset disabled="@Busy"><div class="builder-fields"><label>Title · 120 characters<input @bind="Builder.Title" @bind:after="BuilderChanged" maxlength="120" /></label><label>Public author alias<input @bind="Builder.AuthorAlias" @bind:after="BuilderChanged" maxlength="40" /></label><label class="wide">Scenario and instructions<textarea @bind="Builder.Description" @bind:after="BuilderChanged" maxlength="900" rows="3"></textarea></label><label>Experiment allowance<select @bind="Builder.QueryLimit" @bind:after="BuilderChanged">@for (var query = 0; query <= 6; query++) { <option value="@query">@query</option> }</select></label><label class="inline"><input type="checkbox" @bind="Builder.AllowReuse" /> Allow players to publish teaching forks</label></div>
+                @if (Builder.ParentId is not null) { <p class="source">Fork of <a href="@ChallengeUrl(Builder.ParentId)">@Builder.ParentId</a>. Its operation mapping is inherited and locked. Examples, final target and query allowance can change.</p><button @onclick="DetachSource">Detach source and start an independent language</button> }
+                <section><h3>Assign different rules</h3><div class="mapping">@for (var stamp = 0; stamp < 4; stamp++) { var stampIndex = stamp; <label>Stamp @((char)('A' + stamp))<select value="@Builder.Mapping[stamp]" @onchange="args => ChangeMapping(stampIndex, args)" disabled="@(Builder.ParentId is not null)">@for (var operation = 0; operation < 8; operation++) { <option value="@operation">@SignalFoundryEngine.OperationNames[operation]</option> }</select></label> }</div></section>
+                <section><h3>Teach with one to six examples</h3><div class="toolbar">@for (var index = 0; index < Builder.Examples.Count; index++) { var selected = index; <button class="@(ExampleIndex == index ? "selected" : "")" @onclick="() => ExampleIndex = selected">Example @(index + 1)</button> }<button @onclick="AddExample" disabled="@(Builder.Examples.Count >= 6)">Add example</button><button @onclick="RemoveExample" disabled="@(Builder.Examples.Count <= 1)">Remove selected</button></div>@BrushControls()
+                    <div class="board-controls"><SignalFoundryBoard Cells="Builder.Examples[ExampleIndex].Input" CellClicked="PaintExample" Label="Editable teaching example" /><label>Program<input @bind="Builder.Examples[ExampleIndex].Program" @bind:after="BuilderChanged" maxlength="8" /></label>@if (BuilderExamples.Count > ExampleIndex) { <div><h4>Calculated observation</h4><SignalFoundryBoard Cells="BuilderExamples[ExampleIndex].Output" ReadOnly Label="Computed teaching output" /></div> }</div>
+                </section>
+                <section><h3>Set the final unseen target</h3><p>The target input and stamps are visible to players; the computed output is withheld until they finish.</p>@BrushControls()<div class="board-controls"><SignalFoundryBoard Cells="Builder.Target.Input" CellClicked="PaintBuilderTarget" Label="Editable final input" /><label>Final program<input @bind="Builder.Target.Program" @bind:after="BuilderChanged" maxlength="8" /></label>@if (BuilderIssue.Length == 0) { <div><h4>Author-only result</h4><SignalFoundryBoard Cells="BuilderOutput" ReadOnly Label="Author-only final output" /></div> }</div></section>
+                @if (BuilderIssue.Length > 0) { <p class="error" role="alert">@BuilderIssue</p> }
+                else { <p class="analysis">These teaching examples leave <strong>@BuilderAnalysis?.CandidateCount languages</strong> and <strong>@BuilderAnalysis?.TargetOutcomeCount distinct final boards</strong>. @if (BuilderAnalysis?.TargetOutcomeCount == 1) { <span>The final is already identifiable without extra experiments.</span> } else { <span>It is still ambiguous; players can use your query allowance, and supported alternatives are never falsely failed.</span> }</p> }
+                <div class="toolbar"><button @onclick="PreviewBuilder" disabled="@(BuilderIssue.Length > 0)">Play a local preview</button><button @onclick="SaveBuilderAsync" disabled="@(!ModuleReady || BuilderIssue.Length > 0)">Save draft in this browser</button><button @onclick="RestoreBuilderAsync" disabled="@(!ModuleReady || !SavedDraftAvailable)">Restore saved browser draft</button><button @onclick="ExportBuilderAsync" disabled="@(!ModuleReady || BuilderIssue.Length > 0)">Download author JSON</button><label>Open author JSON<input type="file" accept=".json,application/json" @ref="ProjectInput" @onchange="ImportBuilderAsync" disabled="@(!ModuleReady)" /></label><button @onclick="UndoBuilder" disabled="@(PreviousBuilder is null)">Undo last draft replacement</button></div>
+                <section class="publish"><h3>Explicit public publication</h3><p>Publishing sends your title, alias, scenario, rules and boards to the service. Public versions must allow attributed teaching forks; enable reuse above. The normal player API hides the key until finish; this is a reasoning game, not an anti-cheat contest. The source repository is public. A real account is needed only to publish; guests can solve. <a href="/uyelik/">Create or recover an account</a>.</p><label class="inline"><input type="checkbox" @bind="ConfirmPublish" /> Publish this immutable version publicly</label><button @onclick="PublishAsync" disabled="@(!ConfirmPublish || !Builder.AllowReuse || BuilderIssue.Length > 0)">Publish challenge and get link</button></section>
+            </fieldset>
+        </main>
+    }
+    <footer><p>Local author previews are separate from server attempts. Guest attempts expire after seven days and depend on this browser's cookie; keep downloaded records. No fabricated players, automatic language guesses or contest prizes are used.</p></footer>
+</div>
+
+@code {
+    [SupplyParameterFromQuery(Name = "challenge")] public string? ChallengeId { get; set; }
+    SignalFoundryClient Client = default!;
+    IJSObjectReference? Module;
+    ElementReference ProjectInput;
+    List<SignalChallenge> Missions = [];
+    SignalChallenge? Current;
+    SignalAttempt? Attempt;
+    SignalAnalysis? Analysis;
+    SignalAuthorProject Builder = new();
+    List<SignalObservation> BuilderExamples = [];
+    SignalAnalysis? BuilderAnalysis;
+    int[] BuilderOutput = new int[9];
+    int[] ProbeBoard = [1, 0, 2, 0, 3, 1, 2, 0, 0];
+    int[] Answer = new int[9];
+    int[]? PreviewMapping;
+    string ProbeProgram = "A", Notes = "", Status = "Choose a mission, compare its examples, then test what you need to know.";
+    string StorageWarning = "", BuilderIssue = "", ShareLink = "", ReportReason = "unsafe", ReportNote = "";
+    string? PreviousBuilder, LoadedQuery;
+    int Brush = 1, ExampleIndex;
+    bool Busy, IsError, ShowBuilder, LocalPreview, CanResume, LatestResumeAvailable, SavedDraftAvailable, ConfirmPublish, ConfirmWithdraw;
+    bool ModuleReady => Module is not null;
+    static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
+    static readonly string[] ColorNames = ["Empty ·", "Red R", "Blue B", "Yellow Y"];
+
+    protected override async Task OnInitializedAsync()
+    {
+        Client = new(Api, Http, ClientLogger); BuilderChanged();
+        await RunAsync(async () => { Missions = await Client.ListAsync(); if (ChallengeId is null && Missions.Count > 0) await LoadAsync(Missions[0]); });
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(ChallengeId) && ChallengeId != LoadedQuery)
+        {
+            LoadedQuery = ChallengeId;
+            await OpenAsync(ChallengeId);
+        }
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender) return;
+        try { Module = await Javascript.InvokeAsync<IJSObjectReference>("import", "/signal-foundry.js"); SavedDraftAvailable = await Module.InvokeAsync<string?>("read", "author") is not null; LatestResumeAvailable = await Module.InvokeAsync<string?>("read", "latest-attempt") is not null; await CheckResumeAsync(); }
+        catch (JSException error) { StorageWarning = "Browser storage and file controls are unavailable. The game service can still be used in this tab."; Logger.LogWarning("Signal browser bridge unavailable; type={Type}", error.GetType().Name); }
+        StateHasChanged();
+    }
+    RenderFragment BrushControls() => @<div class="brushes" aria-label="Cell paint brush">@for (var value = 0; value < 4; value++) { var brushValue = value; <button type="button" class="@(Brush == value ? "selected" : "")" aria-pressed="@(Brush == value)" @onclick="() => Brush = brushValue">@ColorNames[value]</button> }</div>;
+
+    async Task RunAsync(Func<Task> action)
+    {
+        if (Busy) return;
+        Busy = true; IsError = false;
+        try { await action(); }
+        catch (Exception error)
+        {
+            IsError = true;
+            Status = error is ApiFailure or FormatException ? error.Message : error is JsonException ? "The file is not a valid Signal Foundry author project. Your current draft was kept." : "The action could not be completed. Your current work is still open; retry the same action or download a backup.";
+            Logger.LogWarning("Signal action failed; type={Type}; status={Status}", error.GetType().Name, error is ApiFailure failure ? (int)failure.Status : 0);
+        }
+        finally { Busy = false; }
+    }
+    Task RefreshAsync() => RunAsync(async () => { Missions = await Client.ListAsync(); Status = $"Loaded {Missions.Count} editorial missions."; });
+    Task OpenAsync(string id) => RunAsync(async () => { var challenge = await Client.ReadAsync(id); await LoadAsync(challenge); });
+    async Task LoadAsync(SignalChallenge challenge)
+    {
+        await SaveSessionAsync();
+        Current = challenge; Attempt = null; Analysis = null; LocalPreview = false; PreviewMapping = null; Answer = new int[9]; Notes = ""; ProbeProgram = "A";
+        ProbeBoard = (int[])challenge.Target.Input.Clone(); ShareLink = ""; ConfirmWithdraw = false; await CheckResumeAsync();
+        Status = "Compare the worked examples, then start an attempt. Experiments are optional and budgeted.";
+    }
+    Task StartAsync() => RunAsync(async () =>
+    {
+        if (Current is null) return;
+        var attempt = LocalPreview ? new SignalAttempt { AttemptId = "local", Challenge = Current, QueriesRemaining = Current.QueryLimit } : await Client.StartAsync(Current.Id);
+        Attempt = attempt; Answer = new int[9]; Notes = ""; Analyze(); await SaveSessionAsync();
+        Status = "Attempt started. Paint an experiment or reconstruct the final result from the evidence you already have.";
+    });
+    Task ResumeAsync() => Current is null ? Task.CompletedTask : RunAsync(() => RestoreSessionAsync("attempt:" + Current.Id, Current.Id));
+    Task ResumeLatestAsync() => RunAsync(() => RestoreSessionAsync("latest-attempt", null));
+    async Task RestoreSessionAsync(string key, string? expectedChallenge)
+    {
+        if (Module is null) return;
+        var text = await Module.InvokeAsync<string?>("read", key);
+        if (text is null) throw new FormatException("There is no saved attempt for this challenge in this browser.");
+        var saved = JsonSerializer.Deserialize<SavedSession>(text, Json) ?? throw new FormatException("The saved browser record is empty.");
+        SignalFoundryEngine.ValidateBoard(saved.Answer); SignalFoundryEngine.ValidateBoard(saved.ProbeBoard);
+        if (saved.ProbeProgram.Length > 8 || saved.Notes.Length > 3000) throw new FormatException("The saved notebook exceeds its text limits.");
+        var resumed = await Client.ResumeAsync(saved.AttemptId, saved.AttemptKey);
+        if (expectedChallenge is not null && resumed.Challenge.Id != expectedChallenge) throw new FormatException("The saved attempt belongs to a different challenge.");
+        var owned = Current?.Id == resumed.Challenge.Id && Current.Owned;
+        var withdrawn = Current?.Id == resumed.Challenge.Id && Current.Withdrawn;
+        Attempt = resumed; Current = resumed.Challenge; Current.Owned = owned; Current.Withdrawn |= withdrawn; Answer = resumed.Result?.Answer is { Length: 9 } submitted ? (int[])submitted.Clone() : saved.Answer; ProbeBoard = saved.ProbeBoard; ProbeProgram = saved.ProbeProgram; Notes = saved.Notes; LocalPreview = false; ShowBuilder = false; Analyze(); await SaveSessionAsync();
+        Status = resumed.Finished ? "Finished server attempt restored. Its submitted reconstruction is preserved in the local record." : "Server attempt and this browser's working board restored.";
+    }
+    Task QueryAsync() => RunAsync(async () =>
+    {
+        if (Attempt is null || Current is null || Attempt.Finished || Attempt.QueriesRemaining <= 0) return;
+        var input = (int[])ProbeBoard.Clone(); var program = SignalFoundryEngine.Program(ProbeProgram);
+        var response = LocalPreview ? new SignalQueryResult { Observation = new() { Input = input, Program = program, Output = SignalFoundryEngine.Execute(input, program, PreviewMapping!) }, QueriesRemaining = Attempt.QueriesRemaining - 1 } : await Client.QueryAsync(Attempt.AttemptId, input, program, Attempt.AttemptKey);
+        var before = Analysis?.CandidateCount ?? 1680;
+        Attempt.Observations.Add(response.Observation); Attempt.QueriesRemaining = response.QueriesRemaining; Analyze(); await SaveSessionAsync();
+        Status = $"Experiment recorded: {before} → {Analysis?.CandidateCount} consistent languages; {Analysis?.TargetOutcomeCount} possible final boards.";
+    });
+    Task FinishAsync() => RunAsync(async () =>
+    {
+        if (Attempt is null || Current is null || Attempt.Finished) return;
+        var submitted = (int[])Answer.Clone();
+        var result = LocalPreview ? SignalFoundryEngine.Assess(Current.Examples.Concat(Attempt.Observations), Current.Target, submitted, PreviewMapping!) : await Client.FinishAsync(Attempt.AttemptId, submitted, Attempt.AttemptKey);
+        Attempt.Result = result; Attempt.Finished = true; Answer = result.Answer is { Length: 9 } accepted ? (int[])accepted.Clone() : submitted; await SaveSessionAsync(); Status = VerdictTitle(result.Verdict);
+    });
+    void Analyze() { if (Current is not null && Attempt is not null) Analysis = SignalFoundryEngine.Analyze(Current.Examples.Concat(Attempt.Observations), Current.Target); }
+    async Task CheckResumeAsync() { CanResume = Module is not null && Current is not null && !LocalPreview && await Module.InvokeAsync<string?>("read", "attempt:" + Current.Id) is not null; }
+    async Task SaveSessionAsync()
+    {
+        if (Module is null || Current is null || Attempt is null || LocalPreview) return;
+        try { var snapshot = JsonSerializer.Serialize(new SavedSession { AttemptId = Attempt.AttemptId, AttemptKey = Attempt.AttemptKey, Answer = Answer, ProbeBoard = ProbeBoard, ProbeProgram = ProbeProgram, Notes = Notes }, Json); await Module.InvokeVoidAsync("write", "attempt:" + Current.Id, snapshot); await Module.InvokeVoidAsync("write", "latest-attempt", snapshot); CanResume = true; LatestResumeAvailable = true; }
+        catch (JSException error) { StorageWarning = "This browser could not save the working board. Download a play record before leaving; the server attempt still exists until its expiry."; Logger.LogWarning("Signal local snapshot failed; type={Type}", error.GetType().Name); }
+    }
+    async Task PaintProbe(int cell) { if (Busy || Attempt?.Finished == true) return; ProbeBoard[cell] = Brush; await SaveSessionAsync(); }
+    async Task PaintAnswer(int cell) { if (Busy || Attempt?.Finished == true) return; Answer[cell] = Brush; await SaveSessionAsync(); }
+    async Task UseTargetForProbe() { if (Current is not null) { ProbeBoard = (int[])Current.Target.Input.Clone(); await SaveSessionAsync(); } }
+    async Task ClearProbe() { ProbeBoard = new int[9]; await SaveSessionAsync(); }
+    async Task CopyTargetToAnswer() { if (Current is not null) { Answer = (int[])Current.Target.Input.Clone(); await SaveSessionAsync(); } }
+    async Task ClearAnswer() { Answer = new int[9]; await SaveSessionAsync(); }
+    string ChallengeUrl(string id) => Navigation.BaseUri.TrimEnd('/') + "/signal-foundry/?challenge=" + Uri.EscapeDataString(id);
+    Task ShareAsync() => RunAsync(async () => { if (Current is null || Module is null || LocalPreview) return; ShareLink = ChallengeUrl(Current.Id); var copied = await Module.InvokeAsync<bool>("copy", ShareLink); Status = copied ? "Challenge link copied. It contains no answer key." : "Copy the challenge address from the visible field."; });
+    Task ReportAsync() => RunAsync(async () => { if (Current is null) return; await Client.ReportAsync(Current.Id, ReportReason, ReportNote); Status = "Report submitted for review."; ReportNote = ""; });
+    Task WithdrawAsync() => RunAsync(async () => { if (Current is null || !ConfirmWithdraw) return; await Client.WithdrawAsync(Current.Id); Current.Withdrawn = true; Status = "Publication withdrawn. New attempts cannot start."; });
+    Task ExportRecordAsync() => RunAsync(async () => { if (Attempt is null || Module is null) return; await Module.InvokeVoidAsync("download", "signal-play-record.html", SignalFoundryExports.Report(Attempt, Answer, Notes), "text/html;charset=utf-8"); Status = "Downloaded a printable play record. Use the browser's Print command after opening it."; });
+
+    void BuilderChanged()
+    {
+        ConfirmPublish = false;
+        try { BuilderExamples = SignalFoundryEngine.Examples(Builder); BuilderAnalysis = SignalFoundryEngine.Analyze(BuilderExamples, Builder.Target); BuilderOutput = SignalFoundryEngine.Execute(Builder.Target.Input, Builder.Target.Program, Builder.Mapping); BuilderIssue = ""; }
+        catch (FormatException error) { BuilderIssue = error.Message; BuilderExamples = []; BuilderAnalysis = null; }
+    }
+    void ChangeMapping(int stamp, ChangeEventArgs args) { if (Builder.ParentId is not null) return; if (int.TryParse(args.Value?.ToString(), out var operation)) Builder.Mapping[stamp] = operation; BuilderChanged(); }
+    void PaintExample(int cell) { Builder.Examples[ExampleIndex].Input[cell] = Brush; BuilderChanged(); }
+    void PaintBuilderTarget(int cell) { Builder.Target.Input[cell] = Brush; BuilderChanged(); }
+    void AddExample() { if (Builder.Examples.Count >= 6) return; Builder.Examples.Add(new() { Input = [1, 0, 2, 0, 3, 1, 2, 0, 0], Program = "A" }); ExampleIndex = Builder.Examples.Count - 1; BuilderChanged(); }
+    void RemoveExample() { if (Builder.Examples.Count <= 1) return; Builder.Examples.RemoveAt(ExampleIndex); ExampleIndex = Math.Min(ExampleIndex, Builder.Examples.Count - 1); BuilderChanged(); }
+    void BackupBuilder() => PreviousBuilder = JsonSerializer.Serialize(Builder, Json);
+    void ReplaceBuilder(SignalAuthorProject replacement) { BackupBuilder(); Builder = replacement; ExampleIndex = 0; BuilderChanged(); }
+    void UndoBuilder() { if (PreviousBuilder is null) return; var old = PreviousBuilder; PreviousBuilder = JsonSerializer.Serialize(Builder, Json); Builder = JsonSerializer.Deserialize<SignalAuthorProject>(old, Json)!; ExampleIndex = 0; BuilderChanged(); Status = "Previous draft restored."; }
+    void DetachSource() { BackupBuilder(); Builder.ParentId = null; BuilderChanged(); Status = "Source detached. This will publish as an independent language."; }
+    void PreviewBuilder()
+    {
+        SignalFoundryEngine.ValidateProject(Builder);
+        Current = new() { Id = "local-preview", Title = Builder.Title, Description = Builder.Description, AuthorAlias = Builder.AuthorAlias, AllowReuse = true, Examples = SignalFoundryEngine.Examples(Builder), Target = new() { Input = (int[])Builder.Target.Input.Clone(), Program = Builder.Target.Program }, QueryLimit = Builder.QueryLimit, ParentId = Builder.ParentId };
+        PreviewMapping = (int[])Builder.Mapping.Clone(); LocalPreview = true; CanResume = false; Attempt = new() { AttemptId = "local", Challenge = Current, QueriesRemaining = Current.QueryLimit }; Answer = new int[9]; Notes = ""; Analyze(); ShowBuilder = false; Status = "Local author preview started. No draft or experiment was uploaded.";
+    }
+    void ForkToBuilder()
+    {
+        if (Current is null || Attempt?.Result is not { } result || !Current.AllowReuse) return;
+        ReplaceBuilder(new() { Title = "Teaching fork: " + Current.Title[..Math.Min(Current.Title.Length, 100)], Description = Current.Description, AuthorAlias = Builder.AuthorAlias, Mapping = (int[])result.Mapping.Clone(), Examples = Current.Examples.Select(example => new SignalTarget { Input = (int[])example.Input.Clone(), Program = example.Program }).ToList(), Target = new() { Input = (int[])Current.Target.Input.Clone(), Program = Current.Target.Program }, QueryLimit = Current.QueryLimit, ParentId = LocalPreview ? Current.ParentId : Current.Id, AllowReuse = true });
+        ShowBuilder = true; Status = "Teaching fork copied locally. Rules are inherited; improve its examples or final question before explicit publication.";
+    }
+    Task SaveBuilderAsync() => RunAsync(async () => { if (Module is null) return; await Module.InvokeVoidAsync("write", "author", SignalFoundryEngine.Serialize(Builder)); SavedDraftAvailable = true; Status = "Author draft saved in this browser. Download JSON for a portable backup."; });
+    Task RestoreBuilderAsync() => RunAsync(async () => { if (Module is null) return; var text = await Module.InvokeAsync<string?>("read", "author") ?? throw new FormatException("No saved author draft was found."); var replacement = SignalFoundryEngine.Deserialize(text); ReplaceBuilder(replacement); Status = "Saved browser draft restored. Undo can recover the previous draft."; });
+    Task ExportBuilderAsync() => RunAsync(async () => { if (Module is null) return; await Module.InvokeVoidAsync("download", "signal-author-project.json", SignalFoundryEngine.Serialize(Builder), "application/json"); Status = "Author JSON downloaded. It includes the answer key; send players the published challenge link instead."; });
+    Task ImportBuilderAsync() => RunAsync(async () => { if (Module is null) return; var text = await Module.InvokeAsync<string?>("readProject", ProjectInput); if (text is null) return; var replacement = SignalFoundryEngine.Deserialize(text); ReplaceBuilder(replacement); Status = "Author project opened after validation. Undo retains the previous draft."; });
+    Task PublishAsync() => RunAsync(async () =>
+    {
+        if (!ConfirmPublish || !Builder.AllowReuse) return;
+        var published = await Client.PublishAsync(Builder);
+        await LoadAsync(published); ShowBuilder = false; ShareLink = ChallengeUrl(published.Id); ConfirmPublish = false;
+        Status = "Published a real immutable challenge. Share this link; players do not need an account.";
+    });
+    HashSet<int> DifferenceCells(int[] actual) => Enumerable.Range(0, 9).Where(index => Answer[index] != actual[index]).ToHashSet();
+    static string VerdictTitle(string verdict) => verdict switch { "deduced" => "Deduced from the evidence", "consistent" => "Supported, but still ambiguous", _ => "Not supported by the evidence" };
+    static string VerdictExplanation(SignalAssessment result) => result.Verdict switch { "deduced" => "Every remaining language predicts your final board. You identified the result even if some unused stamps remain unknown.", "consistent" => "Your board is produced by a language that fits all observed evidence. Other final boards also remain possible, so this is not labelled a unique deduction.", _ => "No remaining language produces your submitted board. Review the stamp order, wrap behavior and worked evidence before trying a fresh attempt." };
+    sealed class SavedSession { public string AttemptId { get; set; } = ""; public string AttemptKey { get; set; } = ""; public int[] Answer { get; set; } = new int[9]; public int[] ProbeBoard { get; set; } = new int[9]; public string ProbeProgram { get; set; } = "A"; public string Notes { get; set; } = ""; }
+    public async ValueTask DisposeAsync() { if (Module is not null) { try { await Module.DisposeAsync(); } catch (JSDisconnectedException) { } } }
+}

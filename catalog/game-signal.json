@@ -1,0 +1,21 @@
+[
+  {
+    "id": 101,
+    "name": "Signal Foundry",
+    "slug": "signal-foundry",
+    "category": "Games",
+    "stage": 8,
+    "runtime": "blazor",
+    "adEligible": true,
+    "description": "Infer an unfamiliar stamp language by choosing experiments, then reconstruct an unseen delivery. Play 24 original missions or publish a challenge that others can improve with attributed teaching forks.",
+    "features": [
+      "24 original English missions with specific hints and post-finish explanations",
+      "A deterministic eight-operation language with 1,680 possible stamp assignments",
+      "Experiment budgets, visible evidence notebooks and honest ambiguity assessment",
+      "Guest attempts with server checks and private browser recovery capabilities",
+      "Local challenge builder, author JSON backups and printable HTML play records",
+      "Explicit account-based publication, immutable share links and source-preserving forks"
+    ],
+    "businessHypothesis": "Public reasoning-game sessions and shared challenge pages may support display advertising after publisher approval and consent configuration. Return play and shared creations are measurable hypotheses; audience and revenue have not been established."
+  }
+]

@@ -1,0 +1,26 @@
+<div class="signal-board" role="group" aria-label="@Label">
+    @for (var index = 0; index < 9; index++)
+    {
+        var cellIndex = index;
+        var value = Cells[index];
+        var name = $"Row {index / 3 + 1}, column {index % 3 + 1}: {Names[value]}";
+        @if (ReadOnly)
+        {
+            <span class="cell color-@value @(Differences?.Contains(index) == true ? "different" : "")" title="@name" aria-label="@name">@Marks[value]</span>
+        }
+        else
+        {
+            <button type="button" class="cell color-@value @(Differences?.Contains(index) == true ? "different" : "")" title="@name" aria-label="@name" @onclick="() => CellClicked.InvokeAsync(cellIndex)">@Marks[value]</button>
+        }
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public int[] Cells { get; set; } = new int[9];
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public string Label { get; set; } = "Three by three board";
+    [Parameter] public HashSet<int>? Differences { get; set; }
+    [Parameter] public EventCallback<int> CellClicked { get; set; }
+    static readonly string[] Marks = ["·", "R", "B", "Y"];
+    static readonly string[] Names = ["empty", "red", "blue", "yellow"];
+}
