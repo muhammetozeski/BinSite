@@ -15,6 +15,10 @@ Use this index to find project-specific implementation knowledge before repeatin
 - [Client Review Room](Review-Room.md): file-version identities, anchored review notes and delivery records.
 - [Field Work Pack](Field-Work-Pack.md): checklist snapshots, actual photo evidence and local reports.
 - [Procedure service](Procedure-Service.md): immutable public procedures, pinned forks, explicit outcomes and owner moderation.
+- [Procedure Exchange](Procedure-Exchange.md): reusable methods, source-pinned runs, explicit outcomes and private execution records.
+- [Shift & Cover Desk](Shift-Cover-Desk.md): entered-constraint scheduling, validated swaps and portable personal calendars.
+- [Signal Foundry](Signal-Foundry.md): finite-language experiments, reconstruction, challenge authoring and browser progress.
+- [Signal service](Signal-Service.md): server-owned query budgets, ambiguity analysis, capability recovery and immutable challenge records.
 - [English migration](English-Migration.md): legacy shopping keys, preserved progress and the route ambiguity found in a real browser.
 - [Social products](social-001.md): API contracts, cookie identity limits and local integration checks for the first social products.
 - [Community products](social-002.md): shared canvas revisions, debate reviews, private exchange states, curator approvals and private team clues.

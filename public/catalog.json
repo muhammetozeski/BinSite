@@ -1188,5 +1188,64 @@
       "Product-scoped offline reopening preparation"
     ],
     "businessHypothesis": "The complete local work-order and reporting workflow remains available without an account or API key. Optional paid value can come from larger private metadata workspaces, more collaborators and longer server-retained version history, using the real shared account allowance. The private application is not an advertising placement. Demand, paying customers and revenue have not been verified."
+  },
+  {
+    "id": 99,
+    "name": "Procedure Exchange",
+    "slug": "procedure-exchange",
+    "category": "Social",
+    "stage": 7,
+    "runtime": "blazor",
+    "adEligible": false,
+    "description": "Write a reusable procedure, perform a pinned local run with actual output, and improve a published method through attributed versions and explicit outcomes.",
+    "features": [
+      "Twelve original, complete editorial methods with concrete inputs, actions, done checks and expected artifacts",
+      "Independent local authoring, immutable run snapshots, private execution records and explicit completed, partial or blocked declarations",
+      "Strict private project JSON, reusable attributed method packages, standalone HTML reports and actual artifact text downloads",
+      "Real public search, immutable published revisions, pinned forks and step-ID comparisons",
+      "Explicit account-reported outcomes per published revision, owner revision checks, withdrawal and reporting",
+      "Optional owner-only private vault copies under a separate label, with public text isolated from private run data"
+    ],
+    "businessHypothesis": "Useful methods can bring repeat visits when people perform the work again, improve a source-pinned fork and share the resulting instructions or report. The local workflow and public reuse remain accessible; optional membership adds private saved-project capacity. This first workspace delivery has no third-party advertising scripts."
+  },
+  {
+    "id": 100,
+    "name": "Shift & Cover Desk",
+    "slug": "shift-cover-desk",
+    "category": "Workspace",
+    "stage": 8,
+    "runtime": "blazor",
+    "adEligible": false,
+    "description": "Build a real local roster from entered roles, dated availability, coverage needs and hour/rest limits. Inspect unresolved seats, validate manual assignments and two-sided swaps, and export actual per-person schedules.",
+    "features": [
+      "Editable roles, up to 60 people, 24 explicit availability windows per person, 120 shifts and 240 required seats",
+      "One shared validator for skills, complete availability, project hours, single-shift duration, overlap and entered minimum rest",
+      "Eight bounded deterministic suggestion passes, preserved valid locked seats and explicit current blockers without an infeasibility or optimality claim",
+      "Atomic manual replacement and two-sided swaps; changed input constraints retain existing assignments as visible draft conflicts",
+      "Eight clearly fictional editable rosters covering overnight work, adjacent windows, scarce capabilities and limited capacity",
+      "Complete local JSON import/export, verified IndexedDB saving with localStorage fallback, and separate per-person schedules",
+      "Conflict-labelled CSV, escaped standalone print-ready HTML and UTC iCalendar files with safe text encoding and UTF-8 line folding",
+      "Optional real-account owner-only project vault snapshots, separate 100-character labels and an enforced 64 KiB body limit"
+    ],
+    "businessHypothesis": "Organizations that repeatedly plan small teams may value saved rosters and portable schedules. The complete local workflow requires no account or API key. Existing optional membership can provide additional private cloud-project capacity; this app does not claim worker participation, collaboration, legal compliance, paid conversions or observed revenue. Private planning screens are not advertising eligible."
+  },
+  {
+    "id": 101,
+    "name": "Signal Foundry",
+    "slug": "signal-foundry",
+    "category": "Games",
+    "stage": 8,
+    "runtime": "blazor",
+    "adEligible": true,
+    "description": "Infer an unfamiliar stamp language by choosing experiments, then reconstruct an unseen delivery. Play 24 original missions or publish a challenge that others can improve with attributed teaching forks.",
+    "features": [
+      "24 original English missions with specific hints and post-finish explanations",
+      "A deterministic eight-operation language with 1,680 possible stamp assignments",
+      "Experiment budgets, visible evidence notebooks and honest ambiguity assessment",
+      "Guest attempts with server checks and private browser recovery capabilities",
+      "Local challenge builder, author JSON backups and printable HTML play records",
+      "Explicit account-based publication, immutable share links and source-preserving forks"
+    ],
+    "businessHypothesis": "Public reasoning-game sessions and shared challenge pages may support display advertising after publisher approval and consent configuration. Return play and shared creations are measurable hypotheses; audience and revenue have not been established."
   }
 ]
