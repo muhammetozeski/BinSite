@@ -1247,5 +1247,29 @@
       "Explicit account-based publication, immutable share links and source-preserving forks"
     ],
     "businessHypothesis": "Public reasoning-game sessions and shared challenge pages may support display advertising after publisher approval and consent configuration. Return play and shared creations are measurable hypotheses; audience and revenue have not been established."
+  },
+  {
+    "id": 103,
+    "name": "Retry Assurance",
+    "slug": "retry-assurance",
+    "url": "https://muhammetozeski-retry-assurance.pages.dev/",
+    "category": "Engineering",
+    "stage": 9,
+    "adEligible": false,
+    "appearance": {
+      "themeAttribute": "data-ra-theme",
+      "assetAttribute": "data-ra-appearance"
+    },
+    "description": "Execute a real .NET job-client operation under delayed acknowledgement, inspect durable duplicate effects, and compare a corrected build against retained evidence.",
+    "features": [
+      "Real C# operation callbacks and a maintained synthetic JSON POST/jobs scenario",
+      "Server-derived results from durable resources, request sequence and key relationships",
+      "Immutable behavior revisions, scenario hashes and separate before/after runs",
+      "Actual accounts, project roles, one-use invitations and revocable runner capabilities",
+      "Destination-bound transport, synthetic credentials and allowlisted evidence exports",
+      "Independent Blazor portal, runnable broken/correct clients and portable source",
+      "Usable free allowance with optional signed-provider billing after owner configuration"
+    ],
+    "businessHypothesis": "API providers maintaining a .NET job client may pay for maintained failure semantics and repeatable release verification. The proposed USD 99 monthly Team plan expands actual account limits; checkout requires merchant, exact-plan and signed-notification configuration. Live payments, willingness to pay and customer adoption remain unverified. Private projects and execution evidence do not load advertising trackers."
   }
 ]
