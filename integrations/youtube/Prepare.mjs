@@ -1,0 +1,2 @@
+import{copyFileSync,readFileSync}from'node:fs';import{createHash}from'node:crypto';import{fileURLToPath}from'node:url';
+const source=new URL('./youtube-core.mjs',import.meta.url),target=new URL('../../src/BinSite.Social/wwwroot/integrations/youtube/youtube-core.mjs',import.meta.url);copyFileSync(source,target);const hash=url=>createHash('sha256').update(readFileSync(url)).digest('hex');if(hash(source)!==hash(target))throw new Error('YouTube runtime copy differs from source.');console.log('YouTube runtime prepared; source/copy hashes match.');
