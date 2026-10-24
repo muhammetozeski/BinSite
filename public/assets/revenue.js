@@ -6,7 +6,8 @@
   footer.style.cssText = 'clear:both;max-width:1100px;margin:32px auto 12px;padding:16px;border-top:1px solid #aaa6;font:14px/1.6 system-ui,sans-serif;position:static';
   const currentPath = location.pathname.replace(/\/+$/, '') || '/';
   const links = [['Account', '/uyelik/'], ['Privacy', '/privacy/'], ['Home', '/']].filter(([, href]) => (href.replace(/\/+$/, '') || '/') !== currentPath);
-  const navigation = document.createElement('nav');
+  const navigation = document.createElement('span');
+  navigation.setAttribute('role', 'navigation');
   navigation.setAttribute('aria-label', 'Site');
   footer.append(navigation);
   document.body.append(footer);
@@ -32,7 +33,7 @@
   updateLinks();
   // Application navigation can render after this shared script has loaded.
   const observer = new MutationObserver(updateLinks);
-  observer.observe(document.body, { childList: true, subtree: true });
+  observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'aria-expanded'] });
   window.addEventListener('resize', updateLinks, { passive: true });
   if (!adEligible) return;
   let config;
