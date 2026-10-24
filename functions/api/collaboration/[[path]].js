@@ -16,7 +16,7 @@ const member=(state,visitor)=>state.members?.find(item=>item.key===visitor);
 const requireMember=(state,visitor)=>member(state,visitor)||reject(403,'Join this workspace first.');
 function join(state,visitor,body,max=32){const own=member(state,visitor);if(own)return own;if(state.members.length>=max)reject(409,'Participant capacity has been reached.');const name=txt(body.name,'Handle',2,24);const added={id:uid(),key:visitor,name};state.members.push(added);return added;}
 const publicMembers=state=>(state.members||[]).map(item=>({id:item.id,name:item.name}));
-const normalize=value=>String(value).trim().toLocaleLowerCase('tr').replace(/\s+/gu,' ');
+const normalize=value=>String(value).trim().toLocaleLowerCase('en-US').replace(/\s+/gu,' ');
 const registry={};
 
 registry['mini-turnuva']={

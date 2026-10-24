@@ -130,18 +130,18 @@ async function dispatch(request, env, visitorHash, ipHash) {
     const paragraph = textField(body.body, 'Continuation', 30, 1600);
     const parent = await db.prepare('SELECT n.depth FROM story_nodes n JOIN stories s ON s.id = n.story_id WHERE n.id = ? AND n.story_id = ? AND n.hidden = 0 AND s.hidden = 0').bind(parentId, storyId).first();
     if (!parent) throw new ApiError(404, 'The parent branch was not found.');
-    if (parent.depth >= 24) throw new ApiError(409, 'This branch has reached 24 continuations. Branch from an earlier paragraph.');
+    if (parent.depth >= 24) throw new ApiError(409, 'Choose an earlier paragraph to add another continuation.');
     await rateLimit(db, 'story-node', visitorHash, ipHash, 18);
     const id = crypto.randomUUID();
     const result = await db.prepare('INSERT INTO story_nodes (id, story_id, parent_id, body, depth, creator_hash, created_at) SELECT ?, ?, ?, ?, ?, ?, ? WHERE (SELECT COUNT(*) FROM story_nodes WHERE story_id = ?) < 300').bind(id, storyId, parentId, paragraph, parent.depth + 1, visitorHash, Date.now(), storyId).run();
-    if (!result.meta.changes) throw new ApiError(409, 'This story has reached 300 paragraphs. Start a new story.');
+    if (!result.meta.changes) throw new ApiError(409, 'This story is full. Start a new story.');
     return { id };
   }
   if (route === 'polls') {
     const question = textField(body.question, 'Duel question', 8, 240);
     const optionA = textField(body.optionA, 'First idea', 2, 140);
     const optionB = textField(body.optionB, 'Second idea', 2, 140);
-    if (optionA.toLocaleLowerCase('tr') === optionB.toLocaleLowerCase('tr')) throw new ApiError(400, 'Write two different ideas.');
+    if (optionA.toLocaleLowerCase('en-US') === optionB.toLocaleLowerCase('en-US')) throw new ApiError(400, 'Write two different ideas.');
     await rateLimit(db, 'poll-create', visitorHash, ipHash, 6);
     const id = crypto.randomUUID();
     await db.prepare('INSERT INTO polls (id, question, option_a, option_b, creator_hash, created_at) VALUES (?, ?, ?, ?, ?, ?)').bind(id, question, optionA, optionB, visitorHash, Date.now()).run();
@@ -154,7 +154,7 @@ async function dispatch(request, env, visitorHash, ipHash) {
     const result = await db.prepare('INSERT OR IGNORE INTO poll_votes (poll_id, visitor_hash, choice, created_at) SELECT ?, ?, ?, ? WHERE EXISTS (SELECT 1 FROM polls WHERE id = ? AND hidden = 0)').bind(id, visitorHash, body.choice, Date.now(), id).run();
     if (!result.meta.changes) {
       const existing = await db.prepare('SELECT id FROM polls WHERE id = ? AND hidden = 0').bind(id).first();
-      throw new ApiError(existing ? 409 : 404, existing ? 'This browser identity has already voted in this duel.' : 'The duel was not found.');
+      throw new ApiError(existing ? 409 : 404, existing ? 'You have already voted in this question.' : 'The duel was not found.');
     }
     return pollDetail(db, id, visitorHash);
   }
