@@ -9,8 +9,12 @@ for (const relative of paths) {
   const filename = path.join(root, 'public', relative);
   const html = await readFile(filename, 'utf8');
   if (html.includes('data-binsite-revenue')) continue;
-  const modified = html.replace(/<\/body>/i, '<script src="/assets/revenue.js" data-binsite-revenue defer></script></body>');
-  if (modified === html) throw new Error(`Cannot insert revenue controls: ${relative}`);
+  // HTML permits omitted body/html end tags. Ignore raw-text elements and comments while locating insertion points.
+  const masked = html.replace(/<!--[\s\S]*?-->|<(script|style|textarea|title)\b[^>]*>[\s\S]*?<\/\1\s*>/gi, value => ' '.repeat(value.length));
+  const closing = /<\/body\s*>/i.exec(masked) || /<\/html\s*>/i.exec(masked);
+  const position = closing ? closing.index : html.length;
+  const script = '<script src="/assets/revenue.js" data-binsite-revenue defer></script>';
+  const modified = html.slice(0, position) + script + html.slice(position);
   await writeFile(filename, modified);
 }
 console.log(`Prepared optional revenue footer on ${paths.length} entry points; ad network loading remains disabled until configured.`);
