@@ -12,10 +12,18 @@
   footer.append(navigation);
   document.body.append(footer);
   let renderedLinks;
+  function insideClosedContent(anchor) {
+    for (let parent = anchor.parentElement; parent; parent = parent.parentElement) {
+      if (parent.tagName !== 'DETAILS' || parent.open) continue;
+      const summary = [...parent.children].find(child => child.tagName === 'SUMMARY');
+      if (!summary?.contains(anchor)) return true;
+    }
+    return false;
+  }
   function updateLinks() {
     const existing = new Set();
     for (const anchor of document.querySelectorAll('header a[href], nav a[href], footer a[href]')) {
-      if (footer.contains(anchor) || anchor.closest('[hidden]') || !anchor.getClientRects().length) continue;
+      if (footer.contains(anchor) || anchor.closest('[hidden]') || !anchor.getClientRects().length || insideClosedContent(anchor)) continue;
       const target = new URL(anchor.href, location.href);
       if (target.origin === location.origin) existing.add(target.pathname.replace(/\/+$/, '') || '/');
     }
@@ -33,7 +41,7 @@
   updateLinks();
   // Application navigation can render after this shared script has loaded.
   const observer = new MutationObserver(updateLinks);
-  observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'aria-expanded'] });
+  observer.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'hidden', 'open', 'aria-expanded'] });
   window.addEventListener('resize', updateLinks, { passive: true });
   if (!adEligible) return;
   let config;
