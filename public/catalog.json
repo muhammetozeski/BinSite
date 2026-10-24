@@ -508,6 +508,91 @@
     "businessHypothesis": "Üreticilerin eser ve deneylerini paylaşması yeni kullanıcıları davet edebilir. Eğitim, özel koleksiyonlar veya gelişmiş üretici araçları gelir adayıdır; henüz talep ve gelir ölçülmedi."
   },
   {
+    "id": 31,
+    "name": "Sözcük Bestesi",
+    "slug": "sozcuk-bestesi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Yalnız eldeki sözcükleri kullanarak 12 farklı sözcük ve üç satırlık bir metin kurma oyunu.",
+    "features": [
+      "Üç editoryal kelime dünyası",
+      "Tek kullanımlık sözcük havuzu",
+      "Satır ve sözcük kısıtı doğrulama",
+      "Örnek beste",
+      "Tam içerikli bağlantı",
+      "Metin indirme"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+  },
+  {
+    "id": 32,
+    "name": "Rüzgâr Sanatı",
+    "slug": "ruzgar-sanati",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Çizilen yerel kuvvet alanlarının parçacıkları etkileyerek oluşturduğu fiziksel akış sanatı.",
+    "features": [
+      "Rüzgâr oku çizme",
+      "Parçacık kaynağını taşıma",
+      "Yerçekimi ve sürüklenme",
+      "İz kalıcılığı ve renk",
+      "PNG indirme",
+      "Kuvvet alanı bağlantısı"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+  },
+  {
+    "id": 33,
+    "name": "Jest Fırçası",
+    "slug": "jest-fircasi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Kaydedilen bir el hareketini yol boyunca tekrarlanan özel fırçaya dönüştürür.",
+    "features": [
+      "Yeni jest kaydetme",
+      "Yön boyunca damga döndürme",
+      "Boyut ve mesafe ayarı",
+      "Eski jestleri koruma",
+      "PNG indirme",
+      "Doğrulanan proje dosyaları",
+      "Yaprak yolu örneği"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+  },
+  {
+    "id": 34,
+    "name": "Ses Manzarası",
+    "slug": "ses-manzarasi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Rüzgâr, yağmur, dalga ve uzak çan dokularını tarayıcıda sentezleyip canlı karıştırır.",
+    "features": [
+      "Dört prosedürel ses katmanı",
+      "Üç başlangıç manzarası",
+      "Katman başına düzey",
+      "Süreli yumuşak kapanma",
+      "Karışım bağlantısı"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+  },
+  {
+    "id": 35,
+    "name": "Şifre Postası",
+    "slug": "sifre-postasi",
+    "category": "Yaratıcılık",
+    "stage": 3,
+    "description": "Bir cümleyi harf kaydırmalı veya nokta/çizgi kodlu oynanabilir bulmacaya çevirir.",
+    "features": [
+      "İki gerçek kod dönüşümü",
+      "Çözme çemberi ve kod alfabesi",
+      "Özgün örnek görevler",
+      "Çözüm denetimi ve gerçek deneme/süre",
+      "Asıl metni eklemeyen oyuncu URL’si",
+      "Şifreli metin indirme"
+    ],
+    "businessHypothesis": "Tamamlanan üretimin paylaşılması alıcıyı yeni üretime çağırabilir. İçerik paketleri, gelişmiş üretici araçları veya atölyeler gelecekte sınanabilecek gelir yollarıdır; gerçek kullanım ve gelir henüz ölçülmedi."
+  },
+  {
     "id": 36,
     "name": "Ortak Tuval",
     "slug": "ortak-tuval",
@@ -523,5 +608,73 @@
       "Raporlama ve hız sınırları"
     ],
     "businessHypothesis": "Grupların ortak bir resim üretip tuval bağlantısını paylaşması yeni katkıları çağırabilir. Topluluk kullanımı gözlenirse özel atölye ve etkinlik ihtiyaçları ölçülebilir; kullanıcı veya gelir başarısı henüz doğrulanmış değildir."
+  },
+  {
+    "id": 37,
+    "name": "Münazara Sahnesi",
+    "slug": "munazara-sahnesi",
+    "category": "Sosyal",
+    "stage": 4,
+    "description": "Önermeleri gerekçeli savlar ve bağlı karşısavlarla tartış; açıklık ve kanıt niteliğini ayrı ölçütlerle değerlendir.",
+    "features": [
+      "Gerçek kalıcı önerme ve sav haritası",
+      "Karşısav bağlantıları",
+      "İsteğe bağlı güvenli kaynak adresleri",
+      "Yazarın kendi savını değerlendirmesine sunucu engeli",
+      "İki eksenli değerlendirme ortalamaları",
+      "12 editoryal tartışma taslağı"
+    ],
+    "businessHypothesis": "Toplulukların tek bir önermeyi paylaşarak eksik bakış açısını davet etmesi daha nitelikli katkı yaratabilir. Eğitim veya ekip kolaylaştırma ihtiyaçları gözlenirse özel oturum ve dışa aktarım hizmetleri test edilebilir; öğrenme ve gelir etkisi henüz ölçülmedi."
+  },
+  {
+    "id": 38,
+    "name": "Zaman Pazarı",
+    "slug": "zaman-pazari",
+    "category": "Sosyal",
+    "stage": 4,
+    "description": "Para kullanmadan beceri ve zaman takası için gerçek ilan yayımla, site içi özel yanıtla eşleş ve tamamlanmayı iki taraflı onayla.",
+    "features": [
+      "Teklif ve öğrenme isteği ilanları",
+      "Süresi belli oturumlar",
+      "Sunucuda iki katılımcıya özel konuşmalar",
+      "İlan sahibine ait kabul ve kapatma yetkisi",
+      "Çakışan tekliflerden yalnız birini kabul etme",
+      "İki taraflı tamamlanma ve 16 beceri alıştırması"
+    ],
+    "businessHypothesis": "Bir takas tamamlayan kişinin yeni beceri ihtiyacını topluluğa açması tekrar kullanım sağlayabilir. Kurum içi beceri paylaşımı talebi oluşursa özel topluluk yönetimi araştırılabilir; platform para veya meslek yeterliliği yönetmez."
+  },
+  {
+    "id": 39,
+    "name": "Ortak Müze",
+    "slug": "ortak-muze",
+    "category": "Sosyal",
+    "stage": 4,
+    "description": "Kısa nesne hikâyelerinden temalı sergiler kur; ziyaretçi katkılarını küratör onayıyla yayımla ve ortak anlatının sırasını düzenle.",
+    "features": [
+      "Gerçek tematik koleksiyonlar",
+      "Yazar ve küratöre özel bekleyen katkılar",
+      "Sunucuda küratör onay yetkisi",
+      "Sürümle denetlenen sergi sıralaması",
+      "3 kurmaca editoryal sergi ve 18 özgün nesne anlatısı",
+      "Bağımsız sergi paylaşım bağlantıları"
+    ],
+    "businessHypothesis": "Bir koleksiyon temasını paylaşmak, ziyaretçiyi kendi nesne hikâyesini eklemeye davet edebilir. Yerel topluluk ve eğitim atölyeleri kullanırsa küratör araçları ve özel koleksiyon ihtiyacı ölçülebilir; kullanıcı veya gelir başarısı varsayım olarak kalır."
+  },
+  {
+    "id": 40,
+    "name": "Parola Ekibi",
+    "slug": "parola-ekibi",
+    "category": "Sosyal",
+    "stage": 4,
+    "description": "Dört rolün farklı özel kartlarını konuşarak birleştirdiği, çözümü ve oda durumunu sunucunun yönettiği gerçek işbirlikli bulmaca.",
+    "features": [
+      "Dört ayrı özel bilgi kartı",
+      "Sunucuda rol kapasitesi ve kimlik tekilliği",
+      "Sıra, iki anahtar ve dönüşümle tek çözüm",
+      "Yalnız katılımcılara açık takım sohbeti",
+      "Sınırlı çözüm denemeleri ve 24 saatlik odalar",
+      "6 özgün kurmaca görev sahnesi"
+    ],
+    "businessHypothesis": "Bir oyuncunun üç kişiyi odaya davet etmesi ve sonraki oyunda rol değiştirmeleri ölçülebilir bir paylaşım döngüsüdür. Topluluklar düzenli oynarsa daha derin görev paketleri ve takım etkinlikleri araştırılabilir; ücretli içerik ve gelir etkisi henüz doğrulanmadı."
   }
 ]

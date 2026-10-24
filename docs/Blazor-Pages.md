@@ -1,0 +1,9 @@
+# A Blazor browser client without a shared page shell
+
+`src/BinSite.Social` is compiled with .NET 10. Its Router selects the product from the current URL; no forced layout surrounds the independent product pages. Each published entry point has `<base href="/">`, so `_framework` and the generated scoped stylesheet resolve at the hosting root even when a user directly opens `/hikaye-agaci/`.
+
+`scripts/Publish-Blazor.ps1` publishes into the ignored `publish/Social` directory, copies runtime files to `public`, and writes bootstrap entry points only to designated product directories. It intentionally skips the compiler's root `index.html` and its compressed sidecars: the compiler homepage would otherwise conflict with the searchable portfolio homepage. The catalog builder runs after this copy and owns the root homepage. Source inspection of local publication revealed the compressed sidecars as separate generated files; no production cache failure was observed.
+
+Local .NET 10 Release publication completed successfully on 24 October 2026, including the Membership component. The GitHub publication workflow also completed successfully. Production checks fetched the three social product URLs and `/_framework/blazor.webassembly.js` with HTTP 200. Live API checks confirmed stored story branches, vote uniqueness, server-enforced capsule locks and cross-origin write rejection. These checks do not assert that every visual, audio or clipboard interaction has been exercised in a browser.
+
+The social API's SQLite search escape character is `!`, explicitly escaped in the LIKE pattern. The implementation originally exposed a JavaScript/SQL backslash escape mismatch during an actual SQLite integration check; the corrected statement was also exercised through the production story list endpoint. Keep JavaScript string escaping and SQL LIKE escaping distinct when changing that query.

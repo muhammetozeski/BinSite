@@ -49,4 +49,4 @@ $('demo').onclick=()=>mutate(()=>{frames=Array.from({length:8},(_,index)=>{const
 ['#282824','#ffffff','#ef6f52','#ffcc62','#6b9c75','#4c86ac','#9c76a5','#d77ea3','#a17955','#b5ada0'].forEach(color=>{const button=document.createElement('button');button.className='swatch';button.style.background=color;button.setAttribute('aria-label',`Renk ${color}`);button.onclick=()=>{$('color').value=color;setTool('pen');};$('palette').append(button);});
 try{const raw=localStorage.getItem(KEY);if(raw){const data=JSON.parse(raw);frames=validateProject(data);if(Number.isInteger(data.fps)&&data.fps>=1&&data.fps<=24)$('fps').value=data.fps;notify('Son çizimin bu tarayıcıdan geri yüklendi.');}}catch{notify('Önceki kayıt açılamadı. Boş çalışma açıldı; dosyadan proje yükleyebilirsin.');}
 $('fpsValue').textContent=`${$('fps').value} kare/sn`;render();
-</script></body></html>
+</script><script src="/assets/revenue.js" data-binsite-revenue defer></script></body></html>
