@@ -1,6 +1,8 @@
 > Hosting update — 25 October 2026: the current catalog has 77 products, all with primary paths at the main origin. The 75-item list below preserves the original manual-review snapshot; its two previously uncatalogued projects are now catalog entries106/107. Their source reviews were already included. Current primary paths: [Retry Assurance](https://muhammetozeski-binsite.pages.dev/retry-assurance/), [Three Beat Freight](https://muhammetozeski-binsite.pages.dev/three-beat-freight/), [StageFold](https://muhammetozeski-binsite.pages.dev/stagefold/), [Interlock Expeditions](https://muhammetozeski-binsite.pages.dev/interlock-expeditions/). See [mounted hosting](../docs/Mounted-Products.md) for verified publication boundaries.
 # Page review index
 
+The later [directory and shared UI cleanup](manual-ui-cleanup-followup.md) records the compact directory, navigation deduplication and follow-through source reading. It links individual changed/no-change manifests and distinguishes source review from publication and browser observation.
+
 Catalog scope on 25 October 2026: **75 entries = 73 products on this host + two independently hosted catalog entries**. The names and destinations below were matched individually to `public/catalog.json`. Each entry links to its page, a short finding and its source-review report. Source reading and build results are distinct from live verification of interface changes.
 
 ## The 75 catalog products
