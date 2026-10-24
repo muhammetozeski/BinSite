@@ -35,6 +35,8 @@ jobs:
         run: ./scripts/Publish-Blazor.ps1
       - name: Build directory from implemented products
         run: node scripts/build.mjs
+      - name: Prepare optional advertising and membership links
+        run: node scripts/Prepare-Revenue.mjs
       - name: Validate product scripts and paths
         run: node scripts/check.mjs
       - name: Publish static products and social functions
