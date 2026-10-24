@@ -1,0 +1,144 @@
+@page "/uyelik"
+@page "/uyelik/"
+@using System.Text.Json
+@using Microsoft.AspNetCore.Components.Forms
+@inject SocialApi Api
+@inject UiText Texts
+@inject NavigationManager Navigation
+@inject IJSRuntime Javascript
+@implements IDisposable
+
+<PageTitle>@Texts.Text("Yaratıcı hesabım — BinSite", "My creator account — BinSite")</PageTitle>
+<main class="membership">
+    <header><div><a href="/">BinSite</a><h1>@Texts.Text("Ürettiklerine yer aç.", "Make room for your creations.")</h1><p>@Texts.Text("Oyunlar ve editörler ücretsiz. Hesabınla projelerini sunucuda sakla; aynı kurtarma anahtarıyla başka tarayıcıdan aç.", "Games and editors are free. Store projects on the server and use a recovery key to access them from another browser.")</p></div><LanguageSwitch /></header>
+    @if (!string.IsNullOrEmpty(Message)) { <p class="notice" role="status">@Message</p> }
+    @if (Busy) { <p aria-live="polite">@Texts.Text("İşlem sürüyor…", "Working…")</p> }
+    <div class="columns">
+        <section>
+            <h2>@Texts.Text("Hesabın", "Your account")</h2>
+            @if (Status?.Account is null)
+            {
+                <p>@Texts.Text("Ücretsiz hesapta üç JSON projesi saklayabilirsin. E-posta veya kart gerekmiyor.", "A free account stores three JSON projects. No email or card is required.")</p>
+                <button disabled="@Busy" @onclick="CreateAccount">@Texts.Text("Ücretsiz hesap oluştur", "Create a free account")</button>
+            }
+            else
+            {
+                <p><strong>@(Status.Account.Premium ? Texts.Text("Yaratıcı Plus", "Creator Plus") : Texts.Text("Ücretsiz hesap", "Free account"))</strong></p>
+                <p>@Texts.Text("Proje kotan:", "Project allowance:") @Status.Account.ProjectLimit</p>
+                <p class="small">@Texts.Text("Tarayıcı oturum çerezi hesabını açık tutar. Başka bir cihazda erişim için kurtarma anahtarını sakla.", "A browser session cookie keeps you signed in. Save your recovery key to access the account on another device.")</p>
+            }
+            @if (!string.IsNullOrEmpty(RecoveryKey))
+            {
+                <div class="key"><h3>@Texts.Text("Kurtarma anahtarını şimdi sakla", "Save your recovery key now")</h3><p>@Texts.Text("Bu anahtarı bilen hesabına erişebilir. Kimseyle paylaşma; bir kez gösterilir.", "Anyone with this key can access your account. Keep it private; it is shown once.")</p><textarea readonly aria-label="Recovery key">@RecoveryKey</textarea><button @onclick="CopyKey">@Texts.Text("Anahtarı kopyala", "Copy recovery key")</button></div>
+            }
+            <details><summary>@Texts.Text("Mevcut hesabımı aç", "Recover my account")</summary><label for="recover-key">@Texts.Text("Kurtarma anahtarı", "Recovery key")</label><input id="recover-key" type="password" autocomplete="off" @bind="RecoverValue"><button disabled="@Busy" @onclick="Recover">@Texts.Text("Hesabı aç", "Open account")</button></details>
+            <button class="secondary" disabled="@Busy" @onclick="Load">@Texts.Text("Durumu yenile", "Refresh status")</button>
+        </section>
+        <section>
+            <h2>@Texts.Text("Yaratıcı Plus", "Creator Plus")</h2>
+            <p>@Texts.Text("100 proje için bulut kasası. Kaynak kodun herkese açık olması, sunucu hesabının ve özel dosyalarının herkese açık olduğu anlamına gelmez.", "A cloud vault for 100 projects. Public source code does not make your server account or private project files public.")</p>
+            <ul><li>@Texts.Text("Özel projelerini sunucuda saklama", "Private server-side project storage")</li><li>@Texts.Text("Kurtarma anahtarıyla farklı cihazdan erişim", "Access across devices with your recovery key")</li><li>@Texts.Text("Ödeme sağlayıcısında abonelik yönetimi", "Subscription management with the payment provider")</li></ul>
+            @if (Status?.Plans is not null)
+            {
+                @foreach (var plan in Status.Plans) { <p><strong>@plan.Name · @plan.PriceLabel</strong></p> }
+            }
+            @if (Status?.Providers?.Stripe == true || Status?.Providers?.Lemon == true)
+            {
+                <p>@Texts.Text("Son tutarı ve ödeme dönemini sağlayıcının ödeme ekranında kontrol edebilirsin.", "Review the final amount and billing interval on the provider's checkout page.")</p>
+                @if (Status.Providers.Stripe) { <button disabled="@(Busy || Status.Account is null)" @onclick='() => Checkout("stripe")'>Stripe · @Texts.Text("Abone ol", "Subscribe")</button> }
+                @if (Status.Providers.Lemon) { <button disabled="@(Busy || Status.Account is null)" @onclick='() => Checkout("lemon")'>Lemon Squeezy · @Texts.Text("Abone ol", "Subscribe")</button> }
+                @if (Status.Account?.Premium == true)
+                {
+                    @if (Status.Providers.Stripe) { <button class="secondary" disabled="@Busy" @onclick='() => Portal("stripe")'>Stripe · @Texts.Text("Aboneliği yönet", "Manage subscription")</button> }
+                    @if (Status.Providers.Lemon) { <button class="secondary" disabled="@Busy" @onclick='() => Portal("lemon")'>Lemon Squeezy · @Texts.Text("Aboneliği yönet", "Manage subscription")</button> }
+                }
+            }
+            else { <p class="notice">@Texts.Text("Ücretli abonelik henüz satışa açılmadı. Ücretsiz hesap ve mevcut araçları kullanabilirsin.", "Paid subscriptions are not on sale yet. You can use the free account and existing tools.")</p> }
+        </section>
+    </div>
+    <section>
+        <h2>@Texts.Text("Proje kasam", "My project vault")</h2>
+        <p>@Texts.Text("Çizgi Döngüsü veya Gizli Harita gibi bir editörden indirdiğin JSON proje dosyasını yükle. Kaydın yalnızca hesabına görünür.", "Upload a JSON project downloaded from an editor such as Frame Loop or Secret Map. Your saved file is visible only to your account.")</p>
+        @if (Status?.Account is not null)
+        {
+            <label for="project-title">@Texts.Text("Proje adı", "Project title")</label><input id="project-title" maxlength="100" @bind="ProjectTitle">
+            <InputFile OnChange="ChooseFile" accept="application/json,.json" disabled="@Busy" />
+            <p class="small">@Texts.Text("En fazla 64 KB. Yüklemeden önce dosyanın içinde parola veya erişim anahtarı olmadığından emin ol.", "Up to 64 KB. Make sure your file contains no passwords or access keys before uploading.")</p>
+            <button disabled="@(Busy || ProjectBody is null)" @onclick="SaveProject">@Texts.Text("Projeyi kasaya kaydet", "Save project to vault")</button>
+            @foreach (var project in Status.Projects ?? [])
+            {
+                <article class="project"><strong>@project.Title</strong><div><button class="secondary" disabled="@Busy" @onclick="() => OpenProject(project.Id)">@Texts.Text("Dosyayı aç", "Open file")</button><button class="secondary" disabled="@Busy" @onclick="() => DeleteProject(project.Id)">@Texts.Text("Sil", "Delete")</button></div></article>
+            }
+            @if (SelectedBody is not null) { <label for="saved-body">@Texts.Text("Kayıtlı proje içeriği", "Saved project content")</label><textarea id="saved-body" readonly rows="12">@SelectedBody</textarea><button class="secondary" @onclick="CopyProject">@Texts.Text("İçeriği kopyala", "Copy content")</button> }
+        }
+        else { <p>@Texts.Text("Proje kaydetmek için ücretsiz hesap oluştur veya mevcut hesabını aç.", "Create a free account or recover your existing account to save projects.")</p> }
+    </section>
+    <footer><a href="/">@Texts.Text("Projelere dön", "Back to projects")</a> · <a href="/gizlilik/">@Texts.Text("Veriler ve gizlilik", "Data and privacy")</a></footer>
+</main>
+
+@code {
+    bool Busy;
+    string Message = "";
+    string RecoveryKey = "";
+    string RecoverValue = "";
+    string ProjectTitle = "";
+    JsonElement? ProjectBody;
+    string? SelectedBody;
+    CommerceStatus? Status;
+
+    /// <summary>Loads account state and connects this component to the current browser's language preference.</summary>
+    protected override async Task OnInitializedAsync() { Texts.Changed += RefreshLanguage; await Texts.InitializeAsync(); await Load(); }
+    /// <summary>Schedules a render after a language change without changing the account state.</summary>
+    void RefreshLanguage() => _ = InvokeAsync(StateHasChanged);
+    /// <summary>Runs one complete account action and presents a localized terminal error without duplicating writes.</summary>
+    async Task Execute(Func<Task> operation)
+    {
+        if (Busy) return;
+        Busy = true; Message = "";
+        try { await operation(); }
+        catch (ApiFailure error) { Message = Texts.English ? $"The action could not be completed (HTTP {(int)error.Status}). Please retry." : error.Message; }
+        catch { Message = Texts.Text("İşlem tamamlanamadı. Bağlantını kontrol edip yeniden dene.", "The action could not be completed. Check your connection and retry."); }
+        finally { Busy = false; }
+    }
+    /// <summary>Reads current server-verified allowances, configured providers and owned project metadata.</summary>
+    Task Load() => Execute(async () => Status = await Api.GetAsync<CommerceStatus>("commerce/status"));
+    /// <summary>Creates an anonymous recoverable account and shows the recovery credential once.</summary>
+    Task CreateAccount() => Execute(async () => { var result = await Api.PostAsync<RecoveryResult>("commerce/account", new { }); RecoveryKey = result.RecoveryKey; Status = await Api.GetAsync<CommerceStatus>("commerce/status"); });
+    /// <summary>Exchanges a private recovery credential for a server-issued browser session.</summary>
+    Task Recover() => Execute(async () => { await Api.PostAsync<JsonElement>("commerce/recover", new { recoveryKey = RecoverValue }); RecoverValue = ""; RecoveryKey = ""; Status = await Api.GetAsync<CommerceStatus>("commerce/status"); });
+    /// <summary>Opens a server-created hosted checkout; the server chooses price and account metadata.</summary>
+    Task Checkout(string provider) => Execute(async () => { var result = await Api.PostAsync<UrlResult>("commerce/checkout", new { provider, plan = "creator-monthly" }); OpenProviderUrl(result.Url); });
+    /// <summary>Opens the authenticated payment-provider portal for subscription management.</summary>
+    Task Portal(string provider) => Execute(async () => { var result = await Api.PostAsync<UrlResult>("commerce/portal", new { provider }); OpenProviderUrl(result.Url); });
+    /// <summary>Rejects non-HTTPS or unexpected checkout destinations before external navigation.</summary>
+    void OpenProviderUrl(string value)
+    {
+        if (!Uri.TryCreate(value, UriKind.Absolute, out var uri) || uri.Scheme != "https" || !(uri.Host == "checkout.stripe.com" || uri.Host == "billing.stripe.com" || uri.Host == "app.lemonsqueezy.com" || uri.Host.EndsWith(".lemonsqueezy.com", StringComparison.OrdinalIgnoreCase))) throw new InvalidOperationException("Unexpected payment destination.");
+        Navigation.NavigateTo(value, forceLoad: true);
+    }
+    /// <summary>Reads and parses a selected JSON project with a bounded stream before any upload.</summary>
+    Task ChooseFile(InputFileChangeEventArgs args) => Execute(async () => { ProjectBody = null; await using var stream = args.File.OpenReadStream(65536); using var parsed = await JsonDocument.ParseAsync(stream); ProjectBody = parsed.RootElement.Clone(); if (string.IsNullOrWhiteSpace(ProjectTitle)) ProjectTitle = System.IO.Path.GetFileNameWithoutExtension(args.File.Name); Message = Texts.Text("Dosya seçildi; kaydet düğmesiyle yükleyebilirsin.", "File selected; use Save to upload it."); });
+    /// <summary>Creates a private cloud project only after server-side ownership and allowance validation.</summary>
+    Task SaveProject() => Execute(async () => { if (ProjectBody is null) return; await Api.PostAsync<JsonElement>("commerce/projects", new { title = ProjectTitle, kind = "json", body = ProjectBody.Value }); ProjectBody = null; ProjectTitle = ""; Status = await Api.GetAsync<CommerceStatus>("commerce/status"); Message = Texts.Text("Projen kaydedildi.", "Your project was saved."); });
+    /// <summary>Reads only an owned project through the authenticated API and formats it for copying.</summary>
+    Task OpenProject(string id) => Execute(async () => { var result = await Api.GetAsync<ProjectResult>($"commerce/projects/{Uri.EscapeDataString(id)}"); SelectedBody = JsonSerializer.Serialize(result.Project.Body, new JsonSerializerOptions { WriteIndented = true }); });
+    /// <summary>Deletes one owned project after the user confirms the irreversible server action.</summary>
+    Task DeleteProject(string id) => Execute(async () => { if (!await Javascript.InvokeAsync<bool>("confirm", Texts.Text("Bu proje sunucudan silinsin mi?", "Delete this project from the server?"))) return; await Api.PostAsync<JsonElement>($"commerce/projects/{Uri.EscapeDataString(id)}/delete", new { }); SelectedBody = null; Status = await Api.GetAsync<CommerceStatus>("commerce/status"); });
+    /// <summary>Copies the one-time credential using the browser's permission-aware clipboard helper.</summary>
+    Task CopyKey() => CopyText(RecoveryKey);
+    /// <summary>Copies the selected saved project without exposing account credentials.</summary>
+    Task CopyProject() => CopyText(SelectedBody ?? "");
+    /// <summary>Reports whether the browser accepted an explicit clipboard action.</summary>
+    async Task CopyText(string value) { var copied = await Javascript.InvokeAsync<bool>("binSiteSocial.copy", value); Message = copied ? Texts.Text("Kopyalandı.", "Copied.") : Texts.Text("Tarayıcı panoya izin vermedi. Metni seçerek kopyalayabilirsin.", "Clipboard access was denied. Select and copy the text manually."); }
+    /// <summary>Detaches the language event when this page is left.</summary>
+    public void Dispose() => Texts.Changed -= RefreshLanguage;
+    sealed record CommerceStatus(AccountInfo? Account, ProviderInfo? Providers, List<ProjectInfo>? Projects, List<PlanInfo>? Plans);
+    sealed record AccountInfo(string Id, bool Premium, int ProjectLimit);
+    sealed record ProviderInfo(bool Stripe, bool Lemon);
+    sealed record ProjectInfo(string Id, string Title, string Kind, long UpdatedAt);
+    sealed record PlanInfo(string Id, string Name, string PriceLabel, List<string>? Features);
+    sealed record RecoveryResult(string RecoveryKey);
+    sealed record UrlResult(string Url);
+    sealed record ProjectResult(ProjectData Project);
+    sealed record ProjectData(string Id, string Title, string Kind, JsonElement Body);
+}
