@@ -1,0 +1,21 @@
+[
+  {
+    "id": 99,
+    "name": "Procedure Exchange",
+    "slug": "procedure-exchange",
+    "category": "Social",
+    "stage": 7,
+    "runtime": "blazor",
+    "adEligible": false,
+    "description": "Write a reusable procedure, perform a pinned local run with actual output, and improve a published method through attributed versions and explicit outcomes.",
+    "features": [
+      "Twelve original, complete editorial methods with concrete inputs, actions, done checks and expected artifacts",
+      "Independent local authoring, immutable run snapshots, private execution records and explicit completed, partial or blocked declarations",
+      "Strict private project JSON, reusable attributed method packages, standalone HTML reports and actual artifact text downloads",
+      "Real public search, immutable published revisions, pinned forks and step-ID comparisons",
+      "Explicit account-reported outcomes per published revision, owner revision checks, withdrawal and reporting",
+      "Optional owner-only private vault copies under a separate label, with public text isolated from private run data"
+    ],
+    "businessHypothesis": "Useful methods can bring repeat visits when people perform the work again, improve a source-pinned fork and share the resulting instructions or report. The local workflow and public reuse remain accessible; optional membership adds private saved-project capacity. This first workspace delivery has no third-party advertising scripts."
+  }
+]
