@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import vm from 'node:vm';
 import { spawnSync } from 'node:child_process';
+import { productUrl } from './product-url.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 let scripts = 0;
@@ -33,5 +34,8 @@ async function inspect(directory) {
 await inspect(path.join(root, 'public'));
 try { await inspect(path.join(root, 'functions')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
 const catalog = JSON.parse(await readFile(path.join(root, 'public', 'catalog.json'), 'utf8'));
-for (const entry of catalog) await stat(path.join(root, 'public', entry.slug, 'index.html'));
+for (const entry of catalog) {
+  productUrl(entry, 'https://muhammetozeski-binsite.pages.dev');
+  if (!entry.url) await stat(path.join(root, 'public', entry.slug, 'index.html'));
+}
 console.log(`Checked ${htmlFiles} HTML files, ${scripts} script sources, ${catalog.length} product paths. Browser interactions are not covered by this syntax check.`);

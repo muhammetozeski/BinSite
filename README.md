@@ -14,6 +14,8 @@ Use standard HTML, CSS, and JavaScript when sufficient. Every product must provi
 
 Product catalog entries use `id`, `name`, `slug`, `category`, `stage`, `description`, `features`, and `businessHypothesis`. Business hypotheses are proposals, not observed outcomes. Save no secrets in source or generated files. New products remain in this permanent directory. Source is public at https://github.com/muhammetozeski/BinSite, as requested by the user.
 
+An independently hosted product may supply `url`, an absolute HTTPS address without credentials, query or fragment. The directory links directly to that address; it does not generate another product or wrapper page. The build rejects duplicate normalized product URLs, skips local bootstrap/revenue injection for external entries, and keeps other hosts out of this host's sitemap. Independent projects maintain their own source and hosting registry entries. Optional `appearance: { "themeAttribute": "data-example-theme", "assetAttribute": "data-example-appearance" }` identifies that project's dark-default HTML attribute and its script/style evidence markers without requiring shared assets. The delivery ledger records the verified URL, so changing an address requires a new check.
+
 ## Local use
 
 Individual static products can be opened directly. A local or deployed HTTP origin is required for shared server features.
