@@ -6,13 +6,13 @@ Each application is independently usable at `public/<slug>/index.html`. No share
 
 | Product | Main artifact | State and sharing |
 | --- | --- | --- |
-| Çizgi Döngüsü | A 32 by 32 pixel animation with up to 48 frames | Local browser save; validated JSON import/export; individual PNG export |
-| Ritim Masası | Six synthesized instrument tracks across sixteen steps | Validated full pattern in URL fragment; explicit local save/load; audio starts from a user action |
-| Sonsuz Çizgi Roman | A three to six panel vector comic | Local browser save; validated project file and URL fragment; SVG and PNG export |
-| Kural Atölyesi | A binary 96 by 64 cellular automaton | Birth/survival rules, wrapped or bounded edges, bit-packed cells in URL fragment; PNG export |
-| Gizli Harita | An authored one to six room escape adventure | Local draft, validated project file and URL fragment; separate author/player modes |
+| Pixel Loop | A 32 by 32 pixel animation with up to 48 frames | Local browser save; validated JSON import/export; individual PNG export |
+| Rhythm Desk | Six synthesized instrument tracks across sixteen steps | Validated full pattern in URL fragment; explicit local save/load; audio starts from a user action |
+| Comic Workshop | A three to six panel vector comic | Local browser save; validated project file and URL fragment; SVG and PNG export |
+| Rule Workshop | A binary 96 by 64 cellular automaton | Birth/survival rules, wrapped or bounded edges, bit-packed cells in URL fragment; PNG export |
+| Hidden Map | An authored one to six room escape adventure | Local draft, validated project file and URL fragment; separate author/player modes |
 
-No fake user activity or network collaboration is shown. URL fragments contain the creative content itself. Gizli Harita also includes answers in that content; it is a casual game-sharing format, not a secure assessment format. No analytics, live audience numbers, or revenue outcomes are implemented or asserted.
+No fake user activity or network collaboration is shown. URL fragments contain the creative content itself. Hidden Map also includes answers in that content; it is a casual game-sharing format, not a secure assessment format. No analytics, live audience numbers, or revenue outcomes are implemented or asserted.
 
 ## Scope decisions
 
@@ -24,7 +24,7 @@ No fake user activity or network collaboration is shown. URL fragments contain t
 
 ## Growth discussion
 
-The creative, social, and games agents compared visitor-to-creator loops. Gizli Harita is this batch's leading hypothesis because one player's completion naturally offers a new authored invitation. The distinction from the games agent's generated route puzzles is author-controlled narrative and clues. The distinction from Hikâye Ağacı is solving a bounded authored challenge rather than contributing a paragraph to a shared tree.
+The creative, social, and games agents compared visitor-to-creator loops. Hidden Map is this batch's leading hypothesis because one player's completion naturally offers a new authored invitation. The distinction from the games agent's generated route puzzles is author-controlled narrative and clues. The distinction from Hikâye Ağacı is solving a bounded authored challenge rather than contributing a paragraph to a shared tree.
 
 Useful future measurements are invite landing, first puzzle attempt, completion, entering author mode, creating a changed adventure, and sharing that changed adventure. These measurements are proposed; this batch does not silently introduce tracking. A later shared adventure repository, playtest feedback, branching routes, and creator collections could be developed after actual demand is observed.
 
