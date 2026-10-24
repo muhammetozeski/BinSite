@@ -1,0 +1,27 @@
+[
+  {
+    "id": 98,
+    "name": "Field Work Pack",
+    "slug": "field-work-pack",
+    "category": "Workspace",
+    "stage": 7,
+    "runtime": "blazor",
+    "adEligible": false,
+    "description": "Build a work-order checklist, record required confirmations, bounded measurements and actual photos, then review the work and export a complete handoff report.",
+    "features": [
+      "Eight editable administrative checklist examples",
+      "Custom confirmation, measurement and photo fields",
+      "Versioned checklist snapshots for each work order",
+      "Validated Plan → In progress → Ready for review → Complete workflow",
+      "Inclusive numeric limits and a live unresolved-items list",
+      "Actual local photo pixels with source-file fingerprints",
+      "Browser-local project storage and full JSON import/export",
+      "Self-contained filled HTML and print reports, with explicit draft labeling",
+      "Optional private metadata workspaces with real account access",
+      "Owner/editor/viewer roles, single-use invitations and revision-conflict handling",
+      "Metadata version history and local photo reattachment",
+      "Product-scoped offline reopening preparation"
+    ],
+    "businessHypothesis": "The complete local work-order and reporting workflow remains available without an account or API key. Optional paid value can come from larger private metadata workspaces, more collaborators and longer server-retained version history, using the real shared account allowance. The private application is not an advertising placement. Demand, paying customers and revenue have not been verified."
+  }
+]
