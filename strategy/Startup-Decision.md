@@ -29,3 +29,7 @@ Proposed validation: five qualifying providers; three reproduce an old real inci
 ## Ownership if implementation is requested
 
 One agent owns the entire subproject end to end. The aesthetic brief is hard colors; the owner chooses layout and visual language independently. Dark mode is default and runtime text contrast is checked. This does not prescribe a shared layout. No implementation or design has been approved through this proposal.
+
+## Initial implementation published
+
+The selected concept is now an independently hosted working service: [Retry Assurance](https://muhammetozeski-retry-assurance.pages.dev/), [public source and versioned distribution](https://github.com/muhammetozeski/RetryAssurance/releases/tag/v1.0.0). The implemented account-to-project-to-real-client-to-durable-evidence workflow is documented in that repository. This publication does not establish buyer demand, willingness to pay or customer adoption; the commercial hypotheses above remain hypotheses.
