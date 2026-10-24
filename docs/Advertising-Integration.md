@@ -10,4 +10,6 @@ The consent flag does not itself create a consent management platform. Google re
 
 The public advertising page reports the actual ad-network configuration state. The earlier direct-sponsor workshop has been removed. Display advertising uses the publisher network configuration rather than selling sponsor placements. The site makes no audience-size or impression guarantees without observed traffic.
 
+Public product guides have their own optional ad-enabled footer; their associated private Workspace app entry points use `adEligible: false`. Reading a public guide does not load a private account document. The catalog's optional `guide` field adds a directory link and sitemap path, without adding another product to the count. Acquisition copy and unmeasured campaign hypotheses are maintained separately in `marketing/Launch-Experiments.md`, not recorded here as an executed campaign.
+
 Evidence: the loader and configuration tools were implemented from the official AdSense tag and consent documentation; loading a live ad has not been verified because a publisher account and unit have not been supplied. Primary references: https://support.google.com/adsense/answer/9274019?hl=tr ; https://support.google.com/adsense/answer/13554116?hl=en ; https://developers.google.com/funding-choices/fc-api-docs .

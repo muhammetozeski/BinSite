@@ -7,6 +7,7 @@
     "stage": 7,
     "runtime": "blazor",
     "adEligible": false,
+    "guide": { "slug": "review-room/guide", "title": "Precise revision feedback and delivery walkthrough" },
     "description": "Review actual local image and video versions with precise comments, explicit decisions, side-by-side record comparison and portable delivery exports.",
     "features": [
       "Real local image/video selection and complete SHA-256 file identities",

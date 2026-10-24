@@ -7,6 +7,7 @@
     "stage": 7,
     "runtime": "blazor",
     "adEligible": false,
+    "guide": { "slug": "field-work-pack/guide", "title": "Evidence checklist and handoff walkthrough" },
     "description": "Build a work-order checklist, record required confirmations, bounded measurements and actual photos, then review the work and export a complete handoff report.",
     "features": [
       "Eight editable administrative checklist examples",

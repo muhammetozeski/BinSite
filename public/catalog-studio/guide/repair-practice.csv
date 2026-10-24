@@ -1,0 +1,6 @@
+SKU,Name,Price,Category,Stock,Description,Image
+EX-001,Notebook,12.50,Stationery,10,A valid first sample.,EX-001.jpg
+EX-001,Pencil Set,7.20,Stationery,14,This deliberately repeats the first SKU.,EX-002.jpg
+EX-003,,19.00,Desk,8,This deliberately omits its product name.,EX-003.jpg
+EX-004,Carry Pouch,ask,Carry,12,This deliberately uses text instead of a price.,EX-004.jpg
+EX-005,Reading Stand,25.00,Desk,-2,This deliberately has negative stock.,EX-005.jpg
