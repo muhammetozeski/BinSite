@@ -15,7 +15,7 @@ if (process.env.CLOUDFLARE_API_TOKEN && process.env.CLOUDFLARE_ACCOUNT_ID) {
 const publisher = /^ca-pub-\d{16}$/.test(variables.ADSENSE_CLIENT?.value || '') ? variables.ADSENSE_CLIENT.value : null;
 const slot = /^\d{5,20}$/.test(variables.ADSENSE_SLOT?.value || '') ? variables.ADSENSE_SLOT.value : null;
 const enabled = Boolean(publisher && slot && variables.ADSENSE_CONSENT_READY?.value === 'true');
-await writeFile(path.join(root, 'public/revenue-config.json'), JSON.stringify({ adSense: { enabled, client: enabled ? publisher : null, slot: enabled ? slot : null }, membership: '/uyelik/', sponsorship: '/reklam/', privacy: '/gizlilik/' }, null, 2) + '\n');
+await writeFile(path.join(root, 'public/revenue-config.json'), JSON.stringify({ adSense: { enabled, client: enabled ? publisher : null, slot: enabled ? slot : null }, membership: '/uyelik/', advertising: '/advertising/', privacy: '/privacy/' }, null, 2) + '\n');
 const paths = ['index.html', ...catalog.map(product => `${product.slug}/index.html`)];
 for (const relative of paths) {
   const filename = path.join(root, 'public', relative);

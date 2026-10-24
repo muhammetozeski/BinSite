@@ -6,6 +6,7 @@ on:
       - public/**
       - catalog/**
       - functions/**
+      - src/**
       - scripts/**
       - wrangler.toml
       - .github/workflows/deploy.yml
@@ -31,6 +32,8 @@ jobs:
       - uses: actions/setup-dotnet@v5
         with:
           dotnet-version: '10.0.x'
+      - name: Check normalized C# product routes
+        run: node scripts/check-routes.mjs
       - name: Compile C# data applications
         run: ./scripts/Publish-Blazor.ps1
       - name: Build directory from implemented products

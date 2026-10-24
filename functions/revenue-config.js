@@ -5,7 +5,7 @@ export async function onRequestGet({ env }) {
   return Response.json({
     adSense: { enabled: adsEnabled, client: adsEnabled ? publisher : null, slot: adsEnabled ? slot : null },
     membership: '/uyelik/',
-    sponsorship: '/reklam/',
-    privacy: '/gizlilik/'
+    advertising: '/advertising/',
+    privacy: '/privacy/'
   }, { headers: { 'Cache-Control': 'public, max-age=300', 'X-Content-Type-Options': 'nosniff' } });
 }

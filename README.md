@@ -1,6 +1,6 @@
 # BinSite
 
-A growing collection of independent Turkish web products. The target is 1,000 working projects, increasing in scope. Only implemented and verified projects count as delivered. Revenue and audience size are unverified until observed.
+A growing collection of independent English-language web products. The target is 1,000 working projects, increasing in scope. Only implemented and verified projects count as delivered. Revenue and audience size are unverified until observed.
 
 ## Structure
 
@@ -16,7 +16,11 @@ Product catalog entries use `id`, `name`, `slug`, `category`, `stage`, `descript
 
 ## Local use
 
-Individual static products can be opened directly. A local or deployed HTTP origin is required for shared server features. Publication details will be added after actual deployment.
+Individual static products can be opened directly. A local or deployed HTTP origin is required for shared server features.
+
+The public directory is https://muhammetozeski-binsite.pages.dev/ . Pushes to `main` compile the C# browser client, build the directory from completed catalog entries, check sources, and deploy with GitHub Actions. Run `scripts/Verify-Live.ps1` after a successful deployment to update the HTTP delivery ledger; interaction checks are recorded separately.
+
+Product interfaces and bundled content are English-only. Interfaces prioritize working controls and content, use hard, high-contrast colors, and avoid decorative 3D, gradients, glow effects, oversized promotional sections, and a forced shared product shell. Advertising is based on publisher networks such as AdSense; the direct-sponsorship workshop has been removed.
 
 ## Project knowledge
 
