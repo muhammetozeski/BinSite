@@ -1,11 +1,11 @@
 {
-  "verifiedAtIstanbul": "2026-10-24 16:59:07",
-  "origin": "https://muhammetozeski-binsite.pages.dev",
-  "verifiedPathCount": 66,
-  "liveCatalogCount": 66,
+  "verifiedAtIstanbul": "2026-10-24 18:02:22",
+  "verifiedPathCount": 69,
   "scope": "HTTP delivery only; interaction and API checks are recorded separately.",
+  "liveCatalogCount": 69,
   "verifiedPaths": [
     "birlikte-bil",
+    "catalog-studio",
     "cizgi-dongusu",
     "davranis-dedektifi",
     "deste-ekosistemi",
@@ -15,6 +15,7 @@
     "dugum-hikaye",
     "dunya-dokumaci",
     "fabrika-akisi",
+    "field-work-pack",
     "fikir-duellosu",
     "gizli-harita",
     "golge-sahnesi",
@@ -45,6 +46,7 @@
     "paket-rotasi",
     "parola-ekibi",
     "perspektif-oda",
+    "review-room",
     "ritim-cemberi",
     "ritim-masasi",
     "rota-ustasi",
@@ -71,5 +73,6 @@
     "zaman-kapsulu",
     "zaman-pazari",
     "zincir-fizik"
-  ]
+  ],
+  "origin": "https://muhammetozeski-binsite.pages.dev"
 }
