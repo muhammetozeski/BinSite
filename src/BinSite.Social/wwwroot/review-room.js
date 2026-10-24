@@ -103,7 +103,7 @@ export function mount(host, token, kind, annotations, reference, canAnnotate) {
     return;
   }
   const stage = document.createElement('div'); stage.dataset.reviewImage = 'true'; stage.style.cssText = 'position:relative;display:inline-block;max-width:100%;line-height:0';
-  const image = document.createElement('img'); image.src = url; image.alt = 'Selected local delivery version'; image.draggable = false;
+  const image = document.createElement('img'); image.src = url; image.alt = 'Selected image version'; image.draggable = false;
   image.style.cssText = 'display:block;max-width:100%;max-height:65vh;width:auto;height:auto'; stage.append(image);
   if (canAnnotate) image.addEventListener('click', event => {
     const rect = image.getBoundingClientRect(); if (!rect.width || !rect.height) return;
@@ -167,24 +167,24 @@ function drawExample(canvas, id, revised) {
   const width = canvas.width, height = canvas.height;
   context.fillStyle = '#ffffff'; context.fillRect(0, 0, width, height);
   context.fillStyle = '#111111'; context.fillRect(0, 0, width, 16);
-  context.font = 'bold 20px system-ui'; context.fillText('EDITORIAL DEMONSTRATION · FICTIONAL DELIVERY', 40, 55);
+  context.font = 'bold 20px system-ui'; context.fillText('EXAMPLE REVIEW', 40, 55);
   if (id === 'workshop') {
     context.fillStyle = '#1746c7'; context.fillRect(40, 85, revised ? 920 : 570, 180);
     context.fillStyle = '#fff'; context.font = 'bold 60px system-ui'; context.fillText('MAKE SOMETHING', 65, 165); context.fillText('TOGETHER', 65, 235);
     context.fillStyle = '#111'; context.font = revised ? 'bold 40px system-ui' : '24px system-ui'; context.fillText('TUESDAY · 18:00', revised ? 40 : 640, revised ? 340 : 450);
     context.fillStyle = '#111'; context.fillRect(40, revised ? 395 : 320, 350, 70); context.fillStyle = '#fff'; context.font = 'bold 28px system-ui'; context.fillText('PLAN YOUR EVENING', 60, revised ? 441 : 366);
-    context.fillStyle = '#111'; context.font = '24px system-ui'; context.fillText('A fictional community workshop announcement.', 40, 545);
+    context.fillStyle = '#111'; context.font = '24px system-ui'; context.fillText('An evening of making.', 40, 545);
   } else if (id === 'product') {
     context.fillStyle = '#111'; context.font = revised ? 'bold 58px system-ui' : 'bold 36px system-ui'; context.fillText('MODULAR DESK KIT', 40, revised ? 145 : 160);
     const top = revised ? 225 : 165; const labels = ['Arrange', 'Separate', 'Rebuild'];
     for (let i = 0; i < 3; i++) { const x = 40 + i * 315; context.fillStyle = i === 1 ? '#111' : '#1746c7'; context.fillRect(x, top, 280, 165); context.fillStyle = '#fff'; context.font = 'bold 28px system-ui'; context.fillText(labels[i], x + 20, top + 95); }
-    context.fillStyle = '#111'; context.font = '24px system-ui'; context.fillText('Fictional product card. No real product claims.', 40, 530);
+    context.fillStyle = '#111'; context.font = '24px system-ui'; context.fillText('A modular desk organizer.', 40, 530);
   } else if (id === 'schedule') {
     context.fillStyle = '#111'; context.font = 'bold 52px system-ui'; context.fillText('AN EVENING OF MAKING', 40, 135);
     const names = ['Welcome and ideas', 'Build a small prototype', 'Show what changed'];
     const times = ['18:00', '18:30', '19:30'];
     for (let i = 0; i < 3; i++) { const y = (revised ? 230 : 220) + i * (revised ? 105 : 65); context.fillStyle = '#1746c7'; context.font = 'bold 30px system-ui'; context.fillText(times[i], 45, y); context.fillStyle = '#111'; context.font = revised ? '30px system-ui' : '40px system-ui'; context.fillText(names[i], revised ? 200 : 140, y); context.strokeStyle = '#111'; context.beginPath(); context.moveTo(40, y + 25); context.lineTo(960, y + 25); context.stroke(); }
-    context.font = '20px system-ui'; context.fillText('Original editorial example; not a real event listing.', 40, 560);
+    context.font = '20px system-ui'; context.fillText('Example schedule', 40, 560);
   } else throw new Error('Unknown editorial example.');
   context.fillStyle = '#111'; context.font = '18px system-ui'; context.fillText(revised ? 'VERSION 2 — REVISED' : 'VERSION 1 — FIRST DELIVERY', 620, 590);
 }
