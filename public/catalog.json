@@ -1,0 +1,265 @@
+[
+  {
+    "id": 1,
+    "name": "Rota Ustası",
+    "slug": "rota-ustasi",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Her şehri bir kez ziyaret ederek başlangıçtan bitişe en kısa rotayı kurduğun, her seferinde çözülebilir harita üreten çizge bulmacası.",
+    "features": [
+      "6, 8, 10 ve 12 şehirli seviyeler",
+      "Garantili çözülebilir serbest ve günlük haritalar",
+      "Gerçek en kısa rotayla puan karşılaştırması",
+      "Çıkmazı tanıyan ipucu ve geri alma",
+      "Tarayıcıda zorluk başına rekor"
+    ],
+    "businessHypothesis": "Günlük bulmaca tekrar ziyaret sağlayabilir. Gelecekte elle hazırlanmış seviye paketleri dijital ürün, markalı şehir turnuvaları sponsor ürünü ve isteğe bağlı reklamsız üyelik olabilir; kullanıcı ve gelir doğrulanmadı."
+  },
+  {
+    "id": 2,
+    "name": "Kelime Borsası",
+    "slug": "kelime-borsasi",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Türkçe kelime üretimini harf envanteri ve sermaye yönetimiyle birleştiren, sekiz teslimlik günlük strateji oyunu.",
+    "features": [
+      "Yerel Türkçe sözlük",
+      "Harf maliyetleri ve satın alma pazarı",
+      "Kullanılınca tüketilen harfler",
+      "Günlük başlangıç harfleri ve bonus harf",
+      "Uzunluk ve nadirliğe göre puan",
+      "Tekrarlanan kelimeyi reddetme",
+      "Yerel günlük rekor"
+    ],
+    "businessHypothesis": "Kelime oyuncularında günlük tekrar ve strateji paylaşımı araştırılabilir. Eğitimci sınıf paketleri dijital ürün, kelime festivali sponsorluğu veya reklamsız premium mod olasıdır; ödeme ve talep doğrulanmadı."
+  },
+  {
+    "id": 3,
+    "name": "Yankı Hafızası",
+    "slug": "yanki-hafizasi",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Ses, şekil ve renklerden oluşan büyüyen sırayı tekrarladığın; uzun-kısa basma ritmini de sınayan hafıza oyunu.",
+    "features": [
+      "20 turluk artan sıra",
+      "Gerçek sentezlenen dört nota",
+      "Tamamen sessiz oynama",
+      "Sıra veya sıra ve ritim modu",
+      "Fare, dokunma ve 1–4 klavye kontrolü",
+      "Üç can ve bedelli yeniden dinleme",
+      "Mod başına yerel rekor"
+    ],
+    "businessHypothesis": "Kısa oyun oturumları ve farklı ses paketleri talep görebilir. Müzisyen iş birlikleriyle sponsor paket, dijital tema satışı veya reklamsız üyelik denenebilir; bilişsel veya tıbbi fayda ve gelir iddiası yoktur."
+  },
+  {
+    "id": 4,
+    "name": "Fabrika Akışı",
+    "slug": "fabrika-akisi",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Cevherden cihaza uzanan beş üretim hattını dengelediğin, gerçek kaynak tüketimi ve süreli dönüşümler içeren fabrika simülasyonu.",
+    "features": [
+      "Beş kaynak ve beş makine türü",
+      "Her tür için sekiz üretim hattı",
+      "Girdileri ayıran gerçek üretim döngüleri",
+      "Artan makine maliyeti ve stok satışı",
+      "Ödüllü üretim hedefleri",
+      "1×, 2×, 4× simülasyon",
+      "Otomatik cihaz satışı",
+      "Yerel kayıt ve devam"
+    ],
+    "businessHypothesis": "Daha uzun oturumları seven oyuncular için yeni fabrika senaryoları dijital paket olarak sunulabilir. Sponsorlu endüstri teması veya destekçi üyeliği değerlendirilebilir; simülasyon kredilerinin gerçek parasal değeri yoktur ve gelir doğrulanmadı."
+  },
+  {
+    "id": 5,
+    "name": "İkilem Tiyatrosu",
+    "slug": "ikilem-tiyatrosu",
+    "category": "Oyun",
+    "stage": 1,
+    "description": "Fırtına gecesinde bir mahalle radyosunun geleceğini belirlediğin, önceki kararların sonraki seçenekleri açıp kapattığı dallanan anlatı oyunu.",
+    "features": [
+      "12 karar sahnesi",
+      "Güven, yayın gücü, bağımsızlık, kaynak, borç ve kanıt dengeleri",
+      "Önceki karara bağlı seçenekler",
+      "Sekiz farklı son",
+      "Karar defteri ve geri alma",
+      "Keşfedilen sonlar koleksiyonu",
+      "Son ve oyun bağlantısı paylaşma",
+      "Yerel kayıt ve devam"
+    ],
+    "businessHypothesis": "Okurların farklı sonları keşfetmesi ve sonucu paylaşması organik dağıtım yaratabilir. Yeni yazar bölümleri dijital ürün, temalı hikâye sponsorluğu veya isteğe bağlı destekçi üyelik olabilir; satış ve kullanıcı büyümesi doğrulanmadı."
+  },
+  {
+    "id": 6,
+    "name": "Çizgi Döngüsü",
+    "slug": "cizgi-dongusu",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "32 × 32 pikselde kare kare animasyon üreten, önceki kare rehberli küçük bir çizim stüdyosu.",
+    "features": [
+      "48 kareye kadar animasyon",
+      "Kalem, silgi, doldurma ve geri alma",
+      "Önceki kareyi soluk gösterme",
+      "1–24 kare/saniye oynatma",
+      "JSON proje içe ve dışa aktarımı",
+      "PNG kare indirme",
+      "Tarayıcıda otomatik saklama",
+      "Düzenlenebilir zıplayan top örneği"
+    ],
+    "businessHypothesis": "Ücretsiz çizim ve paylaşılan çalışma dosyaları üretici kitlesini büyütebilir; sprite sayfası ve animasyon dışa aktarımları ile ekip atölyeleri ücretli özellik adayıdır. Kullanıcı ve gelir sonucu henüz ölçülmedi."
+  },
+  {
+    "id": 7,
+    "name": "Ritim Masası",
+    "slug": "ritim-masasi",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "Altı sentezlenmiş ses, on altı adım ve salınım ayarıyla ritim üreten bağımsız bir müzik masası.",
+    "features": [
+      "Web Audio ile kick, trampet, hi-hat, alkış, bas ve melodi",
+      "Canlı tempo ve salınım ayarı",
+      "Enstrüman susturma",
+      "Bas notası ve melodi dizisi",
+      "Üç editoryal ritim ve rastgele üretim",
+      "Ritmin tamamını taşıyan paylaşım URL'si",
+      "Yerel ritim kaydı"
+    ],
+    "businessHypothesis": "Düzenlenebilir ritim bağlantılarından doğan ortak üretim müzik topluluğu oluşturabilir; daha sonra ses paketleri, çalışma alanları ve ses dışa aktarımı denenebilir. Bunlar gelir varsayımlarıdır."
+  },
+  {
+    "id": 8,
+    "name": "Sonsuz Çizgi Roman",
+    "slug": "sonsuz-cizgi-roman",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "Sahne, yüz ifadeleri ve diyalogları düzenleyerek 3–6 panelli vektör çizgi roman oluşturan hikâye atölyesi.",
+    "features": [
+      "Dört farklı sahne",
+      "İki karakter ve dört yüz ifadesi",
+      "Panel sıralama ve çoğaltma",
+      "SVG ve yüksek çözünürlüklü PNG dışa aktarımı",
+      "Düzenlenebilir paylaşım bağlantısı",
+      "Proje dosyası içe ve dışa aktarımı",
+      "Otomatik yerel kayıt",
+      "Üç panelli özgün örnek hikâye"
+    ],
+    "businessHypothesis": "Okurun gelen hikâyeye alternatif son yazıp paylaşması üretici dönüşümünü artırabilir. Ek karakter ve sahne paketleri ile eğitim atölyeleri ücretli ürün adayıdır; talep henüz doğrulanmadı."
+  },
+  {
+    "id": 9,
+    "name": "Kural Atölyesi",
+    "slug": "kural-atolyesi",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "Doğum ve yaşam kurallarını değiştirip hücresel otomatların gelişimini gözlemleten deney alanı.",
+    "features": [
+      "96 × 64 hücreli simülasyon",
+      "0–8 komşu sayısına göre doğum ve yaşam seçimi",
+      "Kenarları bağlama",
+      "Dört kural ve üç desen örneği",
+      "Kuşak, nüfus ve değişim ölçümleri",
+      "Tuvalde hücre çizme ve silme",
+      "Hücreleri ve kuralı taşıyan paylaşım bağlantısı",
+      "Görüntü indirme"
+    ],
+    "businessHypothesis": "Paylaşılabilir deneyler merak ve eğitim çevresinde tekrar ziyaret yaratabilir. Ders koleksiyonları ve ortak araştırma çalışma alanları sonradan sınanabilecek gelir yollarıdır."
+  },
+  {
+    "id": 10,
+    "name": "Gizli Harita",
+    "slug": "gizli-harita",
+    "category": "Yaratıcılık",
+    "stage": 2,
+    "description": "Kendi oda metinlerini ve bulmacalarını yazıp oynanabilir bir bağlantıyla arkadaşına gönderebildiğin kaçış macerası kurucusu.",
+    "features": [
+      "1–6 odalı macera editörü ve oyuncusu",
+      "Kod, çoktan seçmeli ve sıralama bulmacaları",
+      "Oda başına isteğe bağlı ipucu",
+      "Cevap denemesi, ipucu ve süre sonuçları",
+      "Macerayı taşıyan URL paylaşımı",
+      "Yerel taslak ve JSON proje dosyası",
+      "Oyun sonunda kendi alternatif maceranı üretme",
+      "Üç bulmacalı özgün fener macerası"
+    ],
+    "businessHypothesis": "Arkadaş davetiyle gelen oyuncunun macerayı tamamladıktan sonra kendi haritasını üretmesi yeni davetler yaratabilir. Ölçülecek akış: davet ziyareti, ilk bulmaca, tamamlama, yeni harita ve paylaşım. Etkinlik ve ekip maceraları gelir adayıdır; büyüme veya kazanç sonucu henüz yok."
+  },
+  {
+    "id": 11,
+    "name": "Hikâye Ağacı",
+    "slug": "hikaye-agaci",
+    "category": "Sosyal",
+    "stage": 3,
+    "description": "Bir hikâyenin her paragrafından yeni ihtimaller açılan, katkıları ortak sunucuda saklanan kolektif yazı alanı.",
+    "features": [
+      "C# Blazor arayüzü",
+      "Kalıcı paylaşılan hikâye ağacı",
+      "Paragraf ve dal bağlantıları",
+      "15 özgün editoryal başlangıç önerisi",
+      "Türkçe ve İngilizce arayüz",
+      "Raporlama ve sunucu hız sınırları"
+    ],
+    "businessHypothesis": "Bir dalı okuyan kişinin kendi devamını yazıp paylaşması yeni okurları yazara dönüştürebilir. Topluluk oluşursa isteğe bağlı özel yazı odaları ve editoryal etkinlikler gelir modeli olarak ölçülebilir; gelir ve büyüme henüz doğrulanmış değildir."
+  },
+  {
+    "id": 12,
+    "name": "Fikir Düellosu",
+    "slug": "fikir-duellosu",
+    "category": "Sosyal",
+    "stage": 3,
+    "description": "İki yaratıcı öneriyi herkese açık bir düelloda karşılaştır, bağlantıyı paylaş ve sunucuda kayıtlı gerçek oyları izle.",
+    "features": [
+      "C# Blazor arayüzü",
+      "Gerçek anket oluşturma ve oy kaydı",
+      "Çerez kimliği başına oy tekilliği",
+      "Sunucuda hesaplanan sonuçlar",
+      "15 özgün editoryal düello önerisi",
+      "Raporlama ve Türkçe/İngilizce arayüz"
+    ],
+    "businessHypothesis": "İçerik üreticileri ve topluluklar bir sonraki etkinlik veya ürün fikrini karşılaştırmak için düelloları paylaşabilir. İleride özel panolar ve açıkça etiketlenmiş sponsorlu yaratıcı yarışmalar test edilebilir; mevcut sayımlar gerçek kayıtları gösterir ve kişi doğrulaması sağlamaz."
+  },
+  {
+    "id": 13,
+    "name": "Zaman Kapsülü",
+    "slug": "zaman-kapsulu",
+    "category": "Sosyal",
+    "stage": 3,
+    "description": "Bir mektubu gelecekteki tarihe kilitle; sunucu tarih gelmeden içeriği tarayıcıya göndermez ve rastgele bağlantı dışında gezilebilir liste sunmaz.",
+    "features": [
+      "C# Blazor arayüzü",
+      "Sunucu saatine göre içerik kilidi",
+      "Kalıcı kapsül kaydı",
+      "Listelenmeyen paylaşım bağlantısı",
+      "Editoryal mektup soruları",
+      "Türkçe/İngilizce arayüz ve raporlama"
+    ],
+    "businessHypothesis": "Mezuniyet, yıl dönümü ve arkadaş grubu gelenekleri kapsül paylaşımı ve zamanında geri dönüş yaratabilir. İleride doğrulanmış saklama süresi, hesap kurtarma ve teslim hizmetleri için ödeme isteği araştırılabilir; ilk sürüm bu hizmetleri veya gelir güvencesini sunmaz."
+  },
+  {
+    "id": 14,
+    "name": "Günlük Planlayıcı",
+    "slug": "gunluk-planlayici",
+    "category": "Araç",
+    "stage": 1,
+    "description": "Görevlerini tarih ve önceliğe göre düzenle; notlarını tarayıcıda sakla ve yedekle.",
+    "features": [
+      "Görev ekleme, düzenleme ve filtreleme",
+      "Otomatik kaydedilen notlar",
+      "JSON yedek alma ve geri yükleme"
+    ],
+    "businessHypothesis": "Ekip çalışma alanları ve gelişmiş raporlar için ayrı ücretli sürüm değerlendirilebilir; mevcut sürüm ücretsizdir."
+  },
+  {
+    "id": 15,
+    "name": "Tarif Defteri",
+    "slug": "tarif-defteri",
+    "category": "Yaşam",
+    "stage": 1,
+    "description": "Sekiz ayrıntılı tariften menü oluştur; porsiyonları ayarla ve tek alışveriş listesi hazırla.",
+    "features": [
+      "Malzeme, öğün ve süreyle arama",
+      "Porsiyonlara göre malzeme hesabı",
+      "Birleşen alışveriş listesi ve favoriler"
+    ],
+    "businessHypothesis": "Açıkça belirtilen sponsorlu tarif koleksiyonları ve uygun satış ortaklığı bağlantıları değerlendirilebilir; mevcut tarifler editoryaldir."
+  }
+]
