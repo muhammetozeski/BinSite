@@ -24,13 +24,15 @@ foreach ($product in $catalog) {
     $response = Invoke-WebRequest -Uri "$siteOrigin/$($product.slug)/"
     if ($response.StatusCode -ne 200 -or $response.Content -notmatch '<html\b') { throw "Product delivery failed: $($product.slug)" }
     if ($response.Content -notmatch '<html\b[^>]*lang\s*=\s*["'']en(?:-[a-z]+)?["'']') { throw "Published product is not marked as English: $($product.slug)" }
+    if ($response.Content -notmatch '<html\b[^>]*data-bs-theme\s*=\s*["'']dark["'']') { throw "Published product is missing its dark default: $($product.slug)" }
+    if ($response.Content -notmatch '<script\b[^>]*data-binsite-appearance\s*=\s*["'']script["'']' -or $response.Content -notmatch '<link\b[^>]*data-binsite-appearance\s*=\s*["'']style["'']') { throw "Published appearance dependencies are missing: $($product.slug)" }
     $verified += $product.slug
     $newChecks++
 }
 $activeSlugs = @($catalog.slug)
 $verified = @($verified | Sort-Object -Unique | Where-Object { $_ -in $activeSlugs })
 $localTime = [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId([datetime]::UtcNow, 'Turkey Standard Time').ToString('yyyy-MM-dd HH:mm:ss')
-@{origin=$siteOrigin;verifiedAtIstanbul=$localTime;liveCatalogCount=$catalog.Count;verifiedPathCount=$verified.Count;verifiedPaths=$verified;scope='HTTP delivery only; interaction and API checks are recorded separately.'} | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $ledgerPath -Encoding utf8
+@{origin=$siteOrigin;verifiedAtIstanbul=$localTime;liveCatalogCount=$catalog.Count;verifiedPathCount=$verified.Count;verifiedPaths=$verified;scope='HTTP delivery, English document language, dark default and appearance dependencies; interaction and API checks are recorded separately.'} | ConvertTo-Json -Depth 4 | Set-Content -LiteralPath $ledgerPath -Encoding utf8
 if ($UpdateRegistry) {
     $registryPath = Join-Path $env:USERPROFILE '.agents/skills/SiteYonetimi/references/siteler.md'
     if (-not (Test-Path -LiteralPath $registryPath)) { throw 'SiteYonetimi site registry was not found.' }

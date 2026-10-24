@@ -5,6 +5,7 @@ Use this index to find project-specific implementation knowledge before repeatin
 - [Documentation purpose](Documentation-Purpose.md): why this library exists and which facts belong here.
 - [Documentation guide](Documentation-Guide.md): writing, evidence, maintenance and navigation rules.
 - [Independent products and shared services](Architecture.md): product paths, catalog counting, Blazor distribution and data boundaries.
+- [Appearance guard](Appearance-Guard.md): dark-default publication and runtime text contrast without a shared product layout.
 - [Blazor on Pages](Blazor-Pages.md): root-relative runtime paths, preservation of the portfolio homepage and tested publication boundaries.
 - [Advertising integration](Advertising-Integration.md): optional placements, public publisher configuration, consent prerequisites and campaign drafts.
 - [Cloudflare secret updates](Cloudflare-Secrets.md): why environment PATCH requests must include only changed keys instead of replaying redacted secret values.

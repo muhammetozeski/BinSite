@@ -1,0 +1,21 @@
+# Independent layouts, dark defaults and runtime text contrast
+
+The user requested independent end-to-end visual ownership for each future subproject, with hard colors as the aesthetic brief. Dark mode is the default and unreadable text must be controlled by a script. This shared layer changes colors and adds a theme control; it does not prescribe product layout, typography, content structure or a surrounding application shell.
+
+`scripts/Prepare-Appearance.mjs` normalizes the published HTML default to `data-bs-theme="dark"` and manages one stylesheet plus one deferred classic script. It respects the effective base URL and emits relative dependencies suitable for root pages, independent paths and nested guides. Its tokenizer excludes inert templates, comments and raw script/style content when finding the document boundary. Repeated preparation is byte-stable; framework output and directory symlinks are excluded. The publishing workflow invokes it after generating all entry points.
+
+`public/assets/appearance.css` supplies the initial color scheme. `appearance.js` defaults to dark independently of the operating-system theme and can honor an explicitly saved light preference. The footer theme button changes that preference; independent products can call `window.BinSiteAppearance.setTheme` or `refresh` through their own controls.
+
+## Readability behavior
+
+The runtime maps light neutral interface surfaces to dark surfaces. Existing saturated surface colors remain. It measures computed HTML foreground/background colors, including alpha and ancestor group opacity, and repairs text below a 4.5:1 contrast target. Colored text is moved toward a readable endpoint while retaining its hue where possible. The target follows the [W3C contrast explanation](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html); this module is not a complete accessibility certification.
+
+The guard records original inline values and priorities so light-mode restoration and later application changes remain distinguishable. A CSS priority override is used only when the actual computed color demonstrates that an existing stylesheet rule defeated the ordinary repair. Nonzero group opacity is adjusted only when it prevents readable text after color correction; zero-opacity or hidden content is not revealed. Detached nodes are restored before tracking is removed, allowing later reuse without a stale override.
+
+Dynamic Blazor nodes, class/style changes, open/hidden states, focus, pointer state and resizing schedule checks. Observation is disconnected during guard-owned writes, preventing self-triggered mutation loops. Per-frame background caches avoid repeatedly walking the same ancestor backgrounds. `window.BinSiteAppearance.audit()` returns counts and unreadable element/color metrics without recording user-entered text.
+
+Canvases, images, video, SVG artwork and explicitly marked `data-appearance-preserve` regions retain their authored pixels. The audit covers computed HTML text over CSS color layers; it does not certify text painted inside media, across remote frames or over image pixels. Modern CSS color values can be converted through a detached one-pixel color canvas without reading user artwork.
+
+## Evidence
+
+The injector passed thirty-four controlled assertions covering paths, base URLs, repeated output, authored-default normalization, dependency deduplication, optional tags and inert/raw content. Actual runtime math passed the known black/white ratio, alpha composition, colored repair and forty-two repaired color pairs. Independent fixtures identified priority, group-opacity and detached-node failures. After correction, fifteen existing assertions and those forty-two color pairs passed; the exact priority case reached 19.028 contrast, opacity case reached 21, and the detached node recovered its original color. These were controlled DOM/cascade fixtures, not a native-browser observation. Real production acceptance is recorded only after deployment.
