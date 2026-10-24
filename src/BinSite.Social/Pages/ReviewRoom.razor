@@ -8,24 +8,23 @@
 <PageSurface>
 <div class="review-room">
 <header><div><h1>Client Review Room</h1><p>Review images and videos with notes tied to the right version.</p></div><a href="/">All products</a></header>
-<div class="privacy-bar">Files stay on this device. Save a project before closing.</div>
+<div class="privacy-bar">Keep your original media and save a project file before closing.</div>
 @if (Status.Length > 0) { <div class="status" role="status" data-error="@HasError.ToString().ToLowerInvariant()">@Status</div> }
-@if (Busy) { <p class="working" role="status">Opening your files. Large files may take longer.</p> }
+@if (Busy) { <p class="working" role="status">Working…</p> }
 <main>
 <section class="project-tools" aria-label="Project and exports">
-    <div class="heading-fields"><label>Project title<input @bind="TitleDraft" maxlength="140" disabled="@(!CanEdit || Busy)"></label><label>Delivery brief<textarea @bind="BriefDraft" maxlength="3000" rows="2" disabled="@(!CanEdit || Busy)"></textarea></label><button disabled="@(!CanEdit || Busy)" @onclick="SaveHeadingAsync">Save heading</button></div>
-    <details><summary>Save, restore and export</summary><div class="tool-row"><button @onclick="NewProjectAsync" disabled="@Busy">New project</button><button @onclick="SaveJsonAsync" disabled="@Busy">Download project JSON</button><label class="file-control">Restore project JSON<input type="file" accept=".json,application/json" @ref="RestoreInput" @onchange="RestoreAsync" disabled="@Busy"></label><button @onclick="ExportReportAsync" disabled="@(Busy || Project.Assets.Count == 0)">Export HTML report</button><button @onclick="ExportWorklistAsync" disabled="@(Busy || Project.Assets.Count == 0)">Export open editing list CSV</button></div>
-    <p class="small">A downloaded JSON project does not include media files. Reports contain review records, not embedded media. Decisions are records entered in the project, not authenticated customer signatures. Anyone holding a local project copy can edit that copy.</p></details>
+    <details><summary>@Project.Title · Edit project details</summary><div class="heading-fields"><label>Project title<input @bind="TitleDraft" maxlength="140" disabled="@(!CanEdit || Busy)"></label><label>Delivery brief<textarea @bind="BriefDraft" maxlength="3000" rows="2" disabled="@(!CanEdit || Busy)"></textarea></label><button disabled="@(!CanEdit || Busy)" @onclick="SaveHeadingAsync">Apply details</button></div></details>
+    <details><summary>Project files and exports</summary><div class="tool-row"><button @onclick="NewProjectAsync" disabled="@Busy">New project</button><button @onclick="SaveJsonAsync" disabled="@Busy">Save project file</button><label class="file-control">Open project file<input type="file" accept=".json,application/json" @ref="RestoreInput" @onchange="RestoreAsync" disabled="@Busy"></label><button @onclick="ExportReportAsync" disabled="@(Busy || Project.Assets.Count == 0)">Save review report</button><button @onclick="ExportWorklistAsync" disabled="@(Busy || !Project.Comments.Any(comment => !comment.Resolved))">Save open editing list</button></div>
+    <p class="small">These files contain notes and decisions. Keep the original images and videos separately.</p></details>
     @if (Project.IsEditorialExample) { <p class="example-notice"><strong>Example project.</strong> These images and comments are examples, not customer activity.</p> }
 </section>
 <div class="workspace-grid">
 <aside class="asset-panel">
-    <h2>Deliveries and versions</h2>
+    <h2>Files and versions</h2>
     <label class="file-control">Add images or videos<input type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif,video/mp4,video/webm,video/ogg" @ref="AssetInput" @onchange="ImportAssetsAsync" disabled="@(Busy || !CanEdit)"></label>
-    <label class="file-control">Reconnect saved media<input type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif,video/mp4,video/webm,video/ogg" @ref="ReconnectInput" @onchange="ReconnectAsync" disabled="@Busy"></label>
-    <p class="small">Up to eight files per selection; 128 MB per file. Reconnection requires the same full SHA-256 fingerprint and byte count. A renamed file can match; a changed file cannot.</p>
+    @if (Project.Assets.Count > 0) { <label class="file-control">Reconnect original files<input type="file" multiple accept="image/png,image/jpeg,image/webp,image/gif,image/avif,video/mp4,video/webm,video/ogg" @ref="ReconnectInput" @onchange="ReconnectAsync" disabled="@Busy"></label> }
+    <details><summary>File limits and reconnection</summary><p class="small">Select up to eight files, 128 MB each. To reopen a saved review, choose the original files again. Renaming is okay; their contents must match exactly.</p></details>
     @if (ReconnectMessages.Count > 0) { <ul class="reconnect-results">@foreach (var message in ReconnectMessages) { <li>@message</li> }</ul> }
-    @if (Project.Assets.Count == 0) { <p class="empty">No delivery files yet. Select media or open an example below.</p> }
     @foreach (var asset in Project.Assets)
     {
         <section class="asset-group"><h3>@asset.Title <small>@asset.Kind</small></h3>
@@ -35,72 +34,72 @@
         }
         </section>
     }
-    <details class="examples"><summary>Example projects</summary><p class="small">Each example includes two images and sample review notes.</p>@foreach (var example in ReviewRoomExamples.All) { <button class="example-button" @onclick="() => LoadExampleAsync(example.Id)" disabled="@Busy"><strong>@example.Title</strong><span>@example.Brief</span></button> }</details>
+    <details class="examples" open="@(Project.Assets.Count == 0)"><summary>Try an example</summary><p class="small">Original examples with two images and sample review notes.</p>@foreach (var example in ReviewRoomExamples.All) { <button class="example-button" @onclick="() => LoadExampleAsync(example.Id)" disabled="@Busy"><strong>@example.Title</strong></button> }</details>
 </aside>
 <section class="review-panel">
     @if (SelectedAsset is not null && SelectedVersion is not null)
     {
         <div class="version-heading"><div><span class="eyebrow">@SelectedAsset.Kind · @SelectedVersion.Label</span><h2>@SelectedAsset.Title</h2></div><strong class="state">@ReviewRoomRules.StateLabel(CurrentState)</strong></div>
         <p class="file-metadata">@SelectedVersion.FileName · @Bytes(SelectedVersion.SizeBytes) · @(SelectedAsset.Kind == ReviewMediaKind.Video ? ReviewRoomRules.TimeLabel(SelectedVersion.DurationSeconds.GetValueOrDefault()) : $"{SelectedVersion.Width} × {SelectedVersion.Height} px")</p>
-        <details class="fingerprint"><summary>Exact file identity and connection</summary><p>SHA-256: <code>@SelectedVersion.Fingerprint</code></p><p>@(BoundNames.TryGetValue(SelectedVersion.Id, out var linkedName) ? "Linked local file: " + linkedName : "No matching local file has been selected on this device.")</p><p class="small">The filename is descriptive. Reconnection checks the full file contents and byte count.</p></details>
+        <details class="fingerprint"><summary>File details</summary><p>SHA-256: <code>@SelectedVersion.Fingerprint</code></p><p>@(BoundNames.TryGetValue(SelectedVersion.Id, out var linkedName) ? "Linked local file: " + linkedName : "No matching local file has been selected on this device.")</p><p class="small">The filename is descriptive. Reconnection checks the full file contents and byte count.</p></details>
     }
-    <div class="media-viewer" @ref="Viewer" aria-label="Local image or video preview"></div>
+    <div class="media-viewer" @ref="Viewer" hidden="@(SelectedVersion is null)" aria-label="Image or video preview"></div>
     @if (SelectedAsset is not null && SelectedVersion is not null)
     {
         @if (CanEdit)
         {
-            <details class="new-version"><summary>Add a revised file to this delivery</summary><label>Version label<input @bind="VersionLabelDraft" maxlength="80"></label><label class="file-control">Choose one revised file<input type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif,video/mp4,video/webm,video/ogg" @ref="VersionInput" @onchange="ImportVersionAsync" disabled="@Busy"></label><p class="small">A new version must keep the media kind. Its file bytes must differ from existing versions. Comments stay attached to their original version.</p></details>
+            <details class="new-version"><summary>Add a revised file to this delivery</summary><label>Version label<input @bind="VersionLabelDraft" maxlength="80"></label><label class="file-control">Choose one revised file<input type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif,video/mp4,video/webm,video/ogg" @ref="VersionInput" @onchange="ImportVersionAsync" disabled="@Busy"></label><p class="small">Choose a changed file of the same type. Existing comments stay with their version.</p></details>
         }
-        <section class="annotation-tools"><h3>Comment on this exact version</h3>
+        <section class="annotation-tools"><h3>Add a comment</h3>
         @if (CanEdit)
         {
-            @if (SelectedAsset.Kind == ReviewMediaKind.Image) { <p>Click the image to place a normalized marker, or use its center.</p><button class="secondary" @onclick="CenterMarkerAsync" disabled="@(Busy || !IsLinked)">Use image center</button> }
-            else { <p>Pause at the relevant frame. The button reads the actual player time.</p><button class="secondary" @onclick="CaptureVideoAsync" disabled="@(Busy || !IsLinked)">Use current video time</button> }
-            <p class="anchor-status">@(HasAnchor ? AnchorDraftLabel : "No position or time selected yet.")</p>
-            <form @onsubmit="AddCommentAsync" @onsubmit:preventDefault><div class="comment-options"><label>Category<select @bind="Category">@foreach (var category in Enum.GetValues<ReviewCommentCategory>()) { <option value="@category">@category</option> }</select></label><label>Priority<select @bind="Priority"><option value="@ReviewCommentPriority.Note">Note</option><option value="@ReviewCommentPriority.Blocking">Blocking change</option></select></label></div><label>What should change?<textarea @bind="CommentDraft" minlength="3" maxlength="2000" required rows="3"></textarea></label><button type="submit" disabled="@(Busy || !HasAnchor || !IsLinked)">Add anchored comment</button></form>
+            @if (SelectedAsset.Kind == ReviewMediaKind.Image) { <p>Click a point in the image, or choose its center.</p><button class="secondary" @onclick="CenterMarkerAsync" disabled="@(Busy || !IsLinked)">Use image center</button> }
+            else { <p>Choose a frame in the video, then add a note.</p><button class="secondary" @onclick="CaptureVideoAsync" disabled="@(Busy || !IsLinked)">Use this video frame</button> }
+            <p class="anchor-status">@(HasAnchor ? AnchorDraftLabel : "Choose a point or frame first.")</p>
+            <form @onsubmit="AddCommentAsync" @onsubmit:preventDefault><div class="comment-options"><label>Category<select @bind="Category">@foreach (var category in Enum.GetValues<ReviewCommentCategory>()) { <option value="@category">@category</option> }</select></label><label>Priority<select @bind="Priority"><option value="@ReviewCommentPriority.Note">Note</option><option value="@ReviewCommentPriority.Blocking">Blocking change</option></select></label></div><label>What should change?<textarea @bind="CommentDraft" minlength="3" maxlength="2000" required rows="3"></textarea></label><button type="submit" disabled="@(Busy || !HasAnchor || !IsLinked)">Add comment</button></form>
         }
-        else { <p>This cloud role is read-only. You can inspect and export the shared record, or make a local copy to edit your own document.</p> }
+        else { <p>Read-only access. Choose Work on a local copy to make your own edits.</p> }
         </section>
         <section class="comment-section"><div class="section-heading"><h3>Comments for @SelectedVersion.Label</h3><label>Show<select @bind="CommentFilter"><option value="all">All comments</option><option value="open">Open</option><option value="resolved">Resolved</option></select></label></div>
         @if (!VisibleComments().Any()) { <p class="empty">No comments match this version and filter.</p> }
         @foreach (var comment in VisibleComments())
         {
-            <article class="comment @(comment.Resolved ? "resolved" : "open") @(FocusedCommentId == comment.Id ? "focused" : "")" @key="comment.Id"><div class="comment-meta"><strong>#@CommentNumber(comment.Id) · @comment.Category</strong><span>@(comment.Priority == ReviewCommentPriority.Blocking ? "Blocking change" : "Note") · @(comment.Resolved ? "Resolved" : "Open")</span></div><p>@comment.Body</p><p class="small">@ReviewRoomRules.AnchorLabel(comment) · @comment.CreatedAt.ToLocalTime().ToString("g") · @(comment.Source == ReviewEntrySource.EditorialExample ? "Example" : "Project entry")</p><div class="tool-row"><button class="secondary" @onclick="() => FocusCommentAsync(comment)" disabled="@Busy">Show location / frame</button>@if (CanEdit) { <button class="secondary" @onclick="() => ToggleResolvedAsync(comment)" disabled="@Busy">@(comment.Resolved ? "Reopen comment" : "Resolve comment")</button> }</div></article>
+            <article class="comment @(comment.Resolved ? "resolved" : "open") @(FocusedCommentId == comment.Id ? "focused" : "")" @key="comment.Id"><div class="comment-meta"><strong>#@CommentNumber(comment.Id) · @comment.Category</strong><span>@(comment.Priority == ReviewCommentPriority.Blocking ? "Blocking change" : "Note") · @(comment.Resolved ? "Resolved" : "Open")</span></div><p>@comment.Body</p><p class="small">@ReviewRoomRules.AnchorLabel(comment) · @comment.CreatedAt.ToLocalTime().ToString("g") · @(comment.Source == ReviewEntrySource.EditorialExample ? "Example" : "Project entry")</p><div class="tool-row"><button class="secondary" @onclick="() => FocusCommentAsync(comment)" disabled="@Busy">Go to comment</button>@if (CanEdit) { <button class="secondary" @onclick="() => ToggleResolvedAsync(comment)" disabled="@Busy">@(comment.Resolved ? "Reopen comment" : "Resolve comment")</button> }</div></article>
         }
         </section>
-        <section class="decision-panel"><h3>Explicit review and delivery state</h3><p>@OpenBlockingCount open blocking comment(s). Approval is available only from ready-for-review after all blocking comments are resolved. Delivery is available only after approval.</p>
+        <section class="decision-panel"><h3>Review status</h3><p>@OpenBlockingCount blocking changes still open.</p>
         @if (CanEdit)
         {
             <label>Decision note<input @bind="DecisionNote" minlength="3" maxlength="1200" placeholder="State what was checked or why the review is changing."></label><div class="tool-row">
             @if (CurrentState is ReviewDecisionState.Draft or ReviewDecisionState.ChangesRequested) { <button disabled="@Busy" @onclick="() => DecideAsync(ReviewDecisionState.Ready)">Mark ready for review</button> }
             @if (CurrentState == ReviewDecisionState.Ready) { <button disabled="@Busy" @onclick="() => DecideAsync(ReviewDecisionState.ChangesRequested)">Request changes</button><button disabled="@(Busy || OpenBlockingCount > 0)" @onclick="() => DecideAsync(ReviewDecisionState.Approved)">Record approval</button> }
             @if (CurrentState == ReviewDecisionState.Approved) { <button disabled="@Busy" @onclick="() => DecideAsync(ReviewDecisionState.Delivered)">Record delivery</button> }
-            @if (CurrentState is ReviewDecisionState.Approved or ReviewDecisionState.Delivered) { <button class="secondary" disabled="@Busy" @onclick="() => DecideAsync(ReviewDecisionState.Ready)">Explicitly reopen review</button> }
+            @if (CurrentState is ReviewDecisionState.Approved or ReviewDecisionState.Delivered) { <button class="secondary" disabled="@Busy" @onclick="() => DecideAsync(ReviewDecisionState.Ready)">Reopen review</button> }
             </div>
         }
-        <ol class="decision-history">@foreach (var decision in Project.Decisions.Where(item => item.VersionId == SelectedVersion.Id)) { <li><strong>@ReviewRoomRules.StateLabel(decision.State)</strong> · @decision.CreatedAt.ToLocalTime().ToString("g")<p>@decision.Note</p></li> }</ol><p class="small">This is a local project workflow record. It does not prove that a particular customer approved or received a file.</p></section>
+        <details><summary>Decision history</summary><ol class="decision-history">@foreach (var decision in Project.Decisions.Where(item => item.VersionId == SelectedVersion.Id)) { <li><strong>@ReviewRoomRules.StateLabel(decision.State)</strong> · @decision.CreatedAt.ToLocalTime().ToString("g")<p>@decision.Note</p></li> }</ol></details></section>
         @if (SelectedAsset.Versions.Count > 1)
         {
-            <section class="comparison"><h3>Compare two version records</h3><div class="compare-selectors"><label>Left version<select @bind="CompareLeft">@foreach (var version in SelectedAsset.Versions) { <option value="@version.Id">@version.Label</option> }</select></label><label>Right version<select @bind="CompareRight">@foreach (var version in SelectedAsset.Versions) { <option value="@version.Id">@version.Label</option> }</select></label></div>
+            <details class="comparison"><summary>Compare versions</summary><div class="compare-selectors"><label>Left version<select @bind="CompareLeft">@foreach (var version in SelectedAsset.Versions) { <option value="@version.Id">@version.Label</option> }</select></label><label>Right version<select @bind="CompareRight">@foreach (var version in SelectedAsset.Versions) { <option value="@version.Id">@version.Label</option> }</select></label></div>
             @if (CompareLeft == CompareRight) { <p>Choose two different versions to compare.</p> }
-            else { <div class="compare-grid">@foreach (var versionId in new[] { CompareLeft, CompareRight }) { var version = SelectedAsset.Versions.FirstOrDefault(item => item.Id == versionId); if (version is not null) { var notes = Project.Comments.Where(item => item.VersionId == version.Id).ToList(); <article><h4>@version.Label</h4><p>@version.FileName</p><p><strong>@ReviewRoomRules.StateLabel(ReviewRoomRules.CurrentDecision(Project, version.Id))</strong></p><p>@notes.Count(item => !item.Resolved) open · @notes.Count(item => item.Resolved) resolved · @notes.Count(item => !item.Resolved && item.Priority == ReviewCommentPriority.Blocking) open blockers</p><ul>@foreach (var note in notes) { <li><button class="text-button" @onclick="() => FocusCommentAsync(note)">#@CommentNumber(note.Id) @note.Category · @ReviewRoomRules.AnchorLabel(note)</button><span>@(note.Resolved ? "Resolved" : "Open") — @note.Body</span></li> }</ul><h5>Decisions</h5>@foreach (var decision in Project.Decisions.Where(item => item.VersionId == version.Id)) { <p class="small">@ReviewRoomRules.StateLabel(decision.State): @decision.Note</p> }</article> } }</div><p class="small">These are actual per-version comments and decisions. Resolving one version's note does not silently transfer resolution to another version.</p> }
-            </section>
+            else { <div class="compare-grid">@foreach (var versionId in new[] { CompareLeft, CompareRight }) { var version = SelectedAsset.Versions.FirstOrDefault(item => item.Id == versionId); if (version is not null) { var notes = Project.Comments.Where(item => item.VersionId == version.Id).ToList(); <article><h4>@version.Label</h4><p>@version.FileName</p><p><strong>@ReviewRoomRules.StateLabel(ReviewRoomRules.CurrentDecision(Project, version.Id))</strong></p><p>@notes.Count(item => !item.Resolved) open · @notes.Count(item => item.Resolved) resolved · @notes.Count(item => !item.Resolved && item.Priority == ReviewCommentPriority.Blocking) open blockers</p><ul>@foreach (var note in notes) { <li><button class="text-button" @onclick="() => FocusCommentAsync(note)">#@CommentNumber(note.Id) @note.Category · @ReviewRoomRules.AnchorLabel(note)</button><span>@(note.Resolved ? "Resolved" : "Open") — @note.Body</span></li> }</ul><h5>Decisions</h5>@foreach (var decision in Project.Decisions.Where(item => item.VersionId == version.Id)) { <p class="small">@ReviewRoomRules.StateLabel(decision.State): @decision.Note</p> }</article> } }</div> }
+            </details>
         }
     }
-    else { <section class="empty"><h2>Select real media to begin.</h2><p>Add an image or video to start reviewing.</p></section> }
+    else { <section class="empty"><h2>Start a review</h2><p>Add an image or video, or try an example.</p></section> }
 </section>
 </div>
-<details class="cloud-panel"><summary>Online saves and invitations</summary><p>Save online with your <a href="/uyelik/">Creator account</a>. Only metadata, fingerprints, comments and decisions are saved. <strong>Every invited viewer or editor can read all shared JSON notes.</strong> Media files stay local; recipients must reconnect matching originals. There are no per-comment private notes.</p>
-    <label>Cloud workspace label (1–100 characters)<input @bind="CloudLabel" maxlength="100" disabled="@(Busy || !CanEdit)"></label><p class="small">Use a short name for this saved copy. Your project title stays unchanged.</p>
+<details class="cloud-panel" open="@(!string.IsNullOrWhiteSpace(InviteToken))"><summary>Shared projects</summary><p>Use your <a href="/uyelik/">account</a> to save and invite people. <strong>Everyone invited can read all notes.</strong> Send original media separately; recipients reconnect those files on their device.</p>
+    <label>Shared project name<input @bind="CloudLabel" maxlength="100" disabled="@(Busy || !CanEdit)"></label><p class="small">Use a short name for this saved copy. Your project title stays unchanged.</p>
     @if (!string.IsNullOrWhiteSpace(InviteToken)) { <section class="invite"><p>This link contains a workspace invitation. Sign in to your account, then accept it.</p><button @onclick="AcceptInviteAsync" disabled="@Busy">Accept invitation</button></section> }
-    <div class="tool-row"><button @onclick="LoadCloudListAsync" disabled="@Busy">List my real workspaces</button><button @onclick="SaveCloudAsync" disabled="@(Busy || (!CanEdit && CloudWorkspace is not null))">@(CloudWorkspace is null ? "Create cloud copy of this JSON" : "Save expected cloud revision")</button>@if (CloudWorkspace is not null) { <button class="secondary" @onclick="() => LoadCloudAsync(CloudWorkspace.Id)" disabled="@Busy">Reload cloud record</button><button class="secondary" @onclick="MakeLocalCopy" disabled="@Busy">Work on a local copy</button> }</div>
+    <div class="tool-row"><button @onclick="LoadCloudListAsync" disabled="@Busy">Refresh project list</button><button @onclick="SaveCloudAsync" disabled="@(Busy || (!CanEdit && CloudWorkspace is not null))">@(CloudWorkspace is null ? "Save a new shared project" : "Save changes")</button>@if (CloudWorkspace is not null) { <button class="secondary" @onclick="() => LoadCloudAsync(CloudWorkspace.Id)" disabled="@Busy">Reload shared project</button><button class="secondary" @onclick="MakeLocalCopy" disabled="@Busy">Work on a local copy</button> }</div>
     @if (CloudAccount is not null) { <p class="small">Saved projects: @CloudAccount.UsedProjects / @CloudAccount.ProjectLimit shared project slots · @(CloudAccount.Premium ? "Active membership" : "Free account"). File-size limits apply.</p> }
-    @if (CloudWorkspace is not null) { <p><strong>Connected role: @CloudWorkspace.Role</strong> · version @CloudWorkspace.Revision</p>@if (CloudWorkspace.Role == "owner") { <div class="tool-row"><label>Invitation role<select @bind="InviteRole"><option value="viewer">Viewer — read shared JSON</option><option value="editor">Editor — update shared JSON</option></select></label><button @onclick="CreateInviteAsync" disabled="@Busy">Create real invitation</button></div> } }
+    @if (CloudWorkspace is not null) { <p><strong>Connected role: @CloudWorkspace.Role</strong> · version @CloudWorkspace.Revision</p>@if (CloudWorkspace.Role == "owner") { <div class="tool-row"><label>Invitation role<select @bind="InviteRole"><option value="viewer">Viewer — read only</option><option value="editor">Editor — edit project</option></select></label><button @onclick="CreateInviteAsync" disabled="@Busy">Create invite link</button></div> } }
     @if (InviteLink is not null) { <label>Invitation link<input readonly value="@InviteLink"></label><p class="small">Expires @InviteExpiry. Share it only with the intended person.</p> }
     @foreach (var workspace in CloudItems.Where(item => item.Kind == "review")) { <button class="cloud-workspace" @onclick="() => LoadCloudAsync(workspace.Id)" disabled="@Busy"><strong>@workspace.Title</strong><span>@workspace.Role · revision @workspace.Revision</span></button> }
 </details>
 </main>
-<footer><details class="page-help"><summary>Privacy and safety</summary><p>Keep your original media and download a project backup before closing.</p></details></footer>
+<footer><details class="page-help"><summary>Help</summary><p>Add a file, select its version and mark a point or video frame. Write a comment, then resolve it when the change is done. Add the revised file to the same delivery to compare its notes and decisions.</p><p>Approval requires Ready for review and no open blocking changes; delivery follows approval. Reopen review before adding a new blocking change. These decisions are editable project records, not signed customer approvals.</p><p>Project files and reports contain notes and file identities, not the original media. Reconnect originals after reopening. Sharing gives each invited person access to every note. Example projects contain original fictional images and sample review notes.</p></details></footer>
 </div>
 </PageSurface>
 @code {
@@ -166,7 +165,7 @@
         try { await action(); if (success is not null) Status = success; }
         catch (ReviewValidationException error) { HasError = true; Status = error.Message; }
         catch (ApiFailure error) { HasError = true; Status = error.Message; }
-        catch (Exception error) { Logger.LogError("Review action failed; type={Type}", error.GetType().Name); HasError = true; Status = "The browser could not complete this action. The current project has been retained; try again or export its JSON."; }
+        catch (Exception error) { Logger.LogError("Review action failed; type={Type}", error.GetType().Name); HasError = true; Status = "This action could not be completed. Your project is kept open; try again or save a project file."; }
         finally { Busy = false; }
     }
 
@@ -191,14 +190,14 @@
     }
 
     /// <summary>Commits heading changes as an explicit document edit.</summary>
-    Task SaveHeadingAsync() => RunAsync(() => { RequireEdit(); Apply(ReviewRoomRules.Rename(Project, TitleDraft, BriefDraft)); if (CloudWorkspace is null) CloudLabel = Project.Title[..Math.Min(100, Project.Title.Length)]; return Task.CompletedTask; }, "Project heading saved in this session.");
+    Task SaveHeadingAsync() => RunAsync(() => { RequireEdit(); Apply(ReviewRoomRules.Rename(Project, TitleDraft, BriefDraft)); if (CloudWorkspace is null) CloudLabel = Project.Title[..Math.Min(100, Project.Title.Length)]; return Task.CompletedTask; }, "Project details applied.");
     /// <summary>Reads actual local files and commits new assets atomically before retaining their browser handles.</summary>
     Task ImportAssetsAsync() => RunAsync(async () =>
     {
         RequireEdit(); var result = await (await ModuleAsync()).InvokeAsync<ReviewPickResult>("readSelection", AssetInput); CheckPick(result); if (result.Files.Count == 0) return;
         try { var next = ReviewRoomRules.AddAssets(Project, result.Files); Apply(next); var added = next.Assets.TakeLast(result.Files.Count).ToArray(); for (var index = 0; index < added.Length; index++) Bind(added[index].Versions[0].Id, result.Files[index]); SelectVersion(added[^1].Id, added[^1].Versions[0].Id); }
         catch { await (await ModuleAsync()).InvokeVoidAsync("discard", result.Files.Select(item => item.Token).ToArray()); throw; }
-        Status = $"Added {result.Files.Count} local media asset(s). No media was uploaded.";
+        Status = $"Added {result.Files.Count} file(s).";
     });
     /// <summary>Adds a genuine changed file revision to the selected logical delivery.</summary>
     Task ImportVersionAsync() => RunAsync(async () =>
@@ -208,7 +207,7 @@
         if (result.Files.Count != 1) throw new ReviewValidationException("Choose one revised file.");
         try { Apply(ReviewRoomRules.AddVersion(Project, assetId, result.Files[0], VersionLabelDraft)); var version = Project.Assets.First(item => item.Id == assetId).Versions[^1]; Bind(version.Id, result.Files[0]); SelectVersion(assetId, version.Id); }
         catch { await (await ModuleAsync()).InvokeVoidAsync("discard", result.Files.Select(item => item.Token).ToArray()); throw; }
-        Status = "New version added. Existing comments still point to their original versions.";
+        Status = "Version added. Existing comments stay with the previous version.";
     });
     /// <summary>Stores an ephemeral local handle separately from the portable project document.</summary>
     void Bind(Guid versionId, ReviewPickedFile file) { BoundTokens[versionId] = file.Token; BoundNames[versionId] = file.Name; LocalFiles[file.Token] = file; PendingMount = true; }
@@ -218,15 +217,15 @@
     Task ReconnectAsync() => RunAsync(async () =>
     {
         var result = await (await ModuleAsync()).InvokeAsync<ReviewPickResult>("readSelection", ReconnectInput); CheckPick(result); ReconnectMessages.Clear();
-        foreach (var file in result.Files) { var matches = ReviewRoomRules.MatchingVersions(Project, file); if (matches.Count == 0) { ReconnectMessages.Add(file.Name + ": no matching saved fingerprint and size; add it as a new version if it changed."); await (await ModuleAsync()).InvokeVoidAsync("discard", new[] { file.Token }); } else { foreach (var versionId in matches) Bind(versionId, file); ReconnectMessages.Add(file.Name + $": reconnected {matches.Count} saved version(s)."); } }
-        Status = "Reconnection checked against actual file contents. See the per-file results.";
+        foreach (var file in result.Files) { var matches = ReviewRoomRules.MatchingVersions(Project, file); if (matches.Count == 0) { ReconnectMessages.Add(file.Name + ": does not match an original file. Add a new version if it changed."); await (await ModuleAsync()).InvokeVoidAsync("discard", new[] { file.Token }); } else { foreach (var versionId in matches) Bind(versionId, file); ReconnectMessages.Add(file.Name + $": reconnected {matches.Count} saved version(s)."); } }
+        Status = "File matching complete.";
     });
 
     /// <summary>Captures a normalized point from the actual displayed image.</summary>
     [JSInvokable] public async Task CaptureImagePoint(ReviewPoint point)
     {
         if (Disposed || Busy || !CanEdit || SelectedAsset?.Kind != ReviewMediaKind.Image || !IsLinked) return;
-        AnchorX = point.X; AnchorY = point.Y; AnchorTime = null; Status = "Image marker selected. Write a comment and add it to this version.";
+        AnchorX = point.X; AnchorY = point.Y; AnchorTime = null; Status = "Point selected. Add your comment.";
         await (await ModuleAsync()).InvokeVoidAsync("draftPoint", Viewer, point.X, point.Y);
         await InvokeAsync(StateHasChanged);
     }
@@ -237,16 +236,16 @@
     /// <summary>Reads and pauses the actual local video element rather than synthesizing a timestamp.</summary>
     Task CaptureVideoAsync() => RunAsync(async () => { RequireEdit(); var time = await (await ModuleAsync()).InvokeAsync<double?>("videoTime", Viewer); if (time is null) throw new ReviewValidationException("Reconnect and open the video first."); AnchorTime = time; AnchorX = AnchorY = null; Status = "Video frame selected at " + ReviewRoomRules.TimeLabel(time.Value) + "."; });
     /// <summary>Commits one exact asset/version/anchor comment through the validation boundary.</summary>
-    Task AddCommentAsync() => RunAsync(() => { RequireEdit(); if (!IsLinked || !HasAnchor || SelectedAssetId is not Guid asset || SelectedVersionId is not Guid version) throw new ReviewValidationException("Select a linked version and capture its location or time first."); Apply(ReviewRoomRules.AddComment(Project, asset, version, CommentDraft, Category, Priority, AnchorX, AnchorY, AnchorTime)); FocusedCommentId = Project.Comments[^1].Id; CommentDraft = ""; AnchorX = AnchorY = AnchorTime = null; return Task.CompletedTask; }, "Anchored comment added to this exact version.");
+    Task AddCommentAsync() => RunAsync(() => { RequireEdit(); if (!IsLinked || !HasAnchor || SelectedAssetId is not Guid asset || SelectedVersionId is not Guid version) throw new ReviewValidationException("Select a linked version and capture its location or time first."); Apply(ReviewRoomRules.AddComment(Project, asset, version, CommentDraft, Category, Priority, AnchorX, AnchorY, AnchorTime)); FocusedCommentId = Project.Comments[^1].Id; CommentDraft = ""; AnchorX = AnchorY = AnchorTime = null; return Task.CompletedTask; }, "Comment added.");
     /// <summary>Changes resolution through the same local workflow checks used by imported records.</summary>
     Task ToggleResolvedAsync(ReviewComment comment) => RunAsync(() => { RequireEdit(); Apply(ReviewRoomRules.Resolve(Project, comment.Id, !comment.Resolved)); return Task.CompletedTask; });
     /// <summary>Moves to an existing comment's exact version and point or real video time.</summary>
-    Task FocusCommentAsync(ReviewComment comment) => RunAsync(async () => { FocusedCommentId = comment.Id; if (SelectedVersionId != comment.VersionId) { SelectVersion(comment.AssetId, comment.VersionId); FocusedCommentId = comment.Id; PendingFocus = comment; } else await (await ModuleAsync()).InvokeVoidAsync("focusComment", Viewer, comment.Id.ToString(), comment.TimeSeconds); });
+    Task FocusCommentAsync(ReviewComment comment) => RunAsync(async () => { CommentFilter = "all"; FocusedCommentId = comment.Id; if (SelectedVersionId != comment.VersionId) { SelectVersion(comment.AssetId, comment.VersionId); FocusedCommentId = comment.Id; PendingFocus = comment; } else await (await ModuleAsync()).InvokeVoidAsync("focusComment", Viewer, comment.Id.ToString(), comment.TimeSeconds); });
     /// <summary>Records one explicit decision; approval and delivery prerequisites are enforced by the document engine.</summary>
-    Task DecideAsync(ReviewDecisionState state) => RunAsync(() => { RequireEdit(); if (SelectedAssetId is not Guid asset || SelectedVersionId is not Guid version) return Task.CompletedTask; Apply(ReviewRoomRules.Decide(Project, asset, version, state, DecisionNote)); DecisionNote = ""; return Task.CompletedTask; }, "Decision recorded in the project. This is not a customer signature.");
+    Task DecideAsync(ReviewDecisionState state) => RunAsync(() => { RequireEdit(); if (SelectedAssetId is not Guid asset || SelectedVersionId is not Guid version) return Task.CompletedTask; Apply(ReviewRoomRules.Decide(Project, asset, version, state, DecisionNote)); DecisionNote = ""; return Task.CompletedTask; }, "Decision recorded.");
 
     /// <summary>Asks before replacing a document that may contain unsaved records or an in-progress comment.</summary>
-    async Task<bool> ConfirmReplaceAsync() => (!Dirty && Project.Assets.Count == 0 && CommentDraft.Length == 0) || await (await ModuleAsync()).InvokeAsync<bool>("confirmReplace");
+    async Task<bool> ConfirmReplaceAsync() => (!Dirty && Project.Assets.Count == 0 && CommentDraft.Length == 0 && TitleDraft == Project.Title && BriefDraft == Project.Brief) || await (await ModuleAsync()).InvokeAsync<bool>("confirmReplace");
     /// <summary>Replaces a validated project, retaining only exact already-selected media matches.</summary>
     async Task ReplaceProjectAsync(ReviewProject project, bool dirty)
     {
@@ -256,30 +255,30 @@
         if (project.Assets.FirstOrDefault() is { } asset) SelectVersion(asset.Id, asset.Versions[0].Id); else { AnchorX = AnchorY = AnchorTime = null; PendingMount = true; }
     }
     /// <summary>Creates a blank local document after explicit replacement confirmation.</summary>
-    Task NewProjectAsync() => RunAsync(async () => { if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(ReviewRoomRules.Create(), false); CloudWorkspace = null; Status = "New local project opened."; });
+    Task NewProjectAsync() => RunAsync(async () => { if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(ReviewRoomRules.Create(), false); CloudWorkspace = null; Status = "New project ready."; });
     /// <summary>Restores only a valid bounded JSON document; malformed input leaves current work intact.</summary>
     Task RestoreAsync() => RunAsync(async () => { var result = await (await ModuleAsync()).InvokeAsync<ReviewTextResult>("readProject", RestoreInput); if (result.Error is not null) throw new ReviewValidationException(result.Error); if (result.Text is null) return; var restored = ReviewRoomRules.Restore(result.Text); if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(restored, false); CloudWorkspace = null; Status = "Project restored. Reconnect matching original media to inspect images and video on this device."; });
     /// <summary>Starts an actual browser download of validated portable JSON without claiming a completed disk write.</summary>
-    Task SaveJsonAsync() => RunAsync(async () => await (await ModuleAsync()).InvokeVoidAsync("download", $"review-room-{Project.Id}.json", ReviewRoomRules.Serialize(Project), "application/json;charset=utf-8"), "Project JSON download started. Keep the downloaded file and your original media.");
+    Task SaveJsonAsync() => RunAsync(async () => await (await ModuleAsync()).InvokeVoidAsync("download", $"review-room-{Project.Id}.json", ReviewRoomRules.Serialize(Project), "application/json;charset=utf-8"), "Project download started. Keep the originals separately.");
     /// <summary>Downloads the actual complete HTML report and optional selected comparison.</summary>
-    Task ExportReportAsync() => RunAsync(async () => await (await ModuleAsync()).InvokeVoidAsync("download", $"review-report-{Project.Id}.html", ReviewRoomExports.Html(Project, SelectedAssetId, CompareLeft, CompareRight), "text/html;charset=utf-8"), "HTML review report download started. It contains metadata and notes, not the media files.");
+    Task ExportReportAsync() => RunAsync(async () => await (await ModuleAsync()).InvokeVoidAsync("download", $"review-report-{Project.Id}.html", ReviewRoomExports.Html(Project, SelectedAssetId, CompareLeft, CompareRight), "text/html;charset=utf-8"), "Report download started. Original media is not included.");
     /// <summary>Downloads formula-safe CSV rows for actual open editing work.</summary>
-    Task ExportWorklistAsync() => RunAsync(async () => await (await ModuleAsync()).InvokeVoidAsync("download", $"editing-work-{Project.Id}.csv", ReviewRoomExports.Worklist(Project), "text/csv;charset=utf-8"), "Open editing list CSV download started.");
+    Task ExportWorklistAsync() => RunAsync(async () => await (await ModuleAsync()).InvokeVoidAsync("download", $"editing-work-{Project.Id}.csv", ReviewRoomExports.Worklist(Project), "text/csv;charset=utf-8"), "Editing list download started.");
     /// <summary>Generates real example media locally before adding clearly labelled editorial review records.</summary>
     Task LoadExampleAsync(string id) => RunAsync(async () => { if (!await ConfirmReplaceAsync()) return; var result = await (await ModuleAsync()).InvokeAsync<ReviewPickResult>("createExample", id); CheckPick(result); var example = ReviewRoomExamples.Create(id, result.Files); await ReplaceProjectAsync(example, true); CloudWorkspace = null; for (var index = 0; index < result.Files.Count; index++) Bind(example.Assets[0].Versions[index].Id, result.Files[index]); Status = "Example opened with two images and sample comments."; });
 
     /// <summary>Lists actual account-authorized cloud records only after an explicit user action.</summary>
-    Task LoadCloudListAsync() => RunAsync(async () => { var list = await Cloud.ListAsync(); CloudItems = list.Workspaces; CloudAccount = list.Account; }, "Real workspace list loaded from the server.");
+    Task LoadCloudListAsync() => RunAsync(async () => { var list = await Cloud.ListAsync(); CloudItems = list.Workspaces; CloudAccount = list.Account; }, "Project list refreshed.");
     /// <summary>Saves only review JSON under real account quota, role and expected revision controls.</summary>
-    Task SaveCloudAsync() => RunAsync(async () => { CloudWorkspace = await Cloud.SaveAsync(Project, CloudWorkspace, CloudLabel); CloudLabel = CloudWorkspace.Title; Dirty = false; Status = "Review JSON saved to the actual cloud workspace. Media files were not uploaded. Share matching originals separately."; });
+    Task SaveCloudAsync() => RunAsync(async () => { CloudWorkspace = await Cloud.SaveAsync(Project, CloudWorkspace, CloudLabel); CloudLabel = CloudWorkspace.Title; Dirty = false; Status = "Shared project saved. Send original media separately."; });
     /// <summary>Loads a strict review document from an authorized server workspace without trusting remote media links.</summary>
-    Task LoadCloudAsync(string id) => RunAsync(async () => { var workspace = await Cloud.LoadAsync(id); var restored = ReviewRoomRules.Restore(workspace.Body.GetRawText()); if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(restored, false); CloudWorkspace = workspace; CloudLabel = workspace.Title; PendingMount = true; Status = "Cloud review JSON loaded. Reconnect matching media on this device; all workspace notes are visible to invited members."; });
+    Task LoadCloudAsync(string id) => RunAsync(async () => { var workspace = await Cloud.LoadAsync(id); var restored = ReviewRoomRules.Restore(workspace.Body.GetRawText()); if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(restored, false); CloudWorkspace = workspace; CloudLabel = workspace.Title; PendingMount = true; Status = "Shared project opened. Reconnect its original files."; });
     /// <summary>Detaches local edits from a read-only or shared workspace without changing the server copy.</summary>
     void MakeLocalCopy() { CloudWorkspace = null; InviteLink = null; Dirty = true; PendingMount = true; Status = "Working on a local copy. The cloud workspace was not changed."; }
     /// <summary>Generates an actual server invitation for a chosen viewer/editor role.</summary>
-    Task CreateInviteAsync() => RunAsync(async () => { if (CloudWorkspace is null) throw new ReviewValidationException("Save a real cloud workspace first."); var invite = await Cloud.InviteAsync(CloudWorkspace, InviteRole); InviteLink = new Uri(new Uri(Navigation.BaseUri), "review-room/?invite=" + Uri.EscapeDataString(invite.Token)).AbsoluteUri; InviteExpiry = DateTimeOffset.FromUnixTimeMilliseconds(invite.ExpiresAt).ToLocalTime().ToString("g"); });
+    Task CreateInviteAsync() => RunAsync(async () => { if (CloudWorkspace is null) throw new ReviewValidationException("Save a shared project first."); var invite = await Cloud.InviteAsync(CloudWorkspace, InviteRole); InviteLink = new Uri(new Uri(Navigation.BaseUri), "review-room/?invite=" + Uri.EscapeDataString(invite.Token)).AbsoluteUri; InviteExpiry = DateTimeOffset.FromUnixTimeMilliseconds(invite.ExpiresAt).ToLocalTime().ToString("g"); });
     /// <summary>Accepts an invite with the actual account session, then loads the authorized JSON.</summary>
-    Task AcceptInviteAsync() => RunAsync(async () => { if (string.IsNullOrWhiteSpace(InviteToken)) return; var joined = await Cloud.JoinAsync(InviteToken); var workspace = await Cloud.LoadAsync(joined.WorkspaceId); var restored = ReviewRoomRules.Restore(workspace.Body.GetRawText()); if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(restored, false); CloudWorkspace = workspace; CloudLabel = workspace.Title; PendingMount = true; Status = "Invitation accepted by the server. Shared JSON loaded with role: " + joined.Role + ". Media files remain local."; });
+    Task AcceptInviteAsync() => RunAsync(async () => { if (string.IsNullOrWhiteSpace(InviteToken)) return; var joined = await Cloud.JoinAsync(InviteToken); var workspace = await Cloud.LoadAsync(joined.WorkspaceId); var restored = ReviewRoomRules.Restore(workspace.Body.GetRawText()); if (!await ConfirmReplaceAsync()) return; await ReplaceProjectAsync(restored, false); CloudWorkspace = workspace; CloudLabel = workspace.Title; PendingMount = true; Status = "Invitation accepted. Your access: " + joined.Role + ". Reconnect the original files."; });
 
     /// <summary>Releases session-only blob URLs and the callback bridge when leaving the product.</summary>
     public async ValueTask DisposeAsync()

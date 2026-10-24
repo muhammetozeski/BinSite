@@ -94,7 +94,7 @@ export function mount(host, token, kind, annotations, reference, canAnnotate) {
   if (previous) { previous.pause(); previous.removeAttribute('src'); previous.load(); }
   host.replaceChildren();
   const url = token ? objectUrl(token) : null;
-  if (!url) { const message = document.createElement('p'); message.textContent = 'Media is not linked on this device. Use Reconnect saved media to match the original file by size and SHA-256.'; message.style.cssText = 'padding:24px;border:1px dashed #777'; host.append(message); return; }
+  if (!url) { const message = document.createElement('p'); message.textContent = 'Choose Reconnect original files to open this saved version.'; message.style.cssText = 'padding:24px;border:1px dashed #777'; host.append(message); return; }
   if (kind === 'video') {
     const video = document.createElement('video'); video.controls = true; video.preload = 'metadata'; video.playsInline = true;
     video.style.cssText = 'display:block;width:100%;max-height:65vh;background:#111'; video.src = url;
@@ -114,7 +114,7 @@ export function mount(host, token, kind, annotations, reference, canAnnotate) {
     const pin = document.createElement('button'); pin.type = 'button'; pin.dataset.commentId = annotation.id;
     pin.textContent = String(annotation.number); pin.title = `${annotation.resolved ? 'Resolved' : 'Open'} comment ${annotation.number}`;
     pin.setAttribute('aria-label', pin.title);
-    pin.style.cssText = `position:absolute;left:${annotation.x * 100}%;top:${annotation.y * 100}%;transform:translate(-50%,-50%);width:28px;height:28px;padding:0;border:2px solid #fff;border-radius:0;background:${annotation.resolved ? '#00652a' : '#c60000'};color:#fff;font:bold 13px system-ui;line-height:24px;cursor:pointer`;
+    pin.style.cssText = `position:absolute;left:${annotation.x * 100}%;top:${annotation.y * 100}%;transform:translate(-50%,-50%);width:28px;height:28px;padding:0;border:2px solid #fff;border-radius:0;background:${annotation.resolved ? '#315f50' : '#73444d'};color:#fff;font:bold 13px system-ui;line-height:24px;cursor:pointer`;
     pin.addEventListener('click', event => { event.stopPropagation(); emit(reference, 'SelectMarker', annotation.id); });
     stage.append(pin);
   }
@@ -125,7 +125,7 @@ export function draftPoint(host, x, y) {
   const stage = host.querySelector('[data-review-image]'); if (!stage || !Number.isFinite(x) || !Number.isFinite(y)) return;
   stage.querySelector('[data-draft-marker]')?.remove();
   const marker = document.createElement('span'); marker.dataset.draftMarker = 'true'; marker.textContent = '+'; marker.setAttribute('aria-label', 'Draft comment position');
-  marker.style.cssText = `position:absolute;left:${x * 100}%;top:${y * 100}%;transform:translate(-50%,-50%);width:30px;height:30px;background:#ffcf00;color:#111;border:2px solid #111;font:bold 22px/26px system-ui;pointer-events:none`;
+  marker.style.cssText = `position:absolute;left:${x * 100}%;top:${y * 100}%;transform:translate(-50%,-50%);width:30px;height:30px;background:#bdd9e5;color:#12202b;border:2px solid #263947;font:bold 22px/26px system-ui;pointer-events:none`;
   stage.append(marker);
 }
 
@@ -146,7 +146,7 @@ export async function focusComment(host, id, seconds) {
     });
     video.pause(); video.currentTime = Math.max(0, Math.min(video.duration, seconds));
   }
-  for (const pin of host.querySelectorAll('button[data-comment-id]')) pin.style.outline = pin.dataset.commentId === id ? '3px solid #ffcf00' : 'none';
+  for (const pin of host.querySelectorAll('button[data-comment-id]')) pin.style.outline = pin.dataset.commentId === id ? '3px solid #c2dbe6' : 'none';
 }
 
 export function discard(tokens) {
@@ -204,4 +204,4 @@ export async function createExample(id) {
   } catch (error) { return { files: [], error: error.message || 'The example could not be generated.' }; }
 }
 
-export function confirmReplace() { return window.confirm('Replace the current review project? Save its JSON first if you want to keep it.'); }
+export function confirmReplace() { return window.confirm('Replace the current review project? Save a project file first to keep your work.'); }
