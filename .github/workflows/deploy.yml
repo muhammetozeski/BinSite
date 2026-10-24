@@ -1,0 +1,41 @@
+name: Publish independent web products
+on:
+  push:
+    branches: [main]
+    paths:
+      - public/**
+      - catalog/**
+      - functions/**
+      - scripts/**
+      - wrangler.toml
+      - .github/workflows/deploy.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  deployments: write
+concurrency:
+  group: binsite-production
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: Build directory from implemented products
+        run: node scripts/build.mjs
+      - name: Validate product scripts and paths
+        run: node scripts/check.mjs
+      - name: Publish static products and social functions
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy public --project-name=muhammetozeski-binsite --branch=main
+          gitHubToken: ${{ github.token }}

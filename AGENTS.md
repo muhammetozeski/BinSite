@@ -1,0 +1,3 @@
+# Project instructions
+
+Read README.md first. Work only on assigned product folders and catalog batch files when collaborating. Keep apps independently usable at their own paths, with no parent shell restricting their interface or architecture. Do not overwrite another agent's work or use the portfolio directory as a product template. Do not store secrets. Only record verified publication and usage. Product explanations are Turkish; source identifiers and project documentation are English. Commit each coherent change separately without authorship trailers. Use docs/ for architecture and deployment evidence.
