@@ -42,7 +42,7 @@ public static class CatalogStudioExporter
             if (product.Stock.Length > 0) html.Append("<p class=\"stock\">Stock: ").Append(Encode(product.Stock)).Append("</p>");
             html.Append("</div></article>");
         }
-        html.Append("</main><p id=\"empty\" hidden>No products match these filters.</p><footer>Prices and stock were supplied by the catalog owner.</footer><script>")
+        html.Append("</main><p id=\"empty\" hidden>No products match these filters.</p><script>")
             .Append(Script).Append("</script></body></html>");
         return html.ToString();
     }
