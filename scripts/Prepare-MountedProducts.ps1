@@ -111,6 +111,20 @@ function Remove-InheritedHeaders([string[]]$Lines){
  if($count){$result.AddRange($group)}
  return $result.ToArray()
 }
+function ConvertTo-CanonicalMountedRedirects([string[]]$Lines,[string]$Slug){
+ $mount='/'+$Slug+'/'
+ $entry=$mount+'index.html'
+ $result=[Collections.Generic.List[string]]::new()
+ foreach($line in $Lines){
+  $parts=$line.Trim().Split([char[]]@(' ',"`t"),[StringSplitOptions]::RemoveEmptyEntries)
+  if($parts.Count -eq 3 -and $parts[2] -ceq '200' -and $parts[1] -cin @($mount,$entry)){
+   if($parts[0] -ceq $mount){continue}
+   if($parts[1] -ceq $entry){$result.Add($parts[0]+' '+$mount+' 200');continue}
+  }
+  $result.Add($line)
+ }
+ return $result.ToArray()
+}
 $metadata=@{_headers=[Collections.Generic.List[string]]::new();_redirects=[Collections.Generic.List[string]]::new()}
 foreach($job in $jobs){
  $product=$job.Product;$parameters=$job.Arguments
@@ -141,6 +155,10 @@ foreach($job in $jobs){
    }
   }
   if($name -eq '_headers'){$lines=@(Remove-InheritedHeaders -Lines $lines)}
+  else{
+   $lines=@(ConvertTo-CanonicalMountedRedirects -Lines $lines -Slug $product.slug)
+   [IO.File]::WriteAllText($file,($lines -join "`n")+"`n",[Text.UTF8Encoding]::new($false))
+  }
   if($lines.Count){$metadata[$name].Add('# '+$product.slug);$metadata[$name].AddRange([string[]]$lines);$metadata[$name].Add('')}
  }
 }

@@ -1,66 +1,64 @@
 # BEGIN BINSITE MOUNTED PRODUCTS
 # retry-assurance
 /retry-assurance /retry-assurance/ 308
-/retry-assurance/ /retry-assurance/index.html 200
-/retry-assurance/projects /retry-assurance/index.html 200
-/retry-assurance/projects/ /retry-assurance/index.html 200
-/retry-assurance/projects/new /retry-assurance/index.html 200
-/retry-assurance/projects/new/ /retry-assurance/index.html 200
-/retry-assurance/projects/:id /retry-assurance/index.html 200
-/retry-assurance/projects/:id/ /retry-assurance/index.html 200
-/retry-assurance/runs/:id /retry-assurance/index.html 200
-/retry-assurance/runs/:id/ /retry-assurance/index.html 200
-/retry-assurance/compare/:current/:baseline /retry-assurance/index.html 200
-/retry-assurance/compare/:current/:baseline/ /retry-assurance/index.html 200
-/retry-assurance/packs /retry-assurance/index.html 200
-/retry-assurance/packs/ /retry-assurance/index.html 200
-/retry-assurance/runner /retry-assurance/index.html 200
-/retry-assurance/runner/ /retry-assurance/index.html 200
-/retry-assurance/account /retry-assurance/index.html 200
-/retry-assurance/account/ /retry-assurance/index.html 200
-/retry-assurance/account/billing /retry-assurance/index.html 200
-/retry-assurance/account/billing/ /retry-assurance/index.html 200
-/retry-assurance/privacy /retry-assurance/index.html 200
-/retry-assurance/privacy/ /retry-assurance/index.html 200
+/retry-assurance/projects /retry-assurance/ 200
+/retry-assurance/projects/ /retry-assurance/ 200
+/retry-assurance/projects/new /retry-assurance/ 200
+/retry-assurance/projects/new/ /retry-assurance/ 200
+/retry-assurance/projects/:id /retry-assurance/ 200
+/retry-assurance/projects/:id/ /retry-assurance/ 200
+/retry-assurance/runs/:id /retry-assurance/ 200
+/retry-assurance/runs/:id/ /retry-assurance/ 200
+/retry-assurance/compare/:current/:baseline /retry-assurance/ 200
+/retry-assurance/compare/:current/:baseline/ /retry-assurance/ 200
+/retry-assurance/packs /retry-assurance/ 200
+/retry-assurance/packs/ /retry-assurance/ 200
+/retry-assurance/runner /retry-assurance/ 200
+/retry-assurance/runner/ /retry-assurance/ 200
+/retry-assurance/account /retry-assurance/ 200
+/retry-assurance/account/ /retry-assurance/ 200
+/retry-assurance/account/billing /retry-assurance/ 200
+/retry-assurance/account/billing/ /retry-assurance/ 200
+/retry-assurance/privacy /retry-assurance/ 200
+/retry-assurance/privacy/ /retry-assurance/ 200
 
 # interlock-expeditions
 /interlock-expeditions /interlock-expeditions/ 301
-/interlock-expeditions/host /interlock-expeditions/index.html 200
-/interlock-expeditions/account /interlock-expeditions/index.html 200
-/interlock-expeditions/help /interlock-expeditions/index.html 200
-/interlock-expeditions/privacy /interlock-expeditions/index.html 200
-/interlock-expeditions/membership /interlock-expeditions/index.html 200
-/interlock-expeditions/control/:roomId /interlock-expeditions/index.html 200
-/interlock-expeditions/room/:roomId /interlock-expeditions/index.html 200
+/interlock-expeditions/host /interlock-expeditions/ 200
+/interlock-expeditions/account /interlock-expeditions/ 200
+/interlock-expeditions/help /interlock-expeditions/ 200
+/interlock-expeditions/privacy /interlock-expeditions/ 200
+/interlock-expeditions/membership /interlock-expeditions/ 200
+/interlock-expeditions/control/:roomId /interlock-expeditions/ 200
+/interlock-expeditions/room/:roomId /interlock-expeditions/ 200
 
 # stagefold
 /stagefold /stagefold/ 301
-/stagefold/studio /stagefold/index.html 200
-/stagefold/account /stagefold/index.html 200
-/stagefold/projects /stagefold/index.html 200
-/stagefold/project/:id /stagefold/index.html 200
-/stagefold/cuts /stagefold/index.html 200
-/stagefold/cut/:id /stagefold/index.html 200
-/stagefold/membership /stagefold/index.html 200
-/stagefold/privacy /stagefold/index.html 200
-/stagefold/guide /stagefold/index.html 200
+/stagefold/studio /stagefold/ 200
+/stagefold/account /stagefold/ 200
+/stagefold/projects /stagefold/ 200
+/stagefold/project/:id /stagefold/ 200
+/stagefold/cuts /stagefold/ 200
+/stagefold/cut/:id /stagefold/ 200
+/stagefold/membership /stagefold/ 200
+/stagefold/privacy /stagefold/ 200
+/stagefold/guide /stagefold/ 200
 
 # release-deck
 /release-deck /release-deck/ 308
-/release-deck/ /release-deck/index.html 200
-/release-deck/workspace /release-deck/index.html 200
-/release-deck/workspace/ /release-deck/index.html 200
-/release-deck/workspace/:id /release-deck/index.html 200
-/release-deck/workspace/:id/ /release-deck/index.html 200
-/release-deck/review /release-deck/index.html 200
-/release-deck/review/ /release-deck/index.html 200
-/release-deck/review/:id /release-deck/index.html 200
-/release-deck/review/:id/ /release-deck/index.html 200
-/release-deck/operations /release-deck/index.html 200
-/release-deck/operations/ /release-deck/index.html 200
-/release-deck/operations/:id /release-deck/index.html 200
-/release-deck/operations/:id/ /release-deck/index.html 200
-/release-deck/help /release-deck/index.html 200
-/release-deck/help/ /release-deck/index.html 200
+/release-deck/workspace /release-deck/ 200
+/release-deck/workspace/ /release-deck/ 200
+/release-deck/workspace/:id /release-deck/ 200
+/release-deck/workspace/:id/ /release-deck/ 200
+/release-deck/review /release-deck/ 200
+/release-deck/review/ /release-deck/ 200
+/release-deck/review/:id /release-deck/ 200
+/release-deck/review/:id/ /release-deck/ 200
+/release-deck/operations /release-deck/ 200
+/release-deck/operations/ /release-deck/ 200
+/release-deck/operations/:id /release-deck/ 200
+/release-deck/operations/:id/ /release-deck/ 200
+/release-deck/help /release-deck/ 200
+/release-deck/help/ /release-deck/ 200
 
 # END BINSITE MOUNTED PRODUCTS
