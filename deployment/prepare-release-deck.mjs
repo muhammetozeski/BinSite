@@ -22,6 +22,7 @@ async function api(path, options = {}) {
     ...(options.body ? { body: JSON.stringify(options.body) } : {})
   });
   const data = await response.json();
+  if (path === 'workers/subdomain' && options.allowUnregistered && (response.status === 404 || data.errors?.some(error => error.code === 10063))) return null;
   if (!response.ok || !data.success) {
     const codes = (data.errors ?? []).map(error => error.code).filter(Number.isInteger).join(',');
     throw new Error(`Release Deck deployment configuration failed (${response.status}; codes: ${codes || 'unavailable'}).`);
@@ -54,6 +55,15 @@ if (process.argv.includes('--confirm-maintenance')) {
       RELEASE_GOOGLE_CLIENT_ID: { type: 'plain_text', value: googleId },
       RELEASE_GOOGLE_CLIENT_SECRET: { type: 'secret_text', value: googleSecret }
     } } } } });
+  }
+  // Cron registration requires this account-level namespace even for a Worker
+  // whose public workers.dev and preview URLs are both disabled.
+  const accountNamespace = await api('workers/subdomain', { allowUnregistered: true });
+  if (accountNamespace && typeof accountNamespace.subdomain !== 'string') throw new Error('The existing Worker namespace response was unexpected; no namespace was changed.');
+  if (!accountNamespace?.subdomain) {
+    const expectedName = `binsite-${hosting.accountId.slice(0, 12)}`;
+    const created = await api('workers/subdomain', { method: 'PUT', body: { subdomain: expectedName } });
+    if (created?.subdomain !== expectedName) throw new Error('The Worker account namespace was not confirmed.');
   }
   console.log('Applied the additive release schema; the dedicated encryption binding is present. Supplied Google credentials were configured when present.');
 }
