@@ -1,8 +1,8 @@
 # Independent applications at one origin
 
-`integrations/mounted-products.json` pins each upstream repository to an exact commit. Its explicit backend file list preserves relative imports. The permanent upstream checkouts remain separate; generated copies under `integrations/mounted/` and compiled assets under the five public product folders are ignored.
+`integrations/mounted-products.json` pins each upstream repository to an exact commit. Its explicit backend file list preserves relative imports. The permanent upstream checkouts remain separate; generated copies under `integrations/mounted/` and compiled assets under the six public product folders are ignored.
 
-The main publication fetches those exact sources, invokes their publishers with an application base and destination, merges their scoped hosting metadata, and then builds the directory. The local five-product publication has completed successfully. Main-origin HTTPS acceptance is recorded separately after deployment.
+The main publication fetches those exact sources, invokes their publishers with an application base and destination, merges their scoped hosting metadata, and then builds the directory. The local six-product publication has completed successfully. Main-origin HTTPS acceptance is recorded separately after deployment.
 
 | Product | Primary path | Backend |
 | --- | --- | --- |
@@ -11,6 +11,7 @@ The main publication fetches those exact sources, invokes their publishers with 
 | StageFold | `/stagefold/` | Existing stagefold D1 through `STAGEFOLD_DB` |
 | Interlock Expeditions | `/interlock-expeditions/` | Authenticated relay to its existing service and D1 |
 | Release Deck | `/release-deck/` | Main commerce account, shared project allowance and prefixed release tables in the main D1 |
+| Atlas Assembly | `/atlas-assembly/` | Separate private room capabilities and prefixed puzzle tables in the main D1 |
 
 ## Build and routing
 
@@ -37,6 +38,8 @@ Retry and StageFold account/capability checks use existing stored hashes. Their 
 Each product retains its own appearance and revenue UI. The shared appearance/revenue preparers skip catalog entries marked `runtime: "mounted"`; they do not inject another theme button, account footer or product shell.
 
 Release Deck uses `/api/commerce/release-deck/` so the existing commerce session cookie reaches its handler. Its adapter passes only the main D1 and explicit `RELEASE_*` settings to the pinned service. Release workspaces, other commerce workspaces and vault projects share the same active-project allowance, including restore checks. Private release screens contain no advertising. See [Release Deck hosting](Release-Deck-Hosting.md) for encryption, provider setup and scheduled retention.
+
+Atlas Assembly uses `/api/atlas-assembly/` and its own room/player capabilities. Its adapter passes only the main D1 and canonical origin. Its local and persisted games consume the same pinned rules engine, and its publisher supplies actual curated artwork files. The additive room schema precedes the shared maintenance deployment; the existing hourly Worker now settles both products' cleanup results before reporting failure. See [Atlas hosting](Atlas-Assembly-Hosting.md) for the isolated data, admission and evidence boundaries.
 
 ## Interlock's authenticated relay
 
