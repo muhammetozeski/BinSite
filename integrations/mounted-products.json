@@ -61,5 +61,15 @@
     "publishScript": "scripts/Publish-App.ps1",
     "publishArguments": {},
     "backendFiles": ["server/handler.mjs", "server/rules.mjs", "server/workspaces.mjs", "server/crypto.mjs", "server/google.mjs", "server/operations.mjs", "server/maintenance.mjs", "schema/release-deck.sql"]
+  },
+  {
+    "key": "atlas",
+    "slug": "atlas-assembly",
+    "repository": "muhammetozeski/AtlasAssembly",
+    "sourceDirectory": "AtlasAssembly",
+    "ref": "0f19e95b9c9e7c84a49f8dd6a335e5466ac5871e",
+    "publishScript": "scripts/Publish-App.ps1",
+    "publishArguments": {},
+    "backendFiles": ["server/handler.mjs", "server/rules.mjs", "server/store.mjs", "server/rooms.mjs", "server/maintenance.mjs", "shared/engine.mjs", "content/artworks.json", "schema/atlas-assembly.sql"]
   }
 ]

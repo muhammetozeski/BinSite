@@ -1376,5 +1376,28 @@
       "Private YouTube uploads and separate visibility actions after authorized setup"
     ],
     "businessHypothesis": "Creator teams may value larger private release capacity and a repeatable review-to-delivery workflow. The existing creator subscription supplies the actual combined saved-project allowance. Channel operations require service configuration and each creator's authorization. Customer demand, paid conversions and revenue remain unverified."
+  },
+  {
+    "id": 109,
+    "name": "Atlas Assembly",
+    "slug": "atlas-assembly",
+    "category": "Games",
+    "stage": 11,
+    "runtime": "mounted",
+    "adEligible": true,
+    "appearance": {
+      "themeAttribute": "data-atlas-theme",
+      "assetAttribute": "data-atlas-appearance"
+    },
+    "description": "Rebuild three paintings with friends by joining and trading their pieces.",
+    "features": [
+      "Three real paintings with source credits",
+      "Graphical solo play and restored progress",
+      "Private shared rooms and individual player access",
+      "Whole-cluster handoffs and geometric joins",
+      "Mouse, touch and keyboard controls",
+      "Explicit solo continuation with preserved contributions"
+    ],
+    "businessHypothesis": "Optional publisher-network advertising may fund free cooperative play after approved publisher and consent setup. Evaluate repeat rooms, actual invitation joins and whether players use each other's assembled work. Longer-lived private collections are a later hypothesis, not a current paid entitlement. Human demand, ad fill and revenue remain unverified."
   }
 ]

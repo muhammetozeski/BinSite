@@ -61,4 +61,9 @@
 /release-deck/help /release-deck/ 200
 /release-deck/help/ /release-deck/ 200
 
+# atlas-assembly
+/atlas-assembly /atlas-assembly/ 308
+/atlas-assembly/room/:id /atlas-assembly/ 200
+/atlas-assembly/room/:id/ /atlas-assembly/ 200
+
 # END BINSITE MOUNTED PRODUCTS

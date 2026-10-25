@@ -63,7 +63,11 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           RELEASE_GOOGLE_WEB_CLIENT: ${{ secrets.RELEASE_GOOGLE_WEB_CLIENT }}
         run: node deployment/prepare-release-deck.mjs
-      - name: Publish provider-data maintenance
+      - name: Prepare shared puzzle room storage
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node deployment/prepare-atlas-assembly.mjs
+      - name: Publish scheduled data maintenance
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
