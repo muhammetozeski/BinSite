@@ -14,7 +14,7 @@ Use standard HTML, CSS, and JavaScript when sufficient. Every product must provi
 
 Product catalog entries use `id`, `name`, `slug`, `category`, `stage`, `description`, `features`, and `businessHypothesis`. Business hypotheses are proposals, not observed outcomes. Save no secrets in source or generated files. New products remain in this permanent directory. Source is public at https://github.com/muhammetozeski/BinSite, as requested by the user.
 
-Products have distinct paths on the main website. The four larger applications retain their permanent source repositories and are built from exact revisions in `integrations/mounted-products.json`; their layouts are independent. Existing services and old addresses remain available for compatibility, while the directory's primary links use the main origin. See [mounted products](docs/Mounted-Products.md) for publication, routing, data and environment boundaries. The delivery ledger records verified URLs, so changing an address requires a new check.
+Products have distinct paths on the main website. The five larger applications retain their permanent source repositories and are built from exact revisions in `integrations/mounted-products.json`; their layouts are independent. Existing services and old addresses remain available for compatibility, while the directory's primary links use the main origin. See [mounted products](docs/Mounted-Products.md) for publication, routing, data and environment boundaries. The delivery ledger records verified URLs, so changing an address requires a new check.
 
 ## Local use
 

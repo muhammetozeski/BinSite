@@ -8,6 +8,7 @@ Use this index to find project-specific implementation knowledge before repeatin
 - [Appearance guard](Appearance-Guard.md): dark-default publication and runtime text contrast without a shared product layout.
 - [Blazor on Pages](Blazor-Pages.md): root-relative runtime paths, preservation of the portfolio homepage and tested publication boundaries.
 - [Mounted products](Mounted-Products.md): pinned independent application builds, scoped routes, isolated environments and Interlock's authenticated transport at the main origin.
+- [Release Deck hosting](Release-Deck-Hosting.md): existing account integration, provider encryption, optional Google configuration and confirmed scheduled retention without a public Worker route.
 - [Advertising integration](Advertising-Integration.md): optional placements, public publisher configuration, consent prerequisites and campaign drafts.
 - [Cloudflare secret updates](Cloudflare-Secrets.md): why environment PATCH requests must include only changed keys instead of replaying redacted secret values.
 - [Web Analytics access](Web-Analytics-Access.md): the observed permission boundary between working Pages/D1 access and the separate analytics creation endpoint.
