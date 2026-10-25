@@ -57,7 +57,7 @@
     "slug": "release-deck",
     "repository": "muhammetozeski/ReleaseDeck",
     "sourceDirectory": "ReleaseDeck",
-    "ref": "21cb5992b1b914de81a74d245056d0e59fb6eda3",
+    "ref": "724d19e268eeeea06e523c517c0e5d9275f1a26f",
     "publishScript": "scripts/Publish-App.ps1",
     "publishArguments": {},
     "backendFiles": ["server/handler.mjs", "server/rules.mjs", "server/workspaces.mjs", "server/crypto.mjs", "server/google.mjs", "server/operations.mjs", "server/maintenance.mjs", "schema/release-deck.sql"]
