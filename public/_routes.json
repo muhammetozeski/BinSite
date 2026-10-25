@@ -1,1 +1,1 @@
-{"version":1,"include":["/api/*","/retry-assurance/api/*","/three-beat-freight/api/*","/interlock-expeditions/api/*","/stagefold/api/*"],"exclude":[]}
+{"version":1,"include":["/api/*","/retry-assurance/api/*","/three-beat-freight/api/*","/interlock-expeditions/api/*","/stagefold/api/*","/release-deck/api/*"],"exclude":[]}

@@ -10,6 +10,7 @@ on:
       - server/**
       - content/**
       - integrations/**
+      - deployment/**
       - scripts/**
       - wrangler.toml
       - .github/workflows/deploy.yml
@@ -57,6 +58,21 @@ jobs:
         run: node scripts/Prepare-Appearance.mjs
       - name: Validate product scripts and paths after theme preparation
         run: node scripts/check.mjs
+      - name: Prepare release storage and private token encryption
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          RELEASE_GOOGLE_WEB_CLIENT: ${{ secrets.RELEASE_GOOGLE_WEB_CLIENT }}
+        run: node deployment/prepare-release-deck.mjs
+      - name: Publish provider-data maintenance
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --config deployment/maintenance/wrangler.toml
+      - name: Confirm provider-data maintenance schedule
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node deployment/prepare-release-deck.mjs --confirm-maintenance
       - name: Publish static products and social functions
         uses: cloudflare/wrangler-action@v4
         with:

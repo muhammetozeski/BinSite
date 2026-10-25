@@ -35,4 +35,9 @@
   Referrer-Policy: no-referrer
   Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'
 
+# release-deck
+/release-deck/*
+  Referrer-Policy: no-referrer
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' https://www.googleapis.com https://youtube.googleapis.com; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'
+
 # END BINSITE MOUNTED PRODUCTS

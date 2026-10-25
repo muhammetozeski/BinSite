@@ -10,7 +10,7 @@
 <PageTitle>@Texts.Text("Yaratıcı hesabım — BinSite", "My creator account — BinSite")</PageTitle>
 <PageSurface>
 <main class="membership">
-    <header><div><a href="/">BinSite</a><h1>Creator account</h1><p>Save projects and open them on another device.</p></div><LanguageSwitch /></header>
+    <header><div>@if (ProjectReturnPath is not null) { <a href="@ProjectReturnPath">Return to your release</a> } else { <a href="/">BinSite</a> }<h1>Creator account</h1><p>Save projects and open them on another device.</p></div><LanguageSwitch /></header>
     @if (!string.IsNullOrEmpty(Message)) { <p class="notice" role="status">@Message</p> }
     @if (Busy) { <p aria-live="polite">@Texts.Text("İşlem sürüyor…", "Working…")</p> }
     <div class="@(SubscriptionsAvailable ? "columns" : "columns single")">
@@ -93,6 +93,16 @@
 
     CommerceStatus? Status;
     [SupplyParameterFromQuery(Name = "checkout")] public string? CheckoutReturn { get; set; }
+    [SupplyParameterFromQuery(Name = "returnTo")] public string? ProjectReturn { get; set; }
+
+    /// <summary>Returns only an internal Release Deck path, keeping a supplied account-return link away from external sites.</summary>
+    string? ProjectReturnPath => ProjectReturn is { Length: > 0 and <= 500 } value
+        && value.StartsWith("/release-deck/", StringComparison.Ordinal)
+        && !value.Contains('\\')
+        && Uri.TryCreate(new Uri(Navigation.BaseUri), value, out var target)
+        && target.GetLeftPart(UriPartial.Authority) == new Uri(Navigation.BaseUri).GetLeftPart(UriPartial.Authority)
+        && target.AbsolutePath.StartsWith("/release-deck/", StringComparison.Ordinal)
+        ? target.PathAndQuery + target.Fragment : null;
 
     /// <summary>Loads account state and connects this component to the current browser's language preference.</summary>
     protected override async Task OnInitializedAsync() { Texts.Changed += RefreshLanguage; await Texts.InitializeAsync(); await Load(); if (CheckoutReturn == "success") Message = Status?.Account?.Premium == true ? "Your membership is active." : "Checkout finished. Use Refresh to check your membership status."; else if (CheckoutReturn == "cancelled") Message = "Checkout closed. Your account status is shown below."; }

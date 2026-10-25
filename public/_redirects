@@ -45,4 +45,22 @@
 /stagefold/privacy /stagefold/index.html 200
 /stagefold/guide /stagefold/index.html 200
 
+# release-deck
+/release-deck /release-deck/ 308
+/release-deck/ /release-deck/index.html 200
+/release-deck/workspace /release-deck/index.html 200
+/release-deck/workspace/ /release-deck/index.html 200
+/release-deck/workspace/:id /release-deck/index.html 200
+/release-deck/workspace/:id/ /release-deck/index.html 200
+/release-deck/review /release-deck/index.html 200
+/release-deck/review/ /release-deck/index.html 200
+/release-deck/review/:id /release-deck/index.html 200
+/release-deck/review/:id/ /release-deck/index.html 200
+/release-deck/operations /release-deck/index.html 200
+/release-deck/operations/ /release-deck/index.html 200
+/release-deck/operations/:id /release-deck/index.html 200
+/release-deck/operations/:id/ /release-deck/index.html 200
+/release-deck/help /release-deck/index.html 200
+/release-deck/help/ /release-deck/index.html 200
+
 # END BINSITE MOUNTED PRODUCTS

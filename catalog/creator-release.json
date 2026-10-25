@@ -1,0 +1,25 @@
+[
+  {
+    "id": 108,
+    "name": "Release Deck",
+    "slug": "release-deck",
+    "category": "Workspace",
+    "stage": 10,
+    "runtime": "mounted",
+    "adEligible": false,
+    "appearance": {
+      "themeAttribute": "data-rd-theme",
+      "assetAttribute": "data-rd-appearance"
+    },
+    "description": "Prepare a video series, inspect clips and share a release plan.",
+    "features": [
+      "Local video preview and frame capture",
+      "File reattachment checks and release preflight",
+      "Episode order, translations and planned times",
+      "Portable project files and a shareable release sheet",
+      "Private team review and owner approval",
+      "Private YouTube uploads and separate visibility actions after authorized setup"
+    ],
+    "businessHypothesis": "Creator teams may value larger private release capacity and a repeatable review-to-delivery workflow. The existing creator subscription supplies the actual combined saved-project allowance. Channel operations require service configuration and each creator's authorization. Customer demand, paid conversions and revenue remain unverified."
+  }
+]

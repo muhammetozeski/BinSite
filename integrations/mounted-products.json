@@ -51,5 +51,15 @@
     "environmentPrefix": "STAGEFOLD_",
     "environmentKeys": ["RATE_SALT", "MODERATION_KEY", "STRIPE_SECRET_KEY", "STRIPE_PRICE_ID", "STRIPE_WEBHOOK_SECRET"],
     "derivedRateKey": "RATE_SALT"
+  },
+  {
+    "key": "release",
+    "slug": "release-deck",
+    "repository": "muhammetozeski/ReleaseDeck",
+    "sourceDirectory": "ReleaseDeck",
+    "ref": "21cb5992b1b914de81a74d245056d0e59fb6eda3",
+    "publishScript": "scripts/Publish-App.ps1",
+    "publishArguments": {},
+    "backendFiles": ["server/handler.mjs", "server/rules.mjs", "server/workspaces.mjs", "server/crypto.mjs", "server/google.mjs", "server/operations.mjs", "server/maintenance.mjs", "schema/release-deck.sql"]
   }
 ]

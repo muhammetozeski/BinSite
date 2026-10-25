@@ -107,8 +107,8 @@ export async function onRequest({ request, env }) {
       const created = await db.batch([
         db.prepare(`INSERT INTO commerce_workspaces(id,owner_id,kind,title,body,revision,created_at,updated_at,last_write_id)
           SELECT ?,?,?,?,?,1,?,?,? WHERE
-          (SELECT COUNT(*) FROM commerce_projects WHERE member_id=?)+(SELECT COUNT(*) FROM commerce_workspaces WHERE owner_id=? AND archived_at IS NULL)<?`)
-          .bind(id,member.id,body.kind,title,document,now,now,mutation,member.id,member.id,account.projectLimit),
+          (SELECT COUNT(*) FROM commerce_projects WHERE member_id=?)+(SELECT COUNT(*) FROM commerce_workspaces WHERE owner_id=? AND archived_at IS NULL)+(SELECT COUNT(*) FROM release_workspaces WHERE owner_id=? AND archived_at IS NULL)<?`)
+          .bind(id,member.id,body.kind,title,document,now,now,mutation,member.id,member.id,member.id,account.projectLimit),
         db.prepare('INSERT INTO commerce_workspace_versions(workspace_id,revision,title,body,author_id,created_at) SELECT id,revision,title,body,owner_id,updated_at FROM commerce_workspaces WHERE id=? AND last_write_id=?').bind(id,mutation)
       ]);
       if (!created[0].meta.changes) throw new WorkspaceError(409,'The shared project and workspace allowance has been reached.','project_limit');
@@ -177,8 +177,8 @@ export async function onRequest({ request, env }) {
       if(row.archived_at===null)return result({ok:true});
       const account=await limits(db,member);
       const restored=await db.prepare(`UPDATE commerce_workspaces SET archived_at=NULL,updated_at=? WHERE id=? AND owner_id=? AND archived_at IS NOT NULL
-        AND (SELECT COUNT(*) FROM commerce_projects WHERE member_id=?)+(SELECT COUNT(*) FROM commerce_workspaces WHERE owner_id=? AND archived_at IS NULL)<?`)
-        .bind(now,row.id,member.id,member.id,member.id,account.projectLimit).run();
+        AND (SELECT COUNT(*) FROM commerce_projects WHERE member_id=?)+(SELECT COUNT(*) FROM commerce_workspaces WHERE owner_id=? AND archived_at IS NULL)+(SELECT COUNT(*) FROM release_workspaces WHERE owner_id=? AND archived_at IS NULL)<?`)
+        .bind(now,row.id,member.id,member.id,member.id,member.id,account.projectLimit).run();
       if(!restored.meta.changes)throw new WorkspaceError(409,'Make room in your project allowance before restoring this workspace.','project_limit');
       return result({ok:true});
     }
